@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Design of Scheduled Query Failure Reports</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/design-of-scheduled-query-failure-reports/3838">Design of Scheduled Query Failure Reports</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/7.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Development</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/ux/13.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #0088CC"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">UX</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Design of Scheduled Query Failure Reports" itemprop="headline"/>
+<meta content="UX" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7358b67e8a8571ee372ed3b121afd2cecdc43d3e.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:15:57Z" itemprop="datePublished">
+                    May 20, 2019,  8:15pm
+                  </time>
+<meta content="2019-05-20T20:15:57Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I’ve submitted <a href="https://github.com/getredash/redash/pull/3798" rel="noopener nofollow ugc">a PR</a> that sends out a periodic e-mail to users who’s scheduled queries are failing and they have no indication of it. You can read the specifics in <a href="https://github.com/getredash/redash/issues/3797" rel="noopener nofollow ugc">the issue</a>, but the gist of it is - these reports are sent at most once an hour, and for each error, they show the amount of times it happened since the last report. If an error fails <em>too much</em> (say, 100 times), the failure is no longer reported. An indication that reports are about to stop is given prior to that.</p>
+<p>At first, I thought this should be a text-only e-mail, but following <a class="mention" href="/u/ranbena">@ranbena</a>’s comment and looking at other failure reports, for example, Sentry’s, I get a feeling we should make our reports better than this piece of <img alt=":peach:" class="emoji" height="20" loading="lazy" src="assets/peach.png" title=":peach:" width="20"/>:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/gsoYtZOABeQ5xm7Mu3T3UCksN1s.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7358b67e8a8571ee372ed3b121afd2cecdc43d3e.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="gsoYtZOABeQ5xm7Mu3T3UCksN1s" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7358b67e8a8571ee372ed3b121afd2cecdc43d3e_2_10x10.png" height="369" src="assets/7358b67e8a8571ee372ed3b121afd2cecdc43d3e_2_690x369.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7358b67e8a8571ee372ed3b121afd2cecdc43d3e_2_690x369.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7358b67e8a8571ee372ed3b121afd2cecdc43d3e_2_1035x553.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7358b67e8a8571ee372ed3b121afd2cecdc43d3e.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1348×722 60.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Any suggestions?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:37:21Z" itemprop="datePublished">
+                    May 20, 2019,  8:37pm
+                  </time>
+<meta content="2019-05-20T20:37:21Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/rauchy">@rauchy</a> a few qs:</p>
+<ol>
+<li>Who are the recipients of this email report?</li>
+<li>What is the email subject?</li>
+<li>What exact information is available for the email template?<br/>
+I gather that each failing query is represented with:
+<ul>
+<li>Query title</li>
+<li>Query url</li>
+<li>Last failure</li>
+<li>Total fail count</li>
+<li>Fail count since last report</li>
+<li>Report fail count threshold</li>
+<li>Error message</li>
+</ul>
+</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:41:39Z" itemprop="datePublished">
+                    May 20, 2019,  8:41pm
+                  </time>
+<meta content="2019-05-20T20:41:39Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Something I think is missing is</p>
+<ol>
+<li>A guide to “What can cause this?” or “What should I do now?” cc <a class="mention" href="/u/jesse">@jesse</a>
+</li>
+<li>A call to action - like “Mute this thread” or “Disable this query”.</li>
+</ol>
+<p>Wdyt?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:44:39Z" itemprop="datePublished">
+                    May 20, 2019,  8:44pm
+                  </time>
+<meta content="2019-05-20T20:50:17Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p><a class="mention" href="/u/rauchy">@rauchy</a> a few qs:</p>
+</blockquote>
+<ol>
+<li>The user who created the query.</li>
+<li>“Failed Scheduled Query Executions”</li>
+<li>Yupp.</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:49:31Z" itemprop="datePublished">
+                    May 20, 2019,  8:49pm
+                  </time>
+<meta content="2019-05-20T20:49:31Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Interesting ideas, though I feel that:</p>
+<ol>
+<li>It could happen for so many reasons (from timeouts to broken data source connectivity)</li>
+<li>This would require an endpoint for muting such thread, alongside with matching state - and since this will automatically happen once reaching the threshold, I’m not sure it’s worth the effort.</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:53:58Z" itemprop="datePublished">
+                    May 20, 2019,  8:53pm
+                  </time>
+<meta content="2019-05-20T20:53:58Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<ol>
+<li>The user who created the query.</li>
+</ol>
+</blockquote>
+<p>Perhaps also the account admin?</p>
+<blockquote>
+<ol start="2">
+<li>“Failed Scheduled Query Executions”</li>
+</ol>
+</blockquote>
+<p>Should have the word “Redash” in there somewhere.<br/>
+Perhaps sth like “Redash failed to execute {count} of your queries”</p>
+<p><a class="mention" href="/u/rauchy">@rauchy</a> Can you share Sentry’s email? (subject+body)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:57:46Z" itemprop="datePublished">
+                    May 20, 2019,  8:57pm
+                  </time>
+<meta content="2019-05-20T20:57:46Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p>Perhaps also the account admin?</p>
+</blockquote>
+<p>I pity the account admin who’s data source is having connectivity issues and will receive countless e-mails.</p>
+<blockquote>
+<p>Perhaps sth like “Redash failed to execute {count} of your queries”</p>
+</blockquote>
+<p><img alt=":+1:" class="emoji" src="assets/+1.png" title=":+1:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3cf225e94e8bc24c8e20f791a884ab12c255b7c9.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T22:52:08Z" itemprop="datePublished">
+                    May 20, 2019, 10:52pm
+                  </time>
+<meta content="2019-05-20T23:18:27Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Here’s my proposed design:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/8H9rMztAXPCARjrk9VbcH9WAu93.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3cf225e94e8bc24c8e20f791a884ab12c255b7c9.png" title="52"><img alt="52" data-base62-sha1="8H9rMztAXPCARjrk9VbcH9WAu93" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3cf225e94e8bc24c8e20f791a884ab12c255b7c9_2_10x10.png" height="500" src="assets/3cf225e94e8bc24c8e20f791a884ab12c255b7c9_2_369x500.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3cf225e94e8bc24c8e20f791a884ab12c255b7c9_2_369x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3cf225e94e8bc24c8e20f791a884ab12c255b7c9_2_553x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3cf225e94e8bc24c8e20f791a884ab12c255b7c9_2_738x1000.png 2x" width="369"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">52</span><span class="informations">1020×1382 86.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Full html and preview:</p>
+<p><a href="https://codesandbox.io/s/failed-query-report-email-8w3mo?fontsize=14"><img alt="Edit Failed query report email" height="40" src="https://codesandbox.io/static/img/play-codesandbox.svg" width="184"/></a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T23:12:55Z" itemprop="datePublished">
+                    May 20, 2019, 11:12pm
+                  </time>
+<meta content="2019-05-20T23:12:55Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/rauchy">@rauchy</a> some html styles get stripped by email clients so if the template ain’t 100% in the email, lmk and I’ll adjust.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T23:24:22Z" itemprop="datePublished">
+                    May 20, 2019, 11:24pm
+                  </time>
+<meta content="2019-05-20T23:24:22Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Another design option for the query link:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/zIOKGMx1tEAv4iilqj9q87hHVc8.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac.png" title="12"><img alt="12" data-base62-sha1="zIOKGMx1tEAv4iilqj9q87hHVc8" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac_2_10x10.png" height="246" src="assets/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac_2_517x246.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac_2_517x246.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac_2_775x369.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fa5d0ffef7f96f2ee0af66a9c39a2867e972d6ac.png 2x" width="517"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">12</span><span class="informations">1004×480 31.9 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T02:14:13Z" itemprop="datePublished">
+                    May 21, 2019,  2:14am
+                  </time>
+<meta content="2019-05-21T02:14:13Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m working up an addition to the documentation about this. I’m curious, though, will we have an in-app notification about failed queries? Or does it <strong>only</strong> go out through email?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T06:16:55Z" itemprop="datePublished">
+                    May 21, 2019,  6:16am
+                  </time>
+<meta content="2019-05-21T06:16:55Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks! Looks much better <img alt=":wink:" class="emoji" src="assets/wink.png" title=":wink:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T06:20:03Z" itemprop="datePublished">
+                    May 21, 2019,  6:20am
+                  </time>
+<meta content="2019-05-21T06:20:03Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>We’re starting with e-mail notifications to have <em>something</em>. In-app is planned (see <a href="https://github.com/getredash/redash/issues/2593" rel="nofollow noopener">https://github.com/getredash/redash/issues/2593</a>), though I’m not sure what is the priority for it.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T06:53:57Z" itemprop="datePublished">
+                    May 21, 2019,  6:53am
+                  </time>
+<meta content="2019-05-21T06:53:57Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="6" data-topic="3838">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>Should have the word “Redash” in there somewhere.</p>
+</blockquote>
+</aside>
+<p>The <code>From</code> name?</p>
+<aside class="quote no-group" data-post="3" data-topic="3838">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<ul>
+<li>A guide to “What can cause this?” or “What should I do now?” cc <a class="mention" href="/u/susodapop">@susodapop</a>
+</li>
+<li>A call to action - like “Mute this thread” or “Disable this query”.</li>
+</ul>
+</blockquote>
+</aside>
+<p>Those are definitely good ideas, but let’s keep them for future iterations.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T06:58:09Z" itemprop="datePublished">
+                    May 21, 2019,  6:58am
+                  </time>
+<meta content="2019-05-21T06:58:09Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p>The  <code>From</code>  name?</p>
+</blockquote>
+<p>You can’t be sure admins will include “Redash” in their default senders.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ae92ecefced3c81e30d57f631827a9381570150.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T07:12:56Z" itemprop="datePublished">
+                    May 21, 2019,  7:12am
+                  </time>
+<meta content="2019-05-21T08:01:46Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>looking <a href="https://github.com/getredash/redash/pull/3798" rel="noopener nofollow ugc">f-i-n-e</a>!</p>
+<p>One small problem is with text wrapping, as seen here:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/aGGVkLlZk2tVDxlQPgQVCPpszio.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ae92ecefced3c81e30d57f631827a9381570150.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="aGGVkLlZk2tVDxlQPgQVCPpszio" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4ae92ecefced3c81e30d57f631827a9381570150_2_10x10.png" height="500" src="assets/4ae92ecefced3c81e30d57f631827a9381570150_2_249x500.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4ae92ecefced3c81e30d57f631827a9381570150_2_249x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ae92ecefced3c81e30d57f631827a9381570150.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ae92ecefced3c81e30d57f631827a9381570150.png 2x" width="249"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">361×724 32 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p><code>overflow: scroll;</code> should be fine here, right?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-21T21:49:15Z" itemprop="datePublished">
+                    May 21, 2019,  9:49pm
+                  </time>
+<meta content="2019-05-21T21:49:15Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p><code>overflow: scroll;</code>  should be fine here, right?</p>
+</blockquote>
+<p>In the PR I suggested <code>word-break: break-all</code>  instead. I think it does better.</p>
+<hr/>
+<p><a class="mention" href="/u/rauchy">@rauchy</a> is this screenshot from an email client?</p>
+<p>Feel free to send me this email and I’ll test it <img alt=":+1:" class="emoji" src="assets/+1.png" title=":+1:"/><br/>
+Should test Outlook, Apple Mail, Gmail  - desktop, web and mobile (<a href="https://emailclientmarketshare.com/" rel="nofollow noopener">stats</a>).</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-22T06:48:01Z" itemprop="datePublished">
+                    May 22, 2019,  6:48am
+                  </time>
+<meta content="2019-05-22T06:48:01Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Forwarded it to you. I’ve tested web+mobile for Apple Mail and Gmail. Do you have Outlook available?</p>
+<p>Logo doesn’t show up on Gmail (web or mobile) <img alt=":frowning:" class="emoji" src="assets/frowning.png" title=":frowning:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_19" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-22T07:18:42Z" itemprop="datePublished">
+                    May 22, 2019,  7:18am
+                  </time>
+<meta content="2019-05-22T07:18:42Z" itemprop="dateModified"/>
+<span itemprop="position">19</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Another thing about the logo: some email clients strip the background color, so the logo appears with the background color on a white email. Can it have transparent color?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_20" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/design-of-scheduled-query-failure-reports/3838" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f1b3cab5b48e459c26dc4760b74bbd71d3406230.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-22T13:14:43Z" itemprop="datePublished">
+                    May 22, 2019,  1:14pm
+                  </time>
+<meta content="2019-05-22T13:14:43Z" itemprop="dateModified"/>
+<span itemprop="position">20</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Looking sweet in Outlook.<br/>
+The relative/absolute positioning of the “Go to Query” button gets stripped but it’s still looking and behaving ok.</p>
+<p>Web:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/yucgTUdfHfmnOiu9Mod9Bi3nxrG.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f1b3cab5b48e459c26dc4760b74bbd71d3406230.jpeg" title="outlook-web"><img alt="outlook-web" data-base62-sha1="yucgTUdfHfmnOiu9Mod9Bi3nxrG" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f1b3cab5b48e459c26dc4760b74bbd71d3406230_2_10x10.png" height="243" src="assets/f1b3cab5b48e459c26dc4760b74bbd71d3406230_2_345x243.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f1b3cab5b48e459c26dc4760b74bbd71d3406230_2_345x243.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f1b3cab5b48e459c26dc4760b74bbd71d3406230_2_517x364.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f1b3cab5b48e459c26dc4760b74bbd71d3406230_2_690x486.jpeg 2x" width="345"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">outlook-web</span><span class="informations">1868×1318 117 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Mobile iOS:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/87a7zl344fpt33YAe6H6cvnP2fR.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/38e0af29f7be3577de841a2780808816de5f81d7.jpeg" title="outlook-mobile"><img alt="outlook-mobile" data-base62-sha1="87a7zl344fpt33YAe6H6cvnP2fR" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/38e0af29f7be3577de841a2780808816de5f81d7_2_10x10.png" height="375" src="assets/38e0af29f7be3577de841a2780808816de5f81d7_2_246x375.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/38e0af29f7be3577de841a2780808816de5f81d7_2_246x375.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/38e0af29f7be3577de841a2780808816de5f81d7_2_369x562.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/38e0af29f7be3577de841a2780808816de5f81d7_2_492x750.jpeg 2x" width="246"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">outlook-mobile</span><span class="informations">1136×1723 131 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

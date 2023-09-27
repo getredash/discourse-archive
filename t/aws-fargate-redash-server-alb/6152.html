@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>AWS Fargate上で構築したredash serverコンテナへのALBヘルスチェックが失敗してしまう</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/aws-fargate-redash-server-alb/6152">AWS Fargate上で構築したredash serverコンテナへのALBヘルスチェックが失敗してしまう</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/japanese/12.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Japanese</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="AWS Fargate上で構築したredash serverコンテナへのALBヘルスチェックが失敗してしまう" itemprop="headline"/>
+<meta content="Japanese" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/takenaga.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/takenaga_avatar.png" tabindex="-1" width="48"/><span itemprop="name">takenaga</span></a>
+</span>
+<link href="https://discuss.redash.io/t/aws-fargate-redash-server-alb/6152" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-04-30T14:01:41Z" itemprop="datePublished">
+                    April 30, 2020,  2:01pm
+                  </time>
+<meta content="2020-04-30T14:01:41Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>はじめまして。</p>
+<p>現在AWS Fargateを用いてredashをserver及びworkerコンテナに分け構築しています。(postgres=RDS、redis=ElastiCacheを使用しております。)<br/>
+CloudFormationにてデプロイ後、serverコンテナへのALBのヘルスチェックがタイムアウトで失敗してしまいます。</p>
+<p>awsサポートセンターにて同現象について問い合わせたところ、</p>
+<ul>
+<li>セキュリティーグループの見直し</li>
+<li>ヘルスチェック猶予時間を設ける</li>
+</ul>
+<p>以上についてご指摘を頂き、修正を行いましたが、依然としてヘルスチェックに失敗しております。<br/>
+そこで自身の、コンテナ定義及びECSサービス部分の記述に間違いがあり正常に稼働できてないのではないかと思い、こちらにて質問させていただいております。</p>
+<p>抽象的な質問になってしまい恐縮ですが、<br/>
+原因等ご存じの方がいらっしゃいましたら、ご指摘いただけますと幸いです。<br/>
+よろしくお願いいたします。</p>
+<p>以下server部分及びALBのテンプレートになります。</p>
+<p><strong>ALB</strong></p>
+<pre><code>ALBForRedash:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: redash-alb
+      Subnets:
+        - !ImportValue RedashVPCSubnet-PublicSubnet2A
+        - !ImportValue RedashVPCSubnet-PublicSubnet2C
+      SecurityGroups: 
+        - !ImportValue RedashSecurityGroupe
+      Tags:
+        - Key: Name
+          Value: ResdashECSALB
+      Scheme: internet-facing
+
+  ## RedashECSALBTargetGroup
+  ALBTargetGroupForRedash:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: redash-alb-targetgroup
+      VpcId: !ImportValue RedashVPCSubnet-VPC
+      HealthCheckPath: '/'
+      HealthCheckIntervalSeconds: 30
+      Matcher:
+        HttpCode: 200-302
+      Port: 5000
+      Protocol: HTTP
+      TargetType: ip
+
+  ## RedashECSALBListener
+  ALBListenerForRedash:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ALBForRedash
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ALBTargetGroupForRedash
+</code></pre>
+<p><strong>serverタスク定義</strong></p>
+<pre><code>ECSTaskDefinitionApplication:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      Family: redash-server
+      RequiresCompatibilities:
+        - 'FARGATE'
+      Cpu: 1024
+      Memory: 2048
+      NetworkMode: 'awsvpc'
+      ExecutionRoleArn: !GetAtt IAMRoleForRedashTaskExecution.Arn
+      ContainerDefinitions:
+        - Image: redash/redash:8.0.0.b32245
+          Name: 'redash-server'
+          Command:
+            - 'server'
+          Environment:
+            - Name: 'PYTHONUNBUFFERED'
+              Value: '0'
+            - Name: 'REDASH_LOG_LEVEL'
+              Value: 'INFO'
+            - Name: 'REDASH_REDIS_URL'
+              Value: !Sub redis://${ElasticacheClusterForRedash.RedisEndpoint.Address}:${ElasticacheClusterForRedash.RedisEndpoint.Port}/0
+            - Name: 'REDASH_DATABASE_URL'
+              Value: !Sub postgresql://test:{{resolve:secretsmanager:${RDSUserPasswordForRedash}::password}}@${RDSForRedash.Endpoint.Address}/redash
+            - Name: 'REDASH_HOST'
+              Value: ''
+            - Name: 'REDASH_ALLOW_SCRIPTS_IN_USER_INPUT'
+              Value: 'true'
+            - Name: 'REDASH_DATE_FORMAT'
+              Value: 'YY/MM/DD'
+          Cpu: 1024
+          Memory: 2048
+          PortMappings:
+            - ContainerPort: 5000
+              HostPort: 5000
+              Protocol: 'tcp'
+          LogConfiguration:
+            LogDriver: 'awslogs'
+            Options:
+              awslogs-group: !Ref LogGroupForRedashServer
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: 'server'
+</code></pre>
+<p><strong>ECSセキュリティーグループ</strong></p>
+<pre><code>EC2SecurityGroupECSRedash:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: redash-ecs-security-group
+      GroupDescription: 'ecs security group for redash'
+      VpcId: !ImportValue RedashVPCSubnet-VPC
+      SecurityGroupIngress:
+        - SourceSecurityGroupId: !ImportValue RedashSecurityGroupe
+          FromPort: 5000
+          ToPort: 5000
+          IpProtocol: 'tcp'
+</code></pre>
+<p><strong>ECSサービス</strong></p>
+<pre><code>ECSServiceRedash:
+
+    Type: 'AWS::ECS::Service'
+    DependsOn:
+      - IAMServiceLinkedRoleForECSRedashService
+      - RDSForRedash #RDSインスタンス
+      - ElasticacheClusterForRedash ＃redisインスタンス
+      - ALBListenerForRedash #リスナールール
+    Properties:
+      Cluster: !Ref ECSClusterForRedash
+      DesiredCount: 1
+      LaunchType: 'FARGATE'
+      LoadBalancers:
+        - ContainerName: 'redash-server'
+          ContainerPort: 5000
+          TargetGroupArn: !Ref ALBTargetGroupForRedash
+      HealthCheckGracePeriodSeconds: 600
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !Ref EC2SecurityGroupECSRedash
+          Subnets:
+            - !ImportValue RedashVPCSubnet-PublicSubnet2A
+            - !ImportValue RedashVPCSubnet-PublicSubnet2C
+      PlatformVersion: '1.4.0'
+      TaskDefinition: !Ref ECSTaskDefinitionApplication</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="https://discuss.redash.io/t/aws-fargate-redash-server-alb/6152" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-04-30T14:05:53Z" itemprop="datePublished">
+                    April 30, 2020,  2:05pm
+                  </time>
+<meta content="2020-04-30T14:05:53Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/takenaga">@takenaga</a> こんばんは。<br/>
+Timee さんの記事でヘルスチェックを通す際のワークアラウンドを紹介されておりましたが、こちらがご覧になられていますか？<br/>
+<a class="onebox" href="https://tech.timee.co.jp/entry/2020/04/20/175821" rel="nofollow noopener" target="_blank">https://tech.timee.co.jp/entry/2020/04/20/175821</a></p>
+<p>もし、解決したらぜひ教えて下さい！</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/takenaga.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/takenaga_avatar.png" tabindex="-1" width="48"/><span itemprop="name">takenaga</span></a>
+</span>
+<link href="https://discuss.redash.io/t/aws-fargate-redash-server-alb/6152" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-04-30T14:48:40Z" itemprop="datePublished">
+                    April 30, 2020,  2:48pm
+                  </time>
+<meta content="2020-04-30T14:48:40Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>早速のご返答ありがとうございます。<br/>
+記事の方ありがとうございました。<br/>
+記事を参考にヘルスチェックパスを <code> /login</code> に変更し、<br/>
+レートリミットを上げてみましたが、ヘルスチェックに失敗しております。。。</p>
+<p>原因について考えてみましたが、<br/>
+serverへのヘルスチェック失敗について、worker設定の不備が原因という可能性はあり得るのでしょうか？</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/takenaga.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/takenaga_avatar.png" tabindex="-1" width="48"/><span itemprop="name">takenaga</span></a>
+</span>
+<link href="https://discuss.redash.io/t/aws-fargate-redash-server-alb/6152" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-05T03:07:33Z" itemprop="datePublished">
+                    May 5, 2020,  3:07am
+                  </time>
+<meta content="2020-05-05T03:07:33Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>自己解決しました。</p>
+<p>◆原因<br/>
+create_dbコマンドが抜けており、必要なテーブルが作成されていない。<br/>
+◆解決方法<br/>
+create_dbを行う別タスクを定義<br/>
+※serverタスクでcreate_dbをしてしまうと失敗するため別タスクとして切り出し</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/MH4GF.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/MH4GF_avatar.png" tabindex="-1" width="48"/><span itemprop="name">MH4GF</span></a>
+</span>
+<link href="https://discuss.redash.io/t/aws-fargate-redash-server-alb/6152" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-08T13:08:23Z" itemprop="datePublished">
+                    May 8, 2020,  1:08pm
+                  </time>
+<meta content="2020-05-08T13:08:23Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>上記記事を書いた宮城です。<br/>
+補足で、記事のコメントで教えていただいたのですが、Redashには/login以外にも/pingが用意されていたので、レートリミットを上げる対応をせずともヘルスチェックができるかと思います！<br/>
+server立ち上げるまでに僕も結構手こずったので、なにかお力添えできることもあるかと思います！何かありましたらぜひ呼んでくださいー。</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Ubuntu docker install problems - [Errno 13] Permission denied</title>
+    <link>https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483</link>
+    <description>Hi, having problems installing redash docker on Ubuntu.
+
+I&#39;ve followed these instructions: https://redash.io/help/open-source/dev-guide/docker
+
+When I run 
+```
+docker-compose up -d
+```
+
+I get a long list of errors:
+
+&gt; svanton@computer:~/redash$ docker-compose up -d
+&gt; Traceback (most recent call last):
+&gt;   File &quot;urllib3/connectionpool.py&quot;, line 677, in urlopen
+&gt;   File &quot;urllib3/connectionpool.py&quot;, line 392, in _make_request
+&gt;   File &quot;http/client.py&quot;, line 1252, in request
+&gt;   File &quot;http/client.py&quot;, line 1298, in _send_request
+&gt;   File &quot;http/client.py&quot;, line 1247, in endheaders
+&gt;   File &quot;http/client.py&quot;, line 1026, in _send_output
+&gt;   File &quot;http/client.py&quot;, line 966, in send
+&gt;   File &quot;docker/transport/unixconn.py&quot;, line 43, in connect
+&gt; PermissionError: [Errno 13] Permission denied
+&gt; 
+&gt; During handling of the above exception, another exception occurred:
+&gt; 
+&gt; Traceback (most recent call last):
+&gt;   File &quot;requests/adapters.py&quot;, line 449, in send
+&gt;   File &quot;urllib3/connectionpool.py&quot;, line 727, in urlopen
+&gt;   File &quot;urllib3/util/retry.py&quot;, line 403, in increment
+&gt;   File &quot;urllib3/packages/six.py&quot;, line 734, in reraise
+&gt;   File &quot;urllib3/connectionpool.py&quot;, line 677, in urlopen
+&gt;   File &quot;urllib3/connectionpool.py&quot;, line 392, in _make_request
+&gt;   File &quot;http/client.py&quot;, line 1252, in request
+&gt;   File &quot;http/client.py&quot;, line 1298, in _send_request
+&gt;   File &quot;http/client.py&quot;, line 1247, in endheaders
+&gt;   File &quot;http/client.py&quot;, line 1026, in _send_output
+&gt;   File &quot;http/client.py&quot;, line 966, in send
+&gt;   File &quot;docker/transport/unixconn.py&quot;, line 43, in connect
+&gt; urllib3.exceptions.ProtocolError: (&#39;Connection aborted.&#39;, PermissionError(13, &#39;Permission denied&#39;))
+&gt; 
+&gt; During handling of the above exception, another exception occurred:
+&gt; 
+&gt; Traceback (most recent call last):
+&gt;   File &quot;docker/api/client.py&quot;, line 205, in _retrieve_server_version
+&gt;   File &quot;docker/api/daemon.py&quot;, line 181, in version
+&gt;   File &quot;docker/utils/decorators.py&quot;, line 46, in inner
+&gt;   File &quot;docker/api/client.py&quot;, line 228, in _get
+&gt;   File &quot;requests/sessions.py&quot;, line 543, in get
+&gt;   File &quot;requests/sessions.py&quot;, line 530, in request
+&gt;   File &quot;requests/sessions.py&quot;, line 643, in send
+&gt;   File &quot;requests/adapters.py&quot;, line 498, in send
+&gt; requests.exceptions.ConnectionError: (&#39;Connection aborted.&#39;, PermissionError(13, &#39;Permission denied&#39;))
+&gt; 
+&gt; During handling of the above exception, another exception occurred:
+&gt; 
+&gt; Traceback (most recent call last):
+&gt;   File &quot;bin/docker-compose&quot;, line 3, in &lt;module&gt;
+&gt;   File &quot;compose/cli/main.py&quot;, line 67, in main
+&gt;   File &quot;compose/cli/main.py&quot;, line 123, in perform_command
+&gt;   File &quot;compose/cli/command.py&quot;, line 69, in project_from_options
+&gt;   File &quot;compose/cli/command.py&quot;, line 132, in get_project
+&gt;   File &quot;compose/cli/docker_client.py&quot;, line 43, in get_client
+&gt;   File &quot;compose/cli/docker_client.py&quot;, line 170, in docker_client
+&gt;   File &quot;docker/api/client.py&quot;, line 188, in __init__
+&gt;   File &quot;docker/api/client.py&quot;, line 213, in _retrieve_server_version
+&gt; docker.errors.DockerException: Error while fetching server API version: (&#39;Connection aborted.&#39;, PermissionError(13, &#39;Permission denied&#39;))
+&gt; [13562] Failed to execute script docker-compose
+
+Any suggestions how to fix this would be much appreciated!
+
+I&#39;m running Ubuntu 20.04.1 LTS</description>
+    
+    <lastBuildDate>Tue, 21 Sep 2021 10:43:23 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Ubuntu docker install problems - [Errno 13] Permission denied</title>
+        <dc:creator><![CDATA[blixhavn]]></dc:creator>
+        <description><![CDATA[
+            <p>This is probably because your user is not in the <code>docker</code> group. Add it by running the following:</p>
+<pre><code class="lang-auto">sudo usermod -aG docker $USER
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483/3</link>
+        <pubDate>Tue, 21 Sep 2021 10:43:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7483-3</guid>
+        <source url="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483.rss">Ubuntu docker install problems - [Errno 13] Permission denied</source>
+      </item>
+      <item>
+        <title>Ubuntu docker install problems - [Errno 13] Permission denied</title>
+        <dc:creator><![CDATA[svanton]]></dc:creator>
+        <description><![CDATA[
+            <p>I ran the same command, except with “sudo” and it works. Although getting a different type of error now <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=9" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<blockquote>
+<p>sudo docker-compose up -d</p>
+</blockquote>
+<p>Edit.</p>
+          <p><a href="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483/2</link>
+        <pubDate>Sun, 01 Nov 2020 08:30:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7483-2</guid>
+        <source url="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483.rss">Ubuntu docker install problems - [Errno 13] Permission denied</source>
+      </item>
+      <item>
+        <title>Ubuntu docker install problems - [Errno 13] Permission denied</title>
+        <dc:creator><![CDATA[svanton]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, having problems installing redash docker on Ubuntu.</p>
+<p>I’ve followed these instructions: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>When I run</p>
+<pre><code class="lang-auto">docker-compose up -d
+</code></pre>
+<p>I get a long list of errors:</p>
+<blockquote>
+<p>svanton@computer:~/redash$ docker-compose up -d<br>
+Traceback (most recent call last):<br>
+File “urllib3/connectionpool.py”, line 677, in urlopen<br>
+File “urllib3/connectionpool.py”, line 392, in _make_request<br>
+File “http/client.py”, line 1252, in request<br>
+File “http/client.py”, line 1298, in _send_request<br>
+File “http/client.py”, line 1247, in endheaders<br>
+File “http/client.py”, line 1026, in _send_output<br>
+File “http/client.py”, line 966, in send<br>
+File “docker/transport/unixconn.py”, line 43, in connect<br>
+PermissionError: [Errno 13] Permission denied</p>
+<p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):<br>
+File “requests/adapters.py”, line 449, in send<br>
+File “urllib3/connectionpool.py”, line 727, in urlopen<br>
+File “urllib3/util/retry.py”, line 403, in increment<br>
+File “urllib3/packages/six.py”, line 734, in reraise<br>
+File “urllib3/connectionpool.py”, line 677, in urlopen<br>
+File “urllib3/connectionpool.py”, line 392, in _make_request<br>
+File “http/client.py”, line 1252, in request<br>
+File “http/client.py”, line 1298, in _send_request<br>
+File “http/client.py”, line 1247, in endheaders<br>
+File “http/client.py”, line 1026, in _send_output<br>
+File “http/client.py”, line 966, in send<br>
+File “docker/transport/unixconn.py”, line 43, in connect<br>
+urllib3.exceptions.ProtocolError: (‘Connection aborted.’, PermissionError(13, ‘Permission denied’))</p>
+<p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):<br>
+File “docker/api/client.py”, line 205, in _retrieve_server_version<br>
+File “docker/api/daemon.py”, line 181, in version<br>
+File “docker/utils/decorators.py”, line 46, in inner<br>
+File “docker/api/client.py”, line 228, in _get<br>
+File “requests/sessions.py”, line 543, in get<br>
+File “requests/sessions.py”, line 530, in request<br>
+File “requests/sessions.py”, line 643, in send<br>
+File “requests/adapters.py”, line 498, in send<br>
+requests.exceptions.ConnectionError: (‘Connection aborted.’, PermissionError(13, ‘Permission denied’))</p>
+<p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):<br>
+File “bin/docker-compose”, line 3, in <br>
+File “compose/cli/main.py”, line 67, in main<br>
+File “compose/cli/main.py”, line 123, in perform_command<br>
+File “compose/cli/command.py”, line 69, in project_from_options<br>
+File “compose/cli/command.py”, line 132, in get_project<br>
+File “compose/cli/docker_client.py”, line 43, in get_client<br>
+File “compose/cli/docker_client.py”, line 170, in docker_client<br>
+File “docker/api/client.py”, line 188, in <strong>init</strong><br>
+File “docker/api/client.py”, line 213, in _retrieve_server_version<br>
+docker.errors.DockerException: Error while fetching server API version: (‘Connection aborted.’, PermissionError(13, ‘Permission denied’))<br>
+[13562] Failed to execute script docker-compose</p>
+</blockquote>
+<p>Any suggestions how to fix this would be much appreciated!</p>
+<p>I’m running Ubuntu 20.04.1 LTS</p>
+          <p><a href="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483/1</link>
+        <pubDate>Fri, 30 Oct 2020 16:47:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7483-1</guid>
+        <source url="https://discuss.redash.io/t/ubuntu-docker-install-problems-errno-13-permission-denied/7483.rss">Ubuntu docker install problems - [Errno 13] Permission denied</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+    <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726</link>
+    <description>We are increasing our usage of Redash and quickly encountering availability concerns.  I&#39;m seeking **official** confirmation from @arikfr / @jesse / et al. on this topic:  is it **safe** to run multiple instances of the Redash webapp concurrently, in order to achieve high availability?
+
+This question has been asked several times, over several years, but with no official response.
+
+http://discuss.redash.io/t/high-availability/1909
+http://discuss.redash.io/t/multiple-instance-of-redash-in-ha/5467
+(note that as a new user, I&#39;m prohibited from posting more than 2 links - there are others)
+
+I&#39;ll elaborate on our configuration.
+
+We run Redash as a collection of ECS Services in AWS with an RDS database backend.  
+The ECS Services are all *mono-services* i.e. we run exactly 1 instance of each:
+
+* redash scheduler
+* redash adhoc worker
+* redash scheduled worker
+
+We don&#39;t have any concerns or issues with the scheduler or worker services.  They are available enough for our needs, and not user-facing.
+
+Our concern is with the ECS (mono-) Service which runs both the **redash** and **nginx** Containers for us.  We want to understand whether we can safely run multiple instances of these Containers (either separately or together) in order to achieve high availability.  Our concern is that, if Redash is not designed to handle concurrent write activity, we will have data corruption.  Thus we&#39;re seeking official confirmation that Redash is designed to run **safely** in such a multi-instance mode.  
+
+As an AWS-managed service, the database is already highly available.  We&#39;re seeking to make Redash itself also highly available as our usage increases.  Any confirmation and guidance you can offer will be greatly appreciated.</description>
+    
+    <lastBuildDate>Wed, 02 Feb 2022 18:13:07 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Work on this document has not been started.</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/11</link>
+        <pubDate>Wed, 02 Feb 2022 18:13:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-11</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[deepakdas12]]></dc:creator>
+        <description><![CDATA[
+            <p>Whether the redash scalability doc is published.<br>
+It would be great if you can share the link where we can find that doc.</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/10</link>
+        <pubDate>Wed, 02 Feb 2022 05:34:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-10</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I already cleared it through</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/9</link>
+        <pubDate>Tue, 21 Dec 2021 19:44:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-9</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[wetorres-HERE]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a>  - I’ve filed a ticket, but it looks like your spam filter doesn’t like it…</p>
+<aside class="quote quote-modified" data-post="1" data-topic="9752">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/w/a8b319/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/redash-crashes-if-a-user-opens-10-15-query-tabs/9752">Redash can't sustain 10-15 simultaneous Query requests</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    This question spawned from a question with <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> 
+<a href="http://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/7" class="onebox" target="_blank" rel="noopener">http://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/7</a> 
+
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary
+I am easily able to “crash” Redash by opening 10-15 Query tabs in a single browser.  I can reproduce with 100% consistency. 
+
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:
+
+Redash Version:  8.0.2+b37747 (a9d7ca43)
+Browser/OS: firefox 95
+How did you install Redash:
+
+We run Redash as a collection of contiainers, running as ECS Services in Amazon. 
+
+schedu…
+  </blockquote>
+</aside>
+
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/771f89e5a00cd2c6c48cd97a908fda4d22004902.png" alt="Screen Shot 2021-12-21 at 1.44.06 PM" data-base62-sha1="gZOoc7Jn5hGMfBNo98ok4wUmgkq" width="553" height="132"></p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/8</link>
+        <pubDate>Tue, 21 Dec 2021 19:44:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-8</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="wetorres-HERE" data-post="4" data-topic="9726">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/w/a8b319/40.png" class="avatar"> wetorres-HERE:</div>
+<blockquote>
+<p>can <em>easily</em> crash Redash</p>
+</blockquote>
+</aside>
+<p>That’s not normal. Please open a separate thread so we can debug it. We’ll need to know exactly what you mean by crashing, and what your docker logs show.</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/7</link>
+        <pubDate>Tue, 21 Dec 2021 15:30:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-7</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="wetorres-HERE" data-post="5" data-topic="9726">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/w/a8b319/40.png" class="avatar"> wetorres-HERE:</div>
+<blockquote>
+<p>User A pulls up a certain Query in Redash. A few seconds later User B pulls up the same query. Each user makes independent, non-conflicting changes. User A saves changes, then a few seconds later User B saves.</p>
+</blockquote>
+</aside>
+<p>This would not be possible because only the query owner can edit the query. If experimental multi-owner support is enabled and both users own the query then User A’s change would be lost. This is really a front-end concern though. It makes sense to add a check which checks that the query hash from the API has not changed since the page was loaded.</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/6</link>
+        <pubDate>Tue, 21 Dec 2021 15:28:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-6</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[wetorres-HERE]]></dc:creator>
+        <description><![CDATA[
+            <p>quick side thought on concurrent writes…locking DB tables is one thing, but consider this scenario…</p>
+<p>User A pulls up a certain Query in Redash.  A few seconds later User B pulls up the same query.  Each user makes independent, non-conflicting changes.  User A saves changes, then a few seconds later User B saves.</p>
+<p>Will the resultant Query contain User A’s changes?  It sounds like they will be overwritten.  DB table locks don’t help here and this situation would result in end-user data loss. i.e. User A’s work has been lost.</p>
+<p>-w</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/5</link>
+        <pubDate>Tue, 21 Dec 2021 15:20:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-5</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[wetorres-HERE]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you, <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> !  If you happen to remember, please post that doc here once it’s available.  Our group will review for sure. <img src="https://emoji.discourse-cdn.com/twitter/fist/3.png?v=10" title=":fist:t3:" class="emoji" alt=":fist:t3:"></p>
+<p>This is great news to have this confirmation.  Currently we’re having issues where a single user can <em>easily</em> crash Redash (just by opening 10-15 queries in different tabs of the browser).  We need to fix that issue first because our Redash just isn’t stable at the moment.  But knowing we can run multiples concurrently could help to reduce some of the user-facing errors that result from an instance being taken offline for any reason.</p>
+<p>Thanks again.<br>
+-w</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/4</link>
+        <pubDate>Tue, 21 Dec 2021 15:17:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-4</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p><strong>Yes</strong>. It is safe to run multiple webservers and nginx instances. Redash is designed such that this is safe for concurrent write activity as it uses locks on the database tables. Prior to its EOL, hosted Redash had (I think) three webservers and three nginx instances without issue.</p>
+<p>Looking forward: we will prepare and release a full document about high-availability Redash including a tutorial for deploying in Kubernetes.</p>
+<p>Thanks for making another post about this. If you run into issues with HA deployment please post and discuss about them here. It will help us in forming the official document on the subject.</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/2</link>
+        <pubDate>Wed, 15 Dec 2021 19:24:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-2</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+      <item>
+        <title>Is it safe to run multiple instances of the redash webapp concurrently?</title>
+        <dc:creator><![CDATA[wetorres-HERE]]></dc:creator>
+        <description><![CDATA[
+            <p>We are increasing our usage of Redash and quickly encountering availability concerns.  I’m seeking <strong>official</strong> confirmation from <a class="mention" href="https://discuss.redash.io/u/arikfr">@arikfr</a> / <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> / et al. on this topic:  is it <strong>safe</strong> to run multiple instances of the Redash webapp concurrently, in order to achieve high availability?</p>
+<p>This question has been asked several times, over several years, but with no official response.</p>
+<aside class="quote" data-post="1" data-topic="1909">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/v/22d042/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/high-availability/1909">High Availability</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    I am going through the redash docs , nowhere i can see any instruction for setting up redash with High availabilty? Does any one have idea on how to setup same. 
+I am planning 2 redash instances running on two different machines pointing to different postgres and redis instances which are configured for master-master replication. Does it work? Or can someone suggest a better approch ?
+  </blockquote>
+</aside>
+<aside class="quote" data-post="1" data-topic="5467">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/drumbsd/40/2398_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/multiple-instance-of-redash-in-ha/5467">Multiple instance of redash in HA</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Hi guys, I’d like to know if there’s some tips&amp;tricks to have multiple redash instance balanced by nginx in active/passive mode using a centralized postgresql. I mean: Having multiple redash instance running on several servers that using the same postgresql, could be cause some problems? Or a single redash instance don’t do anything on DB unless someone connect directly on it? 
+Thansk in advance.
+  </blockquote>
+</aside>
+<p>
+(note that as a new user, I’m prohibited from posting more than 2 links - there are others)</p>
+<p>I’ll elaborate on our configuration.</p>
+<p>We run Redash as a collection of ECS Services in AWS with an RDS database backend.<br>
+The ECS Services are all <em>mono-services</em> i.e. we run exactly 1 instance of each:</p>
+<ul>
+<li>redash scheduler</li>
+<li>redash adhoc worker</li>
+<li>redash scheduled worker</li>
+</ul>
+<p>We don’t have any concerns or issues with the scheduler or worker services.  They are available enough for our needs, and not user-facing.</p>
+<p>Our concern is with the ECS (mono-) Service which runs both the <strong>redash</strong> and <strong>nginx</strong> Containers for us.  We want to understand whether we can safely run multiple instances of these Containers (either separately or together) in order to achieve high availability.  Our concern is that, if Redash is not designed to handle concurrent write activity, we will have data corruption.  Thus we’re seeking official confirmation that Redash is designed to run <strong>safely</strong> in such a multi-instance mode.</p>
+<p>As an AWS-managed service, the database is already highly available.  We’re seeking to make Redash itself also highly available as our usage increases.  Any confirmation and guidance you can offer will be greatly appreciated.</p>
+          <p><a href="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/1</link>
+        <pubDate>Wed, 15 Dec 2021 18:26:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9726-1</guid>
+        <source url="https://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726.rss">Is it safe to run multiple instances of the redash webapp concurrently?</source>
+      </item>
+  </channel>
+</rss>

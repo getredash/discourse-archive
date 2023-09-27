@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Celery worker stuck with 100% CPU</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/celery-worker-stuck-with-100-cpu/3260">Celery worker stuck with 100% CPU</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Celery worker stuck with 100% CPU" itemprop="headline"/>
+<meta content="Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rohit-conn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rohit-conn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rohit-conn</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-02-21T15:49:35Z" itemprop="datePublished">
+                    February 21, 2019,  3:49pm
+                  </time>
+<meta content="2019-02-21T15:49:35Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>In our redash setup we have a problem that our celery worker gets stuck at 100% CPU and then fully occupies a core.<br/>
+This goes on until all our cores are used up and redash crashes.</p>
+<p>Initially we though it was related to the celery bug <a href="https://github.com/celery/celery/issues/1845" rel="nofollow noopener">https://github.com/celery/celery/issues/1845</a> however we are facing it in the latest redash version with a higher celery version.<br/>
+One point to note is that strace gets stuck when we run it on the process and shows no output.</p>
+<p>Please let us know how we can get the reason for this behavior.<br/>
+Thanks for your help</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-02-25T17:11:20Z" itemprop="datePublished">
+                    February 25, 2019,  5:11pm
+                  </time>
+<meta content="2019-02-25T17:11:20Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Maybe it’s related to <a href="https://github.com/getredash/redash/pull/3465" rel="nofollow noopener">this</a>?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-02-25T17:11:33Z" itemprop="datePublished">
+                    February 25, 2019,  5:11pm
+                  </time>
+<meta content="2019-02-25T17:11:33Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Oh, wait. Did it start before v6?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rohit-conn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rohit-conn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rohit-conn</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-02-25T17:25:58Z" itemprop="datePublished">
+                    February 25, 2019,  5:25pm
+                  </time>
+<meta content="2019-02-25T17:25:58Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Yes<br/>
+It started before V6 and still is there<br/>
+Initially we thought it was celery issue but even after upgrade its still the same.</p>
+<p>Any pointers would be appreciated.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rohit-conn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rohit-conn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rohit-conn</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-15T11:51:58Z" itemprop="datePublished">
+                    March 15, 2019, 11:51am
+                  </time>
+<meta content="2019-03-15T11:51:58Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hey can you please suggest anything regarding this.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-28T07:38:33Z" itemprop="datePublished">
+                    March 28, 2019,  7:38am
+                  </time>
+<meta content="2019-03-28T07:38:33Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>What types of data sources are you using?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rohit-conn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rohit-conn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rohit-conn</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-28T10:27:02Z" itemprop="datePublished">
+                    March 28, 2019, 10:27am
+                  </time>
+<meta content="2019-03-28T10:27:02Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I seemed to have found the problem.<br/>
+The problem was how celery handled the SIGINT on cancellation of the query.<br/>
+<aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/getredash/redash/blob/master/redash/tasks/queries.py#L94" rel="nofollow noopener" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/getredash/redash/blob/master/redash/tasks/queries.py#L94" rel="nofollow noopener" target="_blank">getredash/redash/blob/master/redash/tasks/queries.py#L94</a></h4>
+<pre class="onebox"><code class="lang-py"><ol class="start lines" start="84" style="counter-reset: li-counter 83 ;">
+<li>        return self._async_result.status == 'REVOKED'</li>
+<li>
+</li>
+<li>    @property</li>
+<li>    def celery_status(self):</li>
+<li>        return self._async_result.status</li>
+<li>
+</li>
+<li>    def ready(self):</li>
+<li>        return self._async_result.ready()</li>
+<li>
+</li>
+<li>    def cancel(self):</li>
+<li class="selected">        return self._async_result.revoke(terminate=True, signal='SIGINT')</li>
+<li>
+</li>
+<li>
+</li>
+<li>def enqueue_query(query, data_source, user_id, scheduled_query=None, metadata={}):</li>
+<li>    query_hash = gen_query_hash(query)</li>
+<li>    logging.info("Inserting job for %s with metadata=%s", query_hash, metadata)</li>
+<li>    try_count = 0</li>
+<li>    job = None</li>
+<li>
+</li>
+<li>    while try_count &lt; 5:</li>
+<li>        try_count += 1</li>
+</ol></code></pre>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</p>
+<p>So when a query was cancelled it took up 100% cpu and the core was unusable after that. I modified the signal to SIGKILL and it just removes the process on cancellation.</p>
+<p>But if that makes sense to do a SIGKILL (It does according to me since the query is cancelled) I can make a PR for this.<br/>
+Please let me know your thoughts and I’ll do accordingly.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-30T04:37:31Z" itemprop="datePublished">
+                    March 30, 2019,  4:37am
+                  </time>
+<meta content="2019-03-30T04:37:31Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hmmm, wonder if this the cause behind this problem report:</p>
+<aside class="quote" data-post="1" data-topic="3508">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="https://avatars.discourse-cdn.com/v4/letter/b/46a35a/40.png" width="20"/>
+<a href="http://discuss.redash.io/t/redash-get-hang-after-killing-a-mysql-process/3508">Redash get hang after killing a mysql process</a> <a class="badge-wrapper bullet" href="/c/support/support-usage/10"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span class="badge-category clear-badge" data-drop-close="true" style="" title="Need help with using Redash? Not sure if something is possible or how to do it right? Here’s the place to ask.">Usage Support</span></a>
+</div>
+<blockquote>
+    Datasource: Mysql 
+I created a query but it runs in a long time. I clicked cancel, but no response. So, I try to kill the process in mysql. After refresh that query page, it’ stay on 「Loading result… 00:00:01」, and turns to blank page after few seconds. Other queries work well. 
+I guess something locked in redash as it’s not stop execution properly. How can I fix this?
+  </blockquote>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/nsmith.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/nsmith_avatar.png" tabindex="-1" width="48"/><span itemprop="name">nsmith</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-04T14:49:33Z" itemprop="datePublished">
+                    April 4, 2019,  2:49pm
+                  </time>
+<meta content="2019-04-04T19:14:56Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>We’ve been having the 100% CPU celery issue for months (still running v4) but we couldn’t figure out what was causing it.</p>
+<p>I just ran a query and cancelled it, and immediately started seeing another celery process stuck at 100%. (Used the MySQL data source in this case). The celery process is stuck until we restart redash. Sometimes we even have had to flush redis to clear out waiting queries. We’re using a dockerized version of redash FWIW.</p>
+<p>I’m going to try the SIGKILL fix mentioned above. A PR for this seems like it would make sense. Thanks for figuring this our Rohit!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/satyadeepk.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/satyadeepk_avatar.png" tabindex="-1" width="48"/><span itemprop="name">satyadeepk</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-25T07:14:46Z" itemprop="datePublished">
+                    April 25, 2019,  7:14am
+                  </time>
+<meta content="2019-04-25T07:14:46Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I actually found an old commit from 2013 which actually replaced SIGINT with SIGKILL.<br/>
+<aside class="onebox githubcommit">
+<header class="source">
+<a href="https://github.com/getredash/redash/commit/88a7ff62af8323bfca13008e971b525e7a7751f3" rel="nofollow noopener" target="_blank">github.com/getredash/redash</a>
+</header>
+<article class="onebox-body">
+<a href="https://github.com/arikfr" rel="nofollow noopener" target="_blank">
+<img alt="arikfr" class="thumbnail onebox-avatar" height="90" src="assets/71468" width="90"/>
+</a>
+<h4>
+<a href="https://github.com/getredash/redash/commit/88a7ff62af8323bfca13008e971b525e7a7751f3" rel="nofollow noopener" target="_blank">Job: when cancelling send SIGKILL instead of SIGINT.</a>
+</h4>
+<div class="date">
+  by <a href="https://github.com/arikfr" rel="nofollow noopener" target="_blank">arikfr</a>
+  on <a href="https://github.com/getredash/redash/commit/88a7ff62af8323bfca13008e971b525e7a7751f3" rel="nofollow noopener" target="_blank">07:28PM - 29 Nov 13 UTC</a>
+</div>
+<div class="github-commit-stats">
+  changed <strong>1 files</strong>
+  with <strong>1 additions</strong>
+  and <strong>1 deletions</strong>.
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</p>
+<p>Not sure how SIGINT cropped up again for cancellation.<br/>
+<a class="mention" href="/u/arikfr">@arikfr</a> what do you think?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-06-16T16:47:44Z" itemprop="datePublished">
+                    June 16, 2019,  4:47pm
+                  </time>
+<meta content="2019-06-16T16:47:44Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="10" data-topic="3260">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/21_2.png" width="20"/> satyadeepk:</div>
+<blockquote>
+<p>Not sure how SIGINT cropped up again for cancellation.</p>
+</blockquote>
+</aside>
+<p>SIGINT has the benefit that it allows our process to do cleanup or proper cancelling like in the case of MySQL following a recent change.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/raj.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/raj_avatar.png" tabindex="-1" width="48"/><span itemprop="name">raj</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-08-01T01:09:32Z" itemprop="datePublished">
+                    August 1, 2019,  1:09am
+                  </time>
+<meta content="2019-08-01T01:09:32Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Did anyone get over this issue by any chance?</p>
+<p>I am using the Redash v7 and a dockerized env on AWS EC2 Ubuntu 18.04 it has 4 cpu cores and 8GiB mem and still have this issue.</p>
+<p>My celery worker stuck at 100% CPU unless I restart the server.</p>
+<p>One thing I wanted to try out is to increase workers but let me know if anyone has any pointers on this issue.</p>
+<p>This is how my docker compose file look like:<br/>
+version: ‘2’<br/>
+x-redash-service: &amp;redash-service<br/>
+image: redash/redash:7.0.0.b18042<br/>
+depends_on:<br/>
+- postgres<br/>
+- redis<br/>
+env_file: /redash/env<br/>
+restart: always<br/>
+services:<br/>
+server:<br/>
+&lt;&lt;: *redash-service<br/>
+command: server<br/>
+ports:<br/>
+- “5000:5000”<br/>
+environment:<br/>
+REDASH_WEB_WORKERS: 4<br/>
+scheduler:<br/>
+&lt;&lt;: *redash-service<br/>
+command: scheduler<br/>
+environment:<br/>
+QUEUES: “celery”<br/>
+WORKERS_COUNT: 1<br/>
+scheduled_worker:<br/>
+&lt;&lt;: *redash-service<br/>
+command: worker<br/>
+environment:<br/>
+QUEUES: “scheduled_queries,schemas”<br/>
+WORKERS_COUNT: 1<br/>
+adhoc_worker:<br/>
+&lt;&lt;: *redash-service<br/>
+command: worker<br/>
+environment:<br/>
+QUEUES: “queries”<br/>
+WORKERS_COUNT: 2<br/>
+redis:<br/>
+image: redis:3.0-alpine<br/>
+restart: always<br/>
+postgres:<br/>
+image: postgres:9.5.6-alpine<br/>
+env_file: /redash/env<br/>
+volumes:<br/>
+- /redash/postgres-data:/var/lib/postgresql/data<br/>
+restart: always<br/>
+nginx:<br/>
+image: redash/nginx:latest<br/>
+ports:<br/>
+- “80:80”<br/>
+depends_on:<br/>
+- server<br/>
+links:<br/>
+- server:redash<br/>
+restart: always</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rohit-conn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rohit-conn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rohit-conn</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-08-01T09:01:56Z" itemprop="datePublished">
+                    August 1, 2019,  9:01am
+                  </time>
+<meta content="2019-08-01T09:01:56Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>You can modify the code and use it.<br/>
+That’s how we are using it.<br/>
+You can use the base docker image as is and add the file with the fix.</p>
+<p>Increasing the workers would help however it will just delay the load problem.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/raj.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/raj_avatar.png" tabindex="-1" width="48"/><span itemprop="name">raj</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-08-06T02:11:08Z" itemprop="datePublished">
+                    August 6, 2019,  2:11am
+                  </time>
+<meta content="2019-08-06T02:11:08Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/rohit-conn">@rohit-conn</a> Thanks for response.<br/>
+Can you please elaborate what you mean by changing the code. It would be great if you can give me list of steps to perform instead as mine was production setup would like to be little cautious on troubleshooting.</p>
+<p>Thanks for response.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rohit-conn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rohit-conn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rohit-conn</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-08-06T05:15:48Z" itemprop="datePublished">
+                    August 6, 2019,  5:15am
+                  </time>
+<meta content="2019-08-06T05:15:48Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>So as mentioned above the main issue here is how celery handles sigint.<br/>
+I’ve modified that to sigkill in the queries file.<br/>
+After that we have built a custom docker on top of the original redash docker image.<br/>
+FROM redash/redash:6.0.0.b8537<br/>
+USER root<br/>
+COPY<br/>
+/queries.py /app/redash/tasks/queries.py<br/>
+USER redash<br/>
+This should add the queries.py with the sigint enabled on it.</p>
+<p>The downside here is you have to check before upgrade if there has been any change on the code base.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/raj.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/raj_avatar.png" tabindex="-1" width="48"/><span itemprop="name">raj</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-08-06T17:55:07Z" itemprop="datePublished">
+                    August 6, 2019,  5:55pm
+                  </time>
+<meta content="2019-08-06T17:55:07Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>aah, I get it,<br/>
+this is pain, we should manage this every time there is upgrade to a newer version of codebase.</p>
+<p>Thanks for the pointers.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/debugging-high-load-celery-worker/6178" itemprop="url">Debugging high load celery worker</a>
+<meta content="1" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/raj.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/raj_avatar.png" tabindex="-1" width="48"/><span itemprop="name">raj</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-08-20T18:18:52Z" itemprop="datePublished">
+                    August 20, 2019,  6:18pm
+                  </time>
+<meta content="2019-08-20T18:34:43Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/arikfr">@arikfr</a> Is there a way to incorporate this SIGKILL change in current Redash image or deploy a patch image?</p>
+<p>Suggest alternative if nothing above works, just don’t want to make a custom image as we might fall back on updating it later from Redash latest  if we do that.</p>
+<p>Thanks</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/davebwag.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/davebwag_avatar.png" tabindex="-1" width="48"/><span itemprop="name">davebwag</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-11-11T19:27:36Z" itemprop="datePublished">
+                    November 11, 2019,  7:27pm
+                  </time>
+<meta content="2019-11-11T19:27:36Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>We are still seeing this issue… any ideas on how to fix it?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="https://discuss.redash.io/t/debugging-high-load-celery-worker/6178/3" itemprop="url">Debugging high load celery worker</a>
+<meta content="1" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_19" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/alexvdan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/alexvdan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">alexvdan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-01-17T16:32:07Z" itemprop="datePublished">
+                    January 17, 2020,  4:32pm
+                  </time>
+<meta content="2020-01-17T16:32:07Z" itemprop="dateModified"/>
+<span itemprop="position">19</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>anyone got over this issue? still seeing it</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_20" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-stuck-with-100-cpu/3260" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-01-23T11:26:50Z" itemprop="datePublished">
+                    January 23, 2020, 11:26am
+                  </time>
+<meta content="2020-01-23T11:26:50Z" itemprop="dateModified"/>
+<span itemprop="position">20</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="17" data-topic="3260" data-username="raj">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/r/c0e974/40.png" width="20"/> raj:</div>
+<blockquote>
+<p>Is there a way to incorporate this SIGKILL change in current Redash image or deploy a patch image?</p>
+</blockquote>
+</aside>
+<p>Probably not. In the next release (V9) we drop Celery completely in favor of RQ. We’re already running this way internally. If you’re running Redash V8 or older you can use the patch described above. After V9 releases this won’t be an issue for anyone who upgrades regularly.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

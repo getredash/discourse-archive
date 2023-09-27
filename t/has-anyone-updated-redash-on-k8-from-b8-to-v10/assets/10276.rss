@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Has anyone updated redash on k8 from b8 to v10?</title>
+    <link>https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276</link>
+    <description>### Issue Summary
+
+I am trying to upgrade my redash setup on k8 from v8 to v10. I am using external redis and postgre. After the upgrade, two pods give me an error which is stated below. Would appreciate any help that I can get.
+
+We are using k8 based deployments on this repo - https://github.com/getredash/contrib-helm-chart
+
+Some extra details: In the VM based docker composer, I have run the below command to upgrade db&#39;s. Is this issue happening due to that? What is the equivalent command to run in k8 setup to upgrade it?
+
+```
+docker-compose run --rm server manage db upgrade
+```
+
+redash-bigquery-tools-scheduledworker - Crashes
+
+logs - Starting RQ scheduler...
+[2022-04-08 05:39:55,024][PID:7][INFO][rq_scheduler.scheduler] Registering birth
+Traceback (most recent call last):
+  File &quot;/app/manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 722, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 697, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;,
+
+redash-bigquery-tools-upgrade-c29mj    - Gets stuck in error state.
+
+Logs - 
+
+Status: Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1249, in _execute_context
+    cursor, statement, parameters, context
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py&quot;, line 580, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedColumn: column dashboards.options does not exist
+LINE 2: ...rds_is_draft, dashboards.tags AS dashboards_tags, dashboards...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File &quot;/app/manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 722, in __call__
+    return self.main(*args, **kwargs)
+
+### Technical details:
+
+* Redash Version: v8 - v10
+* Browser/OS:
+* How did you install Redash: Through helm</description>
+    
+    <lastBuildDate>Mon, 16 May 2022 09:03:57 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Has anyone updated redash on k8 from b8 to v10?</title>
+        <dc:creator><![CDATA[xavier-d]]></dc:creator>
+        <description><![CDATA[
+            <p>I’ve done this migration on K8S few months ago<br>
+At that time, I had to cherry pick this commit: <a href="https://github.com/getredash/contrib-helm-chart/pull/36" class="inline-onebox" rel="noopener nofollow ugc">WIP: Changes required for redash v9 by jimsparkman · Pull Request #36 · getredash/contrib-helm-chart · GitHub</a></p>
+<p>It has been merged on a fork.</p>
+          <p><a href="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/4</link>
+        <pubDate>Mon, 16 May 2022 09:03:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10276-4</guid>
+        <source url="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276.rss">Has anyone updated redash on k8 from b8 to v10?</source>
+      </item>
+      <item>
+        <title>Has anyone updated redash on k8 from b8 to v10?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey there, the k8s helm distribution is not maintained by the core team. We hope to have better documentation around this at some point but at present none of us have worked with Redash on k8s <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=12" title=":frowning:" class="emoji" alt=":frowning:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/3</link>
+        <pubDate>Thu, 12 May 2022 15:48:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10276-3</guid>
+        <source url="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276.rss">Has anyone updated redash on k8 from b8 to v10?</source>
+      </item>
+      <item>
+        <title>Has anyone updated redash on k8 from b8 to v10?</title>
+        <dc:creator><![CDATA[redash-user]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> please help/someone from team . We couldn’t migrate the setup in Kubernetes for new version of Redash</p>
+          <p><a href="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/2</link>
+        <pubDate>Wed, 11 May 2022 04:37:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10276-2</guid>
+        <source url="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276.rss">Has anyone updated redash on k8 from b8 to v10?</source>
+      </item>
+      <item>
+        <title>Has anyone updated redash on k8 from b8 to v10?</title>
+        <dc:creator><![CDATA[redash-hell]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I am trying to upgrade my redash setup on k8 from v8 to v10. I am using external redis and postgre. After the upgrade, two pods give me an error which is stated below. Would appreciate any help that I can get.</p>
+<p>We are using k8 based deployments on this repo - <a href="https://github.com/getredash/contrib-helm-chart" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getredash/contrib-helm-chart: Community maintained Redash Helm Chart</a></p>
+<p>Some extra details: In the VM based docker composer, I have run the below command to upgrade db’s. Is this issue happening due to that? What is the equivalent command to run in k8 setup to upgrade it?</p>
+<pre><code class="lang-auto">docker-compose run --rm server manage db upgrade
+</code></pre>
+<p>redash-bigquery-tools-scheduledworker - Crashes</p>
+<p>logs - Starting RQ scheduler…<br>
+[2022-04-08 05:39:55,024][PID:7][INFO][rq_scheduler.scheduler] Registering birth<br>
+Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 722, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 586, in main<br>
+return super(FlaskGroup, self).main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 697, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 895, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”,</p>
+<p>redash-bigquery-tools-upgrade-c29mj    - Gets stuck in error state.</p>
+<p>Logs -</p>
+<p>Status: Traceback (most recent call last):<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1249, in _execute_context<br>
+cursor, statement, parameters, context<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py”, line 580, in do_execute<br>
+cursor.execute(statement, parameters)<br>
+psycopg2.errors.UndefinedColumn: column dashboards.options does not exist<br>
+LINE 2: …rds_is_draft, dashboards.tags AS dashboards_tags, dashboards…<br>
+^</p>
+<p>The above exception was the direct cause of the following exception:</p>
+<p>Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 722, in <strong>call</strong><br>
+return self.main(*args, **kwargs)</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v8 - v10</li>
+<li>Browser/OS:</li>
+<li>How did you install Redash: Through helm</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276/1</link>
+        <pubDate>Fri, 08 Apr 2022 05:46:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10276-1</guid>
+        <source url="https://discuss.redash.io/t/has-anyone-updated-redash-on-k8-from-b8-to-v10/10276.rss">Has anyone updated redash on k8 from b8 to v10?</source>
+      </item>
+  </channel>
+</rss>

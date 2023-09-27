@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How can i fix npm run build error more efficiently</title>
+    <link>https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834</link>
+    <description>i ran into error TS2565: Property &#39;defaultProps&#39; is used before being assigned  while &quot;npm run build&quot; 
+
+OS: WSL2 Ubuntu 18.04 LTS
+
+Redash: v9.0.0 beta ( `git clone https://github.com/getredash/redash.git` )
+
+what i installed before:
+node: 14.17.2
+npm: 6.14.13
+typeScript: 4.3.5  // sudo npm install -g typescript
+Python: 3.6.9
+node-gyp: 8.1.0
+
+Got errors at `npm run build`
+
+```
+src/components/ColorPicker/Input.tsx:47:38 - error TS2565: Property &#39;defaultProps&#39; is used before being assigned.
+
+47 type Props = OwnProps &amp; typeof Input.defaultProps;
+```src/components/ColorPicker/Input.tsx:47:38 - error TS2565: Property &#39;defaultProps&#39; is used before being assigned.
+
+47 type Props = OwnProps &amp; typeof Input.defaultProps;
+```
+Actually, I already solved this error by moving the statement of the part where Input.defaultProps is declared (line 91) before the part where it is used(line 46).
+
+**Before i fix**
+```
+# used in line 47
+type Props = OwnProps &amp; typeof Input.defaultProps;
+
+...
+
+# declared in line 91
+Input.defaultProps = {
+  color: &quot;#FFFFFF&quot;,
+  presetColors: null,
+  presetColumns: 8,
+  onChange: () =&gt; {},
+  onPressEnter: () =&gt; {},
+};
+```
+**After i fix**
+```
+# declared in line 46
+Input.defaultProps = {
+  color: &quot;#FFFFFF&quot;,
+  presetColors: null,
+  presetColumns: 8,
+  onChange: () =&gt; {},
+  onPressEnter: () =&gt; {},
+};
+
+# used in line 53
+type Props = OwnProps &amp; typeof Input.defaultProps;
+
+...
+```
+As you can see it is a simple problem that can be solved by simply changing the declaring statement to be placed before the using statement.
+
+Label.tsx, Swatch.tsx, index.tsx, JsonViewInteractive.tsx, ContextHelp.tsx, Section.tsx, Switch.tsx, createTabbedEditor.tsx ...
+about 22 files have same error
+i want to know **why this error occur** and how can i **fix this error more easily without changing each statement**
+
+Please suggest.
+
+Thank you!</description>
+    
+    <lastBuildDate>Fri, 30 Jul 2021 19:32:07 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How can i fix npm run build error more efficiently</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you! This is super helpful.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/5</link>
+        <pubDate>Fri, 30 Jul 2021 19:32:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8834-5</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834.rss">How can i fix npm run build error more efficiently</source>
+      </item>
+      <item>
+        <title>How can i fix npm run build error more efficiently</title>
+        <dc:creator><![CDATA[kyunghwan-ko]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="2" data-topic="8834">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3002_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>refactor this after the V10 release so these will be cleaned up at that time.</p>
+</blockquote>
+</aside>
+<p>To help your team refactor this issue, i have gathered the path of the file that caused this issue.<br>
+and i also included repositioning of the statements to fix the error.</p>
+<pre><code class="lang-auto">redash/viz-lib/src/components/ColorPicker/Input.tsx Line 91~97 -&gt; 46~52
+redash/viz-lib/src/components/ColorPicker/Label.tsx 30~34 -&gt; 16~20
+redash/viz-lib/src/components/ColorPicker/Swatch.tsx 39~45 -&gt; 15~21
+redash/viz-lib/src/components/ColorPicker/index.tsx 158~169 -&gt; 47~58
+redash/viz-lib/src/components/ErrorBoundary.tsx 28~30 -&gt; 21~23
+redash/viz-lib/src/components/TextAlignmentSelect/index.tsx 45~47 -&gt; 16~18
+redash/viz-lib/src/components/json-view-interactive/JsonViewInteractive.tsx 108~112 -&gt; 97~100
+redash/viz-lib/src/components/sortable/index.tsx: 92~97 -&gt; 23~28
+redash/viz-lib/src/components/visualizations/editor/ContextHelp.tsx: 23~26 -&gt; 12~15
+redash/viz-lib/src/components/visualizations/editor/Section.tsx: 26~29 -&gt; 10~13
+redash/viz-lib/src/components/visualizations/editor/Section.tsx: 45~48 -&gt; 33~36
+redash/viz-lib/src/components/visualizations/editor/Switch.tsx: 40~44 -&gt; 12~16
+redash/viz-lib/src/components/visualizations/editor/createTabbedEditor.tsx: - 49~51 -&gt; 24~26
+redash/viz-lib/src/components/visualizations/editor/withControlLabel.tsx: 52~57 -&gt; 16~21
+redash/viz-lib/src/visualizations/chart/Editor/AxisSettings.tsx: 122~125 -&gt; 28~31
+redash/viz-lib/src/visualizations/chart/Editor/ChartTypeSelect.tsx: 52~54 -&gt; 20~22
+redash/viz-lib/src/visualizations/chart/Editor/ColumnMappingSelect.tsx: 60~65 -&gt; 26~31
+redash/viz-lib/src/visualizations/choropleth/Renderer/Legend.tsx: 29~32 -&gt; 12~15
+redash/viz-lib/src/visualizations/cohort/Cornelius.tsx: 234~237 -&gt; 195~198
+redash/viz-lib/src/visualizations/funnel/Renderer/FunnelBar.tsx: 25~31 -&gt; 13~19
+redash/viz-lib/src/visualizations/table/Editor/ColumnEditor.tsx: 98~100 -&gt; 19~21
+redash/viz-lib/src/visualizations/table/Renderer.tsx: 79~81 -&gt; 60~62
+redash/viz-lib/src/visualizations/choropleth/Editor/FormatSettings.tsx: 53~55 -&gt; 22~24
+</code></pre>
+<p>// total count : 23</p>
+<p>Additionally, the following packages were needed to fix the remaining errors of the <code>npm run build</code> command.</p>
+<pre><code class="lang-auto">npm i --save-dev @types/debug
+npm i --save-dev @types/enzyme
+npm i --save-dev @types/jest
+npm i --save-dev @types/plotly.js
+npm i --save-dev @types/d3
+npm i --save-dev @types/d3-cloud
+npm i --save-dev @types/chroma-js
+npm i --save-dev @types/numeral
+npm i --save-dev @types/dompurify
+npm i --save-dev @types/leaflet
+</code></pre>
+<p>I would be very grateful if your team could fix this problem as well.</p>
+<p>Thank you again !</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/4</link>
+        <pubDate>Fri, 30 Jul 2021 02:36:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8834-4</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834.rss">How can i fix npm run build error more efficiently</source>
+      </item>
+      <item>
+        <title>How can i fix npm run build error more efficiently</title>
+        <dc:creator><![CDATA[kyunghwan-ko]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for your reply.<br>
+and<br>
+This is my first time trying to ask a question, so I misunderstood and posted an inappropriate question on github. sorry about that.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/3</link>
+        <pubDate>Wed, 28 Jul 2021 15:10:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8834-3</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834.rss">How can i fix npm run build error more efficiently</source>
+      </item>
+      <item>
+        <title>How can i fix npm run build error more efficiently</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The short answer is there’s no way to do this without changing each statement.</p>
+<p>Slightly longer answer is that we intend to refactor this after the V10 release so these will be cleaned up at that time.</p>
+<p>FYI we closed the issue you opened on our github repo for this same subject. This forum is the place for such conversations. GH is only for planned work and bug reports.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/2</link>
+        <pubDate>Wed, 28 Jul 2021 14:38:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8834-2</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834.rss">How can i fix npm run build error more efficiently</source>
+      </item>
+      <item>
+        <title>How can i fix npm run build error more efficiently</title>
+        <dc:creator><![CDATA[kyunghwan-ko]]></dc:creator>
+        <description><![CDATA[
+            <p>i ran into error TS2565: Property ‘defaultProps’ is used before being assigned  while “npm run build”</p>
+<p>OS: WSL2 Ubuntu 18.04 LTS</p>
+<p>Redash: v9.0.0 beta ( <code>git clone https://github.com/getredash/redash.git</code> )</p>
+<p>what i installed before:<br>
+node: 14.17.2<br>
+npm: 6.14.13<br>
+typeScript: 4.3.5  // sudo npm install -g typescript<br>
+Python: 3.6.9<br>
+node-gyp: 8.1.0</p>
+<p>Got errors at <code>npm run build</code></p>
+<pre><code class="lang-auto">src/components/ColorPicker/Input.tsx:47:38 - error TS2565: Property 'defaultProps' is used before being assigned.
+
+47 type Props = OwnProps &amp; typeof Input.defaultProps;
+```src/components/ColorPicker/Input.tsx:47:38 - error TS2565: Property 'defaultProps' is used before being assigned.
+
+47 type Props = OwnProps &amp; typeof Input.defaultProps;
+</code></pre>
+<p>Actually, I already solved this error by moving the statement of the part where Input.defaultProps is declared (line 91) before the part where it is used(line 46).</p>
+<p><strong>Before i fix</strong></p>
+<pre><code class="lang-auto"># used in line 47
+type Props = OwnProps &amp; typeof Input.defaultProps;
+
+...
+
+# declared in line 91
+Input.defaultProps = {
+  color: "#FFFFFF",
+  presetColors: null,
+  presetColumns: 8,
+  onChange: () =&gt; {},
+  onPressEnter: () =&gt; {},
+};
+</code></pre>
+<p><strong>After i fix</strong></p>
+<pre><code class="lang-auto"># declared in line 46
+Input.defaultProps = {
+  color: "#FFFFFF",
+  presetColors: null,
+  presetColumns: 8,
+  onChange: () =&gt; {},
+  onPressEnter: () =&gt; {},
+};
+
+# used in line 53
+type Props = OwnProps &amp; typeof Input.defaultProps;
+
+...
+</code></pre>
+<p>As you can see it is a simple problem that can be solved by simply changing the declaring statement to be placed before the using statement.</p>
+<p>Label.tsx, Swatch.tsx, index.tsx, JsonViewInteractive.tsx, ContextHelp.tsx, Section.tsx, Switch.tsx, createTabbedEditor.tsx …<br>
+about 22 files have same error<br>
+i want to know <strong>why this error occur</strong> and how can i <strong>fix this error more easily without changing each statement</strong></p>
+<p>Please suggest.</p>
+<p>Thank you!</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834/1</link>
+        <pubDate>Tue, 27 Jul 2021 16:52:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8834-1</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-fix-npm-run-build-error-more-efficiently/8834.rss">How can i fix npm run build error more efficiently</source>
+      </item>
+  </channel>
+</rss>

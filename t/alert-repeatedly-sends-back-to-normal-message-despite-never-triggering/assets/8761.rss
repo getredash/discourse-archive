@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+    <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761</link>
+    <description>Hello all :).
+
+I&#39;ve got a scheduled query that runs every minute and produces a single scalar value. I&#39;ve created an alert based on that query with the following settings:
+- trigger said value is `&lt; 65000`
+- notifications are sent &quot;just once, until back to normal&quot;
+- slack channel set up as alert destination
+- custom description that includes the {{ALERT_STATUS}} and {{QUERY_RESULT_VALUE}} macros (for debugging purposes).
+
+I&#39;m seeing two kinds of strange behavior:
+
+* Often (but unfortunately for our debugging purposes, not *always*) the slack channel will receive a message every minute saying &quot;{{ALERT_NAME}} went back to normal}}&quot;, coupled with an &quot;OK&quot; status and a value that is clearly above the 65000 alert threshold. These messages even when the alert was not recently in a &quot;TRIGGERED&quot; state. Put another way, the slack channel multiple &quot;back to normal&quot; messages for a single &quot;triggered&quot; message, if a &quot;triggered&quot; message appears at all.
+* This behavior persists if I tell the alert to send notifications &quot;at most every 5 minutes&quot;. The only difference is that the green notifications are sent every 5 minutes instead of every minute when the underlying query refreshes.
+
+Other troubleshooting steps I&#39;ve tried:
+* I&#39;ve debugged the underlying query to the point that I&#39;m pretty confident it&#39;s not returning values below the threshold for brief periods of time. The query computes rolling average anyways, so that kind of behavior shouldn&#39;t happy given what I know about the underlying timeseries it&#39;s pulling from. Plus, wouldn&#39;t I see a red &quot;triggered&quot; message in slack if the alert entered the &quot;triggered&quot; state?
+* I&#39;ve tried creating a new query and alert with the same query text, refresh rate, and alert settings and the same problem exists.
+
+Questions:
+* Any other troubleshooting steps I should try?
+* Any other ways I could configure this alert to stop this behavior?
+
+Relevant platform information:
+* self-hosted redash
+* `redash/preview:9.0.0-beta.b49483` image</description>
+    
+    <lastBuildDate>Fri, 30 Jul 2021 19:33:51 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes absolutely this would cause that kind of issue.</p>
+<p>The postgres database contains <em>all</em> of Redash’s state. I’m actually surprised that this works with the same backing database. As there are significant database schema differences between those versions <img src="https://emoji.discourse-cdn.com/twitter/open_mouth.png?v=10" title=":open_mouth:" class="emoji" alt=":open_mouth:"></p>
+<p>Try disabling the alert on one of the instances and see if the issue resolves.</p>
+          <p><a href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/6</link>
+        <pubDate>Fri, 30 Jul 2021 19:33:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8761-6</guid>
+        <source url="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</source>
+      </item>
+      <item>
+        <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+        <dc:creator><![CDATA[bbarg]]></dc:creator>
+        <description><![CDATA[
+            <p>We upgraded to V10 and observed the same behavior (“triggered” and “ok” notifications deliver repeatedly every time the alert is evaluated instead of once when the state changes).</p>
+<p>One thing I am wondering though: we are actually running two redash instances. One is on v10 (as of today), and the other is on V8 (specifically <code>redash/redash:8.0.0.b32245</code>). They share the same backing postgres database. Do you think it’s possible that the two services are interfering with each other in some way?</p>
+<p>Happy to try any other debugging strategies you think might be helpful.</p>
+          <p><a href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/5</link>
+        <pubDate>Thu, 29 Jul 2021 17:31:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8761-5</guid>
+        <source url="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</source>
+      </item>
+      <item>
+        <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="bbarg" data-post="3" data-topic="8761">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bbarg/40/3102_2.png" class="avatar"> bbarg:</div>
+<blockquote>
+<p><strong>AND</strong> OK messages delivering multiple times</p>
+</blockquote>
+</aside>
+<p>Very interesting. I wonder if the jobs aren’t being updated in redis so the alert is picked up twice (or more).</p>
+<p>Very curious to hear the result of trying this with V10.</p>
+          <p><a href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/4</link>
+        <pubDate>Mon, 26 Jul 2021 14:16:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8761-4</guid>
+        <source url="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</source>
+      </item>
+      <item>
+        <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+        <dc:creator><![CDATA[bbarg]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for following up!</p>
+<blockquote>
+<p>For clarification, this setting “at most every 5 minutes” only affects the frequency of TRIGGERED messages.</p>
+</blockquote>
+<p>Good to know. For reference, upon subsequent testing of the “just once, until back to normal setting”, we saw both TRIGGERED <strong>AND</strong> OK messages delivering multiple times, each time the underlying query was evaluated.</p>
+<blockquote>
+<p>Does this reproduce using the V10 beta?</p>
+</blockquote>
+<p>Not sure, but I’m happy to try!</p>
+          <p><a href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/3</link>
+        <pubDate>Mon, 26 Jul 2021 13:52:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8761-3</guid>
+        <source url="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</source>
+      </item>
+      <item>
+        <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="bbarg" data-post="1" data-topic="8761">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bbarg/40/3102_2.png" class="avatar"> bbarg:</div>
+<blockquote>
+<p>This behavior persists if I tell the alert to send notifications “at most every 5 minutes”.</p>
+</blockquote>
+</aside>
+<p>For clarification, this setting “at most every 5 minutes” only affects the frequency of TRIGGERED messages. You will always receive a notification when the alert is first triggered and you will always receive <strong>one</strong> notification when the value goes back to normal. You shouldn’t see multiple back-to-normal notifications, though, so this does look like a bug.</p>
+<p>Does this reproduce using the V10 beta?</p>
+          <p><a href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/2</link>
+        <pubDate>Fri, 23 Jul 2021 22:01:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8761-2</guid>
+        <source url="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</source>
+      </item>
+      <item>
+        <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</title>
+        <dc:creator><![CDATA[bbarg]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello all :).</p>
+<p>I’ve got a scheduled query that runs every minute and produces a single scalar value. I’ve created an alert based on that query with the following settings:</p>
+<ul>
+<li>trigger said value is <code>&lt; 65000</code>
+</li>
+<li>notifications are sent “just once, until back to normal”</li>
+<li>slack channel set up as alert destination</li>
+<li>custom description that includes the {{ALERT_STATUS}} and {{QUERY_RESULT_VALUE}} macros (for debugging purposes).</li>
+</ul>
+<p>I’m seeing two kinds of strange behavior:</p>
+<ul>
+<li>Often (but unfortunately for our debugging purposes, not <em>always</em>) the slack channel will receive a message every minute saying “{{ALERT_NAME}} went back to normal}}”, coupled with an “OK” status and a value that is clearly above the 65000 alert threshold. These messages even when the alert was not recently in a “TRIGGERED” state. Put another way, the slack channel multiple “back to normal” messages for a single “triggered” message, if a “triggered” message appears at all.</li>
+<li>This behavior persists if I tell the alert to send notifications “at most every 5 minutes”. The only difference is that the green notifications are sent every 5 minutes instead of every minute when the underlying query refreshes.</li>
+</ul>
+<p>Other troubleshooting steps I’ve tried:</p>
+<ul>
+<li>I’ve debugged the underlying query to the point that I’m pretty confident it’s not returning values below the threshold for brief periods of time. The query computes rolling average anyways, so that kind of behavior shouldn’t happy given what I know about the underlying timeseries it’s pulling from. Plus, wouldn’t I see a red “triggered” message in slack if the alert entered the “triggered” state?</li>
+<li>I’ve tried creating a new query and alert with the same query text, refresh rate, and alert settings and the same problem exists.</li>
+</ul>
+<p>Questions:</p>
+<ul>
+<li>Any other troubleshooting steps I should try?</li>
+<li>Any other ways I could configure this alert to stop this behavior?</li>
+</ul>
+<p>Relevant platform information:</p>
+<ul>
+<li>self-hosted redash</li>
+<li>
+<code>redash/preview:9.0.0-beta.b49483</code> image</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761/1</link>
+        <pubDate>Thu, 15 Jul 2021 20:28:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8761-1</guid>
+        <source url="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</source>
+      </item>
+  </channel>
+</rss>

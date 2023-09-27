@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>How to Add DynamoDB to my Redash</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/how-to-add-dynamodb-to-my-redash/231">How to Add DynamoDB to my Redash</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="How to Add DynamoDB to my Redash" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sks_369.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sks_369_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sks_369</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-10-09T08:41:30Z" itemprop="datePublished">
+                    October 9, 2016,  8:41am
+                  </time>
+<meta content="2016-10-09T08:41:30Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>From Redash home page i see one of the supported Data source is DynamoDB. Could you please throw more light on how to configure DyanmoDB to Redash?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-10-09T20:31:22Z" itemprop="datePublished">
+                    October 9, 2016,  8:31pm
+                  </time>
+<meta content="2016-10-09T20:31:22Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>You need to make sure that:</p>
+<ol>
+<li>You have a recent enough version (v0.11).</li>
+<li>That you have installed the needed Python dependencies.</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Cayootee.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Cayootee_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Cayootee</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-03-27T18:36:11Z" itemprop="datePublished">
+                    March 27, 2017,  6:36pm
+                  </time>
+<meta content="2017-03-27T18:36:11Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Could you please through more light on this? I believe there is more configuration to be done to use the right vpn  details</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/chiddu.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/chiddu_avatar.png" tabindex="-1" width="48"/><span itemprop="name">chiddu</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-04-18T05:18:56Z" itemprop="datePublished">
+                    April 18, 2017,  5:18am
+                  </time>
+<meta content="2017-04-18T05:18:56Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>What are the python dependencies. I installed redash using the install script downloaded from the redash site.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/majofi.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/majofi_avatar.png" tabindex="-1" width="48"/><span itemprop="name">majofi</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-04-18T08:37:22Z" itemprop="datePublished">
+                    April 18, 2017,  8:37am
+                  </time>
+<meta content="2017-04-18T08:37:22Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Not sure what the install script does, but you need not only to (pip) install the requirements.txt but also the requirements_all_ds.txt (“all datasources”). With that you get all “missing” datasources like dynamodb, mysql, influxdb, etc …</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/majofi.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/majofi_avatar.png" tabindex="-1" width="48"/><span itemprop="name">majofi</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-04-18T08:40:07Z" itemprop="datePublished">
+                    April 18, 2017,  8:40am
+                  </time>
+<meta content="2017-04-18T08:40:07Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>hmm just saw in another thread that you (<a class="mention" href="/u/chiddu">@chiddu</a>) obviously solved you question yourself. Why don’t you help others by answering you question yourself then ?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/chiddu.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/chiddu_avatar.png" tabindex="-1" width="48"/><span itemprop="name">chiddu</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-04-19T07:52:34Z" itemprop="datePublished">
+                    April 19, 2017,  7:52am
+                  </time>
+<meta content="2017-04-19T07:52:34Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>No, I have not solved it. I think it has something to do with the connectivity. all the required packages have been installed, I verified that.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ojofranco.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ojofranco_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ojofranco</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-05T23:27:43Z" itemprop="datePublished">
+                    May 5, 2017, 11:27pm
+                  </time>
+<meta content="2017-05-05T23:27:43Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I getting  a Connection Test Failed  when try to connect to DynamoDB</p>
+<p>Failed 254007: The certificate attached is not for OCSP signing.<br/>
+I’m running in  AWS instance<br/>
+Redash 1.0.3+b2850</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-07T20:00:02Z" itemprop="datePublished">
+                    May 7, 2017,  8:00pm
+                  </time>
+<meta content="2017-05-07T20:00:02Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="8" data-topic="231" data-username="ojofranco">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/o/f05b48/40.png" width="20"/> ojofranco:</div>
+<blockquote>
+<p>Failed 254007: The certificate attached is not for OCSP signing.</p>
+</blockquote>
+</aside>
+<p>There was another user having this problem, but I couldn’t reproduce it. How did you setup Redash?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/javed.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/javed_avatar.png" tabindex="-1" width="48"/><span itemprop="name">javed</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-09T01:52:47Z" itemprop="datePublished">
+                    May 9, 2017,  1:52am
+                  </time>
+<meta content="2017-05-09T01:52:47Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/arikfr">@arikfr</a> I am having similar issue. I am using AWS AMI.</p>
+<p><code>Connection Test Failed: 254007: The certificate attached is not for OCSP signing.</code></p>
+<p>After installation is there any setup is required?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/adrianbridgett.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/adrianbridgett_avatar.png" tabindex="-1" width="48"/><span itemprop="name">adrianbridgett</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-10T14:49:39Z" itemprop="datePublished">
+                    May 10, 2017,  2:49pm
+                  </time>
+<meta content="2017-05-10T14:49:39Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’ve just received the same - brand new AMI (1.0.1+b2833).  This happens on both queries and when testing the data connection.  This box is in a VPC with a private IP address (but access to the internet).</p>
+<p><code>[2017-05-10 14:43:18,480: WARNING/Worker-9] Unexpected error while running query: Traceback (most recent call last): File "/opt/redash/redash.1.0.1.b2833/redash/tasks/queries.py", line 421, in run data, error = query_runner.run_query(annotated_query, self.user) File "/opt/redash/redash.1.0.1.b2833/redash/query_runner/dynamodb_sql.py", line 100, in run_query result = engine.execute(query if str(query).endswith(';') else str(query)+';') File "/usr/local/lib/python2.7/dist-packages/dql/engine.py", line 965, in execute pretty_format) File "/usr/local/lib/python2.7/dist-packages/dql/engine.py", line 292, in execute result = self._run(statement) File "/usr/local/lib/python2.7/dist-packages/dql/engine.py", line 307, in _run return self._select(tree, self.allow_select_scan) File "/usr/local/lib/python2.7/dist-packages/dql/engine.py", line 446, in _select desc = self.describe(tablename, require=True) File "/usr/local/lib/python2.7/dist-packages/dql/engine.py", line 251, in describe desc = self.connection.describe_table(tablename) File "/usr/local/lib/python2.7/dist-packages/dynamo3/connection.py", line 370, in describe_table 'describe_table', TableName=tablename)['Table'] File "/usr/local/lib/python2.7/dist-packages/dynamo3/connection.py", line 222, in call data = op(**kwargs) File "/usr/local/lib/python2.7/dist-packages/botocore/client.py", line 228, in _api_call return self._make_api_call(operation_name, kwargs) File "/usr/local/lib/python2.7/dist-packages/botocore/client.py", line 481, in _make_api_call operation_model, request_dict) File "/usr/local/lib/python2.7/dist-packages/botocore/endpoint.py", line 117, in make_request return self._send_request(request_dict, operation_model) File "/usr/local/lib/python2.7/dist-packages/botocore/endpoint.py", line 146, in _send_request success_response, exception): File "/usr/local/lib/python2.7/dist-packages/botocore/endpoint.py", line 219, in _needs_retry caught_exception=caught_exception) File "/usr/local/lib/python2.7/dist-packages/botocore/hooks.py", line 226, in emit return self._emit(event_name, kwargs) File "/usr/local/lib/python2.7/dist-packages/botocore/hooks.py", line 209, in _emit response = handler(**kwargs) File "/usr/local/lib/python2.7/dist-packages/botocore/retryhandler.py", line 183, in __call__ if self._checker(attempts, response, caught_exception): File "/usr/local/lib/python2.7/dist-packages/botocore/retryhandler.py", line 250, in __call__ caught_exception) File "/usr/local/lib/python2.7/dist-packages/botocore/retryhandler.py", line 265, in _should_retry return self._checker(attempt_number, response, caught_exception) File "/usr/local/lib/python2.7/dist-packages/botocore/retryhandler.py", line 313, in __call__ caught_exception) File "/usr/local/lib/python2.7/dist-packages/botocore/retryhandler.py", line 222, in __call__ return self._check_caught_exception(attempt_number, caught_exception) File "/usr/local/lib/python2.7/dist-packages/botocore/retryhandler.py", line 355, in _check_caught_exception raise caught_exception OperationalError: 254007: The certificate attached is not for OCSP signing.</code></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Aroton.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Aroton_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Aroton</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-17T22:02:58Z" itemprop="datePublished">
+                    May 17, 2017, 10:02pm
+                  </time>
+<meta content="2017-05-17T22:02:58Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I am getting this too when I try to add a dynamo data source.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/binary.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/binary_avatar.png" tabindex="-1" width="48"/><span itemprop="name">binary</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-19T13:32:31Z" itemprop="datePublished">
+                    May 19, 2017,  1:32pm
+                  </time>
+<meta content="2017-05-19T13:32:31Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I had this error got it working by upgrading snowflake-connector-python</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-19T19:36:50Z" itemprop="datePublished">
+                    May 19, 2017,  7:36pm
+                  </time>
+<meta content="2017-05-19T19:36:50Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/binary">@binary</a> upgrading snowflake-connector-python solved your DynamoDB issues or you had the same error with a Snowflake connection?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/binary.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/binary_avatar.png" tabindex="-1" width="48"/><span itemprop="name">binary</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-20T00:22:51Z" itemprop="datePublished">
+                    May 20, 2017, 12:22am
+                  </time>
+<meta content="2017-05-20T00:22:51Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>When adding a DynamoDB data source I got the <code>Failed 254007: The certificate attached is not for OCSP signing.</code> error. Upgrading snowflake-connector-python fixed the error.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-add-dynamodb-to-my-redash/231" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-22T10:53:41Z" itemprop="datePublished">
+                    May 22, 2017, 10:53am
+                  </time>
+<meta content="2017-05-22T10:53:41Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/binary">@binary</a> is correct the problem is indeed caused by the snowflake-connector <img alt=":unamused:" class="emoji" src="assets/unamused.png" title=":unamused:"/> You can either upgrade it, or add to your <code>.env</code> file:</p>
+<pre><code class="lang-auto">export REDASH_DISABLED_QUERY_RUNNERS="redash.query_runner.snowflake"
+</code></pre>
+<p>And then restart all Redash services. This will prevent Redash from loading the Snowflake connector.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

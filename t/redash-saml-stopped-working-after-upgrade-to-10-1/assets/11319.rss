@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash SAML Stopped Working After Upgrade To 10.1</title>
+    <link>https://discuss.redash.io/t/redash-saml-stopped-working-after-upgrade-to-10-1/11319</link>
+    <description>After our upgrade from 8 to 10 our SAML configuration stopped working.
+
+redash-server-1            | [2022-11-29 15:28:40,565][PID:10][ERROR][saml2.client_base] SAML status error: Unsuccessful operation: &lt;ns0:Status xmlns:ns0=&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;&gt;&lt;ns0:StatusCode Value=&quot;urn:oasis:names:tc:SAML:2.0:status:Responder&quot;&gt;&lt;ns0:StatusCode Value=&quot;urn:oasis:names:tc:SAML:2.0:status:RequestDenied&quot; /&gt;&lt;/ns0:StatusCode&gt;&lt;/ns0:Status&gt;
+redash-server-1            | urn:oasis:names:tc:SAML:2.0:status:RequestDenied from urn:oasis:names:tc:SAML:2.0:status:RequestDenied
+redash-server-1            | [2022-11-29 15:28:40,565][PID:10][ERROR][saml_auth] Failed to parse SAML response
+redash-server-1            | Traceback (most recent call last):
+redash-server-1            |   File &quot;/app/redash/authentication/saml_auth.py&quot;, line 108, in idp_initiated
+redash-server-1            |     request.form[&quot;SAMLResponse&quot;], entity.BINDING_HTTP_POST
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/client_base.py&quot;, line 711, in parse_authn_request_response
+redash-server-1            |     binding, **kwargs)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/entity.py&quot;, line 1195, in _parse_response
+redash-server-1            |     response = response.verify(keys)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/response.py&quot;, line 1038, in verify
+redash-server-1            |     res = self._verify()
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/response.py&quot;, line 414, in _verify
+redash-server-1            |     assert self.status_ok()
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/response.py&quot;, line 377, in status_ok
+redash-server-1            |     raise err_cls(msg)
+redash-server-1            | saml2.response.StatusRequestDenied: Unsuccessful operation: &lt;ns0:Status xmlns:ns0=&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;&gt;&lt;ns0:StatusCode Value=&quot;urn:oasis:names:tc:SAML:2.0:status:Responder&quot;&gt;&lt;ns0:StatusCode Value=&quot;urn:oasis:names:tc:SAML:2.0:status:RequestDenied&quot; /&gt;&lt;/ns0:StatusCode&gt;&lt;/ns0:Status&gt;
+redash-server-1            | urn:oasis:names:tc:SAML:2.0:status:RequestDenied from urn:oasis:names:tc:SAML:2.0:status:RequestDenied
+redash-server-1            | [2022-11-29 15:28:40,566][PID:10][INFO][metrics] method=POST path=/saml/callback endpoint=saml_auth_idp_initiated status=302 content_type=text/html; charset=utf-8 content_length=219 duration=105.40 query_count=1 query_duration=1.15
+
+Our config:
+
+metadata url
+https://########/FederationMetadata/2007-06/FederationMetadata.xml
+
+entity id
+https://########/saml/callback?org_slug=default
+
+saml nameid format
+urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+
+Anyone else experience a similar problem?</description>
+    
+    <lastBuildDate>Tue, 29 Nov 2022 16:19:02 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-saml-stopped-working-after-upgrade-to-10-1/11319.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash SAML Stopped Working After Upgrade To 10.1</title>
+        <dc:creator><![CDATA[jeffwhite06]]></dc:creator>
+        <description><![CDATA[
+            <p>After our upgrade from 8 to 10 our SAML configuration stopped working.</p>
+<p>redash-server-1            | [2022-11-29 15:28:40,565][PID:10][ERROR][saml2.client_base] SAML status error: Unsuccessful operation: &lt;ns0:Status xmlns:ns0=“urn:oasis:names:tc:SAML:2.0:protocol”&gt;&lt;ns0:StatusCode Value=“urn:oasis:names:tc:SAML:2.0:status:Responder”&gt;&lt;ns0:StatusCode Value=“urn:oasis:names:tc:SAML:2.0:status:RequestDenied” /&gt;&lt;/ns0:StatusCode&gt;&lt;/ns0:Status&gt;<br>
+redash-server-1            | urn:oasis:names:tc:SAML:2.0:status:RequestDenied from urn:oasis:names:tc:SAML:2.0:status:RequestDenied<br>
+redash-server-1            | [2022-11-29 15:28:40,565][PID:10][ERROR][saml_auth] Failed to parse SAML response<br>
+redash-server-1            | Traceback (most recent call last):<br>
+redash-server-1            |   File “/app/redash/authentication/saml_auth.py”, line 108, in idp_initiated<br>
+redash-server-1            |     request.form[“SAMLResponse”], entity.BINDING_HTTP_POST<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/saml2/client_base.py”, line 711, in parse_authn_request_response<br>
+redash-server-1            |     binding, **kwargs)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/saml2/entity.py”, line 1195, in _parse_response<br>
+redash-server-1            |     response = response.verify(keys)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/saml2/response.py”, line 1038, in verify<br>
+redash-server-1            |     res = self._verify()<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/saml2/response.py”, line 414, in _verify<br>
+redash-server-1            |     assert self.status_ok()<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/saml2/response.py”, line 377, in status_ok<br>
+redash-server-1            |     raise err_cls(msg)<br>
+redash-server-1            | saml2.response.StatusRequestDenied: Unsuccessful operation: &lt;ns0:Status xmlns:ns0=“urn:oasis:names:tc:SAML:2.0:protocol”&gt;&lt;ns0:StatusCode Value=“urn:oasis:names:tc:SAML:2.0:status:Responder”&gt;&lt;ns0:StatusCode Value=“urn:oasis:names:tc:SAML:2.0:status:RequestDenied” /&gt;&lt;/ns0:StatusCode&gt;&lt;/ns0:Status&gt;<br>
+redash-server-1            | urn:oasis:names:tc:SAML:2.0:status:RequestDenied from urn:oasis:names:tc:SAML:2.0:status:RequestDenied<br>
+redash-server-1            | [2022-11-29 15:28:40,566][PID:10][INFO][metrics] method=POST path=/saml/callback endpoint=saml_auth_idp_initiated status=302 content_type=text/html; charset=utf-8 content_length=219 duration=105.40 query_count=1 query_duration=1.15</p>
+<p>Our config:</p>
+<p>metadata url<br>
+https://########/FederationMetadata/2007-06/FederationMetadata.xml</p>
+<p>entity id<br>
+https://########/saml/callback?org_slug=default</p>
+<p>saml nameid format<br>
+urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</p>
+<p>Anyone else experience a similar problem?</p>
+          <p><a href="https://discuss.redash.io/t/redash-saml-stopped-working-after-upgrade-to-10-1/11319/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-saml-stopped-working-after-upgrade-to-10-1/11319/1</link>
+        <pubDate>Tue, 29 Nov 2022 15:33:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11319-1</guid>
+        <source url="https://discuss.redash.io/t/redash-saml-stopped-working-after-upgrade-to-10-1/11319.rss">Redash SAML Stopped Working After Upgrade To 10.1</source>
+      </item>
+  </channel>
+</rss>

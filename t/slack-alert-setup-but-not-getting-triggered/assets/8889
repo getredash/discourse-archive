@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Slack alert setup but not getting triggered - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Redash version :  Version: 8.0.0+b32245 (a16f551e) 
+Slack alert has been setup through Redash in the slack channel based on the reference link : Slack](Slack 
+Got a notification in Slack channel as well :  added an integ&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Slack alert setup but not getting triggered&#39;" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7_2_1024x591.jpeg" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7_2_1024x591.jpeg" />
+<meta property="og:url" content="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889" />
+<meta property="og:title" content="Slack alert setup but not getting triggered" />
+<meta name="twitter:title" content="Slack alert setup but not getting triggered" />
+<meta property="og:description" content="Redash version :  Version: 8.0.0+b32245 (a16f551e)  Slack alert has been setup through Redash in the slack channel based on the reference link : Slack](Slack  Got a notification in Slack channel as well :  added an integration to this channel  However the notification is not getting triggered. The status in the alert section is still showing as UNKNOWN.  Alert Setup :     Alert Status :" />
+<meta name="twitter:description" content="Redash version :  Version: 8.0.0+b32245 (a16f551e)  Slack alert has been setup through Redash in the slack channel based on the reference link : Slack](Slack  Got a notification in Slack channel as well :  added an integration to this channel  However the notification is not getting triggered. The status in the alert section is still showing as UNKNOWN.  Alert Setup :     Alert Status :" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="og:article:tag" content="bug" />
+<meta property="og:article:tag" content="alerts" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="3 ❤" />
+<meta property="article:published_time" content="2021-08-09T10:03:00+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Slack alert setup but not getting triggered","mainEntity":{"@type":"Question","name":"Slack alert setup but not getting triggered","text":"Redash version :  Version: 8.0.0+b32245 (a16f551e)\n\nSlack alert has been setup through Redash in the slack channel based on the reference link : <a href=\"https://my.slack.com/services/new/incoming-webhook/.\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Slack<\/a>](<a href=\"https://my.slack.com/services/new/incoming-webhook/\" class=\"inline-onebox\" rel=\"noopener nofollow ugc\">Slack<\/a>\n\nGot a notification in Slack channel as well :  added an integration to this channel\n\nHowever the notification is not getting triggered. The s&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-08-09T10:03:00.006Z","author":{"@type":"Person","name":"Avishek"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/slack-alert-setup-but-not-getting-triggered/8889">Slack alert setup but not getting triggered</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/bug' class='discourse-tag' rel="tag">bug</a>, 
+            <a href='https://discuss.redash.io/tag/alerts' class='discourse-tag' rel="tag">alerts</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Slack alert setup but not getting triggered'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content='bug, alerts'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-09T10:03:00Z' class='post-time'>
+                    August 9, 2021, 10:03am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-09T10:03:00Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Redash version :  Version: 8.0.0+b32245 (a16f551e)</p>
+<p>Slack alert has been setup through Redash in the slack channel based on the reference link : <a href="https://my.slack.com/services/new/incoming-webhook/." class="inline-onebox" rel="noopener nofollow ugc">Slack</a>](<a href="https://my.slack.com/services/new/incoming-webhook/" class="inline-onebox" rel="noopener nofollow ugc">Slack</a></p>
+<p>Got a notification in Slack channel as well :  added an integration to this channel</p>
+<p>However the notification is not getting triggered. The status in the alert section is still showing as UNKNOWN.</p>
+<p>Alert Setup :<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7.jpeg" data-download-href="/uploads/short-url/edaGXfJzjo7Y6dq46O6vvxBkN5d.jpeg?dl=1" title="Screenshot 2021-08-09 at 3.31.25 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7_2_690x398.jpeg" alt="Screenshot 2021-08-09 at 3.31.25 PM" data-base62-sha1="edaGXfJzjo7Y6dq46O6vvxBkN5d" width="690" height="398" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7_2_690x398.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7_2_1035x597.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/639b9fca00e35c4b7ed50111bd9bad2d330cd8d7_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2021-08-09 at 3.31.25 PM</span><span class="informations">1274×736 43.4 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Alert Status :<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/031062e74eadbf1291f6e1c2551c8ccf2b369bfc.png" data-download-href="/uploads/short-url/r6xtI2S8BCHfqSlOvGUytjujeI.png?dl=1" title="Screenshot 2021-08-09 at 3.32.27 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/031062e74eadbf1291f6e1c2551c8ccf2b369bfc_2_690x85.png" alt="Screenshot 2021-08-09 at 3.32.27 PM" data-base62-sha1="r6xtI2S8BCHfqSlOvGUytjujeI" width="690" height="85" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/031062e74eadbf1291f6e1c2551c8ccf2b369bfc_2_690x85.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/031062e74eadbf1291f6e1c2551c8ccf2b369bfc_2_1035x127.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/031062e74eadbf1291f6e1c2551c8ccf2b369bfc_2_1380x170.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/031062e74eadbf1291f6e1c2551c8ccf2b369bfc_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2021-08-09 at 3.32.27 PM</span><span class="informations">1854×230 45.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-09T10:06:14Z' class='post-time'>
+                    August 9, 2021, 10:06am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-09T10:06:14Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>To add on, the query does not have any parameters. Refer to the screenshot for the query.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a.png" data-download-href="/uploads/short-url/eIk5ipePLQksBR8k9A5cImfBq6S.png?dl=1" title="Screenshot 2021-08-09 at 3.35.42 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a_2_370x500.png" alt="Screenshot 2021-08-09 at 3.35.42 PM" data-base62-sha1="eIk5ipePLQksBR8k9A5cImfBq6S" width="370" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a_2_370x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a_2_555x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6721185a15e5cd18edc97957b1fd89861abe3a1a_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2021-08-09 at 3.35.42 PM</span><span class="informations">700×944 65.8 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-09T15:08:48Z' class='post-time'>
+                    August 9, 2021,  3:08pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-09T15:08:48Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>When did you last execute the query?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-09T16:45:22Z' class='post-time'>
+                    August 9, 2021,  4:45pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-09T16:45:22Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>This seems to be working fine now. Had triggered the query earlier and had run the query as well, but wasn’t able to generate any alert.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T06:22:37Z' class='post-time'>
+                    August 11, 2021,  6:22am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T06:22:37Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi <a class="mention" href="/u/jesse">@Jesse</a> :<br>
+The alert has been triggered, however the Redash dashboard is not refreshing at any set frequency. There is an option to set it up Version: 8.0.0+b32245 (a16f551e), however it doesn’t work.</p>
+<p>Since the dashboard doesn’t refresh, the alert does not get triggered when it’s required.</p>
+<p>Kindly suggest on this.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T15:48:00Z' class='post-time'>
+                    August 11, 2021,  3:48pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T15:48:00Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Redash doesn’t have a background refresh feature for <em>dashboards</em>. Only for <em>queries</em>. If you use the refresh option on the dashboard screen it only applies while the dashboard is open and focused in your browser (this is intended for public display boards e.g.).</p>
+<p>If you want the queries to execute in the background you can add refresh schedules to the queries in question.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T18:20:55Z' class='post-time'>
+                    August 11, 2021,  6:20pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T18:20:55Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Is there a way to print the metric value as an alert message ? let’s say we say that a metric going below 50% needs to be alerted. but it could go even goto 20%, so would help if there’s a way to print the value while the alert is generated.</p>
+<p>Currently, there’s a query and alert link which also goes to slack, but on clicking there, it lands to a page with an error message as shared in the screenshot below.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5.jpeg" data-download-href="/uploads/short-url/6HW0k64P9g1CBjvlbEue6kmsLat.jpeg?dl=1" title="Screenshot 2021-08-11 at 11.49.59 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5_2_690x373.jpeg" alt="Screenshot 2021-08-11 at 11.49.59 PM" data-base62-sha1="6HW0k64P9g1CBjvlbEue6kmsLat" width="690" height="373" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5_2_690x373.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5_2_1035x559.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5_2_1380x746.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2f0476c9f890a58c9c46ed1b38a591553fdb92c5_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2021-08-11 at 11.49.59 PM</span><span class="informations">1652×894 55.5 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T20:02:30Z' class='post-time'>
+                    August 11, 2021,  8:02pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T20:02:30Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You can use a custom alert message template for this if you want.</p>
+<p>The reason you see an error when you visit the link is that your DNS server doesn’t know how to find your Redash instance. You should be able to add a DNS rule to your router to address that.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T20:25:05Z' class='post-time'>
+                    August 11, 2021,  8:25pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T20:25:05Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>That’s great to know, though I have been trying.</p>
+<p>Could you suggest if the custom alert template is possible here ? have shared the screenshot of the alert settings. If possible, kindly suggest on how to go about it.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a.jpeg" data-download-href="/uploads/short-url/aNZ73h3DaqheAnXOSM156BvZ7FE.jpeg?dl=1" title="Screenshot 2021-08-12 at 1.53.08 AM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a_2_690x271.jpeg" alt="Screenshot 2021-08-12 at 1.53.08 AM" data-base62-sha1="aNZ73h3DaqheAnXOSM156BvZ7FE" width="690" height="271" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a_2_690x271.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a_2_1035x406.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a_2_1380x542.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4bbc3d9340d680d4a128df84bd68d3d70e94799a_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2021-08-12 at 1.53.08 AM</span><span class="informations">1928×758 68.4 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T20:25:55Z' class='post-time'>
+                    August 11, 2021,  8:25pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T20:25:55Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Custom alert templates were introduced in V9.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/avishekmitra'><span itemprop='name'>avishekmitra</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T20:30:46Z' class='post-time'>
+                    August 11, 2021,  8:30pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T20:30:46Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks again Jesse, that really helps. Just to clarify,  do we just have the Beta released for v9 , or the full version as well ?<br>
+In that case will upgrade from V8 to V9, until V10 is released.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/slack-alert-setup-but-not-getting-triggered/8889">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-11T20:35:20Z' class='post-time'>
+                    August 11, 2021,  8:35pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-11T20:35:20Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>There was never a full release of V9 <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=10" title=":frowning:" class="emoji" alt=":frowning:"> but if there had been it would be identical to the beta. V9 beta is extremely stable.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

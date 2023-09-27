@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Redash Migrations Issue (Docker v3 to v5)</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/redash-migrations-issue-docker-v3-to-v5/2396">Redash Migrations Issue (Docker v3 to v5)</a>
+</h1>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Redash Migrations Issue (Docker v3 to v5)" itemprop="headline"/>
+<meta content="Uncategorized" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e75378b37e4d56b058c82bbc5081ecbaf08f9a64.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T03:19:57Z" itemprop="datePublished">
+                    September 27, 2018,  3:19am
+                  </time>
+<meta content="2018-09-27T03:19:57Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I currently had a functional v3 build of Docker Redash.</p>
+<p>To get the latest v5 I stopped all my docker instances and did</p>
+<p><code>docker-compose run --rm server manage db upgrade</code></p>
+<p>When I start the docker compose I get this stacktrace</p>
+<pre><code>worker_1  | [2018-09-27 03:15:14,806][PID:1][ERROR][MainProcess] Task redash.tasks.refresh_queries[d1658aea-325c-43f2-8bbc-55d57dc09760] raised unexpected: ProgrammingError('(psycopg2.ProgrammingError) column queries.search_vector does not exist\nLINE 1: ...ule_failures, queries.options AS queries_options, queries.se...\n                                                             ^\n',)
+worker_1  | Traceback (most recent call last):
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/celery/app/trace.py", line 240, in trace_task
+worker_1  |     R = retval = fun(*args, **kwargs)
+worker_1  |   File "/app/redash/worker.py", line 71, in __call__
+worker_1  |     return TaskBase.__call__(self, *args, **kwargs)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/celery/app/trace.py", line 438, in __protected_call__
+worker_1  |     return self.run(*args, **kwargs)
+worker_1  |   File "/app/redash/tasks/queries.py", line 275, in refresh_queries
+worker_1  |     for query in models.Query.outdated_queries():
+worker_1  |   File "/app/redash/models.py", line 1010, in outdated_queries
+worker_1  |     for query in queries:
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2925, in __iter__
+worker_1  |     return self._execute_and_instances(context)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2948, in _execute_and_instances
+worker_1  |     result = conn.execute(querycontext.statement, self._params)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 948, in execute
+worker_1  |     return meth(self, multiparams, params)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py", line 269, in _execute_on_connection
+worker_1  |     return connection._execute_clauseelement(self, multiparams, params)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1060, in _execute_clauseelement
+worker_1  |     compiled_sql, distilled_params
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1200, in _execute_context
+worker_1  |     context)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1413, in _handle_dbapi_exception
+worker_1  |     exc_info
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+worker_1  |     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1193, in _execute_context
+worker_1  |     context)
+worker_1  |   File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py", line 507, in do_execute
+worker_1  |     cursor.execute(statement, parameters)
+worker_1  | ProgrammingError: (psycopg2.ProgrammingError) column queries.search_vector does not exist
+worker_1  | LINE 1: ...ule_failures, queries.options AS queries_options, queries.se...
+worker_1  |                                                              ^
+worker_1  |  [SQL: 'SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at \nFROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id \nWHERE queries.schedule IS NOT NULL ORDER BY queries.id'] (Background on this error at: http://sqlalche.me/e/f405)
+worker_1  | [2018-09-27 03:15:14,814][PID:1][INFO][MainProcess] Task redash.tasks.cleanup_tasks[5048af86-525d-4c1c-85af-18d87f7ed370] succeeded in 0.00293156299995s: None
+</code></pre>
+<p>The Queries Table</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/x0p8dnKyTkB1eg22I9IYQ0alPj6.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e75378b37e4d56b058c82bbc5081ecbaf08f9a64.png" rel="noopener nofollow ugc" title="redash queries table"><img alt="redash queries table" data-base62-sha1="x0p8dnKyTkB1eg22I9IYQ0alPj6" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e75378b37e4d56b058c82bbc5081ecbaf08f9a64_2_10x10.png" height="394" src="assets/e75378b37e4d56b058c82bbc5081ecbaf08f9a64_2_690x394.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e75378b37e4d56b058c82bbc5081ecbaf08f9a64_2_690x394.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e75378b37e4d56b058c82bbc5081ecbaf08f9a64_2_1035x591.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e75378b37e4d56b058c82bbc5081ecbaf08f9a64.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">redash queries table</span><span class="informations">1301×744 72.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T03:21:23Z" itemprop="datePublished">
+                    September 27, 2018,  3:21am
+                  </time>
+<meta content="2018-09-27T03:21:23Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>When I start a new Database instance from scratch (without migration) it seems to be working fine. But I need to migrate the database.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T03:42:02Z" itemprop="datePublished">
+                    September 27, 2018,  3:42am
+                  </time>
+<meta content="2018-09-27T03:42:02Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>did</p>
+<p><code>docker run -it redash/redash:latest sh</code></p>
+<p>then</p>
+<p><code>cat redash/models.py</code></p>
+<p>and I can see <code>search_vector</code> in the class <code>Query</code></p>
+<p>So I believe I have the Docker Image upgraded properly.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/parasiil.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/parasiil_avatar.png" tabindex="-1" width="48"/><span itemprop="name">parasiil</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T06:55:56Z" itemprop="datePublished">
+                    September 27, 2018,  6:55am
+                  </time>
+<meta content="2018-09-27T06:55:56Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>seems 3 &gt; 5 migration has issues, here is my</p><aside class="quote quote-modified" data-post="4" data-topic="2384">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="https://avatars.discourse-cdn.com/v4/letter/p/d07c76/40.png" width="20"/>
+<a href="http://discuss.redash.io/t/upgrade-from-3-0-0-b3134-to-v5/2384/4">Upgrade from 3.0.0+b3134 to v5</a> <a class="badge-wrapper bullet" href="/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span class="badge-category clear-badge" data-drop-close="true" style="" title="Support on installing, configuring and using Redash.">Support</span></a>
+</div>
+<blockquote>
+    I added tags column to db with 
+sudo -u redash psql -c “alter table dashboards add column tags varchar;” redash 
+then tried to upgrade again and following migrations were successful 
+upgrade	d1eae8b9893e	-&gt;	7671dca4e604	 empty message 
+upgrade	7671dca4e604	-&gt;	5ec5c84ba61e	 Add Query.search_vector field for full text search. 
+upgrade	5ec5c84ba61e	-&gt;	6b5be7e0a0ef	 Re-index Query.search_vector with existing queries. 
+upgrade	6b5be7e0a0ef	-&gt;	969126bd800f	 Update widget’s position data based on dashb…
+  </blockquote>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/MathieuBossaert.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/MathieuBossaert_avatar.png" tabindex="-1" width="48"/><span itemprop="name">MathieuBossaert</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T09:06:52Z" itemprop="datePublished">
+                    September 27, 2018,  9:06am
+                  </time>
+<meta content="2018-09-27T09:06:52Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi <a class="mention" href="/u/parasiil">@parasiil</a> and <a class="mention" href="/u/srinathganesh">@srinathganesh</a> ,</p>
+<p>i just did the same upgrade one hour ago.<br/>
+I had to run a two step upgrade : first upgrade to redash v4 with database upgrade and  then migrate to v5 and upgrade the db.<br/>
+And everything went fine.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="3" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T09:10:19Z" itemprop="datePublished">
+                    September 27, 2018,  9:10am
+                  </time>
+<meta content="2018-09-27T09:10:19Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>thanks I’ll try that</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/parasiil.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/parasiil_avatar.png" tabindex="-1" width="48"/><span itemprop="name">parasiil</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T11:39:47Z" itemprop="datePublished">
+                    September 27, 2018, 11:39am
+                  </time>
+<meta content="2018-09-27T11:39:47Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>How did you pulled v4 with upgrade? some specific --channel as argument?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/MathieuBossaert.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/MathieuBossaert_avatar.png" tabindex="-1" width="48"/><span itemprop="name">MathieuBossaert</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T12:06:25Z" itemprop="datePublished">
+                    September 27, 2018, 12:06pm
+                  </time>
+<meta content="2018-09-27T12:06:25Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Following this doc : <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="nofollow noopener">https://redash.io/help/open-source/admin-guide/how-to-upgrade</a><br/>
+I changed the tag of the redash image in my docker-compose.yml, from latest to 4.0.0.b3168<br/>
+and after all I changed the tag to from 4.0.0.b3168 to 5.0.0.b4754</p>
+<p>And here are the available docker images tags : <a href="https://hub.docker.com/r/redash/redash/tags/" rel="nofollow noopener">https://hub.docker.com/r/redash/redash/tags/</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/parasiil.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/parasiil_avatar.png" tabindex="-1" width="48"/><span itemprop="name">parasiil</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T12:19:02Z" itemprop="datePublished">
+                    September 27, 2018, 12:19pm
+                  </time>
+<meta content="2018-09-27T12:19:02Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>yeah, that’s easy with docker. I am using direct install and have forgotten how to pull earlier versions</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/parasiil.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/parasiil_avatar.png" tabindex="-1" width="48"/><span itemprop="name">parasiil</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-27T12:23:14Z" itemprop="datePublished">
+                    September 27, 2018, 12:23pm
+                  </time>
+<meta content="2018-09-27T12:23:14Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>found it <a href="https://github.com/getredash/redash/releases" rel="nofollow noopener">https://github.com/getredash/redash/releases</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-28T05:54:51Z" itemprop="datePublished">
+                    September 28, 2018,  5:54am
+                  </time>
+<meta content="2018-09-28T09:03:32Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>v3 -&gt; v4 -&gt; v5 works</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cypri.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cypri_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cypri</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-28T10:11:24Z" itemprop="datePublished">
+                    September 28, 2018, 10:11am
+                  </time>
+<meta content="2018-09-28T10:11:24Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>how did you upgrade from 3 to 4? I installed 3 with the provision script, with seperated psql database. When i run the bin/upgrade it wants to install 5 straight and failed.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-28T11:08:30Z" itemprop="datePublished">
+                    September 28, 2018, 11:08am
+                  </time>
+<meta content="2018-09-28T11:08:30Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hope you did a backup!</p>
+<p>I use Docker. so the docker-compose.yaml file has something like</p>
+<pre><code>...........
+redash:
+    image: redash/redash:5.0.0.b4754
+..........
+</code></pre>
+<aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/getredash/redash/blob/master/docker-compose.production.yml" rel="nofollow noopener" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/getredash/redash/blob/master/docker-compose.production.yml" rel="nofollow noopener" target="_blank">getredash/redash/blob/master/docker-compose.production.yml</a></h4>
+<pre><code class="lang-yml"># This is an example configuration for Docker Compose. Make sure to atleast update
+# the cookie secret &amp; postgres database password.
+#
+# Some other recommendations:
+# 1. To persist Postgres data, assign it a volume host location.
+# 2. Split the worker service to adhoc workers and scheduled queries workers.
+version: '2'
+services:
+  server:
+    image: redash/redash:latest
+    command: server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+</code></pre>
+
+  This file has been truncated. <a href="https://github.com/getredash/redash/blob/master/docker-compose.production.yml" rel="nofollow noopener" target="_blank">show original</a>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cypri.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cypri_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cypri</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-28T11:25:03Z" itemprop="datePublished">
+                    September 28, 2018, 11:25am
+                  </time>
+<meta content="2018-09-28T11:25:03Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I try to upgrade on a snapshot of the db. So lots of room for failures.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinathganesh.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinathganesh_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinathganesh</span></a>
+</span>
+<link href="https://discuss.redash.io/t/redash-migrations-issue-docker-v3-to-v5/2396" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-28T11:44:38Z" itemprop="datePublished">
+                    September 28, 2018, 11:44am
+                  </time>
+<meta content="2018-09-28T11:44:38Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>also I had this problem -&gt; I was messing with upgrade and the copy of database got corrupted somehow that upgrades failed. Then I restored database and then upgrade worked fine. see above logs</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

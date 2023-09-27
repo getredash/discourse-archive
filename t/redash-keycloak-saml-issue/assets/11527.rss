@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Keycloak SAML Issue</title>
+    <link>https://discuss.redash.io/t/redash-keycloak-saml-issue/11527</link>
+    <description>**I am getting 500 error while connecting over SAML through keycloak** 
+
+![redash-keycloak-issue|690x388](upload://65gJxr3A8CafkbCLOIjhEkeYgPa.jpeg)
+
+
+Here is the logs
+[2023-01-31 05:06:09,175][PID:9][ERROR][redash.app] Exception on /saml/login [GET]
+server_1            | Traceback (most recent call last):
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connection.py&quot;, line 159, in _new_conn
+server_1            |     (self._dns_host, self.port), self.timeout, **extra_kw)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/util/connection.py&quot;, line 80, in create_connection
+server_1            |     raise err
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/util/connection.py&quot;, line 70, in create_connection
+server_1            |     sock.connect(sa)
+server_1            | ConnectionRefusedError: [Errno 111] Connection refused
+server_1            |
+server_1            | During handling of the above exception, another exception occurred:
+server_1            |
+server_1            | Traceback (most recent call last):
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py&quot;, line 600, in urlopen
+server_1            |     chunked=chunked)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py&quot;, line 343, in _make_request
+server_1            |     self._validate_conn(conn)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py&quot;, line 839, in _validate_conn
+server_1            |     conn.connect()
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connection.py&quot;, line 301, in connect
+server_1            |     conn = self._new_conn()
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connection.py&quot;, line 168, in _new_conn
+server_1            |     self, &quot;Failed to establish a new connection: %s&quot; % e)
+server_1            | urllib3.exceptions.NewConnectionError: &lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused
+server_1            |
+server_1            | During handling of the above exception, another exception occurred:
+server_1            |
+server_1            | Traceback (most recent call last):
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/requests/adapters.py&quot;, line 449, in send
+server_1            |     timeout=timeout
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py&quot;, line 638, in urlopen
+server_1            |     _stacktrace=sys.exc_info()[2])
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/urllib3/util/retry.py&quot;, line 399, in increment
+server_1            |     raise MaxRetryError(_pool, url, error or ResponseError(cause))
+server_1            | urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host=&#39;172.177.61.191&#39;, port=8443): Max retries exceeded with url: /realms/master/protocol/saml/descriptor (Caused by NewConnectionError(&#39;&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;))
+server_1            |
+server_1            | During handling of the above exception, another exception occurred:
+server_1            |
+server_1            | Traceback (most recent call last):
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/httpbase.py&quot;, line 243, in send
+server_1            |     r = requests.request(method, url, **_kwargs)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/requests/api.py&quot;, line 60, in request
+server_1            |     return session.request(method=method, url=url, **kwargs)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/requests/sessions.py&quot;, line 533, in request
+server_1            |     resp = self.send(prep, **send_kwargs)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/requests/sessions.py&quot;, line 646, in send
+server_1            |     r = adapter.send(request, **kwargs)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/requests/adapters.py&quot;, line 516, in send
+server_1            |     raise ConnectionError(e, request=request)
+server_1            | requests.exceptions.ConnectionError: HTTPSConnectionPool(host=&#39;172.177.61.191&#39;, port=8443): Max retries exceeded with url: /realms/master/protocol/saml/descriptor (Caused by NewConnectionError(&#39;&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;))
+server_1            |
+server_1            | During handling of the above exception, another exception occurred:
+server_1            |
+server_1            | Traceback (most recent call last):
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 2446, in wsgi_app
+server_1            |     response = self.full_dispatch_request()
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1951, in full_dispatch_request
+server_1            |     rv = self.handle_user_exception(e)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 269, in error_router
+server_1            |     return original_handler(e)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1820, in handle_user_exception
+server_1            |     reraise(exc_type, exc_value, tb)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/_compat.py&quot;, line 39, in reraise
+server_1            |     raise value
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1949, in full_dispatch_request
+server_1            |     rv = self.dispatch_request()
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1935, in dispatch_request
+server_1            |     return self.view_functions[rule.endpoint](**req.view_args)
+server_1            |   File &quot;/app/redash/authentication/saml_auth.py&quot;, line 145, in sp_initiated
+server_1            |     saml_client = get_saml_client(current_org)
+server_1            |   File &quot;/app/redash/authentication/saml_auth.py&quot;, line 92, in get_saml_client
+server_1            |     sp_config.load(saml_settings)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/config.py&quot;, line 382, in load
+server_1            |     self.load_complex(cnf, metadata_construction=metadata_construction)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/config.py&quot;, line 316, in load_complex
+server_1            |     self.load_metadata(cnf[&quot;metadata&quot;]))
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/config.py&quot;, line 425, in load_metadata
+server_1            |     mds.imp(metadata_conf)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/mdstore.py&quot;, line 1021, in imp
+server_1            |     self.load(key, **val)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/mdstore.py&quot;, line 1009, in load
+server_1            |     _md.load()
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/mdstore.py&quot;, line 790, in load
+server_1            |     response = self.http.send(self.url)
+server_1            |   File &quot;/usr/local/lib/python3.7/site-packages/saml2/httpbase.py&quot;, line 246, in send
+server_1            |     raise ConnectionError(&quot;%s&quot; % exc)
+server_1            | saml2.httpbase.ConnectionError: HTTPSConnectionPool(host=&#39;172.177.61.191&#39;, port=8443): Max retries exceeded with url: /realms/master/protocol/saml/descriptor (Caused by NewConnectionError(&#39;&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;))
+server_1            | [2023-01-31 05:06:09,178][PID:9][INFO][metrics] method=GET path=/saml/login endpoint=saml_auth_sp_initiated status=500 content_type=text/html content_length=290 duration=10.97 query_count=1 query_duration=0.92
+server_1            | [2023-01-31 05:06:09,179][PID:9][INFO][metrics] method=GET path=/saml/login endpoint=saml_auth_sp_initiated status=500 content_type=? content_length=-1 duration=12.27 query_count=1 query_duration=0.92
+server_1            | [2023-01-31 05:06:09,447][PID:12][INFO][metrics] method=GET path=/favicon.ico endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=369 duration=0.40 query_count=0 query_duration=0.00
+server_1            | [2023-01-31 05:06:09,875][PID:11][INFO][metrics] method=GET path=/login endpoint=redash_login status=200 content_type=text/html; charset=utf-8 content_length=2174 duration=16.92 query_count=1 query_duration=0.89
+azureuser@redash:~$</description>
+    
+    <lastBuildDate>Tue, 31 Jan 2023 05:14:26 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/redash-keycloak-saml-issue/11527.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Keycloak SAML Issue</title>
+        <dc:creator><![CDATA[smartysam9821]]></dc:creator>
+        <description><![CDATA[
+            <p><strong>I am getting 500 error while connecting over SAML through keycloak</strong></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2aa58bc9008dbf939412d25ff6ecf06ccc0dc9a4.jpeg" data-download-href="/uploads/short-url/65gJxr3A8CafkbCLOIjhEkeYgPa.jpeg?dl=1" title="redash-keycloak-issue" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2aa58bc9008dbf939412d25ff6ecf06ccc0dc9a4_2_690x388.jpeg" alt="redash-keycloak-issue" data-base62-sha1="65gJxr3A8CafkbCLOIjhEkeYgPa" width="690" height="388" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2aa58bc9008dbf939412d25ff6ecf06ccc0dc9a4_2_690x388.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2aa58bc9008dbf939412d25ff6ecf06ccc0dc9a4_2_1035x582.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2aa58bc9008dbf939412d25ff6ecf06ccc0dc9a4.jpeg 2x" data-dominant-color="FCFBF7"></a></div><p></p>
+<p>Here is the logs<br>
+[2023-01-31 05:06:09,175][PID:9][ERROR][redash.app] Exception on /saml/login [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connection.py”, line 159, in _new_conn<br>
+server_1            |     (self._dns_host, self.port), self.timeout, **extra_kw)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/util/connection.py”, line 80, in create_connection<br>
+server_1            |     raise err<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/util/connection.py”, line 70, in create_connection<br>
+server_1            |     sock.connect(sa)<br>
+server_1            | ConnectionRefusedError: [Errno 111] Connection refused<br>
+server_1            |<br>
+server_1            | During handling of the above exception, another exception occurred:<br>
+server_1            |<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py”, line 600, in urlopen<br>
+server_1            |     chunked=chunked)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py”, line 343, in _make_request<br>
+server_1            |     self._validate_conn(conn)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py”, line 839, in _validate_conn<br>
+server_1            |     conn.connect()<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connection.py”, line 301, in connect<br>
+server_1            |     conn = self._new_conn()<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connection.py”, line 168, in _new_conn<br>
+server_1            |     self, “Failed to establish a new connection: %s” % e)<br>
+server_1            | urllib3.exceptions.NewConnectionError: &lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused<br>
+server_1            |<br>
+server_1            | During handling of the above exception, another exception occurred:<br>
+server_1            |<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/requests/adapters.py”, line 449, in send<br>
+server_1            |     timeout=timeout<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py”, line 638, in urlopen<br>
+server_1            |     _stacktrace=sys.exc_info()[2])<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/urllib3/util/retry.py”, line 399, in increment<br>
+server_1            |     raise MaxRetryError(_pool, url, error or ResponseError(cause))<br>
+server_1            | urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host=‘172.177.61.191’, port=8443): Max retries exceeded with url: /realms/master/protocol/saml/descriptor (Caused by NewConnectionError(‘&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused’))<br>
+server_1            |<br>
+server_1            | During handling of the above exception, another exception occurred:<br>
+server_1            |<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/httpbase.py”, line 243, in send<br>
+server_1            |     r = requests.request(method, url, **_kwargs)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/requests/api.py”, line 60, in request<br>
+server_1            |     return session.request(method=method, url=url, **kwargs)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/requests/sessions.py”, line 533, in request<br>
+server_1            |     resp = self.send(prep, **send_kwargs)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/requests/sessions.py”, line 646, in send<br>
+server_1            |     r = adapter.send(request, **kwargs)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/requests/adapters.py”, line 516, in send<br>
+server_1            |     raise ConnectionError(e, request=request)<br>
+server_1            | requests.exceptions.ConnectionError: HTTPSConnectionPool(host=‘172.177.61.191’, port=8443): Max retries exceeded with url: /realms/master/protocol/saml/descriptor (Caused by NewConnectionError(‘&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused’))<br>
+server_1            |<br>
+server_1            | During handling of the above exception, another exception occurred:<br>
+server_1            |<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 2446, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1951, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 269, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1820, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask/_compat.py”, line 39, in reraise<br>
+server_1            |     raise value<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1949, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1935, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/app/redash/authentication/saml_auth.py”, line 145, in sp_initiated<br>
+server_1            |     saml_client = get_saml_client(current_org)<br>
+server_1            |   File “/app/redash/authentication/saml_auth.py”, line 92, in get_saml_client<br>
+server_1            |     sp_config.load(saml_settings)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/config.py”, line 382, in load<br>
+server_1            |     self.load_complex(cnf, metadata_construction=metadata_construction)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/config.py”, line 316, in load_complex<br>
+server_1            |     self.load_metadata(cnf[“metadata”]))<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/config.py”, line 425, in load_metadata<br>
+server_1            |     mds.imp(metadata_conf)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/mdstore.py”, line 1021, in imp<br>
+server_1            |     self.load(key, **val)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/mdstore.py”, line 1009, in load<br>
+server_1            |     _md.load()<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/mdstore.py”, line 790, in load<br>
+server_1            |     response = self.http.send(self.url)<br>
+server_1            |   File “/usr/local/lib/python3.7/site-packages/saml2/httpbase.py”, line 246, in send<br>
+server_1            |     raise ConnectionError(“%s” % exc)<br>
+server_1            | saml2.httpbase.ConnectionError: HTTPSConnectionPool(host=‘172.177.61.191’, port=8443): Max retries exceeded with url: /realms/master/protocol/saml/descriptor (Caused by NewConnectionError(‘&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7f46990c3390&gt;: Failed to establish a new connection: [Errno 111] Connection refused’))<br>
+server_1            | [2023-01-31 05:06:09,178][PID:9][INFO][metrics] method=GET path=/saml/login endpoint=saml_auth_sp_initiated status=500 content_type=text/html content_length=290 duration=10.97 query_count=1 query_duration=0.92<br>
+server_1            | [2023-01-31 05:06:09,179][PID:9][INFO][metrics] method=GET path=/saml/login endpoint=saml_auth_sp_initiated status=500 content_type=? content_length=-1 duration=12.27 query_count=1 query_duration=0.92<br>
+server_1            | [2023-01-31 05:06:09,447][PID:12][INFO][metrics] method=GET path=/favicon.ico endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=369 duration=0.40 query_count=0 query_duration=0.00<br>
+server_1            | [2023-01-31 05:06:09,875][PID:11][INFO][metrics] method=GET path=/login endpoint=redash_login status=200 content_type=text/html; charset=utf-8 content_length=2174 duration=16.92 query_count=1 query_duration=0.89<br>
+azureuser@redash:~$</p>
+          <p><a href="https://discuss.redash.io/t/redash-keycloak-saml-issue/11527/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-keycloak-saml-issue/11527/1</link>
+        <pubDate>Tue, 31 Jan 2023 05:14:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11527-1</guid>
+        <source url="https://discuss.redash.io/t/redash-keycloak-saml-issue/11527.rss">Redash Keycloak SAML Issue</source>
+      </item>
+  </channel>
+</rss>

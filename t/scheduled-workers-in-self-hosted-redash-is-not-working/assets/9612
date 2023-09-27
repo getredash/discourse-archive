@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Scheduled workers in self-hosted Redash is not working - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+We have a Redash instance in AWS that is spun up by using one of the pre-baked ami, that Redash provided us. Migration was okay but the scheduled queries doesn’t seem to execute. Was wondering how I can ad&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Scheduled workers in self-hosted Redash is not working&#39;" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612" />
+<meta property="og:title" content="Scheduled workers in self-hosted Redash is not working" />
+<meta name="twitter:title" content="Scheduled workers in self-hosted Redash is not working" />
+<meta property="og:description" content="Issue Summary We have a Redash instance in AWS that is spun up by using one of the pre-baked ami, that Redash provided us. Migration was okay but the scheduled queries doesn’t seem to execute. Was wondering how I can address that issue.   Technical details:  Redash Version: V8 Browser/OS: Google Chrome How did you install Redash: Using pre-baked AMI" />
+<meta name="twitter:description" content="Issue Summary We have a Redash instance in AWS that is spun up by using one of the pre-baked ami, that Redash provided us. Migration was okay but the scheduled queries doesn’t seem to execute. Was wondering how I can address that issue.   Technical details:  Redash Version: V8 Browser/OS: Google Chrome How did you install Redash: Using pre-baked AMI" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="5 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="4 ❤" />
+<meta property="article:published_time" content="2021-12-02T16:48:01+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+        <link rel="next" href="/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612?page=2">
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Scheduled workers in self-hosted Redash is not working","mainEntity":{"@type":"Question","name":"Scheduled workers in self-hosted Redash is not working","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\nWe have a Redash instance in AWS that is spun up by using one of the pre-baked ami, that Redash provided us. Migration was okay but the scheduled queries doesn’t seem to execute. Was wondering how I can address that issue.\n\n<a name=\"technical-details-2\" class=\"anchor\" href=\"#technical-details-2\"><\/a>Technical details:\n\nRedash Version: V8\n\nBrowser/OS: Google Ch&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-12-02T16:48:01.250Z","author":{"@type":"Person","name":"Michael Santos"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">Scheduled workers in self-hosted Redash is not working</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Scheduled workers in self-hosted Redash is not working'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-02T16:48:01Z' class='post-time'>
+                    December 2, 2021,  4:48pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-02T16:48:01Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>We have a Redash instance in AWS that is spun up by using one of the pre-baked ami, that Redash provided us. Migration was okay but the scheduled queries doesn’t seem to execute. Was wondering how I can address that issue.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V8</li>
+<li>Browser/OS: Google Chrome</li>
+<li>How did you install Redash: Using pre-baked AMI</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T15:31:44Z' class='post-time'>
+                    December 6, 2021,  3:31pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T15:31:44Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Since V8 is no longer supported I’d recommend following the upgrade instructions to V10.1. If the issue persists we can investigate and push out a fix.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T16:32:13Z' class='post-time'>
+                    December 6, 2021,  4:32pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T16:32:13Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Jesse! We upgraded the Redash instance to V10 but the web page wasn’t loading. Do you know what may have caused that issue ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T16:57:25Z' class='post-time'>
+                    December 6, 2021,  4:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T16:57:25Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You should look at the logs on your instance to see why the page doesn’t load.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T12:41:49Z' class='post-time'>
+                    December 7, 2021, 12:41pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-07T12:41:49Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <pre><code class="lang-auto">postgres_1          | ERROR:  column dashboards.options does not exist at character 614
+postgres_1          | STATEMENT:  SELECT count(*) AS count_1
+postgres_1          |   FROM (SELECT dashboards.updated_at AS dashboards_updated_at, dashboards.created_at AS dashboards_created_at, dashboards.id AS dashboards_id, dashboards.version AS dashboards_version, dashboards.org_id AS dashboards_org_id, dashboards.slug AS dashboards_slug, dashboards.name AS dashboards_name, dashboards.user_id AS dashboards_user_id, dashboards.layout AS dashboards_layout, dashboards.dashboard_filters_enabled AS dashboards_dashboard_filters_enabled, dashboards.is_archived AS dashboards_is_archived, dashboards.is_draft AS dashboards_is_draft, dashboards.tags AS dashboards_tags, dashboards.options AS dashboards_options
+nginx_1             | 10.0.1.97 - - [07/Dec/2021:12:38:18 +0000] "GET /static/app.101c1284c4a7520ca61d.css.map HTTP/1.1" 200 173089 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" "37.228.230.71"
+postgres_1          |   FROM dashboards
+postgres_1          |   WHERE 1 = dashboards.org_id AND dashboards.is_archived = false) AS anon_1
+server_1            | [2021-12-07 12:38:18,498][PID:10][ERROR][redash.app] Exception on /api/organization/status [GET]
+server_1            | Traceback (most recent call last):
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1249, in _execute_context
+server_1            |     cursor, statement, parameters, context
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py", line 580, in do_execute
+server_1            |     cursor.execute(statement, parameters)
+server_1            | psycopg2.errors.UndefinedColumn: column dashboards.options does not exist
+server_1            | LINE 2: ...rds_is_draft, dashboards.tags AS dashboards_tags, dashboards...
+server_1            |                                                              ^
+server_1            |
+server_1            |
+server_1            | The above exception was the direct cause of the following exception:
+server_1            |
+server_1            | Traceback (most recent call last):
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+server_1            |     response = self.full_dispatch_request()
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+server_1            |     rv = self.handle_user_exception(e)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py", line 269, in error_router
+server_1            |     return original_handler(e)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+server_1            |     reraise(exc_type, exc_value, tb)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+server_1            |     raise value
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+server_1            |     rv = self.dispatch_request()
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+server_1            |     return self.view_functions[rule.endpoint](**req.view_args)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/flask_login/utils.py", line 261, in decorated_view
+server_1            |     return func(*args, **kwargs)
+server_1            |   File "/app/redash/handlers/organization.py", line 22, in organization_status
+server_1            |     models.Dashboard.org == current_org, models.Dashboard.is_archived == False
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3605, in count
+server_1            |     return self.from_self(col).scalar()
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3330, in scalar
+server_1            |     ret = self.one()
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3300, in one
+server_1            |     ret = self.one_or_none()
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3269, in one_or_none
+server_1            |     ret = list(self)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3342, in __iter__
+server_1            |     return self._execute_and_instances(context)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3367, in _execute_and_instances
+server_1            |     result = conn.execute(querycontext.statement, self._params)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+server_1            |     return meth(self, multiparams, params)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+server_1            |     distilled_params,
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1253, in _execute_context
+server_1            |     e, statement, parameters, cursor, context
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1473, in _handle_dbapi_exception
+server_1            |     util.raise_from_cause(sqlalchemy_exception, exc_info)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py", line 398, in raise_from_cause
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py", line 152, in reraise
+server_1            |     raise value.with_traceback(tb)
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1249, in _execute_context
+server_1            |     cursor, statement, parameters, context
+server_1            |   File "/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py", line 580, in do_execute
+server_1            |     cursor.execute(statement, parameters)
+server_1            | sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedColumn) column dashboards.options does not exist
+server_1            | LINE 2: ...rds_is_draft, dashboards.tags AS dashboards_tags, dashboards...
+server_1            |                                                              ^
+server_1            |
+server_1            | [SQL: SELECT count(*) AS count_1
+server_1            | FROM (SELECT dashboards.updated_at AS dashboards_updated_at, dashboards.created_at AS dashboards_created_at, dashboards.id AS dashboards_id, dashboards.version AS dashboards_version, dashboards.org_id AS dashboards_org_id, dashboards.slug AS dashboards_slug, dashboards.name AS dashboards_name, dashboards.user_id AS dashboards_user_id, dashboards.layout AS dashboards_layout, dashboards.dashboard_filters_enabled AS dashboards_dashboard_filters_enabled, dashboards.is_archived AS dashboards_is_archived, dashboards.is_draft AS dashboards_is_draft, dashboards.tags AS dashboards_tags, dashboards.options AS dashboards_options
+server_1            | FROM dashboards
+server_1            | WHERE %(param_1)s = dashboards.org_id AND dashboards.is_archived = false) AS anon_1]
+server_1            | [parameters: {'param_1': 1}]
+server_1            | (Background on this error at: http://sqlalche.me/e/f405)
+</code></pre>
+<p>Found the issue I think</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T12:59:47Z' class='post-time'>
+                    December 7, 2021, 12:59pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-07T12:59:47Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I bumped into a user that had a similar issue and I managed to solve from his solution.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T13:57:41Z' class='post-time'>
+                    December 7, 2021,  1:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-07T13:57:41Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Still getting an issue with scheduled queries not executing</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T16:45:33Z' class='post-time'>
+                    December 7, 2021,  4:45pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-07T16:45:33Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Please drop a link to the solution that worked for you (for future searchers).</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T16:57:44Z' class='post-time'>
+                    December 7, 2021,  4:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T15:45:02Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Awesome, this is headway.</p>
+<p>For debugging, here’s the flow for scheduled queries:</p>
+<ol>
+<li>You add a schedule for a query</li>
+<li>Every minute, the <code>scheduler</code> service in your Docker compose should run a subroutine where it checks which queries need to be executed based on their schedules. Those that need to be executed <em>now</em> are enqueued as new jobs on the <code>scheduled</code> queue in Redis.</li>
+<li>The <code>scheduled_worker</code> service in your Docker compose should be monitoring the <code>scheduled</code> queue in Redis for new execution jobs. If a new job appears, one of the threads of <code>scheduled_worker</code> will pick up the job and execute it. If no threads are available to execute the job presently, it waits in queue until a thread picks it up or it’s purged automatically by Redis (defaults to 1000 seconds from the time the job was enqueued).</li>
+<li>When the <code>scheduled_worker</code> thread finishes executing the task, it stores the query result in the <code>postgres</code> metadata database. The database returns a <code>query_result_id</code> to the worker thread. The worker thread then updates the job status code in Redis to indicate the query result is ready and includes its  <code>query_result_id</code>. The worker thread also updates the <code>latest_query_data_id</code> on the query object.</li>
+</ol>
+<p>Debugging scheduled executions is a pretty straightforward process of going through each of these steps to figure out which one <em>isn’t</em> happening.</p>
+<p><em>Note: for ease of use it’s best to have a very simple debugging query (like <code>SELECT 1</code>) that you set up with a 1 minute refresh schedule. If you can, also disable the execution schedules for all other queries.</em></p>
+<h3>
+<a name="debugging-step-1-1" class="anchor" href="#debugging-step-1-1"></a>Debugging Step 1:</h3>
+<p>Make sure you actually added a schedule to the query (I know it’s obvious, but hey, we all make mistakes)</p>
+<h3>
+<a name="debugging-step-2-2" class="anchor" href="#debugging-step-2-2"></a>Debugging Step 2:</h3>
+<p>Confirm that your <code>scheduler</code> service is running with <code>docker-compose ps</code>. Once per minute you should see it enqueuing a new job for your debug query. It will emit a log message visible with <code>docker-compose logs -f --tail 100 scheduler</code> whenever it enqueues a new job.</p>
+<p>Then check Redis to see that the new job actually exists in the <code>scheduled</code> queue.</p>
+<h3>
+<a name="debugging-step-3-3" class="anchor" href="#debugging-step-3-3"></a>Debugging Step 3:</h3>
+<p>Confirm that your <code>scheduled_worker</code> is running with <code>docker-compose ps</code> and that it’s monitoring the <code>scheduled</code> queue in Redis (this is controlled by the <code>environment</code> portion of your compose file).</p>
+<p>When a thread of <code>scheduled_worker</code> picks up a job from the <code>scheduled</code> queue, it will emit a log that you can see with <code>docker-compose logs -f --tail 100 scheduled_worker</code>.</p>
+<p>Check redis to see that the job status code is changed from 1 (in queue) to 2 (executing).</p>
+<hr>
+<p>95% of the time the problem is evident at this point. I won’t go into debugging step 4 right now as it’s unlikely this is a problem.</p>
+<p>Give this a try and let us know which step <em>isn’t</em> happening.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T00:39:08Z' class='post-time'>
+                    December 8, 2021, 12:39am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T00:39:08Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Here is the solution link that worked for to solve this issue that I was encountering: <a href="http://discuss.redash.io/t/error-column-dashboards-options-does-not-exist-at-character-614/8907#:~:text=DNZhirnov%20in%20post%20%233-,When%20I%20applied%20migration%2C%20the%20redash%20worked!,-Reply">Solution</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T14:18:39Z' class='post-time'>
+                    December 8, 2021,  2:18pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T14:18:39Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>How do I check Redis to see of there’s a new job there, like what are the commands to address that ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4b518eecf18d581ac911b12285f126347b136cc7.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T14:21:21Z' class='post-time'>
+                    December 8, 2021,  2:21pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T14:21:21Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4b518eecf18d581ac911b12285f126347b136cc7.png" data-download-href="/uploads/short-url/aKixZ3z5OXrLB35bp4GvNpvHmSz.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4b518eecf18d581ac911b12285f126347b136cc7.png" alt="image" data-base62-sha1="aKixZ3z5OXrLB35bp4GvNpvHmSz" width="690" height="32" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4b518eecf18d581ac911b12285f126347b136cc7_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1352×63 5.2 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div><br>
+Can’t seem to execute this command</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1ce6055c796193eac9c7e77e77f474f8b68987e0.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T14:51:01Z' class='post-time'>
+                    December 8, 2021,  2:51pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T14:51:01Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1ce6055c796193eac9c7e77e77f474f8b68987e0.png" alt="image" data-base62-sha1="47EbzWboqYLhJh1qSSRJXaqbgm4" width="678" height="453"><br>
+Not sure if celery id suppose to be there ? Isn’t it RQ now ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_16' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T15:34:48Z' class='post-time'>
+                    December 8, 2021,  3:34pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T15:34:48Z'>
+              <span itemprop='position'>16</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>After doing some other research I noticed that we don’t need that celery queue. How can I replace it with RQ ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_17' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T15:45:51Z' class='post-time'>
+                    December 8, 2021,  3:45pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T15:45:51Z'>
+              <span itemprop='position'>17</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>My mistake: I put the CLI commands in the wrong order. I’ve updated the post above. The <code>-f --tail 100</code> must go directly after the <code>logs</code> command. The name of the service comes last.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_18' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T15:46:58Z' class='post-time'>
+                    December 8, 2021,  3:46pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T15:46:58Z'>
+              <span itemprop='position'>18</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Did you follow the upgrade instructions on the releases page? It should cover the changes to make to your docker-compose.yml file.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_19' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T15:59:05Z' class='post-time'>
+                    December 8, 2021,  3:59pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T15:59:05Z'>
+              <span itemprop='position'>19</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yes. I got rid of celery and removed:</p>
+<pre><code class="lang-auto"> #  environment:
+  #    QUEUES: "scheduled_queries,schemas"
+  #    WORKERS_COUNT: 2
+</code></pre>
+<p>That seemed to have decreased the amount of queues that was in the queued jobs in Redash. My question is do I have to add in the RQ scheduler ? I know there was a user that showed his docker file and under <code>scheduler</code> he only had:</p>
+<pre><code class="lang-auto">  &lt;&lt;: *redash-service
+    command: scheduler
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_20' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T16:45:07Z' class='post-time'>
+                    December 8, 2021,  4:45pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T16:45:07Z'>
+              <span itemprop='position'>20</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="michael26" data-post="19" data-topic="9612">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/c5a1d2/40.png" class="avatar"> michael26:</div>
+<blockquote>
+<pre><code class="lang-auto">  &lt;&lt;: *redash-service
+    command: scheduler
+</code></pre>
+</blockquote>
+</aside>
+<p>That’s right. With the move to RQ we didn’t need the <code>QUEUES</code> or <code>WORKERS_COUNT</code> environment variables. This service just runs the <code>scheduler</code> command in a loop <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_21' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/michael26'><span itemprop='name'>michael26</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T16:59:11Z' class='post-time'>
+                    December 8, 2021,  4:59pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T16:59:11Z'>
+              <span itemprop='position'>21</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a.png" data-download-href="/uploads/short-url/9LHW9eXRePFjsEAGn9UUtXKMViq.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a_2_690x141.png" alt="image" data-base62-sha1="9LHW9eXRePFjsEAGn9UUtXKMViq" width="690" height="141" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a_2_690x141.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a_2_1035x211.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/44782c56f42eafe22847d66615bb3352811d3f9a_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1190×244 41.9 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div><br>
+Is this necessary to in my dockerfile ? The contents of the docker file is as follows:</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+  #  environment:
+  #    QUEUES: "scheduled_queries,schemas"
+  #    WORKERS_COUNT: 2
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_22' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T17:57:44Z' class='post-time'>
+                    December 8, 2021,  5:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T18:03:16Z'>
+              <span itemprop='position'>22</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <blockquote>
+<p>Is this necessary to in my dockerfile ?</p>
+</blockquote>
+<p>Aye, it’s in the instructions because without it the general jobs, such as cleaning up old query results, will never run.</p>
+<p>Also <img src="https://emoji.discourse-cdn.com/twitter/eyes.png?v=10" title=":eyes:" class="emoji" alt=":eyes:"> You commented out the QUEUES and WORKER COUNT for the scheduled worker. This means your scheduled queries may not execute as expected.</p>
+<p>I’d strongly recommend using the default docker-compose.yml file unless you have a strong reason to alter it.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+    </div>
+
+    <div role='navigation' itemscope itemtype='http://schema.org/SiteNavigationElement' class="topic-body crawler-post">
+        <span itemprop='name'><b><a rel="next" itemprop="url" href="/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612?page=2">next page →</a></b></span>
+    </div>
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

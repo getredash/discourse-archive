@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Update query/dashboard with Python</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/update-query-dashboard-with-python/7624">Update query/dashboard with Python</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Update query/dashboard with Python" itemprop="headline"/>
+<meta content="Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sergio_redash.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sergio_redash_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sergio_redash</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-26T19:04:02Z" itemprop="datePublished">
+                    November 26, 2020,  7:04pm
+                  </time>
+<meta content="2020-11-27T16:11:37Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Hi,</p>
+<p>I was trying to update a query result and the dashboard by using Python and redash_toolbelt.</p>
+<p>My intention is to send a request to change the query so that the dashboard can be updated automatically depending on the sent parameters.</p>
+<p>Is is possible to execute this task by using API?</p>
+<p>Thanks</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T14:45:18Z" itemprop="datePublished">
+                    November 30, 2020,  2:45pm
+                  </time>
+<meta content="2020-11-30T14:45:18Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It should be, yes! Can you say more about your intended use? Perhaps I can provide a sample snippet.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sergio_redash.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sergio_redash_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sergio_redash</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T15:12:06Z" itemprop="datePublished">
+                    November 30, 2020,  3:12pm
+                  </time>
+<meta content="2020-11-30T15:12:06Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,</p>
+<p>Thank you for your response. This is my intention:</p>
+<p>I have a python web application and also an iframe to embed redash dashboard.<br/>
+What I need to do is to run some python code in charge of sending a POST request to redash API so that the Query Results are updated depending on attached parameters in the POST request and also update the dashboard so that the user can see an updated dashboard embedded in an iframe.</p>
+<p>I tried to apply the code published by redash (redash_toolbelt) with some modifications but I was not capable of updating Query Result and Dashboard with any of existing (work in progress) code examples.</p>
+<p>Any suggestion?</p>
+<p>Thank you very much</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T15:24:26Z" itemprop="datePublished">
+                    November 30, 2020,  3:24pm
+                  </time>
+<meta content="2020-11-30T15:24:26Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Cool. It sounds like you’re basically just using <code>redash_toolbelt</code> to refresh parameterized queries on a schedule, since the built-in scheduler can’t do this. If that’s the case, can you share the code you used (anonymized of course) that didn’t work?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sergio_redash.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sergio_redash_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sergio_redash</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T16:02:13Z" itemprop="datePublished">
+                    November 30, 2020,  4:02pm
+                  </time>
+<meta content="2020-11-30T16:02:13Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>This is the code extracted from redash_toolbelt with some new lines of code added by me.</p>
+<pre><code>def refresh_dashboard(baseurl, apikey, slug):
+
+    client = Redash(baseurl, apikey)
+    todays_dates = get_frontend_vals()
+    queries_dict = get_queries_on_dashboard(client, slug)
+
+    # loop through each query and its JSON data
+    for idx, qry in queries_dict.items():
+
+        # Trying to replace existing query with new value for "user"
+        qry['query'] = qry['query'].replace('SomeUserName', 'lemon')
+        #print(qry['query'])
+
+        params = {
+            p.get("name"): fill_dynamic_val(todays_dates, p)
+            for p in qry["options"].get("parameters", [])
+        }
+
+        # Trying to set custom datetime values
+        params['mydate']['start'] = '2020-11-08 11:44:00'
+        params['mydate']['end'] = '2020-11-08 12:00:00'
+
+        print("params:", params)
+
+        # Pass max_age to ensure a new result is provided.
+        body = {"parameters": params, "max_age": 0}
+
+        r = client._post(f"api/queries/{idx}/results", json=body)
+
+        print(f"Query: {idx} -- Code {r.status_code}")
+        print(r.text)</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T16:04:35Z" itemprop="datePublished">
+                    November 30, 2020,  4:04pm
+                  </time>
+<meta content="2020-11-30T16:04:35Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Are you not using a parameter for the user name? It looks like this code directly substitutes <code>SomeUserName</code> in the query text. This is of course fine. Just making sure I understand.</p>
+<p>Also, what happens when you run this code?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sergio_redash.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sergio_redash_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sergio_redash</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T16:10:45Z" itemprop="datePublished">
+                    November 30, 2020,  4:10pm
+                  </time>
+<meta content="2020-11-30T16:12:46Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That is correct. Only datetime is making use of query parameters so that user can set them at will when viewing the dashboard. The username does not make use of query parameters because I do not want the user to set that field manually in the dashboard. That is why I am trying to replace “SomeUsername” with the required value</p>
+<p>This is what I got after executing that code:</p>
+<p>Query: 7 – Code 200<br/>
+{“job”: {“status”: 1, “error”: “”, “id”: “9113b810-d0eb-4cc0-97cf-3bf8b5b767da”, “query_result_id”: null, “updated_at”: 0}}</p>
+<p>“SomeUserName” is not being replaced and the date ranges are not being set from inside python code. As a result, the dashboard is not updated</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-30T19:53:24Z" itemprop="datePublished">
+                    November 30, 2020,  7:53pm
+                  </time>
+<meta content="2020-11-30T19:53:24Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>First up, the response you receive back doesn’t indicate an error. It looks like the queries are executing normally. So that’s not a problem.</p>
+<p>But I still think there are two missing pieces here:</p>
+<ol>
+<li>When you substitute <code>SomeUserName</code> into the query, you aren’t saving the query again. So you are kicking off a new execution. But there’s no way for the dashboard to look up the value. Redash looks up query results using a hash of the value. So you need to first save the query with the new username hard-coded, then execute it.</li>
+<li>Then when the dashboard fetches results for some query ID, there will be a cached result.</li>
+</ol>
+<p>If you are doing this on a per-user basis then you’ll need a tool other than Redash, since Redash won’t work for embedded analytics.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sergio_redash.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sergio_redash_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sergio_redash</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-12-01T16:24:39Z" itemprop="datePublished">
+                    December 1, 2020,  4:24pm
+                  </time>
+<meta content="2020-12-01T16:24:39Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Since there is an API call like ‘api/dashboards/{}’, which expects “properties” to be passed and the id of the dashboard, I understand it is possible to update the dashboard using the input fields defined in query result, right?</p>
+<p>It is not clear to me what is the format of “properties”</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-12-03T16:42:41Z" itemprop="datePublished">
+                    December 3, 2020,  4:42pm
+                  </time>
+<meta content="2020-12-03T16:42:41Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That part of the API isn’t documented. You can learn the needed format by looking at <code>handlers.py</code> in the repository.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sergio_redash.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sergio_redash_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sergio_redash</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-12-04T14:48:24Z" itemprop="datePublished">
+                    December 4, 2020,  2:48pm
+                  </time>
+<meta content="2020-12-04T14:48:24Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I did not find handlers.py but a folder with that name (handlers/).<br/>
+Is that correct?</p>
+<p>Thanks you</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/update-query-dashboard-with-python/7624" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-12-07T15:06:38Z" itemprop="datePublished">
+                    December 7, 2020,  3:06pm
+                  </time>
+<meta content="2020-12-07T15:06:38Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>You’re right. I meant to write <code>api.py</code> which is inside the <code>handlers</code> folder.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

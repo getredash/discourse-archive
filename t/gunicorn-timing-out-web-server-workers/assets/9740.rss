@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Gunicorn timing out web/server workers</title>
+    <link>https://discuss.redash.io/t/gunicorn-timing-out-web-server-workers/9740</link>
+    <description>### Issue Summary
+
+With all the query runners and destinations enabled and the default 4 web workers, worker startup cannot complete in 30 seconds. Because of this, gunicorn main process is killing the worker processes. 
+
+### Technical details:
+
+* Redash Version: 10.1.0.b50633
+* Browser/OS: Client: Chrome Version 96 on macOS 11.6.1, Server: AWS EKS on Fargate
+* How did you install Redash: On AWS EKS Fargate using contrib-helm-chart
+
+The main gunicorn process will kill the worker process if it does not complete startup in 30 seconds and report back to the main process. Currently with all the query runners and destinations enabled it takes longer than 30 seconds for the worker to startup. The pod log shows these messages:
+
+```
+Using external postgresql database
+Using external redis database
+[2021-12-18 22:35:24 +0000] [8] [INFO] Starting gunicorn 20.0.4
+[2021-12-18 22:35:24 +0000] [8] [INFO] Listening at: http://0.0.0.0:5000 (8)
+[2021-12-18 22:35:24 +0000] [8] [INFO] Using worker: sync
+[2021-12-18 22:35:24 +0000] [11] [INFO] Booting worker with pid: 11
+[2021-12-18 22:35:24 +0000] [12] [INFO] Booting worker with pid: 12
+[2021-12-18 22:35:24 +0000] [13] [INFO] Booting worker with pid: 13
+[2021-12-18 22:35:24 +0000] [14] [INFO] Booting worker with pid: 14
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:11)
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:12)
+[2021-12-18 22:35:54 +0000] [11] [INFO] Worker exiting (pid: 11)
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:13)
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:14)
+[2021-12-18 22:35:54 +0000] [12] [INFO] Worker exiting (pid: 12)
+[2021-12-18 22:35:54 +0000] [14] [INFO] Worker exiting (pid: 14)
+[2021-12-18 22:35:55 +0000] [24] [INFO] Booting worker with pid: 24
+[2021-12-18 22:35:55 +0000] [25] [INFO] Booting worker with pid: 25
+[2021-12-18 22:35:55 +0000] [26] [INFO] Booting worker with pid: 26
+[2021-12-18 22:35:55 +0000] [27] [INFO] Booting worker with pid: 27
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:24)
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:25)
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:26)
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:27)
+[2021-12-18 22:36:25 +0000] [24] [INFO] Worker exiting (pid: 24)
+[2021-12-18 22:36:25 +0000] [25] [INFO] Worker exiting (pid: 25)
+[2021-12-18 22:36:25 +0000] [27] [INFO] Worker exiting (pid: 27)
+[2021-12-18 22:36:26 +0000] [26] [INFO] Worker exiting (pid: 26)
+[2021-12-18 22:36:27 +0000] [38] [INFO] Booting worker with pid: 38
+[2021-12-18 22:36:27 +0000] [39] [INFO] Booting worker with pid: 39
+[2021-12-18 22:36:27 +0000] [40] [INFO] Booting worker with pid: 40
+[2021-12-18 22:36:27 +0000] [41] [INFO] Booting worker with pid: 41
+```
+I&#39;m able to workaround the issue by limiting the query runners or changing the webworkers from 4 to 2. According to [this](https://programmerah.com/gunicorn-timeout-error-1-critical-worker-timeout-how-to-solve-37592/) the gunicorn command has a `--timeout` parameter  for which the default value is 30 seconds and it can be changed.</description>
+    
+    <lastBuildDate>Sat, 18 Dec 2021 23:18:26 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/gunicorn-timing-out-web-server-workers/9740.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Gunicorn timing out web/server workers</title>
+        <dc:creator><![CDATA[mkazia]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>With all the query runners and destinations enabled and the default 4 web workers, worker startup cannot complete in 30 seconds. Because of this, gunicorn main process is killing the worker processes.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.1.0.b50633</li>
+<li>Browser/OS: Client: Chrome Version 96 on macOS 11.6.1, Server: AWS EKS on Fargate</li>
+<li>How did you install Redash: On AWS EKS Fargate using contrib-helm-chart</li>
+</ul>
+<p>The main gunicorn process will kill the worker process if it does not complete startup in 30 seconds and report back to the main process. Currently with all the query runners and destinations enabled it takes longer than 30 seconds for the worker to startup. The pod log shows these messages:</p>
+<pre><code class="lang-auto">Using external postgresql database
+Using external redis database
+[2021-12-18 22:35:24 +0000] [8] [INFO] Starting gunicorn 20.0.4
+[2021-12-18 22:35:24 +0000] [8] [INFO] Listening at: http://0.0.0.0:5000 (8)
+[2021-12-18 22:35:24 +0000] [8] [INFO] Using worker: sync
+[2021-12-18 22:35:24 +0000] [11] [INFO] Booting worker with pid: 11
+[2021-12-18 22:35:24 +0000] [12] [INFO] Booting worker with pid: 12
+[2021-12-18 22:35:24 +0000] [13] [INFO] Booting worker with pid: 13
+[2021-12-18 22:35:24 +0000] [14] [INFO] Booting worker with pid: 14
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:11)
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:12)
+[2021-12-18 22:35:54 +0000] [11] [INFO] Worker exiting (pid: 11)
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:13)
+[2021-12-18 22:35:54 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:14)
+[2021-12-18 22:35:54 +0000] [12] [INFO] Worker exiting (pid: 12)
+[2021-12-18 22:35:54 +0000] [14] [INFO] Worker exiting (pid: 14)
+[2021-12-18 22:35:55 +0000] [24] [INFO] Booting worker with pid: 24
+[2021-12-18 22:35:55 +0000] [25] [INFO] Booting worker with pid: 25
+[2021-12-18 22:35:55 +0000] [26] [INFO] Booting worker with pid: 26
+[2021-12-18 22:35:55 +0000] [27] [INFO] Booting worker with pid: 27
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:24)
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:25)
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:26)
+[2021-12-18 22:36:25 +0000] [8] [CRITICAL] WORKER TIMEOUT (pid:27)
+[2021-12-18 22:36:25 +0000] [24] [INFO] Worker exiting (pid: 24)
+[2021-12-18 22:36:25 +0000] [25] [INFO] Worker exiting (pid: 25)
+[2021-12-18 22:36:25 +0000] [27] [INFO] Worker exiting (pid: 27)
+[2021-12-18 22:36:26 +0000] [26] [INFO] Worker exiting (pid: 26)
+[2021-12-18 22:36:27 +0000] [38] [INFO] Booting worker with pid: 38
+[2021-12-18 22:36:27 +0000] [39] [INFO] Booting worker with pid: 39
+[2021-12-18 22:36:27 +0000] [40] [INFO] Booting worker with pid: 40
+[2021-12-18 22:36:27 +0000] [41] [INFO] Booting worker with pid: 41
+</code></pre>
+<p>I’m able to workaround the issue by limiting the query runners or changing the webworkers from 4 to 2. According to <a href="https://programmerah.com/gunicorn-timeout-error-1-critical-worker-timeout-how-to-solve-37592/" rel="noopener nofollow ugc">this</a> the gunicorn command has a <code>--timeout</code> parameter  for which the default value is 30 seconds and it can be changed.</p>
+          <p><a href="https://discuss.redash.io/t/gunicorn-timing-out-web-server-workers/9740/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/gunicorn-timing-out-web-server-workers/9740/1</link>
+        <pubDate>Sat, 18 Dec 2021 23:18:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9740-1</guid>
+        <source url="https://discuss.redash.io/t/gunicorn-timing-out-web-server-workers/9740.rss">Gunicorn timing out web/server workers</source>
+      </item>
+  </channel>
+</rss>

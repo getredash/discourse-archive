@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Clickhouse - Multi-statements are not allowed errors. How to debug? - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+Some queries to Clickhouse returns an error like the following: 
+Error running query:  **Code: 62, e.displayText() = DB::Exception: Syntax error (Multi-statements are not allowed): failed at position 774 (e&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Clickhouse - Multi-statements are not allowed errors. How to debug?&#39;" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713" />
+<meta property="og:title" content="Clickhouse - Multi-statements are not allowed errors. How to debug?" />
+<meta name="twitter:title" content="Clickhouse - Multi-statements are not allowed errors. How to debug?" />
+<meta property="og:description" content="Issue Summary Some queries to Clickhouse returns an error like the following:  Error running query:  **Code: 62, e.displayText() = DB::Exception: Syntax error (Multi-statements are not allowed): failed at position 774 (end of query) (line 19, col 25): ; FORMAT JSON. (version 19.17.2.4 (official build))**  I’m not sure why is this happening when all the query I tried works fine when using Clickhouse HTTP interface done via curl or using the Clickhouse client.  How can I view the full query that R..." />
+<meta name="twitter:description" content="Issue Summary Some queries to Clickhouse returns an error like the following:  Error running query:  **Code: 62, e.displayText() = DB::Exception: Syntax error (Multi-statements are not allowed): failed at position 774 (end of query) (line 19, col 25): ; FORMAT JSON. (version 19.17.2.4 (official build))**  I’m not sure why is this happening when all the query I tried works fine when using Clickhouse HTTP interface done via curl or using the Clickhouse client.  How can I view the full query that R..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="6 ❤" />
+<meta property="article:published_time" content="2020-03-08T19:02:12+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Clickhouse - Multi-statements are not allowed errors. How to debug?","mainEntity":{"@type":"Question","name":"Clickhouse - Multi-statements are not allowed errors. How to debug?","text":"Issue Summary\n\nSome queries to Clickhouse returns an error like the following:\n\nError running query:  **Code: 62, e.displayText() = DB::Exception: Syntax error (Multi-statements are not allowed): failed at position 774 (end of query) (line 19, col 25): ; FORMAT JSON. (version 19.17.2.4 (official buil&hellip;","upvoteCount":0,"answerCount":1,"dateCreated":"2020-03-08T19:02:12.563Z","author":{"@type":"Person","name":"John Bryan Sazon"},"acceptedAnswer":{"@type":"Answer","text":"I don’t think it’s a bug. This sounds like expected behavior for Clickhouse.\n\nI searched your stack trace and found this:\n\n<a href=\"https://github.com/apla/node-clickhouse/issues/28\" target=\"_blank\">Multistatement query is not executing<\/a>\n\nopened 10:00AM - 09 Apr 19 UTC (UTC)\n\nclosed 02:58PM &hellip;","upvoteCount":1,"dateCreated":"2020-03-09T11:54:59.123Z","url":"https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713/2","author":{"@type":"Person","name":"jesse"}}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">Clickhouse - Multi-statements are not allowed errors. How to debug?</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Clickhouse - Multi-statements are not allowed errors. How to debug?'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bzon'><span itemprop='name'>bzon</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-03-08T19:02:12Z' class='post-time'>
+                    March 8, 2020,  7:02pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-03-08T19:02:12Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>Issue Summary</h3>
+<p>Some queries to Clickhouse returns an error like the following:</p>
+<p><code>Error running query:  **Code: 62, e.displayText() = DB::Exception: Syntax error (Multi-statements are not allowed): failed at position 774 (end of query) (line 19, col 25): ; FORMAT JSON. (version 19.17.2.4 (official build))**</code></p>
+<p>I’m not sure why is this happening when all the query I tried works fine when using Clickhouse HTTP interface done via curl or using the Clickhouse client.</p>
+<p>How can I view the full query that Redash is sending to Clickhouse?</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: redash/redash:8.0.2.b37747</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: <a href="https://github.com/getredash/contrib-helm-chart" rel="nofollow noopener">https://github.com/getredash/contrib-helm-chart</a>
+</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-03-09T11:54:59Z' class='post-time'>
+                    March 9, 2020, 11:54am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-03-09T11:54:59Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I don’t think it’s a bug. This sounds like expected behavior for Clickhouse.</p>
+<p>I searched your stack trace and found this:</p>
+<aside class="onebox githubissue">
+  <header class="source">
+      <a href="https://github.com/apla/node-clickhouse/issues/28" target="_blank">github.com/apla/node-clickhouse</a>
+  </header>
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewbox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/apla/node-clickhouse/issues/28" target="_blank">Multistatement query is not executing</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2019-04-09" data-time="10:00:51" data-timezone="UTC">10:00AM - 09 Apr 19 UTC</span>
+      </div>
+
+        <div class="date">
+          closed <span class="discourse-local-date" data-format="ll" data-date="2019-05-26" data-time="14:58:54" data-timezone="UTC">02:58PM - 26 May 19 UTC</span>
+        </div>
+
+      <div class="user">
+        <a href="https://github.com/AKGP" target="_blank">
+          <img alt="AKGP" src="https://avatars1.githubusercontent.com/u/9403322?v=4" class="onebox-avatar-inline" width="20" height="20">
+          AKGP
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="github-row">
+  <p class="github-content">I had an issue with running the multi statement query. Please provide a solution for this.</p>
+</div>
+
+<div class="labels">
+    <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">question</span>
+    <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">wontfix</span>
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p>It seems Clickhouse can’t support multi-statements without special client configuration.</p>
+<aside class="quote no-group" data-username="bzon" data-post="1" data-topic="5713">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bzon/40/1853_2.png" class="avatar"> bzon:</div>
+<blockquote>
+<p>How can I view the full query that Redash is sending to Clickhouse?</p>
+</blockquote>
+</aside>
+<p>Look at your query editor. What you see is sent as-is to the database. You can step through it manually using a development environment described in our <a href="https://redash.io/help/open-source/dev-guide">developer guide</a>.</p>
+<p>Perhaps the query runner can be updated to support multi-statements? This isn’t something we can do internally since we don’t have a CH instance to test against.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bazhenov'><span itemprop='name'>bazhenov</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-06-08T13:11:52Z' class='post-time'>
+                    June 8, 2020,  1:11pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-06-08T13:11:52Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>This would be a very useful feature for us. Clickhouse is very powerful but sometimes obstinate database. Especially in distributed setup and when global joins are required. In this case it’s very useful to break one query in several smaller ones and materialize intermediate results in temporary tables.</p>
+<p>Clickhouse has session support for HTTP-based query interface (see <code>session_id</code> in <a href="https://clickhouse.tech/docs/en/interfaces/http/" rel="nofollow noopener">documentation</a>) and it seems like it’s technically possible to implement multi statements. Although, script must be split on queries on client-side (redash).</p>
+<p>Does it seems like something from other users can benefit. I think I could provide a PR?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-06-08T14:02:58Z' class='post-time'>
+                    June 8, 2020,  2:02pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-06-08T14:02:58Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We would be happy to review this PR <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=9" title=":smiley:" class="emoji" alt=":smiley:"> We can’t really do this ourselves since our team doesn’t run Clickhouse anywhere.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Vladis'><span itemprop='name'>Vladis</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-06-10T13:57:39Z' class='post-time'>
+                    June 10, 2020,  1:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-06-10T13:57:39Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi!</p>
+<p>You can use Python query runner to concatenate results from several queries.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bazhenov'><span itemprop='name'>bazhenov</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-06-11T00:22:15Z' class='post-time'>
+                    June 11, 2020, 12:22am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-06-11T00:22:15Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Seems like a promising idea. Didn’t know about python query runner, because it doesn’t enabled by default on self hosted instance. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=9" title=":slight_smile:" class="emoji" alt=":slight_smile:"> Thanks.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Dron84'><span itemprop='name'>Dron84</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-07T08:50:59Z' class='post-time'>
+                    July 7, 2021,  8:50am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-07T08:50:59Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>May be You may have a problem with the semicolon since ClickHouse does not need to specify at the end of the line “;” Check this and your problem is may gone !</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="4" />
+              <span class='post-likes'>4 Likes</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/yuezhenyu0208'><span itemprop='name'>yuezhenyu0208</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/clickhouse-multi-statements-are-not-allowed-errors-how-to-debug/5713">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-22T07:52:36Z' class='post-time'>
+                    July 22, 2021,  7:52am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-22T07:52:36Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You are right,thank you</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

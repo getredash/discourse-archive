@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Query job not starting automatically</title>
+    <link>https://discuss.redash.io/t/query-job-not-starting-automatically/9321</link>
+    <description>### Issue Summary
+
+When i Create a query redash does not execute it.
+
+but after running following command it will be executed:
+`python manage.py rq worker`
+
+and result of `python manage.py status` is as follow:
+$ python manage.py status
+```
+{
+  &quot;version&quot;: &quot;10.0.0&quot;,
+  &quot;workers&quot;: [],
+  &quot;redis_used_memory&quot;: 1287088,
+  &quot;redis_used_memory_human&quot;: &quot;1.23M&quot;,
+  &quot;queries_count&quot;: 1,
+  &quot;query_results_count&quot;: 5,
+  &quot;unused_query_results_count&quot;: 0,
+  &quot;dashboards_count&quot;: 1,
+  &quot;widgets_count&quot;: 0,
+  &quot;manager&quot;: {
+    &quot;outdated_queries_count&quot;: &quot;0&quot;,
+    &quot;last_refresh_at&quot;: &quot;1634993558.8604321&quot;,
+    &quot;query_ids&quot;: &quot;[]&quot;,
+    &quot;queues&quot;: {
+      &quot;default&quot;: {
+        &quot;size&quot;: 20
+      },
+      &quot;periodic&quot;: {
+        &quot;size&quot;: 0
+      },
+      &quot;schemas&quot;: {
+        &quot;size&quot;: 0
+      },
+      &quot;queries&quot;: {
+        &quot;size&quot;: 1
+      }
+    }
+  },
+  &quot;database_metrics&quot;: {
+    &quot;metrics&quot;: [
+      [
+        &quot;Query Results Size&quot;,
+        49152
+      ],
+      [
+        &quot;Redash DB Size&quot;,
+        9531951
+      ]
+    ]
+  }
+}
+```
+Why we have no worker to execute the query? what is the problem
+
+### Technical details:
+
+* Redash Version: 10.0.
+* Browser/OS: chrome
+* How did you install Redash: with docker image</description>
+    
+    <lastBuildDate>Mon, 25 Oct 2021 15:39:17 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/query-job-not-starting-automatically/9321.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Query job not starting automatically</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It doesn’t work automatically because the image is meant to be orchestrated with <code>docker-compose</code>.  You should check out our docs for <a href="https://redash.io/help/open-source/setup">setting up an instance</a>. This will be a bit easier once we update our setup script for V10 (which is one of our <a href="http://discuss.redash.io/t/v10-follow-up-items/9257">V10 Follow Up Items</a>).</p>
+<p>A really basic <code>docker-compose.yml</code> file for testing V10 appears below. Observe that it effectively automates what you’re doing manually. It spins up the web server, scheduler, database, redis, and a couple workers.</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: env
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/query-job-not-starting-automatically/9321/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-job-not-starting-automatically/9321/4</link>
+        <pubDate>Mon, 25 Oct 2021 15:39:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9321-4</guid>
+        <source url="https://discuss.redash.io/t/query-job-not-starting-automatically/9321.rss">Query job not starting automatically</source>
+      </item>
+      <item>
+        <title>Query job not starting automatically</title>
+        <dc:creator><![CDATA[younes]]></dc:creator>
+        <description><![CDATA[
+            <p>I just started redash/redash (version 10) official docker image not from docker-compose up command.</p>
+<p>does it need any other start command?</p>
+          <p><a href="https://discuss.redash.io/t/query-job-not-starting-automatically/9321/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-job-not-starting-automatically/9321/3</link>
+        <pubDate>Mon, 25 Oct 2021 08:56:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9321-3</guid>
+        <source url="https://discuss.redash.io/t/query-job-not-starting-automatically/9321.rss">Query job not starting automatically</source>
+      </item>
+      <item>
+        <title>Query job not starting automatically</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What does your docker-compose file look like? Did you specify any worker services?</p>
+          <p><a href="https://discuss.redash.io/t/query-job-not-starting-automatically/9321/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-job-not-starting-automatically/9321/2</link>
+        <pubDate>Mon, 25 Oct 2021 02:45:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9321-2</guid>
+        <source url="https://discuss.redash.io/t/query-job-not-starting-automatically/9321.rss">Query job not starting automatically</source>
+      </item>
+      <item>
+        <title>Query job not starting automatically</title>
+        <dc:creator><![CDATA[younes]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>When i Create a query redash does not execute it.</p>
+<p>but after running following command it will be executed:<br>
+<code>python manage.py rq worker</code></p>
+<p>and result of <code>python manage.py status</code> is as follow:<br>
+$ python manage.py status</p>
+<pre><code class="lang-auto">{
+  "version": "10.0.0",
+  "workers": [],
+  "redis_used_memory": 1287088,
+  "redis_used_memory_human": "1.23M",
+  "queries_count": 1,
+  "query_results_count": 5,
+  "unused_query_results_count": 0,
+  "dashboards_count": 1,
+  "widgets_count": 0,
+  "manager": {
+    "outdated_queries_count": "0",
+    "last_refresh_at": "1634993558.8604321",
+    "query_ids": "[]",
+    "queues": {
+      "default": {
+        "size": 20
+      },
+      "periodic": {
+        "size": 0
+      },
+      "schemas": {
+        "size": 0
+      },
+      "queries": {
+        "size": 1
+      }
+    }
+  },
+  "database_metrics": {
+    "metrics": [
+      [
+        "Query Results Size",
+        49152
+      ],
+      [
+        "Redash DB Size",
+        9531951
+      ]
+    ]
+  }
+}
+</code></pre>
+<p>Why we have no worker to execute the query? what is the problem</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.</li>
+<li>Browser/OS: chrome</li>
+<li>How did you install Redash: with docker image</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/query-job-not-starting-automatically/9321/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-job-not-starting-automatically/9321/1</link>
+        <pubDate>Sat, 23 Oct 2021 18:30:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9321-1</guid>
+        <source url="https://discuss.redash.io/t/query-job-not-starting-automatically/9321.rss">Query job not starting automatically</source>
+      </item>
+  </channel>
+</rss>

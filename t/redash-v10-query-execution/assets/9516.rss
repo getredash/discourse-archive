@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash V10 query execution</title>
+    <link>https://discuss.redash.io/t/redash-v10-query-execution/9516</link>
+    <description>### Issue Summary
+
+A summary of the issue and the browser/OS environment in which it occurs.
+
+1. For some queries we have to click &quot;execute&quot; button  multiple times.
+2. Sometimes alerts are not getting triggered.
+
+No errors I can find in any of container logs . We are open to pay for consulting engagement
+
+### Technical details:
+
+* Redash Version: V10
+* Browser/OS: Chrome/ MAC
+* How did you install Redash: AMI then upgrade, added Oracle support 
+Here our docker-compose.yml:
+
+```yaml
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash_oracle_v10:latest
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries,schemas&quot;
+      WORKERS_COUNT: 4
+  worker:
+   &lt;&lt;: *redash-service
+   command: worker
+   environment:
+    QUEUES: &quot;periodic,emails,default&quot;
+    WORKERS_COUNT: 1
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+```</description>
+    
+    <lastBuildDate>Sat, 27 Nov 2021 08:05:53 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>Looks like the issue is solved.<br>
+Another docket down / up -d and we haven’t got failed jobs since.</p>
+<p>thanks for the help</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/29">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/29</link>
+        <pubDate>Sat, 27 Nov 2021 08:05:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-29</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>Yea<br>
+Wverytime it is different as well</p>
+<p>בתאריך יום ו׳, 26 בנוב׳ 2021 ב-0:34 מאת jesse via Redash Discourse &lt;<a href="mailto:redash1@discoursemail.com">redash1@discoursemail.com</a>&gt;:</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/28">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/28</link>
+        <pubDate>Thu, 25 Nov 2021 22:41:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-28</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What’s the nature of this query? A simple select?</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/27">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/27</link>
+        <pubDate>Thu, 25 Nov 2021 22:24:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-27</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="25" data-topic="9516">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>redash.query_runner.snowflake</p>
+</blockquote>
+</aside>
+<p>it may reduce the frequency. hard to say really. but it is still occurring.<br>
+and even with debug during the error - nothing came from adhoc_worker</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/26">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/26</link>
+        <pubDate>Thu, 25 Nov 2021 21:24:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-26</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It’s a bit of a long shot: try disabling the snowflake query runner using the REDASH_DISABLED_QUERY_RUNNERS environment variable. Set it to <code>redash.query_runner.snowflake</code> and restart.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/25">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/25</link>
+        <pubDate>Thu, 25 Nov 2021 21:19:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-25</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>nothing really</p>
+<p>root@ip-xxxx:/opt/redash# cat debug.log | grep -v -E “Regist|lazy|snowflake|is compatible|is available|Checking ‘python-requests’ version”<br>
+root@ip-xxxx:/opt/redash#</p>
+<p>may just that:</p>
+<p>adhoc_worker_1      | [2021-11-25 21:06:05,706][PID:21][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp<br>
+adhoc_worker_1      | [2021-11-25 21:06:05,725][PID:21][DEBUG][snowflake.connector.auth] cache directory: /home/redash/.cache/snowflake</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/24">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/24</link>
+        <pubDate>Thu, 25 Nov 2021 21:15:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-24</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I don’t think this is related to the odd query execution behavior.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/23">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/23</link>
+        <pubDate>Thu, 25 Nov 2021 20:51:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-23</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Try setting the <code>REDASH_DEBUG_LEVEL</code> to <code>DEBUG</code> in your environment, restart the containers and try again. This should give you more verbose logs.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/22">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/22</link>
+        <pubDate>Thu, 25 Nov 2021 20:50:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-22</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[afridland]]></dc:creator>
+        <description><![CDATA[
+            <p>Actually with warning above query does completed, when it fails, I don’t see any record in adhoc-worker log,</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/21">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/21</link>
+        <pubDate>Thu, 25 Nov 2021 20:25:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-21</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[afridland]]></dc:creator>
+        <description><![CDATA[
+            <p>Also on some queries, I’ve noticed following warning, but it happens only sometimes</p>
+<p>cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 13627’”)<br>
+cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 13798’”)<br>
+cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 14970’”)<br>
+cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 15302’”)<br>
+cursor.execute(query)</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/20">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/20</link>
+        <pubDate>Thu, 25 Nov 2021 20:02:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-20</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>interesting thing is that I tried it a few more times and did not get stack trace for those failures.</p>
+<p><strong>Thanks,</strong><br>
+<strong>Nir Ben Ezri</strong><br>
+<strong>DBA Team Lead</strong><br>
+<strong>DistroKid</strong><br>
+<a href="https://distrokid.com/" rel="noopener nofollow ugc"><strong>https://distrokid.com</strong></a></p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/19</link>
+        <pubDate>Thu, 25 Nov 2021 19:26:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-19</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>wait, i miss spoke</p>
+<p>adhoc_worker_1 | [2021-11-25 19:03:33,420][PID:2416][WARNING][rq.job.redash.tasks.queries.execution] job.func_name=redash.tasks.queries.execution.execute_query <a href="http://job.id" rel="noopener nofollow ugc">job.id</a>=edb92cb8-6ab2-4d40-8180-e9396dc04584 Unexpected error while running query:<br>
+adhoc_worker_1 | Traceback (most recent call last):<br>
+adhoc_worker_1 | File “/app/redash/tasks/queries/execution.py”, line 188, in run<br>
+adhoc_worker_1 | data, error = query_runner.run_query(annotated_query, self.user)<br>
+adhoc_worker_1 | File “/app/redash/query_runner/mysql.py”, line 168, in run_query<br>
+adhoc_worker_1 | while not ev.wait(1):<br>
+adhoc_worker_1 | File “/usr/local/lib/python3.7/threading.py”, line 552, in wait<br>
+adhoc_worker_1 | signaled = self._cond.wait(timeout)<br>
+adhoc_worker_1 | File “/usr/local/lib/python3.7/threading.py”, line 300, in wait<br>
+adhoc_worker_1 | gotit = waiter.acquire(True, timeout)<br>
+adhoc_worker_1 | File “/app/redash/tasks/queries/execution.py”, line 129, in signal_handler<br>
+adhoc_worker_1 | raise InterruptException<br>
+adhoc_worker_1 | redash.query_runner.InterruptException</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/18</link>
+        <pubDate>Thu, 25 Nov 2021 19:04:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-18</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>There isn’t any stacktrace.</p>
+<p>also looking for the failed run didn’t show anything</p>
+<p>root@ip-x-x-x-x:/opt/redash# docker logs --tail 1000 redash_adhoc_worker_1 &amp;&gt; log.log<br>
+root@ip-x-x-x-x:/opt/redash# grep “8b579138-cef8-456d-9e81-ab9ab4a5dc7b” log.log</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/17</link>
+        <pubDate>Thu, 25 Nov 2021 19:02:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-17</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Cool thanks. The next step is to check the logs for your <code>adhoc_worker</code>. In the network response you pasted above, the job returns a code 4 which means query execution failed. The logs for adhoc worker will show more about what went wrong.</p>
+<p>You can do this by SSH’ing into the server:</p>
+<pre><code class="lang-auto">$ sudo docker-compose logs -f --tail 100 adhoc_worker
+</code></pre>
+<p>Then execute the query in your browser and watch the logs for a stack trace.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/16</link>
+        <pubDate>Thu, 25 Nov 2021 18:42:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-16</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[afridland]]></dc:creator>
+        <description><![CDATA[
+            <p>We do have 6 redash_web_workers, not web servers, we are running on EC2, not k8s</p>
+<p>Here id docker container stats:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64.png" data-download-href="/uploads/short-url/7Mc03Hw5O7v5zp7NUmUwP87Rs1K.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_690x94.png" alt="image" data-base62-sha1="7Mc03Hw5O7v5zp7NUmUwP87Rs1K" width="690" height="94" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_690x94.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_1035x141.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_1380x188.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/15</link>
+        <pubDate>Thu, 25 Nov 2021 05:13:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-15</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Why do you have six web servers? Are you running k8s by chance? That might explain the weird performance…</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/14</link>
+        <pubDate>Wed, 24 Nov 2021 22:19:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-14</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>The null/empty result comes from<br>
+MySQL, oracle, and redshift. I haven’t checked others.</p>
+<p>As to the ram limitation, how can we check?</p>
+<p>This installation is based of your IAM image on a bigger instance type.</p>
+<p>ATM we set 6 web servers, 20 workers, 16 adhoc. Free memory is 6g.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/13</link>
+        <pubDate>Wed, 24 Nov 2021 22:03:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-13</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="afridland" data-post="11" data-topic="9516">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/3be4f8/40.png" class="avatar"> afridland:</div>
+<blockquote>
+<p>15 GB available on the host,</p>
+</blockquote>
+</aside>
+<p>Available to Docker? Many system limit docker’s ram</p>
+<p>About the data source: I’m asking specifically what kind of data source the query uses.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/12</link>
+        <pubDate>Wed, 24 Nov 2021 21:24:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-12</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[afridland]]></dc:creator>
+        <description><![CDATA[
+            <p>15 GB available on the host,<br>
+Yes, query done through data source</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/11</link>
+        <pubDate>Wed, 24 Nov 2021 21:00:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-11</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There wouldn’t be errors in the logs for this. If the worker dies it just dies.</p>
+<p>How much RAM on your instance?</p>
+<p>Also, is this a query results data source query?</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/10</link>
+        <pubDate>Wed, 24 Nov 2021 19:51:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-10</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[afridland]]></dc:creator>
+        <description><![CDATA[
+            <p>16, I can’t find any errors in the logs</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/9</link>
+        <pubDate>Wed, 24 Nov 2021 19:44:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-9</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>How many rows does this query return if you run it on a separate tool? It looks like the worker is probably dying because it runs out of memory.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/8</link>
+        <pubDate>Wed, 24 Nov 2021 19:14:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-8</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[Nir]]></dc:creator>
+        <description><![CDATA[
+            <p>nothing happens refers to:</p>
+<ol>
+<li>not getting results back</li>
+<li>at the bottom (where the result count) we see “0 rows - runtime”</li>
+</ol>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6.jpeg" data-download-href="/uploads/short-url/gnR3J1mAH7rxCPyeXz3EGxroitU.jpeg?dl=1" title="redash" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_690x345.jpeg" alt="redash" data-base62-sha1="gnR3J1mAH7rxCPyeXz3EGxroitU" width="690" height="345" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_690x345.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_1035x517.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_1380x690.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_10x10.png"></a></div><p></p>
+<p>we see 3 requests when that happens:</p>
+<ol>
+<li>results:<br>
+{“job”: {“id”: “2bee02b3-3a2a-4138-bfc0-f7b39ff324ae”, “updated_at”: 0, “status”: 1, “error”: “”, “result”: null, “query_result_id”: null}}</li>
+<li>api/jobs/2bee02b3-3a2a-4138-bfc0-f7b39ff324ae:<br>
+{“job”: {“id”: “2bee02b3-3a2a-4138-bfc0-f7b39ff324ae”, “updated_at”: 0, “status”: 4, “error”: “”, “result”: null, “query_result_id”: null}}<br>
+3… events:<br>
+null</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/7</link>
+        <pubDate>Wed, 24 Nov 2021 08:12:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-7</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>good. now focus on the network requests <em>when the problem reproduces</em>. You said the problem is you click Execute and nothing happens.</p>
+<p>When “nothing happens”, what do you see in these network requests? Particularly the call to the /results endpoint.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/6</link>
+        <pubDate>Wed, 24 Nov 2021 05:29:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-6</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+      <item>
+        <title>Redash V10 query execution</title>
+        <dc:creator><![CDATA[afridland]]></dc:creator>
+        <description><![CDATA[
+            <p>I do see multiple network requests, sometime a lot of them , when query return results, sometime just 3</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35.png" data-download-href="/uploads/short-url/m9V7z1QIhHEqx3GX1uRtIRM3e0R.png?dl=1" title="Screen Shot 2021-11-23 at 11.11.54 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_689x112.png" alt="Screen Shot 2021-11-23 at 11.11.54 PM" data-base62-sha1="m9V7z1QIhHEqx3GX1uRtIRM3e0R" width="689" height="112" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_689x112.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_1033x168.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-query-execution/9516/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-query-execution/9516/5</link>
+        <pubDate>Wed, 24 Nov 2021 05:14:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9516-5</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss">Redash V10 query execution</source>
+      </item>
+  </channel>
+</rss>

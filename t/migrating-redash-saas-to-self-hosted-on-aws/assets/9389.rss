@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Migrating Redash SaaS to self-hosted on AWS</title>
+    <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389</link>
+    <description>Hello,
+
+I&#39;m currently using Redash Hosted (SaaS), the version it shows is 7b026a19
+Due to the service being taken down, I&#39;d like to migrate to a self hosted solution.
+I&#39;ve tried spinning up an EC2 with the AMI that&#39;s available, but it&#39;s for version 8 of Redash, I&#39;ve tried running the &#39;redash-migration&#39; script and while some things copied successfully, some other failed.
+
+What is the best course of action in this case?
+Is it possible to get a DB dump of the Redash SaaS environment?</description>
+    
+    <lastBuildDate>Thu, 04 Nov 2021 12:49:59 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Unfortunately there’s no much we can do about the archived query issue. Archived queries are never sent through the API <code>redash-migrate</code> uses.</p>
+<aside class="quote no-group" data-username="Saikou" data-post="14" data-topic="9389">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/s/5f9b8f/40.png" class="avatar"> Saikou:</div>
+<blockquote>
+<p>I’ve ended up just adding a table to that query on the origin server and running it again, it worked.</p>
+</blockquote>
+</aside>
+<p>I’m glad this worked. I expected it would. But I wonder if there’s a bug in our code that somehow didn’t transfer the table. If so, then other users will encounter this same issue and may not be as technically capable as you to fix it.</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/15</link>
+        <pubDate>Thu, 04 Nov 2021 12:49:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-15</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p>I’ve ended up just adding a table to that query on the origin server and running it again, it worked.</p>
+<p>Another problem I’ve encountered was that some queries had parameters that referred to other queries but these queries were archived in the origin server and thus not copied over to the destination server.<br>
+This caused an internal server error as the ID that was send was ‘None’ (because it couldn’t find the relevant query in the meta file).<br>
+We just removed these queries and continued, but this might be worth to add validation in code for this.</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/14</link>
+        <pubDate>Thu, 04 Nov 2021 12:24:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-14</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I need to poke through the code to see if I can reproduce this. I would recommend wiping your destination instance and trying again though…</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/13</link>
+        <pubDate>Wed, 03 Nov 2021 18:27:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-13</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p>Personally I haven’t deleted anything myself, but I don’t know if it might have been done before by someone else.<br>
+Is there any workaround for this?</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/12</link>
+        <pubDate>Wed, 03 Nov 2021 18:18:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-12</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Well there’s the problem. This query doesn’t have a table visualization <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=10" title=":thinking:" class="emoji" alt=":thinking:"></p>
+<p>Just to confirm: you haven’t manually deleted any visualizations at the database-level? If not, then I think we have a race-condition in our script or something like it. The script is expecting that there will always be at least one table visualisation. But in this case there isn’t one…</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/11</link>
+        <pubDate>Wed, 03 Nov 2021 17:44:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-11</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> This is the value of query[“visualizations”]:</p>
+<pre><code class="lang-auto">[
+  {
+    "id": 354489,
+    "type": "CHART",
+    "name": "",
+    "description": "",
+    "options": {
+      "showDataLabels": true,
+      "error_y": {
+        "visible": true,
+        "type": "data"
+      },
+      "numberFormat": "0,0[.]00000",
+      "minColumns": 1,
+      "defaultColumns": 3,
+      "series": {
+        "stacking": null,
+        "error_y": {
+          "visible": true,
+          "type": "data"
+        }
+      },
+      "globalSeriesType": "pie",
+      "yAxis": [
+        {
+          "type": "linear",
+          "title": {
+            "text": "some text"
+          }
+        },
+        {
+          "title": {
+            "text": ""
+          },
+          "type": "linear",
+          "opposite": true
+        }
+      ],
+      "minRows": 5,
+      "percentFormat": "0[.]00%",
+      "sortX": true,
+      "seriesOptions": {
+        "payments": {
+          "zIndex": 0,
+          "index": 0,
+          "type": "pie",
+          "yAxis": 0
+        }
+      },
+      "valuesOptions": {
+        "credit": {
+          "color": "#799CFF"
+        },
+        "ach": {
+          "color": "#604FE9"
+        },
+        "debit": {}
+      },
+      "xAxis": {
+        "labels": {
+          "enabled": true
+        },
+        "type": "-",
+        "title": {
+          "text": ""
+        }
+      },
+      "dateTimeFormat": "YYYY-MM-DD HH:mm",
+      "columnMapping": {
+        "paymentMethod": "x",
+        "payments": "y"
+      },
+      "textFormat": "",
+      "defaultRows": 8,
+      "customCode": "// Available variables are x, ys, element, and Plotly\n// Type console.log(x, ys); for more info about x and ys\n// To plot your graph call Plotly.plot(element, ...)\n// Plotly examples and docs: https://plot.ly/javascript/",
+      "legend": {
+        "enabled": true
+      }
+    },
+    "updated_at": "2019-05-26T19:56:21.105Z",
+    "created_at": "2019-05-26T19:51:41.801Z"
+  }
+]
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/10</link>
+        <pubDate>Wed, 03 Nov 2021 17:41:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-10</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Version 0.1.8 is now live on pypi so it can be installed with <code>pip install --upgrade redash-toolbelt</code></p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/9</link>
+        <pubDate>Wed, 03 Nov 2021 17:26:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-9</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for running the latest version! That’s massively helpful.</p>
+<p>Okay so the reason for the sorting is to figure out which table is the <em>default</em> table for the query. The default table is created automatically when the query is created. We just added this logic in 0.1.7. It’s important because customisations to the default table at the origin were not duplicated at the destination without it.</p>
+<p>Since you’re running the dev build, can you add a print statement to see what is the content of <code>query["visualizations"]</code> right about line 675?</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/8</link>
+        <pubDate>Wed, 03 Nov 2021 16:33:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-8</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p>Tried it with version 0.1.8 of the script, still get the same error and output.<br>
+I found this issue for now:</p><aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675" target="_blank" rel="noopener nofollow ugc">getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-py">
+      <ol class="start lines" start="665" style="counter-reset: li-counter 664 ;">
+          <li>
+          </li>
+<li># Gather origin info</li>
+          <li>query = orig_client.get_query(query_id)</li>
+          <li>orig_user_id = query["user"]["id"]</li>
+          <li>
+          </li>
+<li># Sort both lists to retain visualization order on the query screen</li>
+          <li>orig_table_visualizations = sorted(</li>
+          <li>    [i for i in query["visualizations"] if i["type"] == "TABLE"],</li>
+          <li>    key=lambda x: x["id"],</li>
+          <li>)</li>
+          <li class="selected">orig_default_table = orig_table_visualizations[0]</li>
+          <li>
+          </li>
+<li># Build a user client so write operations preserve the original created by...</li>
+          <li>
+          </li>
+<li>try:</li>
+          <li>    dest_user_api_key = user_with_api_key(orig_user_id, dest_client)["api_key"]</li>
+          <li>    user_client = Redash(DESTINATION, dest_user_api_key)</li>
+          <li>except UserNotFoundException as e:</li>
+          <li>    print("Query {} - FAIL - Visualizations skipped: ".format(query_id, e))</li>
+          <li>    continue</li>
+          <li>
+      </li>
+</ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>This line fails for queries that the only visualization type they have is not of type “TABLE”.</p>
+<p>I’m not 100% if this sorting part is necessary or not, so I don’t know if it’s safe to try run without it. <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> any insights?</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/7</link>
+        <pubDate>Wed, 03 Nov 2021 15:56:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-7</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for reporting this. I’m pushing an update to redash-toolbelt shortly so that we can get a better traceback when this fails. <a href="https://github.com/getredash/redash-toolbelt/pull/108" class="inline-onebox">Show full traceback when an exception is raised by susodapop · Pull Request #108 · getredash/redash-toolbelt · GitHub</a></p>
+<p>We’ll release version <code>0.1.8</code> shortly and then you can re-run.</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/6</link>
+        <pubDate>Wed, 03 Nov 2021 13:36:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-6</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p>Started with a new EC2 instance and upgraded Redash to v10.<br>
+When getting to the part of migrating the visualizations I get the following (this is not the first run, but same issue):</p>
+<pre><code class="lang-auto">Importing visualizations...
+Query 140614 - SKIP - All visualisations already imported
+...
+Query 207138 - SKIP - All visualisations already imported
+list index out of range
+Saving meta...
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/5</link>
+        <pubDate>Tue, 02 Nov 2021 22:32:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-5</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes. The instructions for redash-migrate state specifically it is built for that EXACT case <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/4</link>
+        <pubDate>Tue, 02 Nov 2021 17:24:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-4</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p>Would it be able to migrate the V7 SaaS to V10 (That I host)?</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/3</link>
+        <pubDate>Tue, 02 Nov 2021 17:09:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-3</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi there, <a href="https://github.com/getredash/redash-toolbelt/tree/master/redash_toolbelt/docs/redash-migrate">redash-migrate</a> is only designed to migrate to OSS Redash V10. It might work for V8 but we haven’t tested that since V8 is not longer supported.</p>
+<p>Happy to help with the migration process if you have questions. You’ll want to recreate your EC2 instance and upgrade it to V10 first, though.</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/2</link>
+        <pubDate>Tue, 02 Nov 2021 16:52:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-2</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+      <item>
+        <title>Migrating Redash SaaS to self-hosted on AWS</title>
+        <dc:creator><![CDATA[Saikou]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,</p>
+<p>I’m currently using Redash Hosted (SaaS), the version it shows is 7b026a19<br>
+Due to the service being taken down, I’d like to migrate to a self hosted solution.<br>
+I’ve tried spinning up an EC2 with the AMI that’s available, but it’s for version 8 of Redash, I’ve tried running the ‘redash-migration’ script and while some things copied successfully, some other failed.</p>
+<p>What is the best course of action in this case?<br>
+Is it possible to get a DB dump of the Redash SaaS environment?</p>
+          <p><a href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389/1</link>
+        <pubDate>Tue, 02 Nov 2021 15:44:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9389-1</guid>
+        <source url="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss">Migrating Redash SaaS to self-hosted on AWS</source>
+      </item>
+  </channel>
+</rss>

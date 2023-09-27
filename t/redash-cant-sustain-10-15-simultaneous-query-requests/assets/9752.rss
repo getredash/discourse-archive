@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash can&#39;t sustain 10-15 simultaneous Query requests</title>
+    <link>https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752</link>
+    <description>This question spawned from a question with @jesse 
+
+http://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/7
+
+
+### Issue Summary
+
+I am easily able to &quot;crash&quot; Redash by opening 10-15 Query tabs in a single browser.  I can reproduce with 100% consistency.
+
+### Technical details:
+
+* Redash Version:  8.0.2+b37747 (a9d7ca43)
+* Browser/OS: firefox 95
+* How did you install Redash:
+
+We run Redash as a collection of contiainers, running as ECS Services in Amazon.
+* scheduler, scheduled_worker and adhoc_worker are each independent ECS Services
+* We use AWS ElasticCache instead of redis
+* We use an RDS database for the backend
+* &quot;server&quot; and &quot;nginx&quot; containers run together in a single ECS Task, which runs via an ECS Service.
+
+To reproduce:
+From the /queries endpoint I command-click each query in the list (all 20 on the first page), to open each Query Detail page in its own tab.  When I do this, the first few will load quickly, but the remainder will just sit and spin for a minute or so, and then all return 5XX errors.
+
+Behind the scenes, I see that the AWS Load Balancer is taking the Task out of service due to health check timeout.  Example event from ECS Service Events ...
+
+`service (REDACTED) (instance REDACTED) (port 49159) is unhealthy in target-group (REDACTED) due to (reason Request timed out)`
+
+It seems that after maybe 10 or so requests, redash is unable to serve requests fast enough and the task gets taken out of service.  The health check is configured with a 30 second timeout.
+
+![Screen Shot 2021-12-21 at 1.23.59 PM|690x91](upload://ahywjtrCEB5O9oSQltDOCdpBpbY.png)
+
+So it *looks like* our issue here is that redash can&#39;t serve requests quickly if it gets many all at once.  I&#39;ve not tried any other exhaustive testing here.  For example, I haven&#39;t tried loading the *same page* 10 times or tried loading from 10 different workstations at once.
+
+This is the extent of the investigation I&#39;ve done.  I haven&#39;t looked at logs to figure out why/where things are choking.  Any guidance would be greatly appreciated.  Thank you
+-wes</description>
+    
+    <lastBuildDate>Tue, 21 Dec 2021 23:35:37 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash can&#39;t sustain 10-15 simultaneous Query requests</title>
+        <dc:creator><![CDATA[wetorres-HERE]]></dc:creator>
+        <description><![CDATA[
+            <p>oops, sorry about that. sloppy/paste. fixed.  version is 8.0.2+b37747 (a9d7ca43)</p>
+<p>yeah, something is probably wrong with the configuration, we’re just not sure what it is.  Do you think the worker is the likely bottleneck ?</p>
+          <p><a href="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752/3</link>
+        <pubDate>Tue, 21 Dec 2021 23:35:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9752-3</guid>
+        <source url="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752.rss">Redash can&#39;t sustain 10-15 simultaneous Query requests</source>
+      </item>
+      <item>
+        <title>Redash can&#39;t sustain 10-15 simultaneous Query requests</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You didn’t specify which version of Redash you’re using.</p>
+<p>I assume something is broken with your configuration, as this isn’t a Redash problem. I tested locally with a single worker in our local development setup.  I can open 50 concurrent tabs and execute a sizeable query in 10+ tabs without crashing anything. Just the standard delay where some queries must wait until a worker is available.</p>
+<p>Testing with our V8 AMI upgraded to V10.1 it won’t crash under these circumstances either.</p>
+          <p><a href="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752/2</link>
+        <pubDate>Tue, 21 Dec 2021 22:13:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9752-2</guid>
+        <source url="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752.rss">Redash can&#39;t sustain 10-15 simultaneous Query requests</source>
+      </item>
+      <item>
+        <title>Redash can&#39;t sustain 10-15 simultaneous Query requests</title>
+        <dc:creator><![CDATA[wetorres-HERE]]></dc:creator>
+        <description><![CDATA[
+            <p>This question spawned from a question with <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<aside class="quote" data-post="7" data-topic="9726">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/is-it-safe-to-run-multiple-instances-of-the-redash-webapp-concurrently/9726/7">Is it safe to run multiple instances of the redash webapp concurrently?</a> 
+  </div>
+  <blockquote>
+    That’s not normal. Please open a separate thread so we can debug it. We’ll need to know exactly what you mean by crashing, and what your docker logs show.
+  </blockquote>
+</aside>
+
+<h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I am easily able to “crash” Redash by opening 10-15 Query tabs in a single browser.  I can reproduce with 100% consistency.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version:  8.0.2+b37747 (a9d7ca43)</li>
+<li>Browser/OS: firefox 95</li>
+<li>How did you install Redash:</li>
+</ul>
+<p>We run Redash as a collection of contiainers, running as ECS Services in Amazon.</p>
+<ul>
+<li>scheduler, scheduled_worker and adhoc_worker are each independent ECS Services</li>
+<li>We use AWS ElasticCache instead of redis</li>
+<li>We use an RDS database for the backend</li>
+<li>“server” and “nginx” containers run together in a single ECS Task, which runs via an ECS Service.</li>
+</ul>
+<p>To reproduce:<br>
+From the /queries endpoint I command-click each query in the list (all 20 on the first page), to open each Query Detail page in its own tab.  When I do this, the first few will load quickly, but the remainder will just sit and spin for a minute or so, and then all return 5XX errors.</p>
+<p>Behind the scenes, I see that the AWS Load Balancer is taking the Task out of service due to health check timeout.  Example event from ECS Service Events …</p>
+<p><code>service (REDACTED) (instance REDACTED) (port 49159) is unhealthy in target-group (REDACTED) due to (reason Request timed out)</code></p>
+<p>It seems that after maybe 10 or so requests, redash is unable to serve requests fast enough and the task gets taken out of service.  The health check is configured with a 30 second timeout.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4811cda2e3291c2fd1ca45a7b4e3f6dc8cd1f592.png" data-download-href="/uploads/short-url/ahywjtrCEB5O9oSQltDOCdpBpbY.png?dl=1" title="Screen Shot 2021-12-21 at 1.23.59 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4811cda2e3291c2fd1ca45a7b4e3f6dc8cd1f592_2_690x91.png" alt="Screen Shot 2021-12-21 at 1.23.59 PM" data-base62-sha1="ahywjtrCEB5O9oSQltDOCdpBpbY" width="690" height="91" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4811cda2e3291c2fd1ca45a7b4e3f6dc8cd1f592_2_690x91.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4811cda2e3291c2fd1ca45a7b4e3f6dc8cd1f592_2_1035x136.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4811cda2e3291c2fd1ca45a7b4e3f6dc8cd1f592_2_1380x182.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4811cda2e3291c2fd1ca45a7b4e3f6dc8cd1f592_2_10x10.png"></a></div><p></p>
+<p>So it <em>looks like</em> our issue here is that redash can’t serve requests quickly if it gets many all at once.  I’ve not tried any other exhaustive testing here.  For example, I haven’t tried loading the <em>same page</em> 10 times or tried loading from 10 different workstations at once.</p>
+<p>This is the extent of the investigation I’ve done.  I haven’t looked at logs to figure out why/where things are choking.  Any guidance would be greatly appreciated.  Thank you<br>
+-wes</p>
+          <p><a href="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752/1</link>
+        <pubDate>Tue, 21 Dec 2021 19:42:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9752-1</guid>
+        <source url="https://discuss.redash.io/t/redash-cant-sustain-10-15-simultaneous-query-requests/9752.rss">Redash can&#39;t sustain 10-15 simultaneous Query requests</source>
+      </item>
+  </channel>
+</rss>

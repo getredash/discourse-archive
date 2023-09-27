@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Vulnerabilities in Python Dependencies</title>
+    <link>https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321</link>
+    <description>### Issue Summary
+
+The Docker image for Redash 10 (i.e. `redash/redash:10.1.0.b50633 (debian 10.11)`) includes several Python libraries that have high and critical CVEs.
+
+* `PyYAML`  5.1.2 -&gt;  5.4
+* `httplib2` 0.14.0 -&gt; 0.19.0
+* `pyarrow` 0.13.0 -&gt; 0.15.0
+* `pycrypto` 2.6.1 -&gt; No known fix, suggested to use `pycryptodome`
+* `sqlparse` 0.3.0 -&gt; 0.4.2
+* `urllib3` 1.24.3 -&gt; 1.26.5
+
+What is the recommended remediation? Has Redash been tested against any of these newer versions?
+
+List of vulnerabilities:
+
+|LIBRARY|VULNERABILITY ID|SEVERITY|INSTALLED VERSION|FIXED VERSION|
+|----------|------------------|----------|-------------------|---------------|
+|PyYAML|CVE-2019-20477|CRITICAL|5.1.2|5.2b1|
+||CVE-2020-14343|CRITICAL||5.4|
+||CVE-2020-1747|CRITICAL||5.3.1|
+|httplib2|CVE-2021-21240|HIGH|0.14.0|0.19.0|
+|pyarrow|CVE-2019-12410|HIGH|0.13.0|0.15.0|
+|pycrypto|CVE-2013-7459|CRITICAL|2.6.1||
+||CVE-2018-6594|HIGH|||
+|sqlparse|CVE-2021-32839|HIGH|0.3.0|0.4.2|
+|urllib3|CVE-2021-33503|HIGH|1.24.3|1.26.5|
+
+### Technical details:
+
+* Redash Version: 10.1.0.b50633
+* Browser/OS: N/A
+* How did you install Redash: Docker</description>
+    
+    <lastBuildDate>Fri, 03 Mar 2023 21:28:27 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Vulnerabilities in Python Dependencies</title>
+        <dc:creator><![CDATA[stevenwchien]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> , I was wondering if there was any update on these vulnerabilities?</p>
+<p>Thanks,<br>
+Steven</p>
+          <p><a href="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321/3</link>
+        <pubDate>Fri, 03 Mar 2023 21:28:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10321-3</guid>
+        <source url="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321.rss">Vulnerabilities in Python Dependencies</source>
+      </item>
+      <item>
+        <title>Vulnerabilities in Python Dependencies</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for bringing this to our attention. Will need to consider each one more closely.</p>
+<p>re: <code>pyarrow</code> and <code>pycrypto</code>, these are only used in specific query runners. So possible vulnerability would only affect users who create those kinds of datasources.</p>
+<p><code>urllib3</code>, <code>sqlparse</code>, <code>PyYAML</code>, <code>httplib2</code> and <code>urllib3</code> are used by the core application. So will need to be evaluated as to whether the vulnerability is able to be exploited on Redash v10 (latest release).</p>
+          <p><a href="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321/2</link>
+        <pubDate>Fri, 15 Apr 2022 18:32:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10321-2</guid>
+        <source url="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321.rss">Vulnerabilities in Python Dependencies</source>
+      </item>
+      <item>
+        <title>Vulnerabilities in Python Dependencies</title>
+        <dc:creator><![CDATA[phillipjohnson]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>The Docker image for Redash 10 (i.e. <code>redash/redash:10.1.0.b50633 (debian 10.11)</code>) includes several Python libraries that have high and critical CVEs.</p>
+<ul>
+<li>
+<code>PyYAML</code>  5.1.2 →  5.4</li>
+<li>
+<code>httplib2</code> 0.14.0 → 0.19.0</li>
+<li>
+<code>pyarrow</code> 0.13.0 → 0.15.0</li>
+<li>
+<code>pycrypto</code> 2.6.1 → No known fix, suggested to use <code>pycryptodome</code>
+</li>
+<li>
+<code>sqlparse</code> 0.3.0 → 0.4.2</li>
+<li>
+<code>urllib3</code> 1.24.3 → 1.26.5</li>
+</ul>
+<p>What is the recommended remediation? Has Redash been tested against any of these newer versions?</p>
+<p>List of vulnerabilities:</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>LIBRARY</th>
+<th>VULNERABILITY ID</th>
+<th>SEVERITY</th>
+<th>INSTALLED VERSION</th>
+<th>FIXED VERSION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PyYAML</td>
+<td>CVE-2019-20477</td>
+<td>CRITICAL</td>
+<td>5.1.2</td>
+<td>5.2b1</td>
+</tr>
+<tr>
+<td></td>
+<td>CVE-2020-14343</td>
+<td>CRITICAL</td>
+<td></td>
+<td>5.4</td>
+</tr>
+<tr>
+<td></td>
+<td>CVE-2020-1747</td>
+<td>CRITICAL</td>
+<td></td>
+<td>5.3.1</td>
+</tr>
+<tr>
+<td>httplib2</td>
+<td>CVE-2021-21240</td>
+<td>HIGH</td>
+<td>0.14.0</td>
+<td>0.19.0</td>
+</tr>
+<tr>
+<td>pyarrow</td>
+<td>CVE-2019-12410</td>
+<td>HIGH</td>
+<td>0.13.0</td>
+<td>0.15.0</td>
+</tr>
+<tr>
+<td>pycrypto</td>
+<td>CVE-2013-7459</td>
+<td>CRITICAL</td>
+<td>2.6.1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>CVE-2018-6594</td>
+<td>HIGH</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sqlparse</td>
+<td>CVE-2021-32839</td>
+<td>HIGH</td>
+<td>0.3.0</td>
+<td>0.4.2</td>
+</tr>
+<tr>
+<td>urllib3</td>
+<td>CVE-2021-33503</td>
+<td>HIGH</td>
+<td>1.24.3</td>
+<td>1.26.5</td>
+</tr>
+</tbody>
+</table>
+</div><h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.1.0.b50633</li>
+<li>Browser/OS: N/A</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321/1</link>
+        <pubDate>Fri, 15 Apr 2022 15:34:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10321-1</guid>
+        <source url="https://discuss.redash.io/t/vulnerabilities-in-python-dependencies/10321.rss">Vulnerabilities in Python Dependencies</source>
+      </item>
+  </channel>
+</rss>

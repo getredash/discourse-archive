@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>QRDS + cached_query results is very slow</title>
+    <link>https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606</link>
+    <description>Hi guys,
+
+Thanks for the great product!
+
+I&#39;m using self-hosted redash v10.1.0 (2589bef1) for testing. 
+
+There is a configuration where I have a query_1 (JSON data source) and a query_2 (QRDS) for postprocessing of the query_1 results.
+
+Query_1 works approx 13 sec and returns around 300 lines. Query_2 (select * from cached_query_1) also works 13 sec. 
+Shouldn&#39;t it be faster as it takes cached results?
+
+I also tried &#39;select * from query_1&#39; without cache and it works 26 sec..
+Is it my wrong setup? Or what else I can check?
+
+Thank you in advance!</description>
+    
+    <lastBuildDate>Tue, 07 Dec 2021 16:59:38 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>QRDS + cached_query results is very slow</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can file an issue for this. Much better if you can open a PR with the fix <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+          <p><a href="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/4</link>
+        <pubDate>Tue, 07 Dec 2021 16:59:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9606-4</guid>
+        <source url="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606.rss">QRDS + cached_query results is very slow</source>
+      </item>
+      <item>
+        <title>QRDS + cached_query results is very slow</title>
+        <dc:creator><![CDATA[igla]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the reply!</p>
+<p>When I was trying to reproduce this issue, I found the problem )</p>
+<p>Before my Query_2 was:</p>
+<p>select * from cached_query_1<br>
+/* select * from query_1 */</p>
+<p>And it took 13 sec.<br>
+Today I removed the last commented line and it took 0 sec ))</p>
+<p>So it seems that query parser doesn’t take comments signs into account, and as commented line has non-cached query_1 expression, it works without cache.</p>
+<p>Shall I send this issue to github?</p>
+<p>Anyway, thanks for your help!</p>
+          <p><a href="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/3</link>
+        <pubDate>Tue, 07 Dec 2021 10:39:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9606-3</guid>
+        <source url="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606.rss">QRDS + cached_query results is very slow</source>
+      </item>
+      <item>
+        <title>QRDS + cached_query results is very slow</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Interesting report!</p>
+<p>It sounds to me like the query itself takes very little time (less than 1 second). But serializing the query result is taking 13 seconds. How long are each of these lines? Do they return JSON data? What is the size of the result in KB or MB?</p>
+          <p><a href="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/2</link>
+        <pubDate>Mon, 06 Dec 2021 15:20:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9606-2</guid>
+        <source url="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606.rss">QRDS + cached_query results is very slow</source>
+      </item>
+      <item>
+        <title>QRDS + cached_query results is very slow</title>
+        <dc:creator><![CDATA[igla]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi guys,</p>
+<p>Thanks for the great product!</p>
+<p>I’m using self-hosted redash v10.1.0 (2589bef1) for testing.</p>
+<p>There is a configuration where I have a query_1 (JSON data source) and a query_2 (QRDS) for postprocessing of the query_1 results.</p>
+<p>Query_1 works approx 13 sec and returns around 300 lines. Query_2 (select * from cached_query_1) also works 13 sec.<br>
+Shouldn’t it be faster as it takes cached results?</p>
+<p>I also tried ‘select * from query_1’ without cache and it works 26 sec…<br>
+Is it my wrong setup? Or what else I can check?</p>
+<p>Thank you in advance!</p>
+          <p><a href="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606/1</link>
+        <pubDate>Thu, 02 Dec 2021 09:55:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9606-1</guid>
+        <source url="https://discuss.redash.io/t/qrds-cached-query-results-is-very-slow/9606.rss">QRDS + cached_query results is very slow</source>
+      </item>
+  </channel>
+</rss>

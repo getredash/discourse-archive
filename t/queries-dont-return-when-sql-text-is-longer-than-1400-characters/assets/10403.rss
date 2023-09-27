@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Queries don&#39;t return when SQL text is longer than 1400 characters</title>
+    <link>https://discuss.redash.io/t/queries-dont-return-when-sql-text-is-longer-than-1400-characters/10403</link>
+    <description>Hello! I am a new Redash user coming into a company which has been using Redash for a short time. 
+In brief, we are having an issue where if a query&#39;s source text is longer than 1400 characters, the query will not return data to either the query viewer or an associated dashboard. 
+Table size in rows or columns is not an issue.
+
+We are running Redash with Docker. I pulled these versions from our docker-compose.yml file.
+* redash:10.1.0.b50633
+* postgres:9.6-alpine
+* redis:5.0-alpine
+
+System info:
+* Linux 5.10.0-1057-oem #61-Ubuntu SMP Thu Jan 13 15:06:11 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+* Browser is Firefox 99.0.1
+
+Redash installation info:
+* installed using this link: https://redash.io/help/open-source/setup as version 8. 
+* 8 had the same issue, so we updated to version 10 using this link https://github.com/getredash/redash/releases/tag/v10.0.0
+
+
+Here are the docker-compose logs from a failed query (greater than 1400 characters in the query text). I removed URLs and emails.
+The log includes `free(): corrupted unsorted chunks` so we may be overflowing memory with the long queries.
+
+```
+server_1            | [2022-04-28 17:19:55,187][PID:9][INFO][rq.job.redash.tasks.queries.execution] job.func_name= job.id= Inserting job for fe5567c986bfed2c35c9f708dd9464c7 with metadata={&#39;Username&#39;: XXX@YYY.com&#39;, &#39;query_id&#39;: 31}
+adhoc_worker_1      | [2022-04-28 17:19:55,188][PID:11][INFO][rq.worker] default: 4c052cb2-071d-4fed-a8b4-8b224c5c8e01
+server_1            | [2022-04-28 17:19:55,188][PID:9][INFO][rq.job.redash.tasks.queries.execution] job.func_name= job.id= [fe5567c986bfed2c35c9f708dd9464c7] Created new job: 262dcccd-ed39-4f7d-9bf2-cbd43845eecb
+adhoc_worker_1      | [2022-04-28 17:19:55,189][PID:10][INFO][rq.worker] queries: 262dcccd-ed39-4f7d-9bf2-cbd43845eecb
+server_1            | [2022-04-28 17:19:55,190][PID:9][INFO][metrics] method=POST path=/api/query_results endpoint=query_results status=200 content_type=application/json content_length=139 duration=13.06 query_count=7 query_duration=6.23
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:55 +0000] &quot;POST /api/query_results HTTP/1.1&quot; 200 139 &quot;https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0&quot;
+adhoc_worker_1      | [2022-04-28 17:19:55,197][PID:87547][INFO][rq.job.redash.tasks.queries.execution] job.func_name=redash.tasks.queries.execution.execute_query job.id=262dcccd-ed39-4f7d-9bf2-cbd43845eecb job=execute_query state=load_ds ds_id=1
+adhoc_worker_1      | [2022-04-28 17:19:55,224][PID:87547][INFO][rq.job.redash.tasks.queries.execution] job.func_name=redash.tasks.queries.execution.execute_query job.id=262dcccd-ed39-4f7d-9bf2-cbd43845eecb job=execute_query state=executing_query query_hash=fe5567c986bfed2c35c9f708dd9464c7 type=mssql ds_id=1 job_id=262dcccd-ed39-4f7d-9bf2-cbd43845eecb queue=queries query_id=31 username=XXX@YYY.com
+adhoc_worker_1      | [2022-04-28 17:19:55,229][PID:87546][INFO][rq.worker] default: Job OK (4c052cb2-071d-4fed-a8b4-8b224c5c8e01)
+adhoc_worker_1      | [2022-04-28 17:19:55,229][PID:87546][INFO][rq.worker] Result is kept for 500 seconds
+server_1            | [2022-04-28 17:19:55,260][PID:10][INFO][metrics] method=GET path=/api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb endpoint=job status=200 content_type=application/json content_length=163 duration=1.15 query_count=2 query_duration=2.06
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:55 +0000] &quot;GET /api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb HTTP/1.1&quot; 200 163 &quot;https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0&quot;
+adhoc_worker_1      | free(): corrupted unsorted chunks
+adhoc_worker_1      | [2022-04-28 17:19:55,612][PID:10][WARNING][rq.worker] Moving job to FailedJobRegistry (work-horse terminated unexpectedly; waitpid returned 134)
+server_1            | [2022-04-28 17:19:55,841][PID:14][INFO][metrics] method=GET path=/api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb endpoint=job status=200 content_type=application/json content_length=139 duration=1.56 query_count=2 query_duration=2.42
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:55 +0000] &quot;GET /api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb HTTP/1.1&quot; 200 139 &quot;https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0&quot;
+server_1            | [2022-04-28 17:19:56,019][PID:9][INFO][metrics] method=POST path=/api/events endpoint=events status=200 content_type=application/json content_length=4 duration=1.66 query_count=2 query_duration=2.59
+scheduled_worker_1  | [2022-04-28 17:19:56,019][PID:10][INFO][rq.worker] default: 44d9ff55-804b-4516-81f6-c5548953eba3
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:56 +0000] &quot;POST /api/events HTTP/1.1&quot; 200 4 &quot;https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0&quot;
+scheduled_worker_1  | [2022-04-28 17:19:56,059][PID:88280][INFO][rq.worker] default: Job OK (44d9ff55-804b-4516-81f6-c5548953eba3)
+scheduled_worker_1  | [2022-04-28 17:19:56,059][PID:88280][INFO][rq.worker] Result is kept for 500 seconds
+```
+
+
+Thank you in advance for your help and please let me know if you need more information.</description>
+    
+    <lastBuildDate>Thu, 28 Apr 2022 17:43:12 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/queries-dont-return-when-sql-text-is-longer-than-1400-characters/10403.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Queries don&#39;t return when SQL text is longer than 1400 characters</title>
+        <dc:creator><![CDATA[mritch]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello! I am a new Redash user coming into a company which has been using Redash for a short time.<br>
+In brief, we are having an issue where if a query’s source text is longer than 1400 characters, the query will not return data to either the query viewer or an associated dashboard.<br>
+Table size in rows or columns is not an issue.</p>
+<p>We are running Redash with Docker. I pulled these versions from our docker-compose.yml file.</p>
+<ul>
+<li>redash:10.1.0.b50633</li>
+<li>postgres:9.6-alpine</li>
+<li>redis:5.0-alpine</li>
+</ul>
+<p>System info:</p>
+<ul>
+<li>Linux 5.10.0-1057-oem <span class="hashtag">#61-Ubuntu</span> SMP Thu Jan 13 15:06:11 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux</li>
+<li>Browser is Firefox 99.0.1</li>
+</ul>
+<p>Redash installation info:</p>
+<ul>
+<li>installed using this link: <a href="https://redash.io/help/open-source/setup" rel="noopener nofollow ugc">https://redash.io/help/open-source/setup</a> as version 8.</li>
+<li>8 had the same issue, so we updated to version 10 using this link <a href="https://github.com/getredash/redash/releases/tag/v10.0.0" class="inline-onebox" rel="noopener nofollow ugc">Release v10.0.0 · getredash/redash · GitHub</a>
+</li>
+</ul>
+<p>Here are the docker-compose logs from a failed query (greater than 1400 characters in the query text). I removed URLs and emails.<br>
+The log includes <code>free(): corrupted unsorted chunks</code> so we may be overflowing memory with the long queries.</p>
+<pre><code class="lang-auto">server_1            | [2022-04-28 17:19:55,187][PID:9][INFO][rq.job.redash.tasks.queries.execution] job.func_name= job.id= Inserting job for fe5567c986bfed2c35c9f708dd9464c7 with metadata={'Username': XXX@YYY.com', 'query_id': 31}
+adhoc_worker_1      | [2022-04-28 17:19:55,188][PID:11][INFO][rq.worker] default: 4c052cb2-071d-4fed-a8b4-8b224c5c8e01
+server_1            | [2022-04-28 17:19:55,188][PID:9][INFO][rq.job.redash.tasks.queries.execution] job.func_name= job.id= [fe5567c986bfed2c35c9f708dd9464c7] Created new job: 262dcccd-ed39-4f7d-9bf2-cbd43845eecb
+adhoc_worker_1      | [2022-04-28 17:19:55,189][PID:10][INFO][rq.worker] queries: 262dcccd-ed39-4f7d-9bf2-cbd43845eecb
+server_1            | [2022-04-28 17:19:55,190][PID:9][INFO][metrics] method=POST path=/api/query_results endpoint=query_results status=200 content_type=application/json content_length=139 duration=13.06 query_count=7 query_duration=6.23
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:55 +0000] "POST /api/query_results HTTP/1.1" 200 139 "https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0"
+adhoc_worker_1      | [2022-04-28 17:19:55,197][PID:87547][INFO][rq.job.redash.tasks.queries.execution] job.func_name=redash.tasks.queries.execution.execute_query job.id=262dcccd-ed39-4f7d-9bf2-cbd43845eecb job=execute_query state=load_ds ds_id=1
+adhoc_worker_1      | [2022-04-28 17:19:55,224][PID:87547][INFO][rq.job.redash.tasks.queries.execution] job.func_name=redash.tasks.queries.execution.execute_query job.id=262dcccd-ed39-4f7d-9bf2-cbd43845eecb job=execute_query state=executing_query query_hash=fe5567c986bfed2c35c9f708dd9464c7 type=mssql ds_id=1 job_id=262dcccd-ed39-4f7d-9bf2-cbd43845eecb queue=queries query_id=31 username=XXX@YYY.com
+adhoc_worker_1      | [2022-04-28 17:19:55,229][PID:87546][INFO][rq.worker] default: Job OK (4c052cb2-071d-4fed-a8b4-8b224c5c8e01)
+adhoc_worker_1      | [2022-04-28 17:19:55,229][PID:87546][INFO][rq.worker] Result is kept for 500 seconds
+server_1            | [2022-04-28 17:19:55,260][PID:10][INFO][metrics] method=GET path=/api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb endpoint=job status=200 content_type=application/json content_length=163 duration=1.15 query_count=2 query_duration=2.06
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:55 +0000] "GET /api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb HTTP/1.1" 200 163 "https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0"
+adhoc_worker_1      | free(): corrupted unsorted chunks
+adhoc_worker_1      | [2022-04-28 17:19:55,612][PID:10][WARNING][rq.worker] Moving job to FailedJobRegistry (work-horse terminated unexpectedly; waitpid returned 134)
+server_1            | [2022-04-28 17:19:55,841][PID:14][INFO][metrics] method=GET path=/api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb endpoint=job status=200 content_type=application/json content_length=139 duration=1.56 query_count=2 query_duration=2.42
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:55 +0000] "GET /api/jobs/262dcccd-ed39-4f7d-9bf2-cbd43845eecb HTTP/1.1" 200 139 "https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0"
+server_1            | [2022-04-28 17:19:56,019][PID:9][INFO][metrics] method=POST path=/api/events endpoint=events status=200 content_type=application/json content_length=4 duration=1.66 query_count=2 query_duration=2.59
+scheduled_worker_1  | [2022-04-28 17:19:56,019][PID:10][INFO][rq.worker] default: 44d9ff55-804b-4516-81f6-c5548953eba3
+nginx_1             | 10.10.1.1 - - [28/Apr/2022:17:19:56 +0000] "POST /api/events HTTP/1.1" 200 4 "https://ZZZ.com/queries/31/source?p_date-range=d_last_12_months" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:99.0) Gecko/20100101 Firefox/99.0"
+scheduled_worker_1  | [2022-04-28 17:19:56,059][PID:88280][INFO][rq.worker] default: Job OK (44d9ff55-804b-4516-81f6-c5548953eba3)
+scheduled_worker_1  | [2022-04-28 17:19:56,059][PID:88280][INFO][rq.worker] Result is kept for 500 seconds
+</code></pre>
+<p>Thank you in advance for your help and please let me know if you need more information.</p>
+          <p><a href="https://discuss.redash.io/t/queries-dont-return-when-sql-text-is-longer-than-1400-characters/10403/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-dont-return-when-sql-text-is-longer-than-1400-characters/10403/1</link>
+        <pubDate>Thu, 28 Apr 2022 17:37:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10403-1</guid>
+        <source url="https://discuss.redash.io/t/queries-dont-return-when-sql-text-is-longer-than-1400-characters/10403.rss">Queries don&#39;t return when SQL text is longer than 1400 characters</source>
+      </item>
+  </channel>
+</rss>

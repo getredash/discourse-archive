@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>How do I migrate my query schedule? - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+How do I trigger a schedule? 
+Hello. 
+I’m trying to migrate from Redash v4 to v8. 
+I have just migrated a Redash v4 database to v8 with different table structure. 
+I have migrated users/queries/dashboards/&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;How do I migrate my query schedule?&#39;" href="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190" />
+<meta property="og:title" content="How do I migrate my query schedule?" />
+<meta name="twitter:title" content="How do I migrate my query schedule?" />
+<meta property="og:description" content="Issue Summary How do I trigger a schedule?  Hello.  I’m trying to migrate from Redash v4 to v8.  I have just migrated a Redash v4 database to v8 with different table structure.  I have migrated users/queries/dashboards/widgets/visualizations.  I was able to migrate, but the schedule execution of the query is not working.  There are more than 10,000 queries and it is hard to run them all again.  Is there any way to batch or automatically schedule them?   Technical details:  Redash Version: 8.0.0..." />
+<meta name="twitter:description" content="Issue Summary How do I trigger a schedule?  Hello.  I’m trying to migrate from Redash v4 to v8.  I have just migrated a Redash v4 database to v8 with different table structure.  I have migrated users/queries/dashboards/widgets/visualizations.  I was able to migrate, but the schedule execution of the query is not working.  There are more than 10,000 queries and it is hard to run them all again.  Is there any way to batch or automatically schedule them?   Technical details:  Redash Version: 8.0.0..." />
+<meta property="article:published_time" content="2021-10-04T02:35:16+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/how-do-i-migrate-my-query-schedule/9190">How do I migrate my query schedule?</a>
+    </h1>
+
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='How do I migrate my query schedule?'>
+        <meta itemprop='articleSection' content='Uncategorized'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/loco-diwamoto'><span itemprop='name'>loco-diwamoto</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-04T02:35:16Z' class='post-time'>
+                    October 4, 2021,  2:35am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-04T05:36:55Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>How do I trigger a schedule?</p>
+<p>Hello.<br>
+I’m trying to migrate from Redash v4 to v8.<br>
+I have just migrated a Redash v4 database to v8 with different table structure.<br>
+I have migrated users/queries/dashboards/widgets/visualizations.<br>
+I was able to migrate, but the schedule execution of the query is not working.<br>
+There are more than 10,000 queries and it is hard to run them all again.<br>
+Is there any way to batch or automatically schedule them?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0+b32245</li>
+<li>Browser/OS: docker host on Amazon Linux</li>
+<li>How did you install Redash: docker</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-04T12:50:28Z' class='post-time'>
+                    October 4, 2021, 12:50pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-04T12:50:28Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>This should happen automatically as you upgrade. What exact steps did you follow?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/loco-diwamoto'><span itemprop='name'>loco-diwamoto</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-05T05:08:39Z' class='post-time'>
+                    October 5, 2021,  5:08am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-05T05:08:39Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Since the current Redash environment is not a docker version, I built a new Redash v8 using docker.</p>
+<p>Since there is a difference in the database between v4 and v8, I created a test table on postgres, added and changed the necessary columns, and then inserted the sql into postgres.</p>
+<p><code>sudo docker-compose run --rm server manage db upgrade</code><br>
+This command needs to be v4→v5→v6→v8 when going from v4 to v8, right?</p>
+<p>(I plan to use this command to upgrade to v10 or higher to manage it with docker in the future!</p>
+<p>Translated with <a href="http://www.DeepL.com/Translator" class="inline-onebox" rel="noopener nofollow ugc">DeepL Translate: The world's most accurate translator</a> (free version)</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-do-i-migrate-my-query-schedule/9190">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-05T05:31:11Z' class='post-time'>
+                    October 5, 2021,  5:31am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-05T05:31:11Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yes exactly. You’ll upgrade version-by-version.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

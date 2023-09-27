@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redis as a Datasource</title>
+    <link>https://discuss.redash.io/t/redis-as-a-datasource/6979</link>
+    <description>Is there a way to use redis as a datasource? I would like to build a report with values from redis.</description>
+    
+    <lastBuildDate>Wed, 31 Aug 2022 20:27:45 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redis-as-a-datasource/6979.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redis as a Datasource</title>
+        <dc:creator><![CDATA[bernard0le]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi guys!</p>
+<p>Sorry but I don’t understand how I can configure redis as datasource :\</p>
+<p><a class="mention" href="https://discuss.redash.io/u/anirudh">@anirudh</a>  do you have any doc or example with how-to?</p>
+<p>Regards,</p>
+          <p><a href="https://discuss.redash.io/t/redis-as-a-datasource/6979/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redis-as-a-datasource/6979/4</link>
+        <pubDate>Wed, 31 Aug 2022 20:27:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6979-4</guid>
+        <source url="https://discuss.redash.io/t/redis-as-a-datasource/6979.rss">Redis as a Datasource</source>
+      </item>
+      <item>
+        <title>Redis as a Datasource</title>
+        <dc:creator><![CDATA[anirudh]]></dc:creator>
+        <description><![CDATA[
+            <p>Yeah, I was able to do via python runner.</p>
+<p>Configure redis as whitelisted module for python runner and use following.</p>
+<pre><code>def columns(): 
+  return [
+      {
+          "name": "example",
+          "friendly_name": "Example",
+          "type": TYPE_INTEGER,
+      }
+  ]
+
+def fn():
+    import redis
+    r = redis.Redis(host='redis-slave', port=6379, db=0, password='password')
+    
+    return {
+        "rows": [
+            {
+                "example": int(r.hget('key', 'field'))
+            },
+        ],
+        "columns": columns()
+    }
+
+result = fn()</code></pre>
+          <p><a href="https://discuss.redash.io/t/redis-as-a-datasource/6979/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redis-as-a-datasource/6979/3</link>
+        <pubDate>Wed, 19 Aug 2020 05:20:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6979-3</guid>
+        <source url="https://discuss.redash.io/t/redis-as-a-datasource/6979.rss">Redis as a Datasource</source>
+      </item>
+      <item>
+        <title>Redis as a Datasource</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>You could write a query runner for it. Not sure what query language you’d use though. Query runner’s are pretty easy to write though. You just need to implement a few methods for running the query, fetching a schema, testing the connection etc.</p>
+          <p><a href="https://discuss.redash.io/t/redis-as-a-datasource/6979/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redis-as-a-datasource/6979/2</link>
+        <pubDate>Tue, 18 Aug 2020 17:29:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6979-2</guid>
+        <source url="https://discuss.redash.io/t/redis-as-a-datasource/6979.rss">Redis as a Datasource</source>
+      </item>
+      <item>
+        <title>Redis as a Datasource</title>
+        <dc:creator><![CDATA[anirudh]]></dc:creator>
+        <description><![CDATA[
+            <p>Is there a way to use redis as a datasource? I would like to build a report with values from redis.</p>
+          <p><a href="https://discuss.redash.io/t/redis-as-a-datasource/6979/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redis-as-a-datasource/6979/1</link>
+        <pubDate>Thu, 13 Aug 2020 06:09:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6979-1</guid>
+        <source url="https://discuss.redash.io/t/redis-as-a-datasource/6979.rss">Redis as a Datasource</source>
+      </item>
+  </channel>
+</rss>

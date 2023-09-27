@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>ERROR 137 | docker memory leak</title>
+    <link>https://discuss.redash.io/t/error-137-docker-memory-leak/10426</link>
+    <description>Hello everyone !
+I had a memory leak problem during the *yarn build* step ! I was trying to install Redash V.10.0.1 on a 2 GB (RAM) VM (Ubuntu 20.04). The only problem was the memory leak because Redash needs 4 GB (RAM) to be installed.
+
+The error 137 means a leak of memory so you have to upgrade your RAM. But there is another [solution](https://samwize.com/2016/05/19/docker-error-returned-a-non-zero-code-137/) to bypass it and install Redash without any kind of upgrade : **swap memory**, which uses part of your harddisk for temporary memory.
+
+```
+# Confirm you have no swap
+sudo swapon -s
+
+# Allocate 1GB (or more if you wish) in /swapfile
+sudo fallocate -l 1G /swapfile
+
+# Make it secure
+sudo chmod 600 /swapfile
+ls -lh /swapfile
+
+# Activate it
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+# Confirm again there&#39;s indeed more memory now
+free -m
+sudo swapon -s
+
+# Configure fstab to use swap when instance restart
+sudo nano /etc/fstab
+
+# Add this line to /etc/fstab, save and exit
+/swapfile   none    swap    sw    0   0
+
+# Change swappiness to 10, so that swap is used only when 10% RAM is unused
+# The default is too high at 60
+echo 10 | sudo tee /proc/sys/vm/swappiness
+echo vm.swappiness = 10 | sudo tee -a /etc/sysctl.conf
+```
+
+Enjoy and thanks to @Samwize ! :smiley:</description>
+    
+    <lastBuildDate>Wed, 04 May 2022 11:11:04 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/error-137-docker-memory-leak/10426.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>ERROR 137 | docker memory leak</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello everyone !<br>
+I had a memory leak problem during the <em>yarn build</em> step ! I was trying to install Redash V.10.0.1 on a 2 GB (RAM) VM (Ubuntu 20.04). The only problem was the memory leak because Redash needs 4 GB (RAM) to be installed.</p>
+<p>The error 137 means a leak of memory so you have to upgrade your RAM. But there is another <a href="https://samwize.com/2016/05/19/docker-error-returned-a-non-zero-code-137/" rel="noopener nofollow ugc">solution</a> to bypass it and install Redash without any kind of upgrade : <strong>swap memory</strong>, which uses part of your harddisk for temporary memory.</p>
+<pre><code class="lang-auto"># Confirm you have no swap
+sudo swapon -s
+
+# Allocate 1GB (or more if you wish) in /swapfile
+sudo fallocate -l 1G /swapfile
+
+# Make it secure
+sudo chmod 600 /swapfile
+ls -lh /swapfile
+
+# Activate it
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+# Confirm again there's indeed more memory now
+free -m
+sudo swapon -s
+
+# Configure fstab to use swap when instance restart
+sudo nano /etc/fstab
+
+# Add this line to /etc/fstab, save and exit
+/swapfile   none    swap    sw    0   0
+
+# Change swappiness to 10, so that swap is used only when 10% RAM is unused
+# The default is too high at 60
+echo 10 | sudo tee /proc/sys/vm/swappiness
+echo vm.swappiness = 10 | sudo tee -a /etc/sysctl.conf
+</code></pre>
+<p>Enjoy and thanks to <span class="mention">@Samwize</span> ! <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/error-137-docker-memory-leak/10426/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-137-docker-memory-leak/10426/1</link>
+        <pubDate>Wed, 04 May 2022 11:11:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10426-1</guid>
+        <source url="https://discuss.redash.io/t/error-137-docker-memory-leak/10426.rss">ERROR 137 | docker memory leak</source>
+      </item>
+  </channel>
+</rss>

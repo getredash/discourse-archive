@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Digital Ocean : Error running query: failed communicating with server</title>
+    <link>https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444</link>
+    <description>Hi guys, 
+I&#39;m new to redash 
+I&#39;ve been setting up redash on my digital ocean from its marketplace. I&#39;m using postgresql as the database on another server (droplets). The database right now got millions of row data. 
+
+It&#39;s up and running now. however, my query keep getting Error like below,
+
+`&quot; Error running query: **failed communicating with server. Please check your Internet connection and try again.**&quot;`
+
+First, I checked my network tabs, the result shows up there but it did not show in the redash and just showed the error message. I tried a simple count query and it runs well. The query that keeps showing me this error is something like this
+
+```
+SELECT s.name,
+       EXTRACT(MONTH
+               FROM t.transaction_at) AS month,
+       EXTRACT(DAY
+               FROM t.transaction_at) AS day,
+       SUM(t.total_sell_price),
+       SUM(t.total_buy_price)
+FROM transactions_2 t
+INNER JOIN stores s ON s.id = t.store_id
+WHERE t.transaction_at &gt;= &#39;2021-09-01&#39;
+  AND t.transaction_at &lt; &#39;2021-10-01&#39;
+GROUP BY s.id,
+         EXTRACT(MONTH
+                 FROM t.transaction_at),
+         EXTRACT(DAY
+                 FROM t.transaction_at)
+ORDER BY s.id,
+         month,
+         day
+```
+The result of these query maybe around 1000ish rows, i tried to minimize the rows with more where with result only 30 rows still didn&#39;t work. The only approach that can work is when i limit the query to 10. but i don&#39;t think that solve the core problem of my issue.
+
+I already docker logs the redash server but there are no error occured that can be found. I searched around i couldn&#39;t found the correct terms to fix this error. I hope anybody can help me with this at least where to start or where to look at.
+
+Thank you</description>
+    
+    <lastBuildDate>Thu, 11 Nov 2021 03:00:51 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Digital Ocean : Error running query: failed communicating with server</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            
+          <p><a href="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/5</link>
+        <pubDate>Thu, 11 Nov 2021 14:20:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9444-5</guid>
+        <source url="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444.rss">Redash Digital Ocean : Error running query: failed communicating with server</source>
+      </item>
+      <item>
+        <title>Redash Digital Ocean : Error running query: failed communicating with server</title>
+        <dc:creator><![CDATA[ryanavilar]]></dc:creator>
+        <description><![CDATA[
+            <p>i just upgraded to redash v10<br>
+and my query totally works fine</p>
+<p>thanks a bunch man</p>
+          <p><a href="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/4</link>
+        <pubDate>Thu, 11 Nov 2021 03:00:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9444-4</guid>
+        <source url="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444.rss">Redash Digital Ocean : Error running query: failed communicating with server</source>
+      </item>
+      <item>
+        <title>Redash Digital Ocean : Error running query: failed communicating with server</title>
+        <dc:creator><![CDATA[ryanavilar]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the reply, jesse</p>
+<p>My size of droplets is 2 CPU, 4 GB RAM, 80GB Disk Storage</p>
+<p>I’ll try to upgrade to redash v10 first and check the log then<br>
+i’ll update my found again here after</p>
+<p>Thanks again</p>
+          <p><a href="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/3</link>
+        <pubDate>Thu, 11 Nov 2021 02:19:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9444-3</guid>
+        <source url="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444.rss">Redash Digital Ocean : Error running query: failed communicating with server</source>
+      </item>
+      <item>
+        <title>Redash Digital Ocean : Error running query: failed communicating with server</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your detailed request for help. We’ll get to the bottom of this. What size is your droplet? How much RAM does it use? Did you upgrade to Redash V10?</p>
+<p>If you want to get more detailed logs you can set:</p>
+<pre><code class="lang-auto">REDASH_LOG_LEVEL: "DEBUG"
+</code></pre>
+<p>in your environment.</p>
+          <p><a href="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/2</link>
+        <pubDate>Wed, 10 Nov 2021 20:00:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9444-2</guid>
+        <source url="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444.rss">Redash Digital Ocean : Error running query: failed communicating with server</source>
+      </item>
+      <item>
+        <title>Redash Digital Ocean : Error running query: failed communicating with server</title>
+        <dc:creator><![CDATA[ryanavilar]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi guys,<br>
+I’m new to redash<br>
+I’ve been setting up redash on my digital ocean from its marketplace. I’m using postgresql as the database on another server (droplets). The database right now got millions of row data.</p>
+<p>It’s up and running now. however, my query keep getting Error like below,</p>
+<p><code>" Error running query: **failed communicating with server. Please check your Internet connection and try again.**"</code></p>
+<p>First, I checked my network tabs, the result shows up there but it did not show in the redash and just showed the error message. I tried a simple count query and it runs well. The query that keeps showing me this error is something like this</p>
+<pre><code class="lang-auto">SELECT s.name,
+       EXTRACT(MONTH
+               FROM t.transaction_at) AS month,
+       EXTRACT(DAY
+               FROM t.transaction_at) AS day,
+       SUM(t.total_sell_price),
+       SUM(t.total_buy_price)
+FROM transactions_2 t
+INNER JOIN stores s ON s.id = t.store_id
+WHERE t.transaction_at &gt;= '2021-09-01'
+  AND t.transaction_at &lt; '2021-10-01'
+GROUP BY s.id,
+         EXTRACT(MONTH
+                 FROM t.transaction_at),
+         EXTRACT(DAY
+                 FROM t.transaction_at)
+ORDER BY s.id,
+         month,
+         day
+</code></pre>
+<p>The result of these query maybe around 1000ish rows, i tried to minimize the rows with more where with result only 30 rows still didn’t work. The only approach that can work is when i limit the query to 10. but i don’t think that solve the core problem of my issue.</p>
+<p>I already docker logs the redash server but there are no error occured that can be found. I searched around i couldn’t found the correct terms to fix this error. I hope anybody can help me with this at least where to start or where to look at.</p>
+<p>Thank you</p>
+          <p><a href="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444/1</link>
+        <pubDate>Wed, 10 Nov 2021 19:35:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9444-1</guid>
+        <source url="https://discuss.redash.io/t/redash-digital-ocean-error-running-query-failed-communicating-with-server/9444.rss">Redash Digital Ocean : Error running query: failed communicating with server</source>
+      </item>
+  </channel>
+</rss>

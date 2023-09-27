@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Enabling EC2 Instance Connect</title>
+    <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862</link>
+    <description>### Issue Summary
+
+Following the setup instructions for AWS and using the suggesting AMI for my region, I&#39;ve successfully got an EC2 instance running that I can log in to and configure via web browser but I can&#39;t get EC2 Instance Connect to work.
+
+I&#39;m creating the instance using CDK, and have this user data script:
+
+```
+sudo yum install ec2-instance-connect
+```
+
+According to the AWS docs, that should be all that&#39;s needed but I still can&#39;t connect. I haven&#39;t configured the instance with a public key-pair, but have confirmed on an AWS Ubuntu image that this isn&#39;t required.
+
+In a terminal I&#39;m trying:
+```bash
+$ aws ec2-instance-connect send-ssh-public-key --region eu-west-1 --instance-id i-&lt;instance-id&gt; --instance-os-user ubuntu --ssh-public-key file://id_rsa.pub
+$ ssh -i id_rsa ubuntu@&lt;instance-ip&gt;
+ubuntu@&lt;instance-ip&gt;: Permission denied (publickey)
+```
+
+AWS Console shows error
+
+&gt; Failed to connect to your instance
+&gt; Error establishing SSH connection to your instance. Please wait and try again later.
+
+Has anyone got this to work?
+
+### Technical details:
+
+* Redash Version: 8.0.0+b32245 (a16f551e)
+* Browser/OS: macOS
+* How did you install Redash: AWS AMI [ami-046c6a0123bf94619](https://console.aws.amazon.com/ec2/home?region=eu-west-1#LaunchInstanceWizard:ami=ami-046c6a0123bf94619)</description>
+    
+    <lastBuildDate>Fri, 05 Aug 2022 14:02:26 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you so much for posting your solution!</p>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/7</link>
+        <pubDate>Fri, 05 Aug 2022 14:02:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-7</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[roryf]]></dc:creator>
+        <description><![CDATA[
+            <p>Success, used the following user data script and can now connect via AWS Console in the browser:</p>
+<pre><code class="lang-bash">#!/bin/bash
+apt-get update -y
+apt-get upgrade -y
+apt-get install -y git awscli ec2-instance-connect
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/6</link>
+        <pubDate>Fri, 05 Aug 2022 11:04:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-6</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[roryf]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>I advise you to <a href="https://github.com/getredash/redash/releases/tag/v10.1.0#from-v8-or-earlier" rel="noopener nofollow ugc">upgrade your V8 instance to V10 </a> because V8 isn’t supported anymore (we’re working to update the AMI’s. More details soon).</p>
+</blockquote>
+<p>Thanks, will take a look at this, updated AMI would be great!</p>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/5</link>
+        <pubDate>Fri, 05 Aug 2022 09:49:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-5</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[roryf]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a>, it’s definitely open on port 22, that’s where the <code>Permission denied (publickey)</code> response comes from.</p>
+<p>Looked at the system log and found an error like <code>yum command not found</code>, not that familiar with linux package management but guessing it’s just different on Ubuntu. Now trying to follow <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-set-up.html" rel="noopener nofollow ugc">this guide</a> using <code>apt-get</code> but no luck yet.</p>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/4</link>
+        <pubDate>Fri, 05 Aug 2022 09:47:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-4</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Also I haven’t used EC2 instance connect but that looks like a cool tool. Will need to play around with it!</p>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/3</link>
+        <pubDate>Fri, 05 Aug 2022 01:39:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-3</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your question and welcome to the forum!</p>
+<p>Can you check that traffic is allowed through the security group on port 22?</p>
+<p>side note: I advise you to <a href="https://github.com/getredash/redash/releases/tag/v10.1.0#from-v8-or-earlier">upgrade your V8 instance to V10</a> because V8 isn’t supported anymore (we’re working to update the AMI’s. More details soon).</p>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/2</link>
+        <pubDate>Fri, 05 Aug 2022 01:39:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-2</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+      <item>
+        <title>Enabling EC2 Instance Connect</title>
+        <dc:creator><![CDATA[roryf]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Following the setup instructions for AWS and using the suggesting AMI for my region, I’ve successfully got an EC2 instance running that I can log in to and configure via web browser but I can’t get EC2 Instance Connect to work.</p>
+<p>I’m creating the instance using CDK, and have this user data script:</p>
+<pre><code class="lang-auto">sudo yum install ec2-instance-connect
+</code></pre>
+<p>According to the AWS docs, that should be all that’s needed but I still can’t connect. I haven’t configured the instance with a public key-pair, but have confirmed on an AWS Ubuntu image that this isn’t required.</p>
+<p>In a terminal I’m trying:</p>
+<pre><code class="lang-bash">$ aws ec2-instance-connect send-ssh-public-key --region eu-west-1 --instance-id i-&lt;instance-id&gt; --instance-os-user ubuntu --ssh-public-key file://id_rsa.pub
+$ ssh -i id_rsa ubuntu@&lt;instance-ip&gt;
+ubuntu@&lt;instance-ip&gt;: Permission denied (publickey)
+</code></pre>
+<p>AWS Console shows error</p>
+<blockquote>
+<p>Failed to connect to your instance<br>
+Error establishing SSH connection to your instance. Please wait and try again later.</p>
+</blockquote>
+<p>Has anyone got this to work?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0+b32245 (a16f551e)</li>
+<li>Browser/OS: macOS</li>
+<li>How did you install Redash: AWS AMI <a href="https://console.aws.amazon.com/ec2/home?region=eu-west-1#LaunchInstanceWizard:ami=ami-046c6a0123bf94619" rel="noopener nofollow ugc">ami-046c6a0123bf94619</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enabling-ec2-instance-connect/10862/1</link>
+        <pubDate>Thu, 04 Aug 2022 19:43:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10862-1</guid>
+        <source url="https://discuss.redash.io/t/enabling-ec2-instance-connect/10862.rss">Enabling EC2 Instance Connect</source>
+      </item>
+  </channel>
+</rss>

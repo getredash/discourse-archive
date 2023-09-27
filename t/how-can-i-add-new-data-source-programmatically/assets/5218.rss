@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How can I add new data source programmatically</title>
+    <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218</link>
+    <description>Hi!
+
+Basically I have an automated process that creates new database and I would like to create a new Data Source into Redash by the process. Is there any possibilities for that?
+
+Toomas</description>
+    
+    <lastBuildDate>Fri, 24 Sep 2021 17:42:09 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How can I add new data source programmatically</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="4" data-topic="5218">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3002_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p><code>Disable</code></p>
+</blockquote>
+</aside>
+<p>Solved, change “postgres” to “pg”</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/6</link>
+        <pubDate>Fri, 24 Sep 2021 17:42:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5218-6</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss">How can I add new data source programmatically</source>
+      </item>
+      <item>
+        <title>How can I add new data source programmatically</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello Jessie!</p>
+<p>I have the same problem for postgres,</p>
+<p>this is the json i am sending in the POST<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/df8bd81b2105e7f2ccc1b815b8e814bd8901283c.png" data-download-href="/uploads/short-url/vTA5Csl1HjYL7tErDfZkeNQvVrC.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/df8bd81b2105e7f2ccc1b815b8e814bd8901283c.png" alt="image" data-base62-sha1="vTA5Csl1HjYL7tErDfZkeNQvVrC" width="690" height="201" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/df8bd81b2105e7f2ccc1b815b8e814bd8901283c_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/5</link>
+        <pubDate>Fri, 24 Sep 2021 17:24:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5218-5</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss">How can I add new data source programmatically</source>
+      </item>
+      <item>
+        <title>How can I add new data source programmatically</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This API isn’t documented.</p>
+<p>But you can see which variables are needed in the <code>configuration_schema</code> for any query runner. For example, the postgres query runner can be found <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/pg.py">here</a>. I pasted the applicable portion below:</p>
+<pre><code class="lang-auto">{
+            "type": "object",
+            "properties": {
+                "user": {"type": "string"},
+                "password": {"type": "string"},
+                "host": {"type": "string", "default": "127.0.0.1"},
+                "port": {"type": "number", "default": 5432},
+                "dbname": {"type": "string", "title": "Database Name"},
+                "sslmode": {
+                    "type": "string",
+                    "title": "SSL Mode",
+                    "default": "prefer",
+                    "extendedEnum": [
+                        {"value": "disable", "name": "Disable"},
+                        {"value": "allow", "name": "Allow"},
+                        {"value": "prefer", "name": "Prefer"},
+                        {"value": "require", "name": "Require"},
+                        {"value": "verify-ca", "name": "Verify CA"},
+                        {"value": "verify-full", "name": "Verify Full"},
+                    ],
+                },
+                "sslrootcertFile": {
+                    "type": "string",
+                    "title": "SSL Root Certificate"
+                },
+                "sslcertFile": {
+                    "type": "string",
+                    "title": "SSL Client Certificate"
+                },
+                "sslkeyFile": {
+                    "type": "string",
+                    "title": "SSL Client Key"
+                },
+            },
+            "order": ["host", "port", "user", "password"],
+            "required": ["dbname"],
+            "secret": ["password"],
+            "extra_options": ["sslmode", "sslrootcertFile", "sslcertFile", "sslkeyFile"],
+        }
+</code></pre>
+<p>So you can send the following fields:</p>
+<ul>
+<li>user</li>
+<li>password</li>
+<li>host</li>
+<li>port</li>
+<li>dbname</li>
+<li>sslmode</li>
+</ul>
+<p>…along with the SSL cert file keys.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/4</link>
+        <pubDate>Thu, 16 Jul 2020 15:44:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5218-4</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss">How can I add new data source programmatically</source>
+      </item>
+      <item>
+        <title>How can I add new data source programmatically</title>
+        <dc:creator><![CDATA[maya-harel]]></dc:creator>
+        <description><![CDATA[
+            <p>is there any documentation with examples for this ? the names of the configuration variables that are required for each type of datasouce</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/3</link>
+        <pubDate>Thu, 16 Jul 2020 14:58:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5218-3</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss">How can I add new data source programmatically</source>
+      </item>
+      <item>
+        <title>How can I add new data source programmatically</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes. You can use Redash’s internal API to create data sources. The API is not documented per se but can be easily be inspected from the <a href="https://github.com/getredash/redash/blob/master/redash/handlers/data_sources.py">source code</a>.</p>
+<p>Just remember to use an admin group member’s API key.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/2</link>
+        <pubDate>Fri, 27 Dec 2019 01:12:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5218-2</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss">How can I add new data source programmatically</source>
+      </item>
+      <item>
+        <title>How can I add new data source programmatically</title>
+        <dc:creator><![CDATA[tkr]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi!</p>
+<p>Basically I have an automated process that creates new database and I would like to create a new Data Source into Redash by the process. Is there any possibilities for that?</p>
+<p>Toomas</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218/1</link>
+        <pubDate>Thu, 19 Dec 2019 13:36:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5218-1</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-add-new-data-source-programmatically/5218.rss">How can I add new data source programmatically</source>
+      </item>
+  </channel>
+</rss>

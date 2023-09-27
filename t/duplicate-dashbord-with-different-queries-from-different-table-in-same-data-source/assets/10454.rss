@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Duplicate dashbord with different queries from different table in same data source</title>
+    <link>https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454</link>
+    <description>I have a dashboard that I want to use as a template for new dashboards, I figured a workflow like below should do the trick
+- get template dashboard data as json
+- create new empty dashboard
+- for each widget in the dashboard, recreate it&#39;s query
+- while recreating the query replace the table name from the SQL query with new table name
+- name the query according to username and query name
+- run newly created query to refresh it&#39;s results
+- update the query filed in the visualization field in the widget to the new created query
+- if a widget is encountered where it&#39;s query has been already re-created use that (using query name for matching), otherwise create a new one
+- update new empty dashboard with new data
+
+currently, the queries are correctly created with updated SQL table and results, however, I get an error when updating the dashboard saying conflict for URL with no other information.
+
+what does the error mean? and is there a simpler way to do this?
+
+here&#39;s the code for the function
+```python
+def create_dashboard(name: str, table_map: dict) -&gt; str:
+    &quot;&quot;&quot;
+    Creates a new dashboard with `name` from template
+    replacing old tables with new tables according to `table_map`.
+    &quot;&quot;&quot;
+    username = table_map[list(table_map.keys())[0]].split(&quot;_&quot;)[0]
+    template = &quot;churn-template&quot;
+    template_id = get_dashboard_id(template)
+    dash_data = rd.get_dashboard(template_id)
+    res = rd.create_dashboard(name)
+    new_id = res[&quot;id&quot;]
+    for widget in dash_data[&quot;widgets&quot;]:
+        widget[&quot;dashboard_id&quot;] = new_id
+        query = widget[&quot;visualization&quot;][&quot;query&quot;]
+        new_q_id = get_query_id(f&quot;{username}_{query[&#39;name&#39;]}&quot;)
+        if new_q_id:
+            widget[&quot;visualization&quot;][&quot;query&quot;] = rd.get_query(new_q_id)
+            continue
+        widget[&quot;visualization&quot;][&quot;query&quot;] = duplicate_query_table(query, table_map)
+    # print(dash_data)
+    rd.update_dashboard(new_id, dash_data)
+    publish_dashboard(name)
+    return share_dashboard(name)
+```</description>
+    
+    <lastBuildDate>Fri, 13 May 2022 21:38:46 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Duplicate dashbord with different queries from different table in same data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for posting your solution!</p>
+<p>For reference, here is the official redash-toolbelt script for cloning dashboards. It behaves similarly, although it interacts through the API: <a href="https://github.com/getredash/redash-toolbelt/blob/master/redash_toolbelt/examples/clone_dashboard_and_queries.py" class="inline-onebox">redash-toolbelt/clone_dashboard_and_queries.py at master · getredash/redash-toolbelt · GitHub</a></p>
+          <p><a href="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454/3</link>
+        <pubDate>Fri, 13 May 2022 21:38:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10454-3</guid>
+        <source url="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454.rss">Duplicate dashbord with different queries from different table in same data source</source>
+      </item>
+      <item>
+        <title>Duplicate dashbord with different queries from different table in same data source</title>
+        <dc:creator><![CDATA[Blacksuan19]]></dc:creator>
+        <description><![CDATA[
+            <p>I am here to answer my own question, once more<br>
+the problem was my understanding of redash abstractions, what needed to be re-created was the widgets themselves with options from the template to preserve position, here’s an updated code that works</p>
+<pre><code class="lang-python">def create_dashboard(name: str, table_map: dict) -&gt; str:
+    username = table_map[list(table_map.keys())[0]].split("_")[0]
+    template = "churn-template"
+    template_id = get_dashboard_id(template)
+    old_data = rd.get_dashboard(template_id)
+    new_id = rd.create_dashboard(name)["id"]
+    for widget in old_data["widgets"]:
+        options = widget["options"]
+        query = widget["visualization"]["query"]
+        old_vis = widget["visualization"]
+        new_q_id = get_query_id(f"{username}_{query['name']}")
+        if new_q_id:
+            rd.create_widget(
+                dashboard_id=new_id,
+                visualization_id=get_vis_id_query(
+                    old_vis["name"], rd.get_query(new_q_id)
+                ),
+                text="",
+                options=options,
+            )
+            continue
+        new_q = duplicate_query_table(query, table_map)
+        rd.create_widget(
+            dashboard_id=new_id,
+            visualization_id=get_vis_id_query(
+                old_vis["name"], rd.get_query(new_q["id"])
+            ),
+            text="",
+            options=options,
+        )
+
+    publish_dashboard(name)
+    return share_dashboard(name)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454/2</link>
+        <pubDate>Fri, 13 May 2022 03:10:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10454-2</guid>
+        <source url="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454.rss">Duplicate dashbord with different queries from different table in same data source</source>
+      </item>
+      <item>
+        <title>Duplicate dashbord with different queries from different table in same data source</title>
+        <dc:creator><![CDATA[Blacksuan19]]></dc:creator>
+        <description><![CDATA[
+            <p>I have a dashboard that I want to use as a template for new dashboards, I figured a workflow like below should do the trick</p>
+<ul>
+<li>get template dashboard data as json</li>
+<li>create new empty dashboard</li>
+<li>for each widget in the dashboard, recreate it’s query</li>
+<li>while recreating the query replace the table name from the SQL query with new table name</li>
+<li>name the query according to username and query name</li>
+<li>run newly created query to refresh it’s results</li>
+<li>update the query filed in the visualization field in the widget to the new created query</li>
+<li>if a widget is encountered where it’s query has been already re-created use that (using query name for matching), otherwise create a new one</li>
+<li>update new empty dashboard with new data</li>
+</ul>
+<p>currently, the queries are correctly created with updated SQL table and results, however, I get an error when updating the dashboard saying conflict for URL with no other information.</p>
+<p>what does the error mean? and is there a simpler way to do this?</p>
+<p>here’s the code for the function</p>
+<pre><code class="lang-python">def create_dashboard(name: str, table_map: dict) -&gt; str:
+    """
+    Creates a new dashboard with `name` from template
+    replacing old tables with new tables according to `table_map`.
+    """
+    username = table_map[list(table_map.keys())[0]].split("_")[0]
+    template = "churn-template"
+    template_id = get_dashboard_id(template)
+    dash_data = rd.get_dashboard(template_id)
+    res = rd.create_dashboard(name)
+    new_id = res["id"]
+    for widget in dash_data["widgets"]:
+        widget["dashboard_id"] = new_id
+        query = widget["visualization"]["query"]
+        new_q_id = get_query_id(f"{username}_{query['name']}")
+        if new_q_id:
+            widget["visualization"]["query"] = rd.get_query(new_q_id)
+            continue
+        widget["visualization"]["query"] = duplicate_query_table(query, table_map)
+    # print(dash_data)
+    rd.update_dashboard(new_id, dash_data)
+    publish_dashboard(name)
+    return share_dashboard(name)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454/1</link>
+        <pubDate>Thu, 12 May 2022 11:57:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10454-1</guid>
+        <source url="https://discuss.redash.io/t/duplicate-dashbord-with-different-queries-from-different-table-in-same-data-source/10454.rss">Duplicate dashbord with different queries from different table in same data source</source>
+      </item>
+  </channel>
+</rss>

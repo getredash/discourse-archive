@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Redash high response times - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+We do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. W&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/redash-high-response-times/10144" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Redash high response times&#39;" href="https://discuss.redash.io/t/redash-high-response-times/10144.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/redash-high-response-times/10144" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/redash-high-response-times/10144" />
+<meta property="og:title" content="Redash high response times" />
+<meta name="twitter:title" content="Redash high response times" />
+<meta property="og:description" content="Issue Summary We do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. When CPU utilization is over 35%, response times start getting high. Top waits on performance insights is always related with CPU.   Technical details:  Redash Version: 10.0.0 (9c928bd1) Browser/OS: Chrome How did you install Redash: docker-compose deployment" />
+<meta name="twitter:description" content="Issue Summary We do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. When CPU utilization is over 35%, response times start getting high. Top waits on performance insights is always related with CPU.   Technical details:  Redash Version: 10.0.0 (9c928bd1) Browser/OS: Chrome How did you install Redash: docker-compose deployment" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="og:article:tag" content="query_results" />
+<meta property="article:published_time" content="2022-03-15T19:17:05+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Redash high response times","mainEntity":{"@type":"Question","name":"Redash high response times","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\nWe do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. When CPU utilization is over 35%, response times start getting high. Top waits on&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2022-03-15T19:17:05.402Z","author":{"@type":"Person","name":"Alejandro"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/redash-high-response-times/10144">Redash high response times</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/query_results' class='discourse-tag' rel="tag">query_results</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Redash high response times'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content='query_results'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-15T19:17:05Z' class='post-time'>
+                    March 15, 2022,  7:17pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-15T19:17:05Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>We do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. When CPU utilization is over 35%, response times start getting high. Top waits on performance insights is always related with CPU.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0 (9c928bd1)</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: docker-compose deployment</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-15T19:29:33Z' class='post-time'>
+                    March 15, 2022,  7:29pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-15T19:29:33Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>What do you mean by increased response times?</p>
+<ul>
+<li>Are queries remaining in queue for extended periods?</li>
+<li>Do web requests load more slowly?</li>
+<li>Are queries taking longer to execute?</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-15T19:57:03Z' class='post-time'>
+                    March 15, 2022,  7:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-15T19:57:03Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>hello Jesse,</p>
+<p>Yes, Redash dashboards are taking longer to bring the requested information. Let’s say an analyst wants to consult an information from a client and it takes 2 to 5 minutes to have results, so queries behind the visualization of the dashboard are taking longer to execute</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-16T03:31:32Z' class='post-time'>
+                    March 16, 2022,  3:31am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-16T03:31:32Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Are the queries sitting in queue for extended periods? Or taking a long time to execute after they begin executing?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-16T14:06:26Z' class='post-time'>
+                    March 16, 2022,  2:06pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-16T14:06:26Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>The queries are taking a long time to execute after they begin executing</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-16T16:06:59Z' class='post-time'>
+                    March 16, 2022,  4:06pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-16T16:06:59Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>When this happens, do everyone’s queries take a long time to execute? Or is it specific only to the queries in use on a given dashboard?</p>
+<p>Also, how do you know that the queries are taking a long time to execute vs a long time in queue if you are on the dashboard screen? Have you checked the network requests in your browser console?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-16T16:33:07Z' class='post-time'>
+                    March 16, 2022,  4:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-16T16:33:07Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>when this happens, everyone’s queries take a long time to execute. It’s not dashboard-specific.</p>
+<p>Sometimes DiskQueueDepth on Read Replica is high, so it shows some queries are in queue. What’s weird here is that computational resources are not being consumed completely but response times are high though. We escalated computational resources from read replica and EC2 instance where Redash is running, and the behavior improved just a bit for a very short period, currently we have the users complaining about response times.</p>
+<p>We need to now which specific component or configuration we need to change because the approach we have been following is not showing good results. We escalated read replica and also EC2 instance was escalated. but the issue persists.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-16T16:41:15Z' class='post-time'>
+                    March 16, 2022,  4:41pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-16T16:41:15Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I’m asking specific questions for a reason. It’s important to know what <strong>exactly</strong> is taking a long time. When response times are high, you can check it this way:</p>
+<ol>
+<li>Visit a query that’s taking a long time</li>
+<li>Click the refresh button</li>
+<li>Observe the message that appears beneath the query editor</li>
+</ol>
+<p>Does it say “Query in queue” for a long time? Or does it say “Executing” for a long time?</p>
+<p>This is harder to see on the dashboard screen because in that case (queueing vs executing) it just shows a spinner. But on the query screen you can see it more clearly.</p>
+<p>If the queries sit in queue for a long time that means you don’t have enough worker threads to handle that many concurrent queries.</p>
+<p>If the queries begin executing immediately then you have enough worker threads, but the queries may just take a long time to execute. Execution time depends on many factors, not all of which are part of Redash.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-16T19:14:32Z' class='post-time'>
+                    March 16, 2022,  7:14pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-16T19:14:32Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>since the issues we are dealing with are all related with Dashboards, we see the spinner, so as you mentioned, is harder to see whether it is in queue or executing. However, I just tested looking at 2 visualizations from one of our dashboards and after executing them I saw “Query in queue” message.</p>
+<p>On the other hand, as I mentioned before, we created a read replica just for Redash and also escalated EC2 instance on which Redash is running. Following what you mentioned, since the queries are in queue, it means we don’t have enough worker threads to handle that many concurrent queries. How could we  increase the amount of worker threads?</p>
+<p>Additionally, could you please share documentation with best practices for monitoring the amount of available worker threads and how many concurrent queries do we have?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-17T04:15:31Z' class='post-time'>
+                    March 17, 2022,  4:15am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-17T04:15:31Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>How could we increase the amount of worker threads?</p>
+</blockquote>
+</aside>
+<p>You do this by increasing the WORKERS_COUNT environment variable for the worker service. Then restart the worker service for the change to take effect.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-17T16:23:27Z' class='post-time'>
+                    March 17, 2022,  4:23pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-17T16:23:27Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I wrote my previous post from my mobile late at night. Just a few follow-up items.</p>
+<aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>is harder to see whether it is in queue or executing.</p>
+</blockquote>
+</aside>
+<p>It’s harder, yes, but still it’s possible to see the status using your browser’s web inspector. Just look in your network requests tab for calls to <code>api/jobs/&lt;job_id&gt;</code>.  These API calls are the front-end application polling for the execution status at the server.</p>
+<p>If you see the <code>code</code> in one of these responses is <code>1</code>, that means the query is in queue and has not started executing yet. If you see code <code>2</code> then the query has begun executing but did not finish yet. There’s a full list of codes <a href="https://redash.io/help/user-guide/integrations-and-api/api#Jobs">here</a>.</p>
+<aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>we created a read replica just for Redash and also escalated EC2 instance on which Redash is running.</p>
+</blockquote>
+</aside>
+<p>If the problem is not enough workers then this change would not have an effect.</p>
+<aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>Additionally, could you please share documentation with best practices for monitoring the amount of available worker threads and how many concurrent queries do we have?</p>
+</blockquote>
+</aside>
+<p>Admins of your Redash instance can click their user avatar and then <code>System Status</code> to see an overview of all queues, workers, jobs, and their status.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-17T17:21:00Z' class='post-time'>
+                    March 17, 2022,  5:21pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-17T17:21:00Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Jesse,</p>
+<p>Thank you very much for your answers. They have helped us out to identify the main issue. For now, we will proceed to increase the WORKERS_COUNT environment variable for the worker service. Just to doublecheck: after restarting the worker service for the change to take effect, we will have downtime over the Redash instance, right? do you have an idea about how much time it would take?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-17T18:37:28Z' class='post-time'>
+                    March 17, 2022,  6:37pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-17T18:37:28Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>The downtime lasts as long as it takes to restart a docker service (usually less than a minute) (you don’t need to restart every service, just the worker services).</p>
+<p>To avoid any downtime whatsoever you could define an additional worker service and spin it up before you <code>stop</code> and <code>restart</code> the existing ones. Just be mindful of the RAM and CPU capabilities of your server so that you don’t choke the whole system down.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/aduque'><span itemprop='name'>aduque</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-17T20:19:15Z' class='post-time'>
+                    March 17, 2022,  8:19pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-17T20:19:15Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>great, thank you!</p>
+<p>Could you please let us know what would be the best way to adjust this WORKERS_COUNT environment variable? how many should we define? is there any way we could define kind of a capacity planning on that regard?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-high-response-times/10144">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-17T20:55:18Z' class='post-time'>
+                    March 17, 2022,  8:55pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-17T20:55:18Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Most users use trial-and-error to determine their needs. There is no one-size-fits-all recipe for it.</p>
+<aside class="quote no-group" data-username="aduque" data-post="14" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>how many should we define?</p>
+</blockquote>
+</aside>
+<p>It depends on your needs. You can theoretically add as many worker threads as you want, up to the RAM and CPU limits of your hardware. Just be careful not to over-provision, if you do it can slow the worker service down to a crawl.</p>
+<p>This is because each worker thread uses a fixed amount of RAM. The exact amount of RAM varies depending on how many query runners you have <em>enabled</em> (even if you don’t have any of those data sources defined, the Python dependencies are still imported). So if one worker thread needs 200mb of RAM, then two will require 400mb, three require 600mb etc.</p>
+<p>You can tune it by gradually increasing the number of workers. If you have 8 threads today and your RAM utilisation is acceptable (under 80% for example), then you could move to 12 threads. Then check your queues to see if the overall number of jobs begins to decrease. If not, increase from 12 to 20. Check your RAM utilisation.</p>
+<p>If you hit the RAM limit and the queue is still the same size this suggests you may have a lot of long-running queries that are hogging the workers. Or that you simply need more ram on your server. There are various ways to change this behaviour, such as scheduling the long-running queries to run during non peak times all the way up to setting up a dedicated worker and a special queue for just those queries. You can also disable any query runners that aren’t needed in your installation (you can do this with an environment variable or by modifying the source code directly).</p>
+<p>And of course if you increase the worker count to the point that the queue shrinks to an acceptable level you don’t need any more workers.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

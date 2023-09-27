@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Conditional Formatting &amp; General Text Formatting - Tips, Tricks &amp; Query Examples - Redash Discourse</title>
+    <meta name="description" content="While Redash doesn’t naturally support conditional formatting, this can be bypassed with some html tags. 
+    CASE
+        WHEN cat.color IN (&amp;#39;short_hair&amp;#39;,
+                              &amp;#39;semi_short_hair&amp;#39;)
+             AN&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Conditional Formatting &amp; General Text Formatting&#39;" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706" />
+<meta property="og:title" content="Conditional Formatting &amp; General Text Formatting" />
+<meta name="twitter:title" content="Conditional Formatting &amp; General Text Formatting" />
+<meta property="og:description" content="While Redash doesn’t naturally support conditional formatting, this can be bypassed with some html tags.      CASE         WHEN cat.color IN (&#39;short_hair&#39;,                               &#39;semi_short_hair&#39;)              AND cat_count &gt; 1000 THEN &#39;&lt;div class=&quot;bg-success p-10 text-center&quot;&gt;&#39; || count(cat) || &#39;&lt;/div&gt;&#39;              OR cat_count &gt; 200 THEN &#39;&lt;div class=&quot;bg-warning p-10 text-center&quot;&gt;&#39; || count(cat) || &#39;&lt;/div&gt;&#39;         ELSE &#39;&lt;div class=&quot;bg-danger p-10 text-center&quot;&gt;&#39; || count(cat) || &#39;&lt;/div&gt;..." />
+<meta name="twitter:description" content="While Redash doesn’t naturally support conditional formatting, this can be bypassed with some html tags.      CASE         WHEN cat.color IN (&#39;short_hair&#39;,                               &#39;semi_short_hair&#39;)              AND cat_count &gt; 1000 THEN &#39;&lt;div class=&quot;bg-success p-10 text-center&quot;&gt;&#39; || count(cat) || &#39;&lt;/div&gt;&#39;              OR cat_count &gt; 200 THEN &#39;&lt;div class=&quot;bg-warning p-10 text-center&quot;&gt;&#39; || count(cat) || &#39;&lt;/div&gt;&#39;         ELSE &#39;&lt;div class=&quot;bg-danger p-10 text-center&quot;&gt;&#39; || count(cat) || &#39;&lt;/div&gt;..." />
+<meta property="og:article:section" content="Tips, Tricks &amp; Query Examples" />
+<meta property="og:article:section:color" content="652D90" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="3 ❤" />
+<meta property="article:published_time" content="2018-03-21T14:17:59+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/conditional-formatting-general-text-formatting/1706">Conditional Formatting &amp; General Text Formatting</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/tips-tricks-query-examples/11" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #652D90'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Tips, Tricks &amp; Query Examples</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Conditional Formatting &amp; General Text Formatting'>
+        <meta itemprop='articleSection' content='Tips, Tricks &amp; Query Examples'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/arikfr'><span itemprop='name'>arikfr</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-03-21T14:17:59Z' class='post-time'>
+                    March 21, 2018,  2:17pm
+                  </time>
+                  <meta itemprop='dateModified' content='2018-06-17T06:17:50Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>While Redash doesn’t naturally support conditional formatting, this can be bypassed with some html tags.</p>
+<pre><code class="lang-sql">    CASE
+        WHEN cat.color IN ('short_hair',
+                              'semi_short_hair')
+             AND cat_count &gt; 1000 THEN '&lt;div class="bg-success p-10 text-center"&gt;' || count(cat) || '&lt;/div&gt;'
+             OR cat_count &gt; 200 THEN '&lt;div class="bg-warning p-10 text-center"&gt;' || count(cat) || '&lt;/div&gt;'
+        ELSE '&lt;div class="bg-danger p-10 text-center"&gt;' || count(cat) || '&lt;/div&gt;'
+    END AS cat_count
+</code></pre>
+<p>In this example we cover different formatting types you can apply in a div:</p>
+<ol>
+<li>Colors - green (<code>bg-success</code>), yellow (<code>bg-warning</code>) and red (<code>bg-danger</code>). You can also use <code>bg-info</code> for blue but who wants blue in their tables?</li>
+<li>Padding - we used <code>p-10</code> to pad the text just a little bit.</li>
+<li>Text alignment - we aligned our cat counts to the center (<code>text-center</code>), by default tables are aligned to the left.</li>
+</ol>
+<p>Other styling formats you can use:</p>
+<ol>
+<li>Font Size (font-size) - can be pixels (10px, 20px, 34px and so on), relative (50%, 150%…), textual (large, medium, xx-small…) or HTML tags for headings (h1, h2…).</li>
+<li>Headings <code>&lt;h1&gt;</code> and Displays (class = display1) - h1-h6 are heading sizes when h1 is the largest, display is a class you can combine with a heading to get a more stylized look.</li>
+<li>Font type (font-family) - change the font, not all fonts are supported in each browser so it’s tricky.</li>
+<li>Misc- mark (mark),  <em>underline (u)</em> , bold (strong),  <em>italic (em)</em>
+</li>
+</ol>
+<p>You’re welcome to try other Bootstrap CSS tricks and share with us.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="2" />
+              <span class='post-likes'>2 Likes</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/highlight-rules-for-table-cells/3103/2">Highlight Rules for Table Cells</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/table-visualization/5083/2">Table visualization</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/conditional-formatting-not-working-with-aggregate-functions/1978">Conditional Formatting Not working with Aggregate Functions</a>
+                        <meta itemprop='position' content='3'>
+                      </div>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/support-table-column-sorting-when-using-conditional-formatting/3864">Support table column sorting when using conditional formatting</a>
+                        <meta itemprop='position' content='4'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dribble'><span itemprop='name'>dribble</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-06-01T01:47:47Z' class='post-time'>
+                    June 1, 2018,  1:47am
+                  </time>
+                  <meta itemprop='dateModified' content='2018-06-01T01:47:47Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I cannot get this to work with aggregate functions as displayed. Works great otherwise.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/perevalov'><span itemprop='name'>perevalov</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-06-11T16:04:38Z' class='post-time'>
+                    June 11, 2018,  4:04pm
+                  </time>
+                  <meta itemprop='dateModified' content='2018-06-11T16:04:38Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote group-Team" data-post="1" data-topic="1706">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/arikfr/40/2_1.png" class="avatar"> arikfr:</div>
+<blockquote>
+<p>count(cat)</p>
+</blockquote>
+</aside>
+<p>I think it’s placed inside string literal by mistake? Should be concatenation of strings instead.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/arikfr'><span itemprop='name'>arikfr</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-06-17T06:18:14Z' class='post-time'>
+                    June 17, 2018,  6:18am
+                  </time>
+                  <meta itemprop='dateModified' content='2018-06-17T06:18:14Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You’re correct (I updated the post accordingly). Thanks!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/timor'><span itemprop='name'>timor</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-07-19T02:09:51Z' class='post-time'>
+                    July 19, 2018,  2:09am
+                  </time>
+                  <meta itemprop='dateModified' content='2018-07-19T02:09:51Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Very helpful! Thanks!<br>
+I used that and changed it to affect the text color instead of the background color, but when I want to do counter visualization it present the code itself and not the value. What should I do?<br>
+Attached a picture - total_done is the value I want to display and is the field with the text color formatting.<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4.png" data-download-href="/uploads/short-url/s8YznlR7OPbjch1BFRE9L8chT24.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4_2_690x184.png" alt="image" data-base62-sha1="s8YznlR7OPbjch1BFRE9L8chT24" width="690" height="184" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4_2_690x184.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4_2_1035x276.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4_2_1380x368.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c540a60862ff8a0e9ffc3c89e325f7e6545e5dd4_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1886×505 23.1 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/arikfr'><span itemprop='name'>arikfr</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-07-19T07:59:12Z' class='post-time'>
+                    July 19, 2018,  7:59am
+                  </time>
+                  <meta itemprop='dateModified' content='2018-07-19T07:59:12Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>HTML is not supported in counters.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="https://discuss.redash.io/t/counter-visualization-issue/5096/2">Counter visualization issue</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/timor'><span itemprop='name'>timor</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-07-19T16:10:47Z' class='post-time'>
+                    July 19, 2018,  4:10pm
+                  </time>
+                  <meta itemprop='dateModified' content='2018-07-19T16:10:47Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Oh ok thanks.<br>
+Is there another solution?<br>
+I want the color to be determine by my terminology and not just in reference to the target number.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/hananv'><span itemprop='name'>hananv</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-07-31T14:09:12Z' class='post-time'>
+                    July 31, 2018,  2:09pm
+                  </time>
+                  <meta itemprop='dateModified' content='2018-07-31T14:09:12Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>can you please give example how i can color format a cell with table ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/sideshot'><span itemprop='name'>sideshot</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/conditional-formatting-general-text-formatting/1706">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2023-02-08T13:22:48Z' class='post-time'>
+                    February 8, 2023,  1:22pm
+                  </time>
+                  <meta itemprop='dateModified' content='2023-02-08T13:22:48Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I needed a solution, so I created a chrome extension.</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://chrome.google.com/webstore/detail/color-my-table/cpkbdofognfacdgmelmbmadcemclaebc">
+  <header class="source">
+      <img src="https://www.google.com/images/icons/product/chrome_web_store-32.png" class="site-icon" width="32" height="32">
+
+      <a href="https://chrome.google.com/webstore/detail/color-my-table/cpkbdofognfacdgmelmbmadcemclaebc" target="_blank" rel="noopener nofollow ugc">chrome.google.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <img src="https://lh3.googleusercontent.com/W3o5Y3XibcN29CMu12CihZIzUYawbwh_c21V2ZFVyfPeLUWCtAlcQ1YY9EcHsaW1ES6VHR3h8KKMqaRWYjKmoK_oxg=w128-h128-e365-rj-sc0x00ffffff" class="thumbnail onebox-avatar" width="128" height="128">
+
+<h3><a href="https://chrome.google.com/webstore/detail/color-my-table/cpkbdofognfacdgmelmbmadcemclaebc" target="_blank" rel="noopener nofollow ugc">Color My Table</a></h3>
+
+  <p>Transform plain tables into visually appealing data displays with ease.</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Hit me up on Twitter if you have any feedback. <span class="mention">@Dev2o</span></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

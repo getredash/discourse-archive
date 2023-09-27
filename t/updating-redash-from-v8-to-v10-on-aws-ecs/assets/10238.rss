@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Updating Redash from v8 to v10 on AWS ECS</title>
+    <link>https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238</link>
+    <description>### Issue Summary
+
+What is needed to update redash from 8.0.2.b37747 to 10.1.0.b50633 when it runs in an AWS ECS cluster
+
+### Technical details:
+
+* Redash Version: 8.0.2.b37747
+* Browser/OS: Chrome/OS X
+* How did you install Redash: terraform into AWS ECS. TF code references &quot;container_image = &quot;redash/redash:8.0.2.b37747&quot;&quot;
+
+* The person that deployed the redash cluster no longer works for the company. I have found the TF mods/code, but I have read about &#39;manage db upgrade&#39; going from v8 --&gt; v10. Do I simply reference the new version of the docker image (10.1.0.b50633) and run a terraform plan and apply? Also, the Postgres backend is an AWS serverless Aurora Postgres cluster running 10.14. Any help with this would be greatly appreciated. I have done updates of redash v8 --&gt; v9 on an AWS AMI. That was straightforward due to ample documentation. This is much more vague</description>
+    
+    <lastBuildDate>Thu, 31 Mar 2022 19:45:00 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Updating Redash from v8 to v10 on AWS ECS</title>
+        <dc:creator><![CDATA[billjorg]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Arik,</p>
+<p>I am familiar with the env vars for email on the redash side. However, I have found that there is some config necessary on the OS for redash to send email. I have not looked at the docker image for redash to know if you use Ubuntu or Alpine as the OS. I am going to guess Ubuntu since that was the OS from the AWS AMI. Still wondering if there is any container ‘OS’ config that needs to happen for email.</p>
+<p>I will see what I can do to get the update to work on ECS. I am super fuzzy on how to handle the db migration.</p>
+<p>Thank you!</p>
+          <p><a href="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/4</link>
+        <pubDate>Thu, 31 Mar 2022 19:45:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10238-4</guid>
+        <source url="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238.rss">Updating Redash from v8 to v10 on AWS ECS</source>
+      </item>
+      <item>
+        <title>Updating Redash from v8 to v10 on AWS ECS</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="billjorg" data-post="1" data-topic="10238">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/b/3e96dc/40.png" class="avatar"> billjorg:</div>
+<blockquote>
+<p>What is needed to update redash from 8.0.2.b37747 to 10.1.0.b50633 when it runs in an AWS ECS cluster</p>
+</blockquote>
+</aside>
+<p>You need to do two things:</p>
+<ol>
+<li>Update the Docker image ECS uses.</li>
+<li>Run migrations with the new image. I’m actually not 100% sure how to do this on ECS - this really depends on how you use ECS.</li>
+</ol>
+<aside class="quote no-group" data-username="billjorg" data-post="2" data-topic="10238" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/b/3e96dc/40.png" class="avatar"> billjorg:</div>
+<blockquote>
+<p>One other thing… I had to edit the /etc/postfix files on the AWS AMI to enable email notifications. Docker’s default network is 172.16.0.0 (if i remember correctly). I had to allow email for that subnet for postfix to forward to my company’s MX relay. Is there anything that can be done to enable email alerts/notifications when you have redash running on an AWS ECS cluster?</p>
+</blockquote>
+</aside>
+<p>You can configure the email server to use with env vars:</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>Env Var</th>
+<th></th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>REDASH_MAIL_SERVER</td>
+<td></td>
+<td>localhost</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_PORT</td>
+<td></td>
+<td>25</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_USE_TLS</td>
+<td></td>
+<td>false</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_USE_SSL</td>
+<td></td>
+<td>false</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_USERNAME</td>
+<td></td>
+<td>None</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_PASSWORD</td>
+<td></td>
+<td>None</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_DEFAULT_SENDER</td>
+<td></td>
+<td>None</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_MAX_EMAILS</td>
+<td></td>
+<td>None</td>
+</tr>
+<tr>
+<td>REDASH_MAIL_ASCII_ATTACHMENTS</td>
+<td></td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+</div>
+          <p><a href="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/3</link>
+        <pubDate>Thu, 31 Mar 2022 16:42:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10238-3</guid>
+        <source url="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238.rss">Updating Redash from v8 to v10 on AWS ECS</source>
+      </item>
+      <item>
+        <title>Updating Redash from v8 to v10 on AWS ECS</title>
+        <dc:creator><![CDATA[billjorg]]></dc:creator>
+        <description><![CDATA[
+            <p>One other thing… I had to edit the /etc/postfix files on the AWS AMI to enable email notifications. Docker’s default network is 172.16.0.0 (if i remember correctly). I had to allow email for that subnet for postfix to forward to my company’s MX relay. Is there anything that can be done to enable email alerts/notifications when you have redash running on an AWS ECS cluster?</p>
+          <p><a href="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/2</link>
+        <pubDate>Thu, 31 Mar 2022 15:00:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10238-2</guid>
+        <source url="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238.rss">Updating Redash from v8 to v10 on AWS ECS</source>
+      </item>
+      <item>
+        <title>Updating Redash from v8 to v10 on AWS ECS</title>
+        <dc:creator><![CDATA[billjorg]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>What is needed to update redash from 8.0.2.b37747 to 10.1.0.b50633 when it runs in an AWS ECS cluster</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>
+<p>Redash Version: 8.0.2.b37747</p>
+</li>
+<li>
+<p>Browser/OS: Chrome/OS X</p>
+</li>
+<li>
+<p>How did you install Redash: terraform into AWS ECS. TF code references "container_image = “redash/redash:8.0.2.b37747"”</p>
+</li>
+<li>
+<p>The person that deployed the redash cluster no longer works for the company. I have found the TF mods/code, but I have read about ‘manage db upgrade’ going from v8 → v10. Do I simply reference the new version of the docker image (10.1.0.b50633) and run a terraform plan and apply? Also, the Postgres backend is an AWS serverless Aurora Postgres cluster running 10.14. Any help with this would be greatly appreciated. I have done updates of redash v8 → v9 on an AWS AMI. That was straightforward due to ample documentation. This is much more vague</p>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238/1</link>
+        <pubDate>Thu, 31 Mar 2022 14:54:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10238-1</guid>
+        <source url="https://discuss.redash.io/t/updating-redash-from-v8-to-v10-on-aws-ecs/10238.rss">Updating Redash from v8 to v10 on AWS ECS</source>
+      </item>
+  </channel>
+</rss>

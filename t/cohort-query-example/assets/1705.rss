@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Cohort Query Example</title>
+    <link>https://discuss.redash.io/t/cohort-query-example/1705</link>
+    <description>Cohorts are a good tool to review retention of users over a defined period of time.
+
+To create your own cohort report, you&#39;ll need to define your cohort time frame, population, and activeness of users.
+
+Here is an example of a cohort query in PostgreSQL, step by step:
+
+&gt; We used the `WITH` clause in this example - `WITH` clauses allow you to name a sub-query block, this way your query is modular (and sometimes runs faster), it can later be referred in the main query instead of making a large main query with many aliases, `JOIN`s or other complexities. You can have multiple sub-queries, just be sure to have a comma between them.
+
+1. Select the time frame you want to investigate (usually a between a week and a month)  
+    
+    ```
+    WITH    
+    time_frame AS (    
+    SELECT CURRENT_DATE - 14   
+    ),
+    ```
+
+2. Define your population relative to the cohort date, for each following day 
+    
+    ```
+    population AS (
+      SELECT created_at::date AS cohort_date, id AS unique_id
+      FROM users
+      WHERE created_at &gt; (SELECT * FROM time_frame)
+    ),
+    ```
+
+3. Define what&#39;s an active user to you - what event interest you to examine 
+
+    ```    
+    activity AS (
+      SELECT created_at::date AS activity_date, org_id AS unique_id, cohort_date
+      FROM events
+      JOIN population ON population.unique_id = org_id
+      WHERE created_at &gt; (SELECT * FROM time_frame)
+    ),
+    ```
+    
+
+4. Aggregate your population by cohort date (day 1, day 2...) 
+    
+    ``` 
+    population_agg AS (
+      SELECT cohort_date, COUNT(distinct unique_id) AS total
+      FROM population
+      GROUP BY 1
+    )
+    ```
+
+5. Write your query to show your population % by cohort dates 
+    
+    ```
+    SELECT activity.cohort_date AS date,
+           date_part(&#39;day&#39;,age(activity_date, activity.cohort_date)) AS day_number,
+           COUNT(distinct unique_id) AS value,
+           total
+    FROM activity
+    JOIN population_agg ON activity.cohort_date = population_agg.cohort_date
+    GROUP BY 1, 2, 4
+    ```
+
+6. Add a cohort visualization to your query and you&#39;re done!
+  ![](https://deploy-preview-64--redashio.netlify.com/assets/images/docs/gitbook/visualization_examples/cohort.png)</description>
+    
+    <lastBuildDate>Sat, 23 Jul 2022 13:37:45 +0000</lastBuildDate>
+    <category>Tips, Tricks &amp; Query Examples</category>
+    <atom:link href="https://discuss.redash.io/t/cohort-query-example/1705.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[dakshayaniswami]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi arikfr, this query really help me, i did for monthly cohort. <strong>Thank You</strong> !! <img src="https://emoji.discourse-cdn.com/twitter/smiling_face_with_three_hearts.png?v=12" title=":smiling_face_with_three_hearts:" class="emoji" alt=":smiling_face_with_three_hearts:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/13</link>
+        <pubDate>Sat, 23 Jul 2022 13:37:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-13</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[a1003520]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Arik, can I get a link to the data source you used for this. getting the dataset will enable me to understand the code very well. Or at least a snapshot of the first 10rows with the columns</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/12</link>
+        <pubDate>Tue, 17 Dec 2019 01:39:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-12</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[boldgames]]></dc:creator>
+        <description><![CDATA[
+            <p>In Step 3, instead of <strong>created_at</strong>::date AS activity_date should be your activity date such as <strong>event_timestamp::date</strong>. Otherwise the age is always zero.</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/11</link>
+        <pubDate>Sun, 17 Nov 2019 12:44:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-11</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[rullysetiawan]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I’m having trouble creating a monthly cohort chart. I copied the query and modified the variables based on my case and successfully created a daily cohort chart. When I changed it into a monthly timeframe, it is still displaying the cohort in a daily format.</p>
+<p>In order to transform the data into a monthly one, I’d modify:</p>
+<ol>
+<li>
+<code>created_at::DATE</code> – <strong><code>DATE_TRUNC('month', created_at)::DATE</code></strong> (in <code>population</code> CTE)</li>
+<li>
+<code>created_at::DATE</code> – <strong><code>DATE_TRUNC('month', created_at)::DATE</code></strong> (in <code>activity</code> CTE)</li>
+<li>
+<code>DATE_PART('day', age(activity_date, activity_.cohort_date))</code> – <strong><code>DATE_PART('month', age(activity_date, activity_.cohort_date))</code></strong> (in the last clause)</li>
+</ol>
+<p>Can you please give me an example on how you would create a monthly cohort based on the current case?</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/10</link>
+        <pubDate>Mon, 03 Jun 2019 10:18:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-10</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Just wanted to note on this thread that we’ve added some documentation for Cohorts in Redash <a href="https://redash.io/help/user-guide/visualizations/cohort-howto" rel="nofollow noopener">here</a>.</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/9</link>
+        <pubDate>Wed, 06 Mar 2019 14:55:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-9</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[hafez92]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/arikfr">@arikfr</a> I got to step 6, my query render’s correctly as a table till that point.</p>
+<p>But I’m not sure what you mean/Implemnent step 6? I use metabase, not a redash user. But how did you implement step 6 and get that to display?</p>
+<p>As how do I <strong>Add a cohort visualization to your query and you’re done!</strong> Can you share the Query for that?</p>
+<p>Thanks,</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/8</link>
+        <pubDate>Wed, 08 Aug 2018 10:49:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-8</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[abed]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-post="6" data-topic="1705" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/arikfr/40/2_1.png" class="avatar"> arikfr:</div>
+<blockquote>
+<p>Your query needs to return weekly or monthly data for this to work. The visualization won’t recalculate the values when switching to weekly/monthly cohort (for the exact reason you mentioned).</p>
+</blockquote>
+</aside>
+<p>Yes, i just had an idea if the bucket field only accepts date data type. I’ll use date_trunc function for weekly and monthly respectively. Will try soon.<br>
+Thanks!</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/7</link>
+        <pubDate>Tue, 10 Jul 2018 11:46:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-7</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="abed" data-post="5" data-topic="1705">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/b487fb/40.png" class="avatar"> abed:</div>
+<blockquote>
+<p>This only works for daily cohort, but not for weekly or monthly.</p>
+</blockquote>
+</aside>
+<p>Your query needs to return weekly or monthly data for this to work. The visualization won’t recalculate the values when switching to weekly/monthly cohort (for the exact reason you mentioned).</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/6</link>
+        <pubDate>Tue, 10 Jul 2018 10:52:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-6</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[abed]]></dc:creator>
+        <description><![CDATA[
+            <p>This only works for daily cohort, but not for weekly or monthly.<br>
+Why? Say that a user did activities in 2 days in a week.<br>
+Using this cohort and weekly is chosen, that user will be counted as 2 whereas that user should be counted as 1.</p>
+<p>After all it depends on how you define the calculation of the cohort. And this cohort feature in redash can’t support my definition for weekly or monthly cohort.</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/5</link>
+        <pubDate>Fri, 06 Jul 2018 05:14:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-5</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[ghostwhisper]]></dc:creator>
+        <description><![CDATA[
+            <p>about cohort visualization, it can only start from day one.how can i  change the starting point to day 0</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/4</link>
+        <pubDate>Thu, 07 Jun 2018 09:35:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-4</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>It was probably missed because Postgres is case insensitive, but fixed now. <img src="https://emoji.discourse-cdn.com/twitter/+1.png?v=6" title=":+1:" class="emoji" alt=":+1:"></p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/3</link>
+        <pubDate>Tue, 01 May 2018 06:53:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-3</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[mnestr]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team quote-modified" data-post="1" data-topic="1705">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/arikfr/40/2_1.png" class="avatar"> arikfr:</div>
+<blockquote>
+<p>SELECT activity.cohort_date AS DATE,</p>
+</blockquote>
+</aside>
+<p>In point 5 <code>SELECT activity.cohort_date AS DATE,</code> you have to use alias <code>DATE</code> in lowercase otherwise it will not work</p>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/2</link>
+        <pubDate>Sat, 28 Apr 2018 15:32:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-2</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+      <item>
+        <title>Cohort Query Example</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Cohorts are a good tool to review retention of users over a defined period of time.</p>
+<p>To create your own cohort report, you’ll need to define your cohort time frame, population, and activeness of users.</p>
+<p>Here is an example of a cohort query in PostgreSQL, step by step:</p>
+<blockquote>
+<p>We used the <code>WITH</code> clause in this example - <code>WITH</code> clauses allow you to name a sub-query block, this way your query is modular (and sometimes runs faster), it can later be referred in the main query instead of making a large main query with many aliases, <code>JOIN</code>s or other complexities. You can have multiple sub-queries, just be sure to have a comma between them.</p>
+</blockquote>
+<ol>
+<li>
+<p>Select the time frame you want to investigate (usually a between a week and a month)</p>
+<pre><code class="lang-auto">WITH    
+time_frame AS (    
+SELECT CURRENT_DATE - 14   
+),
+</code></pre>
+</li>
+<li>
+<p>Define your population relative to the cohort date, for each following day</p>
+<pre><code class="lang-auto">population AS (
+  SELECT created_at::date AS cohort_date, id AS unique_id
+  FROM users
+  WHERE created_at &gt; (SELECT * FROM time_frame)
+),
+</code></pre>
+</li>
+<li>
+<p>Define what’s an active user to you - what event interest you to examine</p>
+<pre><code class="lang-auto">activity AS (
+  SELECT created_at::date AS activity_date, org_id AS unique_id, cohort_date
+  FROM events
+  JOIN population ON population.unique_id = org_id
+  WHERE created_at &gt; (SELECT * FROM time_frame)
+),
+</code></pre>
+</li>
+<li>
+<p>Aggregate your population by cohort date (day 1, day 2…)</p>
+<pre><code class="lang-auto">population_agg AS (
+  SELECT cohort_date, COUNT(distinct unique_id) AS total
+  FROM population
+  GROUP BY 1
+)
+</code></pre>
+</li>
+<li>
+<p>Write your query to show your population % by cohort dates</p>
+<pre><code class="lang-auto">SELECT activity.cohort_date AS date,
+       date_part('day',age(activity_date, activity.cohort_date)) AS day_number,
+       COUNT(distinct unique_id) AS value,
+       total
+FROM activity
+JOIN population_agg ON activity.cohort_date = population_agg.cohort_date
+GROUP BY 1, 2, 4
+</code></pre>
+</li>
+<li>
+<p>Add a cohort visualization to your query and you’re done!<br>
+<img src="https://deploy-preview-64--redashio.netlify.com/assets/images/docs/gitbook/visualization_examples/cohort.png" alt="" width="645" height="299"></p>
+</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/cohort-query-example/1705/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cohort-query-example/1705/1</link>
+        <pubDate>Wed, 21 Mar 2018 14:14:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1705-1</guid>
+        <source url="https://discuss.redash.io/t/cohort-query-example/1705.rss">Cohort Query Example</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>I am not able to send the Emails using Amazon SES</title>
+    <link>https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644</link>
+    <description>I am using K8s to run redash server and worker.
+The followings are the summary of the task definition for worker container
+
+* image: ‘redash/redash:&#39;9.0.0-beta.b42121&#39;
+* command: ‘worker’
+* environment variables
+  * REDASH_HOST: ‘[https://xxxx.com](https://xxxx.com/)’ // url to my redash service
+  * REDASH_REDIS_URL: redisUrl,
+  * REDASH_DATABASE_URL: dbUrl,
+  * REDASH_COOKIE_SECRET: ‘my-secret’,
+  * QUEUES: ‘default,queries,scheduled_queries,schemas,emails,periodic’,
+  * WORKERS_COUNT: ‘4’,
+  * REDASH_MAIL_SERVER: ‘[email-smtp.ap-south-1.amazonaws.com](http://email-smtp.ap-northeast-1.amazonaws.com/)’,
+  * REDASH_MAIL_PORT: ‘465’,
+  * REDASH_MAIL_USERNAME: ‘XXXXXXXXX’, // access key of SES smtp credential
+  * REDASH_MAIL_PASSWORD: ‘xxxxxxxxxxxx’, // secret access key of SES smtp credential
+  * REDASH_MAIL_DEFAULT_SENDER: ‘xxxxx@mydomain.com’,
+  * REDASH_MAIL_USE_TLS: ‘true’
+
+I have added `xxxxx@mydomain.com` to AWS SES verified identities.
+
+Could you please tell me how to set up correctly?
+
+Thank you in advance.
+
+Logs:
+
+```
+[2022-06-17 13:27:05,332][PID:15][INFO][rq.worker] emails: c53cd12a-21d4-4bc5-99ef-2ff55c2fc3ef
+[2022-06-17 13:27:40,728][PID:87][ERROR][rq.job.redash.tasks.general] job.func_name=redash.tasks.general.send_mail job.id=c53cd12a-21d4-4bc5-99ef-2ff55c2fc3ef Failed sending message: Ujala Singh invited you to join Redash
+Traceback (most recent call last):
+  File &quot;/app/redash/tasks/general.py&quot;, line 63, in send_mail
+    mail.send(message)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_mail.py&quot;, line 491, in send
+    with self.connect() as connection:
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_mail.py&quot;, line 144, in __enter__
+    self.host = self.configure_host()
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_mail.py&quot;, line 158, in configure_host
+    host = smtplib.SMTP(self.mail.server, self.mail.port)
+  File &quot;/usr/local/lib/python3.7/smtplib.py&quot;, line 251, in __init__
+    (code, msg) = self.connect(host, port)
+  File &quot;/usr/local/lib/python3.7/smtplib.py&quot;, line 338, in connect
+    (code, msg) = self.getreply()
+  File &quot;/usr/local/lib/python3.7/smtplib.py&quot;, line 394, in getreply
+    raise SMTPServerDisconnected(&quot;Connection unexpectedly closed&quot;)
+smtplib.SMTPServerDisconnected: Connection unexpectedly closed
+[2022-06-17 13:27:40,731][PID:87][INFO][rq.worker] emails: Job OK (c53cd12a-21d4-4bc5-99ef-2ff55c2fc3ef)
+[2022-06-17 13:27:40,731][PID:87][INFO][rq.worker] Result is kept for 500 seconds
+2022/06/17 13:28:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-1
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-1
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-3
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-2
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-3
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-2
+RESULT 2
+OKREADY
+```</description>
+    
+    <lastBuildDate>Sat, 18 Jun 2022 14:19:26 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>I am not able to send the Emails using Amazon SES</title>
+        <dc:creator><![CDATA[ujala-singh]]></dc:creator>
+        <description><![CDATA[
+            <p>This is resolved. Port is actually <code>587</code>. Also you have to move your account out of the Amazon SES sandbox.</p>
+          <p><a href="https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644/2</link>
+        <pubDate>Sat, 18 Jun 2022 14:19:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10644-2</guid>
+        <source url="https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644.rss">I am not able to send the Emails using Amazon SES</source>
+      </item>
+      <item>
+        <title>I am not able to send the Emails using Amazon SES</title>
+        <dc:creator><![CDATA[ujala-singh]]></dc:creator>
+        <description><![CDATA[
+            <p>I am using K8s to run redash server and worker.<br>
+The followings are the summary of the task definition for worker container</p>
+<ul>
+<li>image: ‘redash/redash:‘9.0.0-beta.b42121’</li>
+<li>command: ‘worker’</li>
+<li>environment variables
+<ul>
+<li>REDASH_HOST: ‘<a href="https://xxxx.com/" rel="noopener nofollow ugc">https://xxxx.com</a>’ // url to my redash service</li>
+<li>REDASH_REDIS_URL: redisUrl,</li>
+<li>REDASH_DATABASE_URL: dbUrl,</li>
+<li>REDASH_COOKIE_SECRET: ‘my-secret’,</li>
+<li>QUEUES: ‘default,queries,scheduled_queries,schemas,emails,periodic’,</li>
+<li>WORKERS_COUNT: ‘4’,</li>
+<li>REDASH_MAIL_SERVER: ‘<a href="http://email-smtp.ap-northeast-1.amazonaws.com/" rel="noopener nofollow ugc">email-smtp.ap-south-1.amazonaws.com</a>’,</li>
+<li>REDASH_MAIL_PORT: ‘465’,</li>
+<li>REDASH_MAIL_USERNAME: ‘XXXXXXXXX’, // access key of SES smtp credential</li>
+<li>REDASH_MAIL_PASSWORD: ‘xxxxxxxxxxxx’, // secret access key of SES smtp credential</li>
+<li>REDASH_MAIL_DEFAULT_SENDER: ‘xxxxx@mydomain.com’,</li>
+<li>REDASH_MAIL_USE_TLS: ‘true’</li>
+</ul>
+</li>
+</ul>
+<p>I have added <code>xxxxx@mydomain.com</code> to AWS SES verified identities.</p>
+<p>Could you please tell me how to set up correctly?</p>
+<p>Thank you in advance.</p>
+<p>Logs:</p>
+<pre><code class="lang-auto">[2022-06-17 13:27:05,332][PID:15][INFO][rq.worker] emails: c53cd12a-21d4-4bc5-99ef-2ff55c2fc3ef
+[2022-06-17 13:27:40,728][PID:87][ERROR][rq.job.redash.tasks.general] job.func_name=redash.tasks.general.send_mail job.id=c53cd12a-21d4-4bc5-99ef-2ff55c2fc3ef Failed sending message: Ujala Singh invited you to join Redash
+Traceback (most recent call last):
+  File "/app/redash/tasks/general.py", line 63, in send_mail
+    mail.send(message)
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 491, in send
+    with self.connect() as connection:
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 144, in __enter__
+    self.host = self.configure_host()
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 158, in configure_host
+    host = smtplib.SMTP(self.mail.server, self.mail.port)
+  File "/usr/local/lib/python3.7/smtplib.py", line 251, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/usr/local/lib/python3.7/smtplib.py", line 338, in connect
+    (code, msg) = self.getreply()
+  File "/usr/local/lib/python3.7/smtplib.py", line 394, in getreply
+    raise SMTPServerDisconnected("Connection unexpectedly closed")
+smtplib.SMTPServerDisconnected: Connection unexpectedly closed
+[2022-06-17 13:27:40,731][PID:87][INFO][rq.worker] emails: Job OK (c53cd12a-21d4-4bc5-99ef-2ff55c2fc3ef)
+[2022-06-17 13:27:40,731][PID:87][INFO][rq.worker] Result is kept for 500 seconds
+2022/06/17 13:28:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-1
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-1
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-3
+2022/06/17 13:28:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-2
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-3
+2022/06/17 13:28:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-2
+RESULT 2
+OKREADY
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644/1</link>
+        <pubDate>Fri, 17 Jun 2022 13:34:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10644-1</guid>
+        <source url="https://discuss.redash.io/t/i-am-not-able-to-send-the-emails-using-amazon-ses/10644.rss">I am not able to send the Emails using Amazon SES</source>
+      </item>
+  </channel>
+</rss>

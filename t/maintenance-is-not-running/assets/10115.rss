@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Maintenance is not running</title>
+    <link>https://discuss.redash.io/t/maintenance-is-not-running/10115</link>
+    <description>### Issue Summary
+
+Hello everyone,
+
+We noticed that after upgrading Redash to v10 (from v8), the job to cleanup unused query results does not seem to be running.
+
+As a result, the free space in Redash&#39;s database gets depleted and we need to scale it up in order to keep the service up and running.
+
+Any ideas what may be going wrong here?
+
+Cheers,
+Theodore
+
+### Technical details:
+
+* Redash Version: 10.1.0
+* How did you install Redash: Using the [setup script](https://github.com/getredash/setup) to deploy v8. Then upgraded to v10 following the instructions provided in the [release notes](https://github.com/getredash/redash/releases/tag/v10.1.0)</description>
+    
+    <lastBuildDate>Thu, 15 Dec 2022 17:02:19 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[phillipjohnson]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I am checking to see if there is any followup available? We seem to have a similar issue where the “periodic” queue is scheduled, we have 1 of four workers busy, with 3 idle. However, the query_results do not seem to be getting cleaned up.</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/15</link>
+        <pubDate>Thu, 15 Dec 2022 17:02:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-15</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Excellent write up of your findings. I need a couple business days to dig into this more closely. I will follow up in this thread ASAP.</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/14</link>
+        <pubDate>Fri, 05 Aug 2022 08:13:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-14</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,</p>
+<p>Circling back on this as the <code>cleanup_query_results</code> seems to have stopped running again.</p>
+<p>Unfortunately we only noticed because we got a notification about the Redash DB running out of storage and realized it wasn’t running for the past month or so.</p>
+<p>As before, the task was scheduled successfully after the service was restarted, run once, and then nothing again. Redash has been restarted a couple of times after that to see if the job will run consistently, but I am only noticing the same behavior. Gets scheduled, runs once, then nothing.</p>
+ Show logs  <a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/13">(click for more details)</a>
+<p>Following up on possible causes:</p>
+<aside class="quote group-Team" data-username="jesse" data-post="12" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>It could be an insufficient number of workers monitoring the <code>periodic</code> queue.</p>
+</blockquote>
+</aside>
+<p>The queue seems to be empty.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9d8c7875426a85154319ff1f3a7bc44efecbd4e5.png" data-download-href="/uploads/short-url/mtJV0X6eUHuzACstHlujuWfuyUd.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9d8c7875426a85154319ff1f3a7bc44efecbd4e5_2_690x178.png" alt="image" data-base62-sha1="mtJV0X6eUHuzACstHlujuWfuyUd" width="690" height="178" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9d8c7875426a85154319ff1f3a7bc44efecbd4e5_2_690x178.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9d8c7875426a85154319ff1f3a7bc44efecbd4e5_2_1035x267.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9d8c7875426a85154319ff1f3a7bc44efecbd4e5.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9d8c7875426a85154319ff1f3a7bc44efecbd4e5_2_10x10.png"></a></div><p></p>
+<aside class="quote group-Team" data-username="jesse" data-post="12" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<ul>
+<li>The worker is crashing before it can emit the log saying it’s picked up the task. To check for this, don’t grep for <code>cleanup_query_results</code>, but instead see if there are signs of a worker thread crashing.</li>
+</ul>
+</blockquote>
+</aside>
+<p>I looked but couldn’t find any signs. Are there any specific patterns to look for?</p>
+<aside class="quote group-Team" data-username="jesse" data-post="12" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<ul>
+<li>The scheduler stops scheduling the job. To check for this, you can connect directly to the <code>redis</code> instance and pattern search for <code>cleanup_query_results</code> in the redis database.</li>
+</ul>
+</blockquote>
+</aside>
+<p>After Redash was restarted, I looked in Redis. I figured I should look for the job hash from the logs above and here’s what I’ve found:</p>
+<pre><code class="lang-auto">rq:job:e27209059575fcc17c527c47d0957cb21756e551
+ 1) "enqueued_at"
+ 2) "2022-08-05T07:21:26.460464Z"
+ 5) "origin"
+ 6) "periodic"
+ 7) "status"
+ 8) "queued"
+ 9) "description"
+10) "redash.tasks.queries.maintenance.cleanup_query_results()"
+13) "timeout"
+14) "180"
+15) "created_at"
+16) "2022-08-05T07:11:25.916441Z"
+17) "result_ttl"
+18) "600"
+19) "ended_at"
+20) "2022-08-05T07:15:41.703879Z"
+21) "started_at"
+22) "2022-08-05T07:15:37.820316Z"
+</code></pre>
+<p>I can see that job details do correlate with the logs above on schedule and execution. It also seems it was enqueued to run again but there were no signs of it in the logs. Not sure how tasks are registered in Redis but I was also not able to find the specific key again after 15 minutes or so (and of course the cleanup job hasn’t run ever since).</p>
+<p>What would you suggest as next steps?</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/13</link>
+        <pubDate>Fri, 05 Aug 2022 08:08:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-13</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hmmm very strange not to see the registration, although it’s possible waiting longer may have shown a result. For consistency, I never run <code>docker-compose up -d</code> on its own to restart services. I run <code>stop</code> first, like this:</p>
+<pre data-code-wrap="zsh"><code class="lang-nohighlight">$ docker-compose stop &amp;&amp; docker-compose up -d
+</code></pre>
+<p>This guarantees that everything stops and is restarted.</p>
+<p>I don’t usually run <code>docker-compose restart</code> (without specifying a service first) because this won’t guarantee that environment variable changes are propagated (not sure why, but it’s a docker issue not specific to Redash).</p>
+<aside class="quote no-group" data-username="kirkiris" data-post="11" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/kirkiris/40/3146_2.png" class="avatar"> kirkiris:</div>
+<blockquote>
+<p>Here I must ask: Why was there no indication in the logs that the task was running? <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=12" title=":thinking:" class="emoji" alt=":thinking:" loading="lazy" width="20" height="20"></p>
+</blockquote>
+</aside>
+<p>Possible causes:</p>
+<ul>
+<li>It could be an insufficient number of workers monitoring the <code>periodic</code> queue. If another periodic job is hogging the workers then the cleanup task might never run. To check for this, observe how many jobs are in the periodic queue when you stop seeing the task run. If the number stays static or increases, there aren’t enough workers.</li>
+<li>The worker is crashing before it can emit the log saying it’s picked up the task. To check for this, don’t grep for <code>cleanup_query_results</code>, but instead see if there are signs of a worker thread crashing.</li>
+<li>The scheduler stops scheduling the job. To check for this, you can connect directly to the <code>redis</code> instance and pattern search for <code>cleanup_query_results</code> in the redis database.</li>
+</ul>
+<p>Depending on which of those is the cause there would be different steps to fix.</p>
+<p>Not sure. Keep an eye on it and ping what you find or if you have questions. We’ll get to the bottom of it I’m sure.</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/12</link>
+        <pubDate>Thu, 17 Mar 2022 17:45:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-12</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="10" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>Thanks for your patience while I gathered the info!</p>
+</blockquote>
+</aside>
+<p>Of course!</p>
+<hr>
+<p>I do have some additional questions:</p>
+<aside class="quote group-Team" data-username="jesse" data-post="10" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>I wonder if the cause ultimately is that the job is running but…</p>
+</blockquote>
+</aside>
+<p>There was no indication in the logs that the task was running.<br>
+Instead, the logs indicate it had stopped running unexpectedly.</p>
+<aside class="quote group-Team" data-username="jesse" data-post="10" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>a) it crashes or hangs midway through</p>
+</blockquote>
+</aside>
+<p>I would expect to see an error in the logs, but there weren’t any. Or at least none showed up when filtering with the term: <code>cleanup_query_results</code>.</p>
+<aside class="quote group-Team" data-username="jesse" data-post="10" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>b) it runs normally, but the number of results to clean up is growing faster than the cleanup job can clear it</p>
+</blockquote>
+</aside>
+<p>Here I must ask: Why was there no indication in the logs that the task was running? <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=12" title=":thinking:" class="emoji" alt=":thinking:" loading="lazy" width="20" height="20"></p>
+<hr>
+<p>Now the most interesting part:</p>
+<aside class="quote group-Team" data-username="jesse" data-post="10" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>b) it runs normally, but the number of results to clean up is growing faster than the cleanup job can clear it</p>
+</blockquote>
+</aside>
+<p>I hear you, and I raised the number of results to be cleaned up to:</p>
+<pre><code class="lang-auto">REDASH_QUERY_RESULTS_CLEANUP_COUNT=500
+</code></pre>
+<p>(from 200) and then I issued a:</p>
+<pre><code class="lang-auto">docker-compose up -d
+</code></pre>
+<p>and didn’t see any logs indicating that the scheduler had scheduled the task.</p>
+<p>I waited for a while and then I issued a</p>
+<pre><code class="lang-auto">docker-compose restart scheduler
+</code></pre>
+<p>but again no logs indicating the cleanup task registration.</p>
+<p><strong>Finally</strong>, after issuing another</p>
+<pre><code class="lang-auto">docker-compose restart scheduler
+</code></pre>
+<p>I saw that the task was registered</p>
+<pre><code class="lang-auto">2022-03-17 17:23:10,493][PID:1][INFO][redash.tasks.schedule] &lt;mark&gt;Scheduling&lt;/mark&gt; e27209059575fcc17c527c47d0957cb21756e551 (&lt;mark&gt;cleanup_query_results&lt;/mark&gt;) with interval 300.
+</code></pre>
+<p>What is going on? <img src="https://emoji.discourse-cdn.com/twitter/sweat.png?v=12" title=":sweat:" class="emoji" alt=":sweat:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/11</link>
+        <pubDate>Thu, 17 Mar 2022 17:24:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-11</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="kirkiris" data-post="9" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/kirkiris/40/3146_2.png" class="avatar"> kirkiris:</div>
+<blockquote>
+<p>I see, thanks for clarifying this!</p>
+</blockquote>
+</aside>
+<p>I’m looking forward to adding this breakdown to our documentation. Thanks for your patience while I gathered the info!</p>
+<aside class="quote no-group" data-username="kirkiris" data-post="9" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/kirkiris/40/3146_2.png" class="avatar"> kirkiris:</div>
+<blockquote>
+<p>but from <a href="https://github.com/getredash/redash/blob/e6ebef1e5ab866ce1e706eaee6260edaffdc2bd7/redash/tasks/schedule.py#L90">this</a> I am guessing the interval is hardcoded to 5 minutes?</p>
+</blockquote>
+</aside>
+<p>You’re right. I didn’t read closely enough (I’m updating the docs for Redash settings right now btw).</p>
+<p>It sounds like for the moment your issue is resolved. But if you haven’t changed any settings it seems likely that the issue of database bloat will continue. I wonder if the cause ultimately is that the job is running but…</p>
+<p>a) it crashes or hangs midway through<br>
+b) it runs normally, but the number of results to clean up is growing faster than the cleanup job can clear it</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/10</link>
+        <pubDate>Thu, 17 Mar 2022 16:12:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-10</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="8" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>This message emits exactly once when the <strong>scheduler</strong> service starts</p>
+</blockquote>
+</aside>
+<p>I see, thanks for clarifying this!</p>
+<aside class="quote group-Team" data-username="jesse" data-post="8" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>As a debugging step, you should try restarting your scheduler and verifying that the cleanup task registration log appears.</p>
+</blockquote>
+</aside>
+<p>After issuing a</p>
+<pre><code class="lang-auto">docker-compose restart scheduler
+</code></pre>
+<p>the task seems to have both been registered and executed as expected.<br>
+Logs below are just to confirm that the task has been registered and has had 2 successful executions; other than that, I confirm that it’s been running consistently every 5 minutes, up until the time I am posting this message. It doesn’t make sense…</p>
+Show logs <a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/9">(click for more details)</a>
+<hr>
+<aside class="quote group-Team" data-username="jesse" data-post="8" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>What are your settings for the number of results to cleanup and the interval?</p>
+</blockquote>
+</aside>
+<p>We have set the following values in <code>/opt/redash/env</code>:</p>
+<pre><code class="lang-auto">REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE=1
+REDASH_QUERY_RESULTS_CLEANUP_COUNT=200
+</code></pre>
+<p>Interval hasn’t been changed; I couldn’t find any cleanup related <a href="https://redash.io/help/open-source/admin-guide/env-vars-settings" rel="noopener nofollow ugc">env vars</a> for interval, but from <a href="https://github.com/getredash/redash/blob/e6ebef1e5ab866ce1e706eaee6260edaffdc2bd7/redash/tasks/schedule.py#L90" rel="noopener nofollow ugc">this</a> I am guessing the interval is hardcoded to 5 minutes?</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/9</link>
+        <pubDate>Thu, 17 Mar 2022 15:24:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-9</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="kirkiris" data-post="7" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/kirkiris/40/3146_2.png" class="avatar"> kirkiris:</div>
+<blockquote>
+<p>My understanding is that I should be expecting to see it every time the task was starting, is that correct?</p>
+</blockquote>
+</aside>
+<p>Not quite. This message emits exactly once when the <strong>scheduler</strong> service starts, i.e when you run <code>docker-compose up -d</code>. If you ran <code>docker-compose restart scheduler</code> you should see the message again. As a debugging step, you should try restarting your scheduler and verifying that the cleanup task registration log appears.</p>
+<p>That said, a <em>different</em> message will appear when the cleanup task actually runs. That different message will be emitted not by the scheduler, but by the <strong>worker</strong>.</p>
+<aside class="quote no-group" data-username="kirkiris" data-post="7" data-topic="10115">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/kirkiris/40/3146_2.png" class="avatar"> kirkiris:</div>
+<blockquote>
+<p>We saw the task being scheduled <strong>once</strong> after restarting Redash and then again nothing.</p>
+</blockquote>
+</aside>
+<p>Exactly right. This is normal. When the scheduler starts it emits logs to say which tasks it will schedule, and at what interval. The scheduler never executes tasks, it only schedules them. It does not emit a message every time it schedules a task.</p>
+<p>So you might ask, “how will I know the task is running if the scheduler doesn’t tell me?”. That’s where the worker logs come in. When a worker pulls a job from the queue, it emits a log message specifying the job id, task name, and a timestamp. So in simple terms what you should expect to to see is:</p>
+<p><strong>00:00 scheduler</strong>: I’m going to schedule this task to run every five minutes<br>
+<strong>00:00 worker</strong>: I just picked up a task to run, I’m doing that now<br>
+<strong>00:01 worker</strong>: I finished the task, here’s the outcome<br>
+<strong>00:05 worker</strong>: I just picked up a task to run, I’m doing that now<br>
+<strong>00:06 worker</strong>: I finished the task, here’s the outcome<br>
+<strong>00:10 worker</strong>: I just picked up a task to run, I’m doing that now<br>
+<strong>00:11 worker</strong>: I finished the task, here’s the outcome</p>
+<p>…and so on.</p>
+<p>One thing that may be happening is that the cleanup job is taking too long to execute. What are your settings for the number of results to cleanup and the interval?</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/8</link>
+        <pubDate>Wed, 16 Mar 2022 16:36:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-8</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <p>I have checked the logs since Feb 21st (that’s when Redash was upgraded to v10) and here are my findings:</p>
+<blockquote>
+<p>If you check your docker logs, do you see a message like this from the scheduler service when it starts?</p>
+</blockquote>
+<p>There are only a few entries with a message like this. My understanding is that I should be expecting to see it every time the task was starting, is that correct?</p>
+Show logs <a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/7">(click for more details)</a>
+<hr>
+<blockquote>
+<p>Do you see any messages like this?</p>
+</blockquote>
+<p>Yes, but not consistently. In the beginning it was scheduled a few times but not sticking to its schedule and then it stopped.<br>
+On Mar 2nd we received an alert for high disk space utilization from the Redash database and we started looking into it.<br>
+We realized that the cleanup task wasn’t running but we couldn’t understand why, so we restarted all services and tried to clean up manually some old cached query results.</p>
+<p>Since then the task was being scheduled normally as expected, up until March 8th when it stopped again (I am not posting all the logs from that time but I can do so if needed).<br>
+Since then there were only a couple of entries in the logs. We saw the task being scheduled <strong>once</strong> after restarting Redash and then again nothing.</p>
+Show logs <a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/7">(click for more details)</a>
+<hr>
+<p>I have restarted all the services a couple of times with no luck; the task still does not seem to be scheduled</p>
+<p>I have tried both:</p>
+<pre><code class="lang-auto">docker-compose up -d
+</code></pre>
+<p>and</p>
+<pre><code class="lang-auto">docker-compose up -d --force-recreate --build
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/7</link>
+        <pubDate>Wed, 16 Mar 2022 10:45:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-7</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the details. If you check your docker logs, do you see a message like this from the <code>scheduler</code> service when it starts?</p>
+<pre><code class="lang-bash">[2022-03-15 17:20:25,452][PID:8][INFO][redash.tasks.schedule] Scheduling e27209059575fcc17c527c47d0957cb21756e551 (cleanup_query_results) with interval 300.
+</code></pre>
+<p>The interval is in seconds. So <code>300</code> here means it will run every five minutes.</p>
+<p>When it runs you should see a log message from one of the <code>worker</code> services that observes the <code>periodic</code> queue. The message will look like this:</p>
+<pre><code class="lang-bash">[2022-03-15 17:25:33,910][PID:25][INFO][rq.job.redash.tasks.queries.maintenance] job.func_name=redash.tasks.queries.maintenance.cleanup_query_results job.id=e27209059575fcc17c527c47d0957cb21756e551 Running query results clean up (removing maximum of 100 unused results, that are 0 days old or more)
+</code></pre>
+<p>In my case I set it to clean up all query results to make it easy to verify.</p>
+<p>Do you see any messages like this?</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/6</link>
+        <pubDate>Tue, 15 Mar 2022 19:04:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-6</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <p>Following up on <a href="http://discuss.redash.io/t/high-disk-size-issue-with-redash-postgres/9859">High Disk Size issue with Redash Postgres</a>:</p>
+<p><code>REDASH_QUERY_RESULTS_CLEANUP_ENABLED</code> env var has not been set to false.</p>
+<p>We have set the following though to mitigate the issue and clean up the database</p>
+<pre><code class="lang-auto">REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE=1
+REDASH_QUERY_RESULTS_CLEANUP_COUNT=200
+</code></pre>
+<p>but to no avail. Task scheduling is not consistent.</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/5</link>
+        <pubDate>Mon, 14 Mar 2022 09:20:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-5</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse,</p>
+<p>Thank you for your reply.</p>
+<blockquote>
+<p>Most of the time the first one is the culprit.</p>
+</blockquote>
+<p>This is my understanding as well. I believe if either 2 or 3 were the case, it would appear in the logs.</p>
+<blockquote>
+<p>Can you check that at least one of your worker processes is monitoring the <code>periodic</code> jobs queue?</p>
+</blockquote>
+<p>It does. We have followed the instructions provided <a href="https://github.com/getredash/redash/releases/tag/v10.0.0" rel="noopener nofollow ugc">here</a> to add a new service for general RQ jobs and our configuration is almost identical to the one in step <code>5</code> (please see below). Emails and tasks in the default queue are executed normally.</p>
+<pre><code class="lang-auto">  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    mem_limit: 3000m
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 25
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/4</link>
+        <pubDate>Mon, 14 Mar 2022 09:10:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-4</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Related <a href="http://discuss.redash.io/t/high-disk-size-issue-with-redash-postgres/9859" class="inline-onebox">High Disk Size issue with Redash Postgres</a></p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/3</link>
+        <pubDate>Fri, 11 Mar 2022 20:11:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-3</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the user forum and sorry for this late reply.</p>
+<p>There are a few possible causes for this issue:</p>
+<ol>
+<li>The periodic cleanup job is not being scheduled</li>
+<li>The job is being scheduled but no worker processes will run it</li>
+<li>The job is scheduled and acquired by a worker but fails</li>
+</ol>
+<p>Most of the time the first one is the culprit.</p>
+<p>Can you check that at least one of your worker processes is monitoring the <code>periodic</code> jobs queue?</p>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/2</link>
+        <pubDate>Fri, 11 Mar 2022 20:03:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-2</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+      <item>
+        <title>Maintenance is not running</title>
+        <dc:creator><![CDATA[kirkiris]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hello everyone,</p>
+<p>We noticed that after upgrading Redash to v10 (from v8), the job to cleanup unused query results does not seem to be running.</p>
+<p>As a result, the free space in Redash’s database gets depleted and we need to scale it up in order to keep the service up and running.</p>
+<p>Any ideas what may be going wrong here?</p>
+<p>Cheers,<br>
+Theodore</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.1.0</li>
+<li>How did you install Redash: Using the <a href="https://github.com/getredash/setup" rel="noopener nofollow ugc">setup script</a> to deploy v8. Then upgraded to v10 following the instructions provided in the <a href="https://github.com/getredash/redash/releases/tag/v10.1.0" rel="noopener nofollow ugc">release notes</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/maintenance-is-not-running/10115/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maintenance-is-not-running/10115/1</link>
+        <pubDate>Wed, 09 Mar 2022 16:42:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10115-1</guid>
+        <source url="https://discuss.redash.io/t/maintenance-is-not-running/10115.rss">Maintenance is not running</source>
+      </item>
+  </channel>
+</rss>

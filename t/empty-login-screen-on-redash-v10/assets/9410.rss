@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Empty Login Screen on redash v10</title>
+    <link>https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410</link>
+    <description>### Issue Summary
+
+My team has successfully deployed redash v10 in AWS ECS Fargate + RDS + Elasticache, deployed in a private vpc with load balancers (one day I might need to share what we did I assume it will be helpful for the community). 
+
+We are in the testing phase now. Our redash database was upgraded from our v5 production database. On production, we use SAML for authentication. In our test environment, we for now just use remote login, however, we are ready to share the test app with other users in the organization. So I turned on username/password login and turned off remote login. But now I see an empty login screen (see below) 
+
+![image|688x294, 75%](upload://vuhTyHDUm0jIM7LIBFwj8wpdgpn.png)
+
+### My questions 
+1. I scanned through the code and I believe my environment variables are setup correctly 
+```
+REDASH_SAML_AUTH_TYPE = 
+REDASH_SAML_ENCRYPTION_CERT_PATH = 
+REDASH_SAML_ENCRYPTION_PEM_PATH = 
+REDASH_SAML_ENTITY_ID = 
+REDASH_SAML_METADATA_URL = 
+REDASH_SAML_NAMEID_FORMAT = 
+REDASH_SAML_SCHEME_OVERRIDE = 
+REDASH_SAML_SSO_URL = 
+REDASH_SAML_X509_CERT = 
+SAML_ENCRYPTION_ENABLED = false
+SAML_ENCRYPTION_PEM_PATH = 
+SAML_SCHEME_OVERRIDE =
+REDASH_PASSWORD_LOGIN_ENABLED = true
+REDASH_LDAP_LOGIN_ENABLED = false
+REDASH_REMOTE_USER_LOGIN_ENABLED = false
+GOOGLE_CLIENT_ID = 
+GOOGLE_CLIENT_SECRET = 
+```
+Is the login screen empty due to the database setup? What am I missing?
+
+2. Is this even possible in redash v10, and also given that our backup database comes from a SAML-only prod database?
+
+### Technical details:
+
+* Redash Version: Image 10.0.0.b50363
+* Browser/OS: Chrome, macOS Big Sur
+* How did you install Redash: docker 
+
+Thank you in advance</description>
+    
+    <lastBuildDate>Fri, 05 Nov 2021 17:21:24 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Empty Login Screen on redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I ran into the same issue when trying to reproduce. I think the environment variables are ignored if there is a value in the database already (which isn’t obvious and probably should be).</p>
+<p>Thanks for posting your solution!</p>
+          <p><a href="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/4</link>
+        <pubDate>Fri, 05 Nov 2021 17:21:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9410-4</guid>
+        <source url="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410.rss">Empty Login Screen on redash v10</source>
+      </item>
+      <item>
+        <title>Empty Login Screen on redash v10</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> Thank you for your help</p>
+<p>We found out what was going on. The environment variables were setting up ok but the organization setting in the database already had this (kinda what you hinted at)</p>
+<pre><code class="lang-sql">select settings from organizations
+-- {"google_apps_domains": [], "settings": {"auth_password_login_enabled": false, "beacon_consent": false}}
+</code></pre>
+<p>The problem is in the UI Changing that was not allowed. <a href="https://github.com/getredash/redash/blob/release/10.0.x/client/app/pages/settings/components/AuthSettings/PasswordLoginSettings.jsx#L19" class="inline-onebox" rel="noopener nofollow ugc">redash/PasswordLoginSettings.jsx at release/10.0.x · getredash/redash · GitHub</a></p>
+<p>So I resorted to just updating that setting straight on the <strong>organizations</strong> table</p>
+<p>and Now I can see the password page</p>
+          <p><a href="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/3</link>
+        <pubDate>Fri, 05 Nov 2021 17:11:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9410-3</guid>
+        <source url="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410.rss">Empty Login Screen on redash v10</source>
+      </item>
+      <item>
+        <title>Empty Login Screen on redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m working to reproduce this on my end. One thing I wonder: did you change any of the settings in Redash itself (not the environment variables)?</p>
+          <p><a href="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/2</link>
+        <pubDate>Fri, 05 Nov 2021 13:19:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9410-2</guid>
+        <source url="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410.rss">Empty Login Screen on redash v10</source>
+      </item>
+      <item>
+        <title>Empty Login Screen on redash v10</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>My team has successfully deployed redash v10 in AWS ECS Fargate + RDS + Elasticache, deployed in a private vpc with load balancers (one day I might need to share what we did I assume it will be helpful for the community).</p>
+<p>We are in the testing phase now. Our redash database was upgraded from our v5 production database. On production, we use SAML for authentication. In our test environment, we for now just use remote login, however, we are ready to share the test app with other users in the organization. So I turned on username/password login and turned off remote login. But now I see an empty login screen (see below)</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dcafe50a1f08d857ed40963d42f8cefc49858d0d.png" alt="image" data-base62-sha1="vuhTyHDUm0jIM7LIBFwj8wpdgpn" width="516" height="220"></p>
+<h3>
+<a name="my-questions-2" class="anchor" href="https://discuss.redash.io#my-questions-2"></a>My questions</h3>
+<ol>
+<li>I scanned through the code and I believe my environment variables are setup correctly</li>
+</ol>
+<pre><code class="lang-auto">REDASH_SAML_AUTH_TYPE = 
+REDASH_SAML_ENCRYPTION_CERT_PATH = 
+REDASH_SAML_ENCRYPTION_PEM_PATH = 
+REDASH_SAML_ENTITY_ID = 
+REDASH_SAML_METADATA_URL = 
+REDASH_SAML_NAMEID_FORMAT = 
+REDASH_SAML_SCHEME_OVERRIDE = 
+REDASH_SAML_SSO_URL = 
+REDASH_SAML_X509_CERT = 
+SAML_ENCRYPTION_ENABLED = false
+SAML_ENCRYPTION_PEM_PATH = 
+SAML_SCHEME_OVERRIDE =
+REDASH_PASSWORD_LOGIN_ENABLED = true
+REDASH_LDAP_LOGIN_ENABLED = false
+REDASH_REMOTE_USER_LOGIN_ENABLED = false
+GOOGLE_CLIENT_ID = 
+GOOGLE_CLIENT_SECRET = 
+</code></pre>
+<p>Is the login screen empty due to the database setup? What am I missing?</p>
+<ol start="2">
+<li>Is this even possible in redash v10, and also given that our backup database comes from a SAML-only prod database?</li>
+</ol>
+<h3>
+<a name="technical-details-3" class="anchor" href="https://discuss.redash.io#technical-details-3"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: Image 10.0.0.b50363</li>
+<li>Browser/OS: Chrome, macOS Big Sur</li>
+<li>How did you install Redash: docker</li>
+</ul>
+<p>Thank you in advance</p>
+          <p><a href="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410/1</link>
+        <pubDate>Fri, 05 Nov 2021 00:05:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9410-1</guid>
+        <source url="https://discuss.redash.io/t/empty-login-screen-on-redash-v10/9410.rss">Empty Login Screen on redash v10</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Parameter change in the public dashboard doesn&#39;t work properly - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+In the public dashboards, if the user changes the global parameters, the visualization keeps showing refreshing. After refreshing the whole page or re-entering the page, the parameters work. Are there any &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Parameter change in the public dashboard doesn&#39;t work properly&#39;" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296" />
+<meta property="og:title" content="Parameter change in the public dashboard doesn&#39;t work properly" />
+<meta name="twitter:title" content="Parameter change in the public dashboard doesn&#39;t work properly" />
+<meta property="og:description" content="Issue Summary In the public dashboards, if the user changes the global parameters, the visualization keeps showing refreshing. After refreshing the whole page or re-entering the page, the parameters work. Are there any system settings that need to be adjusted?   Technical details:  Redash Version: 9.0.0-beta Browser/OS: Chrome How did you install Redash: docker" />
+<meta name="twitter:description" content="Issue Summary In the public dashboards, if the user changes the global parameters, the visualization keeps showing refreshing. After refreshing the whole page or re-entering the page, the parameters work. Are there any system settings that need to be adjusted?   Technical details:  Redash Version: 9.0.0-beta Browser/OS: Chrome How did you install Redash: docker" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2021-10-20T02:21:03+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+        <link rel="next" href="/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296?page=2">
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Parameter change in the public dashboard doesn't work properly","mainEntity":{"@type":"Question","name":"Parameter change in the public dashboard doesn't work properly","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\nIn the public dashboards, if the user changes the global parameters, the visualization keeps showing refreshing. After refreshing the whole page or re-entering the page, the parameters work. Are there any system settings that need to be adjusted?\n\n<a name=\"technical-details-2\" class=\"anchor\" href=\"#technical-details-2\"><\/a>Technical details:\n\nRedash Version: &hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-10-20T02:21:03.638Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">Parameter change in the public dashboard doesn&#39;t work properly</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Parameter change in the public dashboard doesn&#39;t work properly'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T02:21:03Z' class='post-time'>
+                    October 20, 2021,  2:21am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T02:21:03Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>In the public dashboards, if the user changes the global parameters, the visualization keeps showing refreshing. After refreshing the whole page or re-entering the page, the parameters work. Are there any system settings that need to be adjusted?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 9.0.0-beta</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: docker</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T13:05:07Z' class='post-time'>
+                    October 20, 2021,  1:05pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T13:05:07Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I checked the <code>network</code> tab in the browser, after changing the parameter all the requests with the name <code>results</code> have the status code 200 and in the response, the stage is 1, and the result is null, like below show:</p>
+<pre><code class="lang-auto">{
+    "job": {
+        "id": "cd2294bb-a2e9-4e79-94a9-7c7f608f363c",
+        "updated_at": 0,
+        "status": 1,
+        "error": "",
+        "result": null,
+        "query_result_id": null
+    }
+}```</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T15:04:05Z' class='post-time'>
+                    October 20, 2021,  3:04pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T15:04:05Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Status 1 means the job was enqueued successfully.</p>
+<p>Do you see periodic requests (once per second) that check for more results?</p>
+<p>Why are you using the v9 beta instead of the v10 release?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T15:55:03Z' class='post-time'>
+                    October 20, 2021,  3:55pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T15:55:03Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>No, after giving the response with the null results, there is no more request. BTW, we assign an HTTPS domain to the redash. May that cause the issue?</p>
+<p>And do you mean upgrading to v10 would help with this?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T16:00:45Z' class='post-time'>
+                    October 20, 2021,  4:00pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T16:00:45Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hmmm something sounds wrong there. It’s completely normal for the result to be <code>null</code> in this request. Sounds the front-end just stops polling the jobs api for a new result. Which explains your behavior. Odd that we haven’t seen this reported elsewhere.</p>
+<p>re: V10 it’s best to use the latest version of Redash because that’s the one that receives the most development attention and fixes <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="3" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T16:23:55Z' class='post-time'>
+                    October 20, 2021,  4:23pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T16:23:55Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>So you mean the in the public dashboard page, normally it keeps sending the request to poll the jobs API? However, on our side, we have to refresh the whole page… Do we need to play with some environment parameters(like <code>FRAME_OPTIONS</code> , <code>FRAME_OPTIONS_ALLOW_FROM </code> , <code>CONTENT_SECURITY_POLICY </code> , etc.)? Or you’d more suggest double-checking our HTTPS settings? Thanks!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-20T22:15:04Z' class='post-time'>
+                    October 20, 2021, 10:15pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-20T22:15:04Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Oh, there is one more thing I forgot to mention, the server was down days ago, and I only restart the server. Will this cause the issue? Do I actually need to back up the PostgreSQL and run <code>docker compose build</code> to rebuild all the services?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T00:09:10Z' class='post-time'>
+                    October 21, 2021, 12:09am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T00:09:10Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I just tried to restart the scheduler and worker separately, now in the public dashboard page, now I see some responses containing the data, however, the dashboards are still showing the loading logo without any update.</p>
+<p>One more thing, during the dashboard showing the loading logo, if I change to some other parameters, there was no request made, looks like it stuck somewhere.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T00:10:18Z' class='post-time'>
+                    October 21, 2021, 12:10am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T00:10:18Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It’s not clear the state of your system. All the services must be running. Do you see anything in your logs?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T00:44:43Z' class='post-time'>
+                    October 21, 2021, 12:44am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T00:44:43Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yes, they are running, and I can see the logs updating. But the public dashboards don’t refresh.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T01:27:13Z' class='post-time'>
+                    October 21, 2021,  1:27am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T01:27:13Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>The important question we still don’t have an answer for is why the widgets do not appear to be polling the server for updated result. Do you see anything in your browser console?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T01:36:23Z' class='post-time'>
+                    October 21, 2021,  1:36am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T01:36:23Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>this is the browse console<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210.png" data-download-href="/uploads/short-url/w7OHRfz45Z6ps0xZxmG2SaRIKha.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210_2_421x500.png" alt="image" data-base62-sha1="w7OHRfz45Z6ps0xZxmG2SaRIKha" width="421" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210_2_421x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210_2_631x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210_2_842x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e127cd73506e0e76a3d26a5a80cc20895020d210_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1637×1944 305 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>here are the latest logs from server<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/46f3defcb61386d9e193e02ee39931c84962493f.png" data-download-href="/uploads/short-url/a7FUGjdG7ShiJVSyy5jETPD3t8z.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/46f3defcb61386d9e193e02ee39931c84962493f_2_690x209.png" alt="image" data-base62-sha1="a7FUGjdG7ShiJVSyy5jETPD3t8z" width="690" height="209" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/46f3defcb61386d9e193e02ee39931c84962493f_2_690x209.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/46f3defcb61386d9e193e02ee39931c84962493f_2_1035x313.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/46f3defcb61386d9e193e02ee39931c84962493f_2_1380x418.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/46f3defcb61386d9e193e02ee39931c84962493f_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">3453×1050 426 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>and here are the latest logs from worker<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e7430603229871620617316654049febab5ab9b5.jpeg" data-download-href="/uploads/short-url/wZPTm26qlDJfjqImcAJqcfl7ywR.jpeg?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7430603229871620617316654049febab5ab9b5_2_690x209.jpeg" alt="image" data-base62-sha1="wZPTm26qlDJfjqImcAJqcfl7ywR" width="690" height="209" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7430603229871620617316654049febab5ab9b5_2_690x209.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7430603229871620617316654049febab5ab9b5_2_1035x313.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7430603229871620617316654049febab5ab9b5_2_1380x418.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7430603229871620617316654049febab5ab9b5_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1920×584 244 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>and here are the latest logs from scheduler<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/921b868aecaeb72a195ed284a56d2152a8504ee6.png" data-download-href="/uploads/short-url/kQwGoZjLzxG63O2ME2mfBcBZl7U.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/921b868aecaeb72a195ed284a56d2152a8504ee6_2_690x74.png" alt="image" data-base62-sha1="kQwGoZjLzxG63O2ME2mfBcBZl7U" width="690" height="74" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/921b868aecaeb72a195ed284a56d2152a8504ee6_2_690x74.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/921b868aecaeb72a195ed284a56d2152a8504ee6_2_1035x111.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/921b868aecaeb72a195ed284a56d2152a8504ee6_2_1380x148.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/921b868aecaeb72a195ed284a56d2152a8504ee6_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">2582×277 30.5 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T01:37:31Z' class='post-time'>
+                    October 21, 2021,  1:37am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T01:37:31Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Those screenshots seem like everything is fine…The results have loaded.</p>
+<p>Going back to the beginning though: what’s your expected behavior here? What do you expect to happen that isn’t happening?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_16' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T01:42:45Z' class='post-time'>
+                    October 21, 2021,  1:42am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T01:42:45Z'>
+              <span itemprop='position'>16</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/jesse">@jesse</a> The thing is that the public dashboard doesn’t update the viz. As you can see in the screenshot, it just keeps showing the loading or refreshing logo but the viz didn’t change</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050.png" data-download-href="/uploads/short-url/9D49Sr0nES7JzyN93B8azhIBeog.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050_2_320x500.png" alt="image" data-base62-sha1="9D49Sr0nES7JzyN93B8azhIBeog" width="320" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050_2_320x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050_2_480x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050_2_640x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/437e19b20589779b5bc30ed2fca59bffc74e0050_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">708×1105 11.3 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_17' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T01:44:13Z' class='post-time'>
+                    October 21, 2021,  1:44am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T01:44:13Z'>
+              <span itemprop='position'>17</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>What happens if you load this dashboard when logged-in?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_18' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T01:48:59Z' class='post-time'>
+                    October 21, 2021,  1:48am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T01:48:59Z'>
+              <span itemprop='position'>18</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>just to clarify the <code>publish dashboard</code> means the dashboard opened using the secret address generated by <code>share Dashboard -&gt; Allow public access</code>. On the ReDash dashboard page, everything works fine.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_19' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T02:32:34Z' class='post-time'>
+                    October 21, 2021,  2:32am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T02:32:34Z'>
+              <span itemprop='position'>19</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>To be clear, public dashboards cannot refresh queries. All they do is fetch the latest cached result from the metadata db.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_20' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T02:46:50Z' class='post-time'>
+                    October 21, 2021,  2:46am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T02:46:50Z'>
+              <span itemprop='position'>20</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>So you mean if users want to play with the parameters on the public dashboard, we have to play with all the parameters on the ReDash dashboard page first to make some cache there. And then when they change parameters on the public dashboard the viz will load properly since it can fetch the cache in metadata db. Am I right?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_21' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T02:47:56Z' class='post-time'>
+                    October 21, 2021,  2:47am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T02:47:56Z'>
+              <span itemprop='position'>21</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Pretty much. This was improved in V10 somewhat so that all but text parameters are considered safe. But overall this isn’t a use-case we support very well. If you want people to execute queries they need to be logged-in. Redash isn’t built for embedded analytics.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_22' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dtian118'><span itemprop='name'>dtian118</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T03:05:50Z' class='post-time'>
+                    October 21, 2021,  3:05am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T03:05:50Z'>
+              <span itemprop='position'>22</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hmmm…I just had a quick try. Like on the ReDash dashboard page I set my parameter to a certain value and it works properly as usual, and then on the public dashboard I put the exact same parameter, the viz still loads forever…Probably need to upgrade to V10 as you mentioned it has better support. Can you show me a tutorial about upgrading? We already have many queries and dashboards there, just afraid of losing some data.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+    <div role='navigation' itemscope itemtype='http://schema.org/SiteNavigationElement' class="topic-body crawler-post">
+        <span itemprop='name'><b><a rel="next" itemprop="url" href="/t/parameter-change-in-the-public-dashboard-doesnt-work-properly/9296?page=2">next page →</a></b></span>
+    </div>
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

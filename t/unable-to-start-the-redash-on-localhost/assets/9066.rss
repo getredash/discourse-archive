@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Unable to start the redash on localhost</title>
+    <link>https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066</link>
+    <description>Hello past 3 weeks I have been trying to start the redash on localhost but it fails
+
+I have tried to start the docker but it always has issues
+
+`
+docker cat redash.env
+
+REDASH_HOST=http://localhost/redash
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=
+REDASH_COOKIE_SECRET=redash-selfhosted
+REDASH_SECRET_KEY=redash-selfhosted
+REDASH_DATABASE_URL=postgresql://host.docker.internal:5432/postgres
+➜ docker vi redash.env
+
+➜ docker docker-compose -f docker-compose.yaml run --rm server create_db
+
+Creating docker_server_run ... done
+Traceback (most recent call last):
+File &quot;/app/manage.py&quot;, line 9, in
+manager()
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 716, in **call**
+return self.main(*args, **kwargs)
+File &quot;/usr/local/lib/python2.7/site-packages/flask/cli.py&quot;, line 380, in main
+return AppGroup.main(self, *args, **kwargs)
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 696, in main
+rv = self.invoke(ctx)
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 1060, in invoke
+return _process_result(sub_ctx.command.invoke(sub_ctx))
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 1060, in invoke
+return _process_result(sub_ctx.command.invoke(sub_ctx))
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 889, in invoke
+return ctx.invoke(self.callback, **ctx.params)
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 534, in invoke
+return callback(*args, **kwargs)
+File &quot;/usr/local/lib/python2.7/site-packages/click/decorators.py&quot;, line 17, in new_func
+return f(get_current_context(), *args, **kwargs)
+File &quot;/usr/local/lib/python2.7/site-packages/flask/cli.py&quot;, line 257, in decorator
+return __ctx.invoke(f, *args, **kwargs)
+File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 534, in invoke
+return callback(*args, **kwargs)
+File &quot;/app/redash/cli/database.py&quot;, line 31, in create_tables
+db.create_all()
+File &quot;/usr/local/lib/python2.7/site-packages/flask_sqlalchemy/ **init** .py&quot;, line 963, in create_all
+self._execute_for_all_tables(app, bind, &#39;create_all&#39;)
+File &quot;/usr/local/lib/python2.7/site-packages/flask_sqlalchemy/ **init** .py&quot;, line 955, in _execute_for_all_tables
+op(bind=self.get_engine(app, bind), **extra)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/schema.py&quot;, line 4005, in create_all
+tables=tables)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1939, in _run_visitor
+with self._optional_conn_ctx_manager(connection) as conn:
+File &quot;/usr/local/lib/python2.7/contextlib.py&quot;, line 17, in **enter**
+return self.gen.next()
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1932, in _optional_conn_ctx_manager
+with self.contextual_connect() as conn:
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 2123, in contextual_connect
+self._wrap_pool_connect(self.pool.connect, None),
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 2162, in _wrap_pool_connect
+e, dialect, self)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1476, in _handle_dbapi_exception_noconnection
+exc_info
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py&quot;, line 265, in raise_from_cause
+reraise(type(exception), exception, tb=exc_tb, cause=cause)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 2158, in _wrap_pool_connect
+return fn()
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 400, in connect
+return _ConnectionFairy._checkout(self)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 788, in _checkout
+fairy = _ConnectionRecord.checkout(pool)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 529, in checkout
+rec = pool._do_get()
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 1193, in _do_get
+self._dec_overflow()
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py&quot;, line 66, in **exit**
+compat.reraise(exc_type, exc_value, exc_tb)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 1190, in _do_get
+return self._create_connection()
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 347, in _create_connection
+return _ConnectionRecord(self)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 474, in **init**
+self.__connect(first_connect_check=True)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py&quot;, line 671, in __connect
+connection = pool._invoke_creator(self)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/strategies.py&quot;, line 106, in connect
+return dialect.connect(*cargs, **cparams)
+File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py&quot;, line 412, in connect
+return self.dbapi.connect(*cargs, **cparams)
+File &quot;/usr/local/lib/python2.7/site-packages/psycopg2/ **init** .py&quot;, line 130, in connect
+conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) FATAL: role &quot;redash&quot; does not exist
+(Background on this error at: http://sqlalche.me/e/e3q8)
+ERROR: 1
+
+`
+
+whats the best way to do this on my Mac, I cant use AWS instance for other reasons right now.
+
+Please guide</description>
+    
+    <lastBuildDate>Thu, 09 Sep 2021 22:03:32 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Unable to start the redash on localhost</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What steps did you follow to install Redash?</p>
+          <p><a href="https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066/2</link>
+        <pubDate>Thu, 09 Sep 2021 22:03:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9066-2</guid>
+        <source url="https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066.rss">Unable to start the redash on localhost</source>
+      </item>
+      <item>
+        <title>Unable to start the redash on localhost</title>
+        <dc:creator><![CDATA[sidchi]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello past 3 weeks I have been trying to start the redash on localhost but it fails</p>
+<p>I have tried to start the docker but it always has issues</p>
+<p>`<br>
+docker cat redash.env</p>
+<p>REDASH_HOST=http://localhost/redash<br>
+PYTHONUNBUFFERED=0<br>
+REDASH_LOG_LEVEL=INFO<br>
+REDASH_REDIS_URL=redis://redis:6379/0<br>
+POSTGRES_PASSWORD=<br>
+REDASH_COOKIE_SECRET=redash-selfhosted<br>
+REDASH_SECRET_KEY=redash-selfhosted<br>
+REDASH_DATABASE_URL=postgresql://host.docker.internal:5432/postgres<br>
+➜ docker vi redash.env</p>
+<p>➜ docker docker-compose -f docker-compose.yaml run --rm server create_db</p>
+<p>Creating docker_server_run … done<br>
+Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in<br>
+manager()<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 716, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask/cli.py”, line 380, in main<br>
+return AppGroup.main(self, *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 696, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 1060, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 1060, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 889, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 534, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/click/decorators.py”, line 17, in new_func<br>
+return f(get_current_context(), *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask/cli.py”, line 257, in decorator<br>
+return __ctx.invoke(f, *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 534, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/app/redash/cli/database.py”, line 31, in create_tables<br>
+db.create_all()<br>
+File “/usr/local/lib/python2.7/site-packages/flask_sqlalchemy/ <strong>init</strong> .py”, line 963, in create_all<br>
+self._execute_for_all_tables(app, bind, ‘create_all’)<br>
+File “/usr/local/lib/python2.7/site-packages/flask_sqlalchemy/ <strong>init</strong> .py”, line 955, in _execute_for_all_tables<br>
+op(bind=self.get_engine(app, bind), **extra)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/schema.py”, line 4005, in create_all<br>
+tables=tables)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1939, in _run_visitor<br>
+with self._optional_conn_ctx_manager(connection) as conn:<br>
+File “/usr/local/lib/python2.7/contextlib.py”, line 17, in <strong>enter</strong><br>
+return self.gen.next()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1932, in _optional_conn_ctx_manager<br>
+with self.contextual_connect() as conn:<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 2123, in contextual_connect<br>
+self._wrap_pool_connect(self.pool.connect, None),<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 2162, in _wrap_pool_connect<br>
+e, dialect, self)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1476, in _handle_dbapi_exception_noconnection<br>
+exc_info<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py”, line 265, in raise_from_cause<br>
+reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 2158, in _wrap_pool_connect<br>
+return fn()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 400, in connect<br>
+return _ConnectionFairy._checkout(self)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 788, in _checkout<br>
+fairy = _ConnectionRecord.checkout(pool)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 529, in checkout<br>
+rec = pool._do_get()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 1193, in _do_get<br>
+self._dec_overflow()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py”, line 66, in <strong>exit</strong><br>
+compat.reraise(exc_type, exc_value, exc_tb)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 1190, in _do_get<br>
+return self._create_connection()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 347, in _create_connection<br>
+return _ConnectionRecord(self)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 474, in <strong>init</strong><br>
+self.__connect(first_connect_check=True)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py”, line 671, in __connect<br>
+connection = pool._invoke_creator(self)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/strategies.py”, line 106, in connect<br>
+return dialect.connect(*cargs, **cparams)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py”, line 412, in connect<br>
+return self.dbapi.connect(*cargs, **cparams)<br>
+File “/usr/local/lib/python2.7/site-packages/psycopg2/ <strong>init</strong> .py”, line 130, in connect<br>
+conn = _connect(dsn, connection_factory=connection_factory, **kwasync)<br>
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) FATAL: role “redash” does not exist<br>
+(Background on this error at: <a href="http://sqlalche.me/e/e3q8" class="inline-onebox" rel="noopener nofollow ugc">Error Messages — SQLAlchemy 1.4 Documentation</a>)<br>
+ERROR: 1</p>
+<p>`</p>
+<p>whats the best way to do this on my Mac, I cant use AWS instance for other reasons right now.</p>
+<p>Please guide</p>
+          <p><a href="https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066/1</link>
+        <pubDate>Thu, 09 Sep 2021 22:03:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9066-1</guid>
+        <source url="https://discuss.redash.io/t/unable-to-start-the-redash-on-localhost/9066.rss">Unable to start the redash on localhost</source>
+      </item>
+  </channel>
+</rss>

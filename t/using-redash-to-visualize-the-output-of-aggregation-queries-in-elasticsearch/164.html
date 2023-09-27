@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Using Redash to visualize the output of aggregation queries in Elasticsearch</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164">Using Redash to visualize the output of aggregation queries in Elasticsearch</a>
+</h1>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Using Redash to visualize the output of aggregation queries in Elasticsearch" itemprop="headline"/>
+<meta content="Uncategorized" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yali.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yali_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yali</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-15T17:49:36Z" itemprop="datePublished">
+                    August 15, 2016,  5:49pm
+                  </time>
+<meta content="2016-08-15T17:49:36Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>We’re super excited about using Redash to visualize data in Elasticsearch.</p>
+<p>It looks from <a href="https://github.com/getredash/redash/pull/967" rel="nofollow noopener">this pull request</a> that this is now supported.</p>
+<p>When I try it e.g. by running the following query:</p>
+<pre><code class="lang-auto">{
+    "index": "trials",
+    "query": {
+        "match_all": {}
+    },
+    "aggregations": {
+        "day": {
+            "date_histogram": {
+                "field": "failure_tstamp",
+                "interval": "day",
+                "format": "yyyy-MM-dd"
+            }
+        }
+    }
+}
+</code></pre>
+<p>The data returned in the Redash UI is a list of underlying records rather than the aggregated data set. It’s actually the same response I get to the same query, without the aggregations key i.e.:</p>
+<pre><code class="lang-auto">{
+    "index": "trials",
+    "query": {
+        "match_all": {}
+    }
+}
+</code></pre>
+<p>I think the issue is that Redash is returning the contents of the <code>hits</code> object returned from ES rather than the <code>aggregations</code> object. Is there something I need to do in the query editor to get Redash to do that? Or a different way I need to express the query? I’ve tried specifying “key_as_string” and “doc_count” as arguments in the query:</p>
+<pre><code class="lang-auto">{
+    "index": "trials",
+    "query": {
+        "match_all": {}
+    },
+    "aggregations": {
+        "day": {
+            "date_histogram": {
+                "field": "failure_tstamp",
+                "interval": "day",
+                "format": "yyyy-MM-dd"
+            }
+        }
+    },
+    "fields": [
+        "key_as_string",
+        "doc_count"
+    ]
+}
+</code></pre>
+<p>But Redash returns:</p>
+<pre><code class="lang-auto">Error running query: fields
+</code></pre>
+<p>What have I missed / got wrong?</p>
+<p>Thank you!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-15T19:13:40Z" itemprop="datePublished">
+                    August 15, 2016,  7:13pm
+                  </time>
+<meta content="2016-08-15T19:13:40Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>This pull request is part of version <code>0.12</code> which the hosted version isn’t running yet. I “back ported” this pull request to the hosted version, so you should be able to use aggregations now.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yali.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yali_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yali</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-15T19:48:33Z" itemprop="datePublished">
+                    August 15, 2016,  7:48pm
+                  </time>
+<meta content="2016-08-15T19:48:33Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Legend! Thanks so much <a class="mention" href="/u/arikfr">@arikfr</a>!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yali.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yali_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yali</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-15T20:26:18Z" itemprop="datePublished">
+                    August 15, 2016,  8:26pm
+                  </time>
+<meta content="2016-08-15T20:26:18Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>A follow on question about visualizing the output of Elasticsearch aggregations…</p>
+<p>With queries like the one above i.e. where you’re aggregating by day, the value for day shown in the Redash interface is the timestamp in ms rather than a nicely formatted date time. It looks like Redash is taking this value from the <code>key</code> field in the ES response rather than the <code>key_as_string</code> value.</p>
+<p>So for example the following query in Redash against ES:</p>
+<pre><code class="lang-auto">{
+    "index": "trials",
+    "query": {
+        "match_all": {}
+    },
+    "aggregations": {
+        "day": {
+            "date_histogram": {
+                "field": "failure_tstamp",
+                "interval": "day",
+                "format": "yyyy-MM-dd"
+            },
+          "aggregations": {
+            "bad_row_count": {
+              "value_count": {"field": "line"}
+            }
+          }
+        }
+    }
+}
+</code></pre>
+<p>returns this (downloaded as a CSV:</p>
+<pre><code class="lang-auto">bad_row_count,day
+7089944,1469750400000
+6543625,1469836800000
+2502341,1469923200000
+7598353,1470009600000
+12748166,1470096000000
+13084995,1470182400000
+12732980,1470268800000
+12949006,1470355200000
+5016354,1470441600000
+222953,1470528000000
+232749,1470614400000
+236244,1470700800000
+253458,1470787200000
+99294,1470873600000
+172617,1470960000000
+232193,1471046400000
+250381,1471132800000
+267011,1471219200000
+</code></pre>
+<p>When the underlying ES response is:</p>
+<pre><code class="lang-auto">{
+	"took": 298,
+	"timed_out": false,
+	"_shards": {
+		"total": 5,
+		"successful": 3,
+		"failed": 2,
+		"failures": [{
+			"index": "trials",
+			"shard": 1,
+			"status": 500,
+			"reason": "RemoteTransportException[[Baron Brimstone][inet[/10.212.59.253:9300]][indices:data/read/search[phase/query]]]; nested: ElasticsearchException[org.elasticsearch.common.breaker.CircuitBreakingException: [FIELDDATA] Data too large, data for [line] would be larger than limit of [961137868/916.6mb]]; nested: UncheckedExecutionException[org.elasticsearch.common.breaker.CircuitBreakingException: [FIELDDATA] Data too large, data for [line] would be larger than limit of [961137868/916.6mb]]; nested: CircuitBreakingException[[FIELDDATA] Data too large, data for [line] would be larger than limit of [961137868/916.6mb]]; "
+		}, {
+			"index": "trials",
+			"shard": 2,
+			"status": 500,
+			"reason": "ElasticsearchException[org.elasticsearch.common.breaker.CircuitBreakingException: [FIELDDATA] Data too large, data for [line] would be larger than limit of [961137868/916.6mb]]; nested: UncheckedExecutionException[org.elasticsearch.common.breaker.CircuitBreakingException: [FIELDDATA] Data too large, data for [line] would be larger than limit of [961137868/916.6mb]]; nested: CircuitBreakingException[[FIELDDATA] Data too large, data for [line] would be larger than limit of [961137868/916.6mb]]; "
+		}]
+	},
+	"hits": {
+		"total": 1541495,
+		"max_score": 0.0,
+		"hits": []
+	},
+	"aggregations": {
+		"day": {
+			"buckets": [{
+				"key_as_string": "2016-07-29",
+				"key": 1469750400000,
+				"doc_count": 134906,
+				"bad_row_count": {
+					"value": 7089944
+				}
+			}, {
+				"key_as_string": "2016-07-30",
+				"key": 1469836800000,
+				"doc_count": 123364,
+				"bad_row_count": {
+					"value": 6543625
+				}
+			}, {
+				"key_as_string": "2016-07-31",
+				"key": 1469923200000,
+				"doc_count": 44943,
+				"bad_row_count": {
+					"value": 2502341
+				}
+			}, {
+				"key_as_string": "2016-08-01",
+				"key": 1470009600000,
+				"doc_count": 143754,
+				"bad_row_count": {
+					"value": 7598353
+				}
+			}, {
+				"key_as_string": "2016-08-02",
+				"key": 1470096000000,
+				"doc_count": 242010,
+				"bad_row_count": {
+					"value": 12748166
+				}
+			}, {
+				"key_as_string": "2016-08-03",
+				"key": 1470182400000,
+				"doc_count": 249542,
+				"bad_row_count": {
+					"value": 13084995
+				}
+			}, {
+				"key_as_string": "2016-08-04",
+				"key": 1470268800000,
+				"doc_count": 244229,
+				"bad_row_count": {
+					"value": 12732980
+				}
+			}, {
+				"key_as_string": "2016-08-05",
+				"key": 1470355200000,
+				"doc_count": 248030,
+				"bad_row_count": {
+					"value": 12949006
+				}
+			}, {
+				"key_as_string": "2016-08-06",
+				"key": 1470441600000,
+				"doc_count": 94290,
+				"bad_row_count": {
+					"value": 5016354
+				}
+			}, {
+				"key_as_string": "2016-08-07",
+				"key": 1470528000000,
+				"doc_count": 1660,
+				"bad_row_count": {
+					"value": 222953
+				}
+			}, {
+				"key_as_string": "2016-08-08",
+				"key": 1470614400000,
+				"doc_count": 2027,
+				"bad_row_count": {
+					"value": 232749
+				}
+			}, {
+				"key_as_string": "2016-08-09",
+				"key": 1470700800000,
+				"doc_count": 2146,
+				"bad_row_count": {
+					"value": 236244
+				}
+			}, {
+				"key_as_string": "2016-08-10",
+				"key": 1470787200000,
+				"doc_count": 2281,
+				"bad_row_count": {
+					"value": 253458
+				}
+			}, {
+				"key_as_string": "2016-08-11",
+				"key": 1470873600000,
+				"doc_count": 901,
+				"bad_row_count": {
+					"value": 99294
+				}
+			}, {
+				"key_as_string": "2016-08-12",
+				"key": 1470960000000,
+				"doc_count": 1516,
+				"bad_row_count": {
+					"value": 172617
+				}
+			}, {
+				"key_as_string": "2016-08-13",
+				"key": 1471046400000,
+				"doc_count": 1782,
+				"bad_row_count": {
+					"value": 232193
+				}
+			}, {
+				"key_as_string": "2016-08-14",
+				"key": 1471132800000,
+				"doc_count": 1963,
+				"bad_row_count": {
+					"value": 250381
+				}
+			}, {
+				"key_as_string": "2016-08-15",
+				"key": 1471219200000,
+				"doc_count": 2151,
+				"bad_row_count": {
+					"value": 267011
+				}
+			}]
+		}
+	}
+}
+</code></pre>
+<p>It’s a bit odd that this is happening as the <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/elasticsearch.py#L161-L163" rel="nofollow noopener">code</a>. Should I raise an issue on Github? I wanted to post this here first in case it relates to the particular backport.</p>
+<p>Thanks in advance!</p>
+<p>Yali</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-15T20:42:31Z" itemprop="datePublished">
+                    August 15, 2016,  8:42pm
+                  </time>
+<meta content="2016-08-15T20:42:31Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>This is the code we’re using, so you’re right it’s odd <img alt=":confused:" class="emoji" src="assets/confused.png" title=":confused:"/></p>
+<p>Can you send me in a private message the query id? I’ll try to run it with some debugging to understand what’s going on.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yali.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yali_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yali</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-15T21:17:05Z" itemprop="datePublished">
+                    August 15, 2016,  9:17pm
+                  </time>
+<meta content="2016-08-15T21:17:05Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Sure! Dumb question -but where do I get the query ID?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-16T04:04:05Z" itemprop="datePublished">
+                    August 16, 2016,  4:04am
+                  </time>
+<meta content="2016-08-16T04:04:05Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It’s the numeric part of the URL (you can just send me the whole URL and I’ll figure it out).</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yali.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yali_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yali</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-09-05T11:05:01Z" itemprop="datePublished">
+                    September 5, 2016, 11:05am
+                  </time>
+<meta content="2016-09-05T11:05:01Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi <a class="mention" href="/u/arikfr">@arikfr</a> - know you’re very busy - did you get the chance to look at this?<br/>
+Thanks!</p>
+<p>Yali</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-09-17T14:02:43Z" itemprop="datePublished">
+                    September 17, 2016,  2:02pm
+                  </time>
+<meta content="2016-09-17T14:02:43Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a href="https://github.com/getredash/redash/pull/1289">Pull request #1289</a> fixes this. It will be deployed soon to the hosted version (I’ll ping you in private).</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yali.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yali_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yali</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-09-17T19:15:44Z" itemprop="datePublished">
+                    September 17, 2016,  7:15pm
+                  </time>
+<meta content="2016-09-17T19:15:44Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks <a class="mention" href="/u/arikfr">@arikfr</a> - that’s working a treat!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Indu.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Indu_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Indu</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-04-11T04:27:06Z" itemprop="datePublished">
+                    April 11, 2017,  4:27am
+                  </time>
+<meta content="2017-04-11T04:27:06Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>im tryin to implement aggregation. but Im getting only 10 records. and aggregation is not wokrin</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/moghira10.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/moghira10_avatar.png" tabindex="-1" width="48"/><span itemprop="name">moghira10</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-redash-to-visualize-the-output-of-aggregation-queries-in-elasticsearch/164" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-11-21T12:05:47Z" itemprop="datePublished">
+                    November 21, 2018, 12:05pm
+                  </time>
+<meta content="2018-11-21T12:05:47Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/indu">@Indu</a> Thats the default for Elasticsearch aggregation. In that case you need to use “size” param with aggregation to increase the number of results.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

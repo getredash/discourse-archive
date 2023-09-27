@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How to backup/restore Redash completely?</title>
+    <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649</link>
+    <description>### Issue Summary
+
+I have a self hosted Redash Instance on AWS EC2 (AMI Image) and am able to dump and restore *some parts* of Redash. Right now I am able to log in on the restored instance and see my queries listed. But I am not able to load the query (after clicking on the link)
+
+I did the following:
+
+**on the source instance:**
+
+```bash
+docker exec -t redash_postgres_1 pg_dump -c -U postgres &gt; ~/redash_backup.sql
+aws s3 cp ~/redash_backup.sql s3://my-backup-bucket/
+```
+
+**on the target instance:**
+
+I altered the `REDASH_SECRET_KEY` in `/opt/redash/env` to the one of the source instance
+
+```bash
+aws s3 cp s3://my-backup-bucket/redash_backup.sql ~/redash_backup.sql
+cat ~/redash_backup.sql | docker exec -i redash_postgres_1 psql -U postgres
+docker-compose restart
+```
+
+So my question is how can I fully backup and restore Redash *completely* so that I can continue working seamlessly?
+
+### Technical details:
+
+* Redash Version: redash:8.0.0.b32245
+* Browser/OS: Ubuntu 18.04.3 LTS
+* How did you install Redash: docker-compose (AMI Image), see [setup#aws](https://redash.io/help/open-source/setup#aws)</description>
+    
+    <lastBuildDate>Wed, 13 Apr 2022 14:22:47 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[matt.au]]></dc:creator>
+        <description><![CDATA[
+            <p>The solution requires user to be restoring from the same platform.  I was able to backup from one cloud platform, and restore on another.  I posted the solution on a related issue:</p>
+<aside class="quote" data-post="17" data-topic="2535">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/leolle/40/1714_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/17">Backing up all data on my own hosted redash</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Hi, did you figure it out back&amp;restore via the sql file method?
+  </blockquote>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/7</link>
+        <pubDate>Wed, 13 Apr 2022 14:22:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-7</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for following up with that confirmation!</p>
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/6</link>
+        <pubDate>Mon, 27 Sep 2021 14:41:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-6</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[dnltsk]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes, I solved it that way. Right now I have a AWS Backup Plan in place that creates a new snapshot every night. With this solution the the ESB Volume is snapshotted as well. Thanks for you support!</p>
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/5</link>
+        <pubDate>Mon, 27 Sep 2021 14:06:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-5</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[griffinator76]]></dc:creator>
+        <description><![CDATA[
+            <p>If you’re running Redash <em>entirely</em> on an EC2 instance (i.e. including the database), you could also just create an AMI of the instance as a backup. Restoring just requires spinning up a new instance from the image.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/4</link>
+        <pubDate>Thu, 15 Jul 2021 01:29:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-4</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[dnltsk]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your response. Yes the versions are equal. I use the AMI Image and the EC2 starts Redash before I change the <code>REDASH_SECRET_KEY</code>. Unfortunately I cannot find an Env <a href="https://redash.io/help/open-source/admin-guide/env-vars-settings" rel="noopener nofollow ugc">in the docs</a> to overwrite the key during setup.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/3</link>
+        <pubDate>Mon, 12 Jul 2021 09:21:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-3</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The postgres database contains the entire application state. So copying this to a new instance should be all that is required.</p>
+<p>Are you certain that the new instance of Redash is the same exact version as the one you copied? Did you set <code>REDASH_SECRET_KEY</code> before spinning up the new instance for the first time?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/2</link>
+        <pubDate>Mon, 28 Jun 2021 15:56:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-2</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+      <item>
+        <title>How to backup/restore Redash completely?</title>
+        <dc:creator><![CDATA[dnltsk]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I have a self hosted Redash Instance on AWS EC2 (AMI Image) and am able to dump and restore <em>some parts</em> of Redash. Right now I am able to log in on the restored instance and see my queries listed. But I am not able to load the query (after clicking on the link)</p>
+<p>I did the following:</p>
+<p><strong>on the source instance:</strong></p>
+<pre><code class="lang-bash">docker exec -t redash_postgres_1 pg_dump -c -U postgres &gt; ~/redash_backup.sql
+aws s3 cp ~/redash_backup.sql s3://my-backup-bucket/
+</code></pre>
+<p><strong>on the target instance:</strong></p>
+<p>I altered the <code>REDASH_SECRET_KEY</code> in <code>/opt/redash/env</code> to the one of the source instance</p>
+<pre><code class="lang-bash">aws s3 cp s3://my-backup-bucket/redash_backup.sql ~/redash_backup.sql
+cat ~/redash_backup.sql | docker exec -i redash_postgres_1 psql -U postgres
+docker-compose restart
+</code></pre>
+<p>So my question is how can I fully backup and restore Redash <em>completely</em> so that I can continue working seamlessly?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: redash:8.0.0.b32245</li>
+<li>Browser/OS: Ubuntu 18.04.3 LTS</li>
+<li>How did you install Redash: docker-compose (AMI Image), see <a href="https://redash.io/help/open-source/setup#aws" rel="noopener nofollow ugc">setup#aws</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649/1</link>
+        <pubDate>Fri, 25 Jun 2021 10:39:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8649-1</guid>
+        <source url="https://discuss.redash.io/t/how-to-backup-restore-redash-completely/8649.rss">How to backup/restore Redash completely?</source>
+      </item>
+  </channel>
+</rss>

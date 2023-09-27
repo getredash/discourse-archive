@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash v8-v10 upgrade issue on AWS</title>
+    <link>https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578</link>
+    <description>### Issue Summary
+
+I am running into an issue upgrading a self-hosted redash server on AWS EC2 from v8 to v10. 
+
+I&#39;ve followed the instructions in the upgrade guide, and the individual steps completed without errors, 
+but once I do a docker-compose up -d at the end, the server service keeps crashing and rebooting the workers constantly. There dont seem to be any useful errors to trouble shoot what is going on.
+
+The database migration ran and the alembic_version in the database is currently: 89bc7873a3e0
+which I believe is v10 Head. 
+
+These are the docker-compose logs for the server. 
+
+```
+Attaching to redash_server_1
+server_1            | [2021-11-30 00:50:29 +0000] [1] [INFO] Starting gunicorn 20.0.4
+server_1            | [2021-11-30 00:50:29 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+server_1            | [2021-11-30 00:50:29 +0000] [1] [INFO] Using worker: sync
+server_1            | [2021-11-30 00:50:29 +0000] [9] [INFO] Booting worker with pid: 9
+server_1            | [2021-11-30 00:50:29 +0000] [8] [INFO] Booting worker with pid: 8
+server_1            | [2021-11-30 00:50:29 +0000] [10] [INFO] Booting worker with pid: 10
+
+server_1            | [2021-11-30 00:50:29 +0000] [11] [INFO] Booting worker with pid: 11
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:8)
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:9)
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:10)
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)
+server_1            | [2021-11-30 00:51:00 +0000] [16] [INFO] Booting worker with pid: 16
+server_1            | [2021-11-30 00:51:00 +0000] [17] [INFO] Booting worker with pid: 17
+server_1            | [2021-11-30 00:51:00 +0000] [18] [INFO] Booting worker with pid: 18
+server_1            | [2021-11-30 00:51:00 +0000] [19] [INFO] Booting worker with pid: 19
+```
+This sequence just keeps repeating and the EC2 instance becomes unresponsive and needs to be restarted. 
+
+A summary of the issue and the browser/OS environment in which it occurs.
+
+### Technical details:
+
+* Redash Version: v10.1.0
+* Browser/OS: chrome/macos
+* How did you install Redash: AWS Ec2 image for v8 upgraded via the upgrade process. 
+
+Docker-compose (updated for v10)
+```yaml
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+ 
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 1
+
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - &quot;5432:5432&quot;
+
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+
+    depends_on:
+      - server
+    links:
+      - server:redash
+    volumes:
+      - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /opt/redash/nginx/certs:/etc/letsencrypt
+      - /opt/redash/nginx/certs-data:/data/letsencrypt
+    restart: always
+```</description>
+    
+    <lastBuildDate>Tue, 30 Nov 2021 16:03:41 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash v8-v10 upgrade issue on AWS</title>
+        <dc:creator><![CDATA[krishnaku]]></dc:creator>
+        <description><![CDATA[
+            <p>Actually it was something silly on my end. I had the wrong image tag on the docker-compose - was doing the 10.0 instead of the 10.1 image. Changing that fixed the issue and the v10 instance is up now.</p>
+<p>Thanks again for the detailed instructions!</p>
+<p>Krishna</p>
+          <p><a href="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/4</link>
+        <pubDate>Tue, 30 Nov 2021 16:03:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9578-4</guid>
+        <source url="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578.rss">Redash v8-v10 upgrade issue on AWS</source>
+      </item>
+      <item>
+        <title>Redash v8-v10 upgrade issue on AWS</title>
+        <dc:creator><![CDATA[krishnaku]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse,</p>
+<p>Thanks for the quick response!<br>
+I went back through the video and followed the steps to migrate from my v8 instance to v10 again, but still facing the same issue.</p>
+<p>Things I missed the last time around:</p>
+<ol>
+<li>I had removed the environment settings in docker-compose only for the scheduler service, but your video shows that you remove it from all the other worker service entries (not sure if it is material since this seems related to replacing celery with RQ, but I did not think it would hurt).</li>
+<li>Hit ctrl C to stop the docker-compose up --recreate-containers --build command. I had run this before, but I did not stop it.</li>
+<li>I reran the migrations again to ensure that nothing was missed (the database had already been migrated in a previous run).</li>
+</ol>
+<p>But I am still seeing the following in the docker logs for the server.</p>
+<p>[2021-11-30 15:34:21 +0000] [1] [INFO] Starting gunicorn 20.0.4<br>
+[2021-11-30 15:34:21 +0000] [1] [INFO] Listening at: <a href="http://0.0.0.0:5000" rel="noopener nofollow ugc">http://0.0.0.0:5000</a> (1)<br>
+[2021-11-30 15:34:21 +0000] [1] [INFO] Using worker: sync<br>
+[2021-11-30 15:34:21 +0000] [8] [INFO] Booting worker with pid: 8<br>
+[2021-11-30 15:34:21 +0000] [9] [INFO] Booting worker with pid: 9<br>
+[2021-11-30 15:34:21 +0000] [10] [INFO] Booting worker with pid: 10<br>
+[2021-11-30 15:34:21 +0000] [11] [INFO] Booting worker with pid: 11<br>
+[2021-11-30 15:34:51 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:8)<br>
+[2021-11-30 15:34:51 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:9)<br>
+[2021-11-30 15:34:51 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:10)<br>
+[2021-11-30 15:34:51 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)<br>
+[2021-11-30 15:34:51 +0000] [8] [INFO] Worker exiting (pid: 8)<br>
+[2021-11-30 15:34:51 +0000] [9] [INFO] Worker exiting (pid: 9)<br>
+[2021-11-30 15:34:51 +0000] [10] [INFO] Worker exiting (pid: 10)<br>
+[2021-11-30 15:34:51 +0000] [11] [INFO] Worker exiting (pid: 11)<br>
+[2021-11-30 15:34:53 +0000] [17] [INFO] Booting worker with pid: 17<br>
+[2021-11-30 15:34:53 +0000] [16] [INFO] Booting worker with pid: 16<br>
+[2021-11-30 15:34:53 +0000] [18] [INFO] Booting worker with pid: 18<br>
+[2021-11-30 15:34:53 +0000] [19] [INFO] Booting worker with pid: 19</p>
+<p>For some reason, the server worker process started by gunicorn is crashing. Are there ways to turn on debug logs to see what the issue might be.</p>
+<p>I was also running the v8 instance in a t3.small EC2 instance. I upgraded to a t3a.medium instance thinking it may be a memory issue, but it does not seem to have had any impact.</p>
+<p>Any further thoughts/suggestions on what I might do here?</p>
+<p>Krishna</p>
+          <p><a href="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/3</link>
+        <pubDate>Tue, 30 Nov 2021 15:45:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9578-3</guid>
+        <source url="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578.rss">Redash v8-v10 upgrade issue on AWS</source>
+      </item>
+      <item>
+        <title>Redash v8-v10 upgrade issue on AWS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your question. In case you want to see what this process looks like in real time there’s a demo on Youtube here: <a href="https://www.youtube.com/watch?v=PoOAra588dA" class="inline-onebox">Upgrade from V8 to V10 Walkthrough - YouTube</a></p>
+<p>To your specific situation: what exact steps did you follow to upgrade your instance? There are special instructions for upgrading to V10 from V8 (see <a href="https://github.com/getredash/redash/releases/tag/v10.1.0">here</a>). It seems like you may not have rebuilt your containers (step 7)</p>
+<p>Second, any reason why you’re upgrading to 10.0 instead of 10.1 which includes the security patches we pushed last week?</p>
+          <p><a href="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/2</link>
+        <pubDate>Tue, 30 Nov 2021 04:43:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9578-2</guid>
+        <source url="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578.rss">Redash v8-v10 upgrade issue on AWS</source>
+      </item>
+      <item>
+        <title>Redash v8-v10 upgrade issue on AWS</title>
+        <dc:creator><![CDATA[krishnaku]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I am running into an issue upgrading a self-hosted redash server on AWS EC2 from v8 to v10.</p>
+<p>I’ve followed the instructions in the upgrade guide, and the individual steps completed without errors,<br>
+but once I do a docker-compose up -d at the end, the server service keeps crashing and rebooting the workers constantly. There dont seem to be any useful errors to trouble shoot what is going on.</p>
+<p>The database migration ran and the alembic_version in the database is currently: 89bc7873a3e0<br>
+which I believe is v10 Head.</p>
+<p>These are the docker-compose logs for the server.</p>
+<pre><code class="lang-auto">Attaching to redash_server_1
+server_1            | [2021-11-30 00:50:29 +0000] [1] [INFO] Starting gunicorn 20.0.4
+server_1            | [2021-11-30 00:50:29 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+server_1            | [2021-11-30 00:50:29 +0000] [1] [INFO] Using worker: sync
+server_1            | [2021-11-30 00:50:29 +0000] [9] [INFO] Booting worker with pid: 9
+server_1            | [2021-11-30 00:50:29 +0000] [8] [INFO] Booting worker with pid: 8
+server_1            | [2021-11-30 00:50:29 +0000] [10] [INFO] Booting worker with pid: 10
+
+server_1            | [2021-11-30 00:50:29 +0000] [11] [INFO] Booting worker with pid: 11
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:8)
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:9)
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:10)
+server_1            | [2021-11-30 00:50:59 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)
+server_1            | [2021-11-30 00:51:00 +0000] [16] [INFO] Booting worker with pid: 16
+server_1            | [2021-11-30 00:51:00 +0000] [17] [INFO] Booting worker with pid: 17
+server_1            | [2021-11-30 00:51:00 +0000] [18] [INFO] Booting worker with pid: 18
+server_1            | [2021-11-30 00:51:00 +0000] [19] [INFO] Booting worker with pid: 19
+</code></pre>
+<p>This sequence just keeps repeating and the EC2 instance becomes unresponsive and needs to be restarted.</p>
+<p>A summary of the issue and the browser/OS environment in which it occurs.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v10.1.0</li>
+<li>Browser/OS: chrome/macos</li>
+<li>How did you install Redash: AWS Ec2 image for v8 upgraded via the upgrade process.</li>
+</ul>
+<p>Docker-compose (updated for v10)</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+ 
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1
+
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"
+
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+
+    depends_on:
+      - server
+    links:
+      - server:redash
+    volumes:
+      - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /opt/redash/nginx/certs:/etc/letsencrypt
+      - /opt/redash/nginx/certs-data:/data/letsencrypt
+    restart: always
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578/1</link>
+        <pubDate>Tue, 30 Nov 2021 01:17:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9578-1</guid>
+        <source url="https://discuss.redash.io/t/redash-v8-v10-upgrade-issue-on-aws/9578.rss">Redash v8-v10 upgrade issue on AWS</source>
+      </item>
+  </channel>
+</rss>

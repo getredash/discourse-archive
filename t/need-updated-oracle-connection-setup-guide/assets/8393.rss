@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Need updated oracle connection setup guide</title>
+    <link>https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393</link>
+    <description>### Issue Summary
+
+I&#39;ve been trying to setup oracle connection with redash for some days, but I&#39;m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to this topic are quite old and is even causing some errors if I follow the same steps. So any help is appreciated. 
+
+I&#39;m using this method to setup the redash using docker: [https://redash.io/help/open-source/dev-guide/docker](https://redash.io/help/open-source/dev-guide/docker)
+
+I followed this post [http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590](http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590) but encountered various errors when trying with different configurations by changing redash image tag, oracle instant client versions, and also the cx_oracle versions.
+
+Error encountered for different configs are as follows:
+
+**1. Config 1**
+
+**Turns out, this issue is not specific to oracle enabled build, but with the normal build, as described here: [http://discuss.redash.io/t/problem-in-redash-deployment/8159/8](http://discuss.redash.io/t/problem-in-redash-deployment/8159/8)**
+
+redash image tag: redash/redash:latest (8.0.0 as of this time)
+oracle instant version: 12.2.0.1.0
+cx_oracle version: 5.2.1
+
+Extended Dockerfile:
+
+    FROM redash/redash:latest
+
+    USER root
+
+    # Oracle instantclient
+    ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+    ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+    ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+    RUN apt-get update  -y
+    RUN apt-get install -y unzip
+
+    RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+    RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+    RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+    RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+    RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+    RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+    RUN apt-get install libaio-dev -y
+    RUN apt-get clean -y
+
+    ENV ORACLE_HOME=/usr/local/instantclient
+    ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+    RUN pip install cx_Oracle==5.2.1
+
+    USER redash
+    #Add REDASH ENV to add Oracle Query Runner 
+    ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+
+docker-compose.yaml (from 8.0.0 zip source)
+
+    # This configuration file is for the **development** setup.
+    # For a production example please refer to setup/docker-compose.yml.
+    version: &#39;3.2&#39;
+    services:
+      server:
+        image: redash/oracle521_latest
+        command: dev_server
+        depends_on:
+          - postgres
+          - redis
+        ports:
+          - &quot;5000:5000&quot;
+          - &quot;5678:5678&quot;
+        volumes:
+          - &quot;.:/app&quot;
+        environment:
+          PYTHONUNBUFFERED: 0
+          REDASH_LOG_LEVEL: &quot;INFO&quot;
+          REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+          REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+          REDASH_RATELIMIT_ENABLED: &quot;false&quot;
+      worker:
+        build: .
+        command: dev_worker
+        volumes:
+          - type: bind
+            source: .
+            target: /app
+        depends_on:
+          - server
+        environment:
+          PYTHONUNBUFFERED: 0
+          REDASH_LOG_LEVEL: &quot;INFO&quot;
+          REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+          REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+          QUEUES: &quot;queries,scheduled_queries,celery,schemas&quot;
+          WORKERS_COUNT: 2
+      redis:
+        image: redis:3-alpine
+        restart: unless-stopped
+      postgres:
+        image: postgres:9.5-alpine
+        # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+        # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+        # tests.
+        ports:
+          - &quot;15432:5432&quot;
+        command: &quot;postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF&quot;
+        restart: unless-stopped
+
+Error encountered:
+
+After running docker-compose up -d, I get following error:
+
+    Requirement already satisfied: PyAthena&gt;=1.5.0 in /usr/local/lib/python2.7/site-packages (from -r requirements_all_ds.txt (line 23)) (1.11.5)
+    Collecting pymapd==0.7.1 (from -r requirements_all_ds.txt (line 24))
+      Downloading https://files.pythonhosted.org/packages/26/84/0d7fa3e4cfeaa12c128df1764863345f60859d04eb3086a78bbcc8e18c3b/pymapd-0.7.1.tar.gz (93kB)
+        ERROR: Command errored out with exit status 1:
+         command: /usr/local/bin/python -c &#39;import sys, setuptools, tokenize; sys.argv[0] = &#39;&quot;&#39;&quot;&#39;/tmp/pip-install-1Aj8fl/pymapd/setup.py&#39;&quot;&#39;&quot;&#39;; __file__=&#39;&quot;&#39;&quot;&#39;/tmp/pip-install-1Aj8fl/pymapd/setup.py&#39;&quot;&#39;&quot;&#39;;f=getattr(tokenize, &#39;&quot;&#39;&quot;&#39;open&#39;&quot;&#39;&quot;&#39;, open)(__file__);code=f.read().replace(&#39;&quot;&#39;&quot;&#39;\r\n&#39;&quot;&#39;&quot;&#39;, &#39;&quot;&#39;&quot;&#39;\n&#39;&quot;&#39;&quot;&#39;);f.close();exec(compile(code, __file__, &#39;&quot;&#39;&quot;&#39;exec&#39;&quot;&#39;&quot;&#39;))&#39; egg_info --egg-base pip-egg-info
+             cwd: /tmp/pip-install-1Aj8fl/pymapd/
+        Complete output (60 lines):
+        /tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src
+        &lt;pkg_resources.WorkingSet object at 0x7fa91bc24f50&gt;
+        Traceback (most recent call last):
+          File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;
+          File &quot;/tmp/pip-install-1Aj8fl/pymapd/setup.py&quot;, line 65, in &lt;module&gt;
+            extras_require=extra_requires
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/__init__.py&quot;, line 144, in setup
+            _install_setup_requires(attrs)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/__init__.py&quot;, line 139, in _install_setup_requires
+            dist.fetch_build_eggs(dist.setup_requires)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/dist.py&quot;, line 719, in fetch_build_eggs
+            replace_conflicting=True,
+          File &quot;/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py&quot;, line 782, in resolve
+            replace_conflicting=replace_conflicting
+          File &quot;/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py&quot;, line 1065, in best_match
+            return self.obtain(req, installer)
+          File &quot;/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py&quot;, line 1077, in obtain
+            return installer(requirement)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/dist.py&quot;, line 786, in fetch_build_egg
+            return cmd.easy_install(req)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py&quot;, line 679, in easy_install
+            return self.install_item(spec, dist.location, tmpdir, deps)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py&quot;, line 705, in install_item
+            dists = self.install_eggs(spec, download, tmpdir)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py&quot;, line 890, in install_eggs
+            return self.build_and_install(setup_script, setup_base)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py&quot;, line 1158, in build_and_install
+            self.run_setup(setup_script, setup_base, args)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py&quot;, line 1144, in run_setup
+            run_setup(setup_script, args)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 253, in run_setup
+            raise
+          File &quot;/usr/local/lib/python2.7/contextlib.py&quot;, line 35, in __exit__
+            self.gen.throw(type, value, traceback)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 195, in setup_context
+            yield
+          File &quot;/usr/local/lib/python2.7/contextlib.py&quot;, line 35, in __exit__
+            self.gen.throw(type, value, traceback)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 166, in save_modules
+            saved_exc.resume()
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 141, in resume
+            six.reraise(type, exc, self._tb)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 154, in save_modules
+            yield saved
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 195, in setup_context
+            yield
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 250, in run_setup
+            _execfile(setup_script, ns)
+          File &quot;/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py&quot;, line 45, in _execfile
+            exec(code, globals, locals)
+          File &quot;/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/setup.py&quot;, line 52, in &lt;module&gt;
+            &#39;Topic :: Scientific/Engineering&#39;,
+          File &quot;/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/setup.py&quot;, line 29, in scm_config
+            extra_requires = {
+          File &quot;/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/__init__.py&quot;, line 8, in &lt;module&gt;
+          File &quot;/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/config.py&quot;, line 6, in &lt;module&gt;
+          File &quot;/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/utils.py&quot;, line 41
+            print(*k)
+                  ^
+        SyntaxError: invalid syntax
+        ----------------------------------------
+    ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+    WARNING: You are using pip version 19.2.2, however version 20.3.4 is available.
+    You should consider upgrading via the &#39;pip install --upgrade pip&#39; command.
+    ERROR: Service &#39;worker&#39; failed to build: The command &#39;/bin/sh -c if [ &quot;x$skip_ds_deps&quot; = &quot;x&quot; ] ; then pip install -r requirements_all_ds.txt ; else echo &quot;Skipping pip install -r requirements_all_ds.txt&quot; ; fi&#39; returned a non-zero code: 1
+
+**2. Config 2**
+
+redash image tag: built image using Dockerfile from master branch
+oracle instant version: 12.2.0.1.0
+cx_oracle version: 7.3
+
+Extended Dockerfile:
+
+    FROM redash/redash_master_aks:latest
+
+    USER root
+
+    # Oracle instantclient
+    ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+    ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+    ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+    RUN apt-get update  -y
+    RUN apt-get install -y unzip
+
+    RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+    RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+    RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+    RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+    RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+    RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+    RUN apt-get install libaio-dev -y
+    RUN apt-get clean -y
+
+    ENV ORACLE_HOME=/usr/local/instantclient
+    ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+    RUN pip install cx_Oracle==7.3
+
+    USER redash
+    #Add REDASH ENV to add Oracle Query Runner 
+    ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+
+Error encountered:
+The application runs fine. The database is successfully connected. Also, after clicking “Test Connection”, it does show “Success” which takes around 1 minute. Is that normal?
+
+But while creating query, I get “Schema refresh failed. Please try again later.” error.
+
+I&#39;ve explained this issue in this post. Do have a look at it: [http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/12](http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/12)
+
+### Technical details:
+
+* Redash Version: 8.0.0/Latest Master (as of this post&#39;s date)
+* Browser/OS: Ubuntu 18.04
+* How did you install Redash: I&#39;m using this method to setup the redash using docker: [https://redash.io/help/open-source/dev-guide/docker](https://redash.io/help/open-source/dev-guide/docker)</description>
+    
+    <lastBuildDate>Mon, 05 Sep 2022 03:43:24 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Need updated oracle connection setup guide</title>
+        <dc:creator><![CDATA[prowave]]></dc:creator>
+        <description><![CDATA[
+            <p>For those of you looking for Redash with Oracle ready to go:</p>
+<p><a href="https://hub.docker.com/r/prowave/redash-oracle" class="onebox" target="_blank" rel="noopener nofollow ugc">https://hub.docker.com/r/prowave/redash-oracle</a></p>
+          <p><a href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393/3</link>
+        <pubDate>Mon, 05 Sep 2022 03:43:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8393-3</guid>
+        <source url="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393.rss">Need updated oracle connection setup guide</source>
+      </item>
+      <item>
+        <title>Need updated oracle connection setup guide</title>
+        <dc:creator><![CDATA[akash1]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I’ve been trying to setup oracle connection with redash for some days, but I’m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to this topic are quite old and is even causing some errors if I follow the same steps. So any help is appreciated.</p>
+<p>I’m using this method to setup the redash using docker: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>I followed this post <a href="http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590</a> but encountered various errors when trying with different configurations by changing redash image tag, oracle instant client versions, and also the cx_oracle versions.</p>
+<p>Error encountered for different configs are as follows:</p>
+<p><strong>1. Config 1</strong></p>
+<p><strong>Turns out, this issue is not specific to oracle enabled build, but with the normal build, as described here: <a href="http://discuss.redash.io/t/problem-in-redash-deployment/8159/8">http://discuss.redash.io/t/problem-in-redash-deployment/8159/8</a></strong></p>
+<p>redash image tag: redash/redash:latest (8.0.0 as of this time)<br>
+oracle instant version: 12.2.0.1.0<br>
+cx_oracle version: 5.2.1</p>
+<p>Extended Dockerfile:</p>
+<pre><code>FROM redash/redash:latest
+
+USER root
+
+# Oracle instantclient
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+RUN apt-get update  -y
+RUN apt-get install -y unzip
+
+RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN apt-get install libaio-dev -y
+RUN apt-get clean -y
+
+ENV ORACLE_HOME=/usr/local/instantclient
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+RUN pip install cx_Oracle==5.2.1
+
+USER redash
+#Add REDASH ENV to add Oracle Query Runner 
+ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+</code></pre>
+<p>docker-compose.yaml (from 8.0.0 zip source)</p>
+<pre><code># This configuration file is for the **development** setup.
+# For a production example please refer to setup/docker-compose.yml.
+version: '3.2'
+services:
+  server:
+    image: redash/oracle521_latest
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+      - "5678:5678"
+    volumes:
+      - ".:/app"
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      REDASH_RATELIMIT_ENABLED: "false"
+  worker:
+    build: .
+    command: dev_worker
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - server
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      QUEUES: "queries,scheduled_queries,celery,schemas"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:3-alpine
+    restart: unless-stopped
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - "15432:5432"
+    command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
+    restart: unless-stopped
+</code></pre>
+<p>Error encountered:</p>
+<p>After running docker-compose up -d, I get following error:</p>
+<pre><code>Requirement already satisfied: PyAthena&gt;=1.5.0 in /usr/local/lib/python2.7/site-packages (from -r requirements_all_ds.txt (line 23)) (1.11.5)
+Collecting pymapd==0.7.1 (from -r requirements_all_ds.txt (line 24))
+  Downloading https://files.pythonhosted.org/packages/26/84/0d7fa3e4cfeaa12c128df1764863345f60859d04eb3086a78bbcc8e18c3b/pymapd-0.7.1.tar.gz (93kB)
+    ERROR: Command errored out with exit status 1:
+     command: /usr/local/bin/python -c 'import sys, setuptools, tokenize; sys.argv[0] = '"'"'/tmp/pip-install-1Aj8fl/pymapd/setup.py'"'"'; __file__='"'"'/tmp/pip-install-1Aj8fl/pymapd/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' egg_info --egg-base pip-egg-info
+         cwd: /tmp/pip-install-1Aj8fl/pymapd/
+    Complete output (60 lines):
+    /tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src
+    &lt;pkg_resources.WorkingSet object at 0x7fa91bc24f50&gt;
+    Traceback (most recent call last):
+      File "&lt;string&gt;", line 1, in &lt;module&gt;
+      File "/tmp/pip-install-1Aj8fl/pymapd/setup.py", line 65, in &lt;module&gt;
+        extras_require=extra_requires
+      File "/usr/local/lib/python2.7/site-packages/setuptools/__init__.py", line 144, in setup
+        _install_setup_requires(attrs)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/__init__.py", line 139, in _install_setup_requires
+        dist.fetch_build_eggs(dist.setup_requires)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/dist.py", line 719, in fetch_build_eggs
+        replace_conflicting=True,
+      File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 782, in resolve
+        replace_conflicting=replace_conflicting
+      File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 1065, in best_match
+        return self.obtain(req, installer)
+      File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 1077, in obtain
+        return installer(requirement)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/dist.py", line 786, in fetch_build_egg
+        return cmd.easy_install(req)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 679, in easy_install
+        return self.install_item(spec, dist.location, tmpdir, deps)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 705, in install_item
+        dists = self.install_eggs(spec, download, tmpdir)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 890, in install_eggs
+        return self.build_and_install(setup_script, setup_base)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 1158, in build_and_install
+        self.run_setup(setup_script, setup_base, args)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 1144, in run_setup
+        run_setup(setup_script, args)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 253, in run_setup
+        raise
+      File "/usr/local/lib/python2.7/contextlib.py", line 35, in __exit__
+        self.gen.throw(type, value, traceback)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 195, in setup_context
+        yield
+      File "/usr/local/lib/python2.7/contextlib.py", line 35, in __exit__
+        self.gen.throw(type, value, traceback)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 166, in save_modules
+        saved_exc.resume()
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 141, in resume
+        six.reraise(type, exc, self._tb)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 154, in save_modules
+        yield saved
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 195, in setup_context
+        yield
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 250, in run_setup
+        _execfile(setup_script, ns)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 45, in _execfile
+        exec(code, globals, locals)
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/setup.py", line 52, in &lt;module&gt;
+        'Topic :: Scientific/Engineering',
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/setup.py", line 29, in scm_config
+        extra_requires = {
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/__init__.py", line 8, in &lt;module&gt;
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/config.py", line 6, in &lt;module&gt;
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/utils.py", line 41
+        print(*k)
+              ^
+    SyntaxError: invalid syntax
+    ----------------------------------------
+ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+WARNING: You are using pip version 19.2.2, however version 20.3.4 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+ERROR: Service 'worker' failed to build: The command '/bin/sh -c if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi' returned a non-zero code: 1
+</code></pre>
+<p><strong>2. Config 2</strong></p>
+<p>redash image tag: built image using Dockerfile from master branch<br>
+oracle instant version: 12.2.0.1.0<br>
+cx_oracle version: 7.3</p>
+<p>Extended Dockerfile:</p>
+<pre><code>FROM redash/redash_master_aks:latest
+
+USER root
+
+# Oracle instantclient
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+RUN apt-get update  -y
+RUN apt-get install -y unzip
+
+RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN apt-get install libaio-dev -y
+RUN apt-get clean -y
+
+ENV ORACLE_HOME=/usr/local/instantclient
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+RUN pip install cx_Oracle==7.3
+
+USER redash
+#Add REDASH ENV to add Oracle Query Runner 
+ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+</code></pre>
+<p>Error encountered:<br>
+The application runs fine. The database is successfully connected. Also, after clicking “Test Connection”, it does show “Success” which takes around 1 minute. Is that normal?</p>
+<p>But while creating query, I get “Schema refresh failed. Please try again later.” error.</p>
+<p>I’ve explained this issue in this post. Do have a look at it: <a href="http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/12">http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/12</a></p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0/Latest Master (as of this post’s date)</li>
+<li>Browser/OS: Ubuntu 18.04</li>
+<li>How did you install Redash: I’m using this method to setup the redash using docker: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393/1</link>
+        <pubDate>Wed, 05 May 2021 05:39:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8393-1</guid>
+        <source url="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393.rss">Need updated oracle connection setup guide</source>
+      </item>
+  </channel>
+</rss>

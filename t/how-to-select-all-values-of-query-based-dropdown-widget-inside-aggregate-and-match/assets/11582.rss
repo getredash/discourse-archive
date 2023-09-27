@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How to select all values of query based dropdown widget inside $aggregate and $match</title>
+    <link>https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582</link>
+    <description>I have a query which gives the result in single column
+
+{
+    &quot;collection&quot;: &quot;Orders&quot;,
+    &quot;aggregate&quot;: [
+        {
+            &quot;$project&quot;: {
+                XYZ : 1,
+                &quot;source.platform&quot; :1
+                }
+            },
+            
+        {
+            &quot;$lookup&quot;: {
+                &quot;from&quot;: &quot;users&quot;,
+                &quot;localField&quot;: &quot;XYZ&quot;,
+                &quot;foreignField&quot;: &quot;_id&quot;,
+                &quot;as&quot;: &quot;salesRepInfo&quot;
+            }
+        },
+       
+        {
+            &quot;$project&quot;: {
+                &quot;_id&quot;: 0,
+                &quot;SalesRep Name&quot;: &quot;$salesRepInfo.name&quot;,
+                &quot;sourceplatform&quot; : &quot;$payments.source.platform&quot;
+                }
+            },
+            {
+                &quot;$match&quot;: {
+                  &quot;sourceplatform&quot;:{&quot;$in&quot;:[&quot;APP&quot;]}
+            }
+            },
+            
+            {
+	&quot;$group&quot;: {
+		&quot;_id&quot;:{&quot;SalesRep Name&quot;:&quot;$SalesRep Name&quot;}
+	                 }
+            }
+    ]
+}
+
+I want to use the result of this query in another query as query based dropdown list inside $match operator. first query gives more than 100 outputs, i want to select all in the second query. How can I do that?</description>
+    
+    <lastBuildDate>Thu, 16 Feb 2023 08:59:13 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How to select all values of query based dropdown widget inside $aggregate and $match</title>
+        <dc:creator><![CDATA[Abhishek]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> it would be great if you can please help?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582/2</link>
+        <pubDate>Thu, 16 Feb 2023 08:59:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11582-2</guid>
+        <source url="https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582.rss">How to select all values of query based dropdown widget inside $aggregate and $match</source>
+      </item>
+      <item>
+        <title>How to select all values of query based dropdown widget inside $aggregate and $match</title>
+        <dc:creator><![CDATA[Abhishek]]></dc:creator>
+        <description><![CDATA[
+            <p>I have a query which gives the result in single column</p>
+<p>{<br>
+“collection”: “Orders”,<br>
+“aggregate”: [<br>
+{<br>
+“$project”: {<br>
+XYZ : 1,<br>
+“source.platform” :1<br>
+}<br>
+},</p>
+<pre><code>    {
+        "$lookup": {
+            "from": "users",
+            "localField": "XYZ",
+            "foreignField": "_id",
+            "as": "salesRepInfo"
+        }
+    },
+   
+    {
+        "$project": {
+            "_id": 0,
+            "SalesRep Name": "$salesRepInfo.name",
+            "sourceplatform" : "$payments.source.platform"
+            }
+        },
+        {
+            "$match": {
+              "sourceplatform":{"$in":["APP"]}
+        }
+        },
+        
+        {
+"$group": {
+	"_id":{"SalesRep Name":"$SalesRep Name"}
+                 }
+        }
+]
+</code></pre>
+<p>}</p>
+<p>I want to use the result of this query in another query as query based dropdown list inside $match operator. first query gives more than 100 outputs, i want to select all in the second query. How can I do that?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582/1</link>
+        <pubDate>Thu, 16 Feb 2023 08:58:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11582-1</guid>
+        <source url="https://discuss.redash.io/t/how-to-select-all-values-of-query-based-dropdown-widget-inside-aggregate-and-match/11582.rss">How to select all values of query based dropdown widget inside $aggregate and $match</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+    <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775</link>
+    <description>I&#39;m trying to turn the following Power BI charts into Redash.  How would I query this data from JIRA to get charts to look like this. There are not that many JIRA examples to used to help me accomplish this.
+
+### Query I&#39;m Trying to Transform
+
+```
+project = &quot;Security Operations Center&quot; AND status in (Closed, &quot;False Positive&quot;) AND created &gt; &quot;2021/07/01&quot; AND created &lt; &quot;2021/07/31&quot; order by updated DESC
+```
+
+
+## **Rule Intent**
+
+![](https://i.imgur.com/WuKpgZV.png)
+
+```
+Rule Intent:
+- customFieldId=10054
+```
+
+## **Rule Strategy**
+
+![](https://i.imgur.com/nNrJhSz.png)
+
+```
+Rule Strategy
+- customFieldId=10043
+```Rule Intent</description>
+    
+    <lastBuildDate>Mon, 26 Jul 2021 14:24:03 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I don’t know if JQL allows for aggregating syntax. But you can make the charts you require by adding a <a href="https://redash.io/help/user-guide/querying/query-results-data-source">Query Results Data Source</a> and pointing it at the output of your JQL. For example, if the query result you posted was query number <code>1234</code> you could create your first chart with the following QRDS query:</p>
+<pre><code class="lang-sql">SELECT
+  customfield_10054,
+  count(*)
+FROM query_1234
+GROUP BY customefield_10054
+ORDER BY count(*) DESC
+</code></pre>
+<p>Then make the horizontal bar chart from there.</p>
+          <p><a href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/6</link>
+        <pubDate>Mon, 26 Jul 2021 14:24:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8775-6</guid>
+        <source url="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss">JIRA Data Transformation (Moving from Power BI to Redash)</source>
+      </item>
+      <item>
+        <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+        <dc:creator><![CDATA[austinsonger]]></dc:creator>
+        <description><![CDATA[
+            <p>What else do anyone else needs to be able to help me figure out how to accomplish this with Redash.</p>
+          <p><a href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/5</link>
+        <pubDate>Sun, 25 Jul 2021 20:30:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8775-5</guid>
+        <source url="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss">JIRA Data Transformation (Moving from Power BI to Redash)</source>
+      </item>
+      <item>
+        <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+        <dc:creator><![CDATA[austinsonger]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m trying to make the charts above</p>
+<pre><code class="lang-auto">{
+    "fields": "summary,assignee,priority,status,created,requestparticipants,customfield_10054,customfield_10043",
+    "jql": "organizations = Company AND created &gt; {{ Date.start }} AND created &lt; {{ Date.end }}"
+    
+}
+</code></pre>
+<p><img src="https://i.imgur.com/TF3rvxd.png" alt="" width="690" height="192"></p>
+          <p><a href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/4</link>
+        <pubDate>Wed, 21 Jul 2021 14:17:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8775-4</guid>
+        <source url="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss">JIRA Data Transformation (Moving from Power BI to Redash)</source>
+      </item>
+      <item>
+        <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It’s more likely that people don’t understand your question. There’s a lot of different ways to make a bar chart.</p>
+<p>Have you queried JIRA before using other tools? Redash uses a modified syntax but it still hits the same API as any other tool.</p>
+          <p><a href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/3</link>
+        <pubDate>Tue, 20 Jul 2021 14:16:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8775-3</guid>
+        <source url="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss">JIRA Data Transformation (Moving from Power BI to Redash)</source>
+      </item>
+      <item>
+        <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+        <dc:creator><![CDATA[austinsonger]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m guessing no one has advice with JIRA?</p>
+          <p><a href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/2</link>
+        <pubDate>Tue, 20 Jul 2021 13:54:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8775-2</guid>
+        <source url="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss">JIRA Data Transformation (Moving from Power BI to Redash)</source>
+      </item>
+      <item>
+        <title>JIRA Data Transformation (Moving from Power BI to Redash)</title>
+        <dc:creator><![CDATA[austinsonger]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m trying to turn the following Power BI charts into Redash.  How would I query this data from JIRA to get charts to look like this. There are not that many JIRA examples to used to help me accomplish this.</p>
+<h3>
+<a name="query-im-trying-to-transform-1" class="anchor" href="https://discuss.redash.io#query-im-trying-to-transform-1"></a>Query I’m Trying to Transform</h3>
+<pre><code class="lang-auto">project = "Security Operations Center" AND status in (Closed, "False Positive") AND created &gt; "2021/07/01" AND created &lt; "2021/07/31" order by updated DESC
+</code></pre>
+<h2>
+<a name="rule-intent-2" class="anchor" href="https://discuss.redash.io#rule-intent-2"></a><strong>Rule Intent</strong>
+</h2>
+<p><img src="https://i.imgur.com/WuKpgZV.png" alt="" width="690" height="374"></p>
+<pre><code class="lang-auto">Rule Intent:
+- customFieldId=10054
+</code></pre>
+<h2>
+<a name="rule-strategy-3" class="anchor" href="https://discuss.redash.io#rule-strategy-3"></a><strong>Rule Strategy</strong>
+</h2>
+<p><img src="https://i.imgur.com/nNrJhSz.png" alt="" width="690" height="339"></p>
+<pre><code class="lang-auto">Rule Strategy
+- customFieldId=10043
+```Rule Intent</code></pre>
+          <p><a href="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775/1</link>
+        <pubDate>Mon, 19 Jul 2021 13:07:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8775-1</guid>
+        <source url="https://discuss.redash.io/t/jira-data-transformation-moving-from-power-bi-to-redash/8775.rss">JIRA Data Transformation (Moving from Power BI to Redash)</source>
+      </item>
+  </channel>
+</rss>

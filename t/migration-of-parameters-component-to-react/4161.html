@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Migration of Parameters component to React</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/migration-of-parameters-component-to-react/4161">Migration of Parameters component to React</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/7.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Development</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/ux/13.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #0088CC"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">UX</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Migration of Parameters component to React" itemprop="headline"/>
+<meta content="UX" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/gabrieldutra.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/gabrieldutra_avatar.png" tabindex="-1" width="48"/><span itemprop="name">gabrieldutra</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6c13dee46f2d5c4e407642a08893b914fefe08bc.gif" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-11T22:53:44Z" itemprop="datePublished">
+                    July 11, 2019, 10:53pm
+                  </time>
+<meta content="2019-07-11T22:53:44Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Following the <a href="https://github.com/getredash/redash/issues/3071" rel="noopener nofollow ugc">React Migration</a>, the Parameters component will now get some attention on UX/UI and this topic will be for discussion on it and also on implementation details.</p>
+<p>Currently the component has two contexts: Edit and view mode.</p>
+<p>Core points I have in mind:</p>
+<ul>
+<li>Parameter Setting button on edit mode</li>
+<li>Make the sort-ability feature more noticeable*</li>
+<li>Improve mobile experience (may be a good opportunity to that as the component is on the Dashboard an on the Query page)</li>
+</ul>
+<p>* This has been a sort of “hidden feature” so far:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/fq68ElKmnxTcP0AqSAMJO6hzzRy.gif?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6c13dee46f2d5c4e407642a08893b914fefe08bc.gif" rel="noopener nofollow ugc" title="drag-sort-parameter"><img alt="drag-sort-parameter" data-base62-sha1="fq68ElKmnxTcP0AqSAMJO6hzzRy" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c13dee46f2d5c4e407642a08893b914fefe08bc_2_10x10.png" height="90" src="assets/6c13dee46f2d5c4e407642a08893b914fefe08bc_2_517x90.gif" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c13dee46f2d5c4e407642a08893b914fefe08bc_2_517x90.gif, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6c13dee46f2d5c4e407642a08893b914fefe08bc.gif 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6c13dee46f2d5c4e407642a08893b914fefe08bc.gif 2x" width="517"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">drag-sort-parameter</span><span class="informations">747×130 67.3 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>It will also be necessary to find a replacement to <code>ui-sortable</code> for this feature. A few options from a quick search:</p>
+<ul>
+<li><a href="https://github.com/clauderic/react-sortable-hoc" rel="noopener nofollow ugc">react-sortable-hoc</a></li>
+<li><a href="https://github.com/react-dnd/react-dnd/" rel="noopener nofollow ugc">react-dnd</a></li>
+</ul>
+<p>The first one seems easier. If anyone has other suggestions, lmk. I’ll update if I find other options <img alt=":slightly_smiling_face:" class="emoji" height="20" loading="lazy" src="assets/slightly_smiling_face.png" title=":slightly_smiling_face:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-12T02:39:17Z" itemprop="datePublished">
+                    July 12, 2019,  2:39am
+                  </time>
+<meta content="2019-07-12T02:39:17Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="1" data-topic="4161">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/730_2.png" width="20"/> gabrieldutra:</div>
+<blockquote>
+<ul>
+<li>This has been a sort of “hidden feature” so far:</li>
+</ul>
+</blockquote>
+</aside>
+<p>I had no idea the widgets could be reordered! Do you know if any of the react drag-and drop libraries support touch interface dragging (on a smartphone or tablet e.g.)?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/gabrieldutra.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/gabrieldutra_avatar.png" tabindex="-1" width="48"/><span itemprop="name">gabrieldutra</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-12T18:31:27Z" itemprop="datePublished">
+                    July 12, 2019,  6:31pm
+                  </time>
+<meta content="2019-07-12T18:31:27Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Well reminded, <a class="mention" href="/u/jesse">@jesse</a> <img alt=":slightly_smiling_face:" class="emoji" src="assets/slightly_smiling_face.png" title=":slightly_smiling_face:"/>.</p>
+<p>react-dnd don’t work on touch interfaces by default (requires <a href="https://github.com/redonkulus/react-dnd-touch-backend" rel="nofollow noopener">react-dnd-touch-backend</a>)</p>
+<p>And react-sortable-hoc works for touch interfaces (also offers a <code>pressDelay</code> setting, but doesn’t auto-apply that to touch devices [<a href="https://github.com/clauderic/react-sortable-hoc/issues/363" rel="nofollow noopener">ref</a>]).</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/265b62c936cf2c965adeeb65251bf07052e5380a.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-13T11:46:32Z" itemprop="datePublished">
+                    July 13, 2019, 11:46am
+                  </time>
+<meta content="2019-07-13T11:46:32Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>A quick design of a suggested layout:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/5tjW6HEVqsApO05PiFIrScEyzHA.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/265b62c936cf2c965adeeb65251bf07052e5380a.jpeg" title="params"><img alt="params" data-base62-sha1="5tjW6HEVqsApO05PiFIrScEyzHA" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/265b62c936cf2c965adeeb65251bf07052e5380a_2_10x10.png" height="218" src="assets/265b62c936cf2c965adeeb65251bf07052e5380a_2_690x218.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/265b62c936cf2c965adeeb65251bf07052e5380a_2_690x218.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/265b62c936cf2c965adeeb65251bf07052e5380a_2_1035x327.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/265b62c936cf2c965adeeb65251bf07052e5380a_2_1380x436.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">params</span><span class="informations">2226×706 53.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>I’m not in love with it but it speaks the current style and exposes the drag feature.</p>
+<ol>
+<li>Drag handle on the left.</li>
+<li>Drag placeholder.</li>
+<li>Settings button top right.</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7ba13669e170947ca494b52574dd149d8d3e4aaa.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-13T17:02:48Z" itemprop="datePublished">
+                    July 13, 2019,  5:02pm
+                  </time>
+<meta content="2019-07-13T17:02:48Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>But here’s the style I actually envision for Redash, UI that’s clean, minimalistic and futuristic:</p>
+<p>(Not as a standalone design, but part of a broader scope)</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/hDG7L8SouXZOUNkpTCZju147qyu.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7ba13669e170947ca494b52574dd149d8d3e4aaa.png" title="42"><img alt="42" data-base62-sha1="hDG7L8SouXZOUNkpTCZju147qyu" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7ba13669e170947ca494b52574dd149d8d3e4aaa_2_10x10.png" height="169" src="assets/7ba13669e170947ca494b52574dd149d8d3e4aaa.png" width="689"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">42</span><span class="informations">1237×303 5.84 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>On hover displays edit buttons or indications (TBD).</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T12:06:31Z" itemprop="datePublished">
+                    July 15, 2019, 12:06pm
+                  </time>
+<meta content="2019-07-15T12:06:31Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>What happens with longer variable names? Do they wrap? Does the widget grow wider? Does the font-shrink?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T12:54:42Z" itemprop="datePublished">
+                    July 15, 2019, 12:54pm
+                  </time>
+<meta content="2019-07-15T12:54:42Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Currently they grow wider.</p>
+<p>For me the optimum is to have a max-width with ellipsis, and full name in tooltip on hover.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T13:33:59Z" itemprop="datePublished">
+                    July 15, 2019,  1:33pm
+                  </time>
+<meta content="2019-07-15T13:33:59Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="7" data-topic="4161" data-username="ranbena">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>For me the optimum is to have a max-width with ellipsis, and full name in tooltip on hover.</p>
+</blockquote>
+</aside>
+<p>I agree. This is something we can implement right away, right?</p>
+<aside class="quote no-group" data-post="5" data-topic="4161" data-username="ranbena">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>But here’s the style I actually envision for Redash, UI that’s clean, minimalistic and futuristic:</p>
+<p>(Not as a standalone design, but part of a broader scope)</p>
+<p><img alt="Screen-Shot-2019-07-13-at-19.57.42.png" data-base62-sha1="hDG7L8SouXZOUNkpTCZju147qyu" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7ba13669e170947ca494b52574dd149d8d3e4aaa_2_10x10.png" height="169" src="assets/7ba13669e170947ca494b52574dd149d8d3e4aaa.png" width="689"/></p>
+</blockquote>
+</aside>
+<p>Why show the data type to the user?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3599f14835b02bb3fbfa126272af219f4a4503d9.gif" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T16:07:58Z" itemprop="datePublished">
+                    July 15, 2019,  4:07pm
+                  </time>
+<meta content="2019-07-15T16:07:58Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p>I agree. This is something we can implement right away, right?</p>
+</blockquote>
+<p>Right after the React migration, yes.<br/>
+Also, the tooltip would have to show up even for titles that don’t get ellipsised cause there’s no <em>simple</em> way to determine ellipsis occurring (it’s an entirely css feature) so let’s add a 1-2 sec <code>mouseEnterDelay</code> till it shows up.</p>
+<blockquote>
+<p>Why show the data type to the user?</p>
+</blockquote>
+<p>Showing the datatype allows me to omit a “settings” button (cause I can’t find it a proper unobtrusive location / design) and instead introduce editing via hover and click. (only a concept right now)</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/7Eb7PfDhsDfw3HhbSWoapshNwtb.gif?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3599f14835b02bb3fbfa126272af219f4a4503d9.gif" title="com-video-to-gif"><img alt="com-video-to-gif" data-base62-sha1="7Eb7PfDhsDfw3HhbSWoapshNwtb" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3599f14835b02bb3fbfa126272af219f4a4503d9_2_10x10.png" height="146" src="assets/3599f14835b02bb3fbfa126272af219f4a4503d9_2_345x146.gif" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3599f14835b02bb3fbfa126272af219f4a4503d9_2_345x146.gif, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3599f14835b02bb3fbfa126272af219f4a4503d9_2_517x219.gif 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3599f14835b02bb3fbfa126272af219f4a4503d9_2_690x292.gif 2x" width="345"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">com-video-to-gif</span><span class="informations">784×334 1020 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p><a class="onebox" href="https://u0h05.codesandbox.io" rel="noopener" target="_blank">https://u0h05.codesandbox.io</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T16:36:38Z" itemprop="datePublished">
+                    July 15, 2019,  4:36pm
+                  </time>
+<meta content="2019-07-15T16:36:38Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That popup animation for the data type is lovely.</p>
+<aside class="quote no-group" data-post="9" data-topic="4161">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>Showing the datatype allows me to omit a “settings” button</p>
+</blockquote>
+</aside>
+<p>It’s also valuable because our documentation specifically calls out features of different data types for parameters. Displaying this information to the user suggests that the data type is a useful piece of information (they otherwise might ignore it).</p>
+<p>I notice in the most recent animation that on hover the <code>POPULATION</code> parameter name doesn’t expand out. Is that a bug?</p>
+<p>I’d like to see a draft of how this looks with Query Based Dropdown List Parameters.</p>
+<ol>
+<li>How do you display the type name without cutting it off</li>
+<li>Do you have an easy way to display the linked query name?</li>
+</ol>
+<p>It would be nice if from the parameter widget there was an easy way to jump to the linked query.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T17:41:20Z" itemprop="datePublished">
+                    July 15, 2019,  5:41pm
+                  </time>
+<meta content="2019-07-15T17:41:20Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="9" data-topic="4161">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>Showing the datatype allows me to omit a “settings” button (cause I can’t find it a proper unobtrusive location / design) and instead introduce editing via hover and click. (only a concept right now)</p>
+</blockquote>
+</aside>
+<p>I didn’t realize it shows only on hover.</p>
+<p>Another option is to use the parameters sidebar, as discussed here:</p>
+<aside class="onebox githubissue">
+<header class="source">
+<a href="https://github.com/getredash/redash/issues/2645" rel="nofollow noopener" target="_blank">github.com/getredash/redash</a>
+</header>
+<article class="onebox-body">
+<a href="https://github.com/arikfr" rel="nofollow noopener">
+<img class="thumbnail onebox-avatar" height="60" src="assets/71468" width="60"/>
+</a>
+<h4><a href="https://github.com/getredash/redash/issues/2645" rel="nofollow noopener" target="_blank">Issue: Add Query Parameters and Snippets to the left area of the query editor</a></h4>
+<div class="date" style="margin-top:10px;">
+<div class="user" style="margin-top:10px;">
+	opened by <a href="https://github.com/arikfr" rel="nofollow noopener" target="_blank">arikfr</a>
+	on <a href="https://github.com/getredash/redash/issues/2645" rel="nofollow noopener" target="_blank">2018-06-28</a>
+</div>
+<div class="user">
+</div>
+</div>
+<pre class="content" style="white-space: pre-wrap;">This is not only parameters related, but we can have two additional areas between the schema and the query metadata:
+Parameters: lists...</pre>
+<div class="labels">
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Feature: Parameters</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Frontend</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">UX</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">backlog</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">enhancement</span>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>In the sidebar, we can have a place for a “parameters catalog” (parameters you can use) and currently used parameters, where you can also open their settings. I assume that there it will be easier to find a spot for the settings dialog trigger.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ranbena.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ranbena_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ranbena</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T17:57:15Z" itemprop="datePublished">
+                    July 15, 2019,  5:57pm
+                  </time>
+<meta content="2019-07-15T17:57:15Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/jesse">@jesse</a> <a class="mention" href="/u/arikfr">@arikfr</a> these are good points and great questions.<br/>
+But I feel we’re hijacking this thread with a semi-relevant discussion.</p>
+<p>Are you guys cool with <a href="http://discuss.redash.io/t/migration-of-parameters-component-to-react/4161/4">the minimal-change version</a> I suggested?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migration-of-parameters-component-to-react/4161" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-15T18:15:10Z" itemprop="datePublished">
+                    July 15, 2019,  6:15pm
+                  </time>
+<meta content="2019-07-15T18:15:10Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="12" data-topic="4161">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>Are you guys cool with <a href="http://discuss.redash.io/t/migration-of-parameters-component-to-react/4161/4">the minimal-change version</a> I suggested?</p>
+</blockquote>
+</aside>
+<p>Yes.</p>
+<aside class="quote no-group" data-post="12" data-topic="4161">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/768_2.png" width="20"/> ranbena:</div>
+<blockquote>
+<p>But I feel we’re hijacking this thread with a semi-relevant discussion.</p>
+</blockquote>
+</aside>
+<p>You started <img alt=":stuck_out_tongue:" class="emoji" src="assets/stuck_out_tongue.png" title=":stuck_out_tongue:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

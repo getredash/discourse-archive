@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Export of large CSV via API - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Hi there, 
+is there any way how I can export the results of the query for a quite large dataset (~200MB)? 
+I have tried to download via UI and API -  in both cases, it fails with error 502. 
+I saw that there is the API c&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Export of large CSV via API&#39;" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/export-of-large-csv-via-api/9624" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/export-of-large-csv-via-api/9624" />
+<meta property="og:title" content="Export of large CSV via API" />
+<meta name="twitter:title" content="Export of large CSV via API" />
+<meta property="og:description" content="Hi there,  is there any way how I can export the results of the query for a quite large dataset (~200MB)?  I have tried to download via UI and API -  in both cases, it fails with error 502.  I saw that there is the API client (redash-toolbelt), is it possible to set up export there in chunks?  Regards,  izdryk" />
+<meta name="twitter:description" content="Hi there,  is there any way how I can export the results of the query for a quite large dataset (~200MB)?  I have tried to download via UI and API -  in both cases, it fails with error 502.  I saw that there is the API client (redash-toolbelt), is it possible to set up export there in chunks?  Regards,  izdryk" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2021-12-03T17:29:59+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Export of large CSV via API","mainEntity":{"@type":"Question","name":"Export of large CSV via API","text":"Hi there,\n\nis there any way how I can export the results of the query for a quite large dataset (~200MB)?\n\nI have tried to download via UI and API -  in both cases, it fails with error 502.\n\nI saw that there is the API client (redash-toolbelt), is it possible to set up export there in chunks?\n\nRegar&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-12-03T17:29:59.386Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/export-of-large-csv-via-api/9624">Export of large CSV via API</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Export of large CSV via API'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/iho01'><span itemprop='name'>iho01</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-03T17:29:59Z' class='post-time'>
+                    December 3, 2021,  5:29pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-03T17:29:59Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hi there,<br>
+is there any way how I can export the results of the query for a quite large dataset (~200MB)?<br>
+I have tried to download via UI and API -  in both cases, it fails with error 502.<br>
+I saw that there is the API client (redash-toolbelt), is it possible to set up export there in chunks?</p>
+<p>Regards,<br>
+izdryk</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/iho01'><span itemprop='name'>iho01</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T09:23:04Z' class='post-time'>
+                    December 6, 2021,  9:23am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T09:23:04Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Interesting that export in JSON format works fine. Only export to CSV fails</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T15:01:02Z' class='post-time'>
+                    December 6, 2021,  3:01pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T15:01:02Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hey <a class="mention" href="/u/iho01">@iho01</a> thanks for your question. The code doesn’t explicitly limit the size of exports. The 502 error means something went wrong during the export process. It may have run out of memory.</p>
+<p>Can you check your docker logs for a stack trace?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/iho01'><span itemprop='name'>iho01</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T15:42:38Z' class='post-time'>
+                    December 6, 2021,  3:42pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T15:42:38Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>hi <a class="mention" href="/u/jesse">@jesse</a><br>
+I see only this error in the log:<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7.png" data-download-href="/uploads/short-url/liFkC3oDFXTO5ldusaylkCyDvIb.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_690x32.png" alt="image" data-base62-sha1="liFkC3oDFXTO5ldusaylkCyDvIb" width="690" height="32" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_690x32.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_1035x48.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_1380x64.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1808×85 24.9 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-06T17:01:49Z' class='post-time'>
+                    December 6, 2021,  5:01pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-06T17:01:49Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Try increasing your redash debug level using the <code>REDASH_LOG_LEVEL=DEBUG</code> environment variable and try again.</p>
+<p>My best guess is this is an nginx thing…</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/iho01'><span itemprop='name'>iho01</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T09:41:12Z' class='post-time'>
+                    December 7, 2021,  9:41am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-07T09:41:12Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>hi <a class="mention" href="/u/jesse">@jesse</a><br>
+here is the debug log:<br>
+[2021-12-07 09:37:52,192][PID:37][DEBUG][metrics] table=users query=select duration=2.55<br>
+[2021-12-07 09:37:52,195][PID:37][DEBUG][metrics] table=api_keys query=select duration=1.81<br>
+[2021-12-07 09:37:52,201][PID:37][DEBUG][metrics] table=queries query=select duration=4.14<br>
+[2021-12-07 09:37:52,205][PID:37][DEBUG][metrics] table=data_sources query=select duration=1.94<br>
+[2021-12-07 09:37:52,209][PID:37][DEBUG][metrics] table=data_source_groups query=select duration=1.61<br>
+[2021-12-07 09:37:52,213][PID:37][DEBUG][metrics] table=queries query=select duration=1.71<br>
+[2021-12-07 09:37:53,304][PID:37][DEBUG][metrics] table=query_results query=select duration=1089.27<br>
+[2021-12-07 09:37:54,156][PID:37][DEBUG][metrics] table=data_sources query=select duration=1.29<br>
+[2021-12-07 09:37:54,158][PID:37][DEBUG][metrics] table=data_source_groups query=select duration=0.84<br>
+[2021-12-07 09:37:54,160][PID:37][DEBUG][metrics] table=data_source_groups query=select duration=0.77<br>
+[2021-12-07 09:38:22 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:37)<br>
+[2021-12-07 09:38:22,051][PID:37][INFO][metrics] method=GET path=/api/queries/167/results.csv endpoint=query_result status=500 content_type=? content_length=-1 duration=29841.68 query_count=11 query_duration=1108.74<br>
+[2021-12-07 09:38:22 +0000] [37] [INFO] Worker exiting (pid: 37)<br>
+[2021-12-07 09:38:22 +0000] [44] [INFO] Booting worker with pid: 44</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-07T20:38:36Z' class='post-time'>
+                    December 7, 2021,  8:38pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-07T20:38:36Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>How did you obtain those logs? It shows the 500 error, but you should be able to see the actual stack trace of the error.</p>
+<p>To show all the logs:</p>
+<ol>
+<li>change the <code>REDASH_LOG_LEVEL</code> environment variable to <code>DEBUG</code>
+</li>
+<li>Restart Redash</li>
+<li>Run <code>docker-compose logs -f --tail</code>
+</li>
+<li>In your browser, attempt the download</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

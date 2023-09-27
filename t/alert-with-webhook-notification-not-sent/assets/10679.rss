@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Alert with Webhook notification not sent</title>
+    <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679</link>
+    <description>Hello!
+
+I am trying to test Redash Webhooks and I have set up an alert from a query that just counts some fields and if is greater than 0, alerts (this condition is always true).
+
+The alert has the notifications send to my personal email, and a mock Webhook. At first I just wanted to see if it works and visualize the payload, so I am using the [https://webhook.site](https://webhook.site/) to do so.
+
+When I run the query, I receive an email however I do not receive anything in the webhook.site. I do not have access to the logs nor the Redash installation to verify if there is something wrong.
+
+I would like to know if there is anything that could be possibly preventing this alert to send to the Webhook?
+
+Thanks in advance.</description>
+    
+    <lastBuildDate>Fri, 22 Jul 2022 18:41:57 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>For newer versions of Redash, the payload or headers of webhooks can be configured?</p>
+</blockquote>
+<p>The alert destinations system is completely pluggable in Redash. If you want to change the headers for your specific target you can fork the webhook destination code, adjust it to your satisfaction, and mount like any other query runner or alert destination <img src="https://emoji.discourse-cdn.com/twitter/ok_hand.png?v=12" title=":ok_hand:" class="emoji" alt=":ok_hand:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/12</link>
+        <pubDate>Fri, 22 Jul 2022 18:41:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-12</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>The problem is that apparently our version of Redash does not support the new format of Let’s Encrypt. But either way, I managed to receive the payload using <a href="https://requestbin.com" rel="noopener nofollow ugc">requestbin.com</a>, that accepts requests http.</p>
+<p>The payload is the following:</p>
+<pre><code class="lang-auto">{
+	"url_base": "http://dashboards.com.br/",
+	"event": "alert_state_change",
+	"alert": {
+		"state": "triggered",
+		"query_id": 10373,
+		"name": "test: diff greater than 0",
+		"rearm": 60,
+		"updated_at": "2022-07-22T16:27:38.220515+00:00",
+		"user_id": 1,
+		"created_at": "2022-06-21T18:23:28.400610+00:00",
+		"last_triggered_at": "2022-07-22T16:27:40.214690+00:00",
+		"id": 110,
+		"options": {
+			"column": "diff",
+			"value": 0,
+			"op": "equals"
+		}
+	}
+}
+</code></pre>
+<blockquote>
+<p>I modified it a bit to secure the received data</p>
+</blockquote>
+<p>But that raised a few more doubts… For newer versions of Redash, the payload or headers of webhooks can be configured?</p>
+<p>And if not, could you provide the payload for newer versions of Redash?</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/11</link>
+        <pubDate>Fri, 22 Jul 2022 17:37:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-11</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>Great!<br>
+Thanks a lot! <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/10</link>
+        <pubDate>Fri, 22 Jul 2022 12:16:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-10</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Not for version 4…</p>
+<p>You could modify the source to log the contents of the payload and then find it in your server logs. This would not require a successful network request.</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/9</link>
+        <pubDate>Fri, 22 Jul 2022 12:14:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-9</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>As I said in the post I was trying to send a webhook to the <a href="https://webhook.site/" rel="noopener nofollow ugc">https://webhook.site </a>, but that was mainly because I have no idea what the payload of a Redash webhook is, and I could not find it in the internet. Send to this site would be an easier way to figure it out.</p>
+<p>Our final goal is to send the webhook to New Relic, our main monitoring tool. But to configure a webhook there, we need to know the payload.</p>
+<p>Do you have some way to provide us what the Redash webhook payload looks like?</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/8</link>
+        <pubDate>Fri, 22 Jul 2022 12:10:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-8</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>A couple things:</p>
+<ul>
+<li>Your version of Redash is <em>very</em> old. Before my time, in fact. So I can’t give much guidance.</li>
+<li>The SSL error is not a problem with connecting to Redis. It’s actually a bad SSL handshake with the webhook service you’re connected to. i.e. it’s not a problem with Redash but with the other server.</li>
+</ul>
+<p>I would recommend updating to the latest version of Redash according to our upgrade guide: <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade-legacy">https://redash.io/help/open-source/admin-guide/how-to-upgrade-legacy</a></p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/7</link>
+        <pubDate>Thu, 21 Jul 2022 23:59:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-7</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>We have found the logs:</p>
+<pre><code class="lang-auto">[2022-07-21 15:13:15,779][PID:36919][ERROR][Worker-38921] webhook send ERROR.
+Traceback (most recent call last):
+  File "/opt/redash/redash.4.0.1.b4038/redash/destinations/webhook.py", line 42, in notify
+    resp = requests.post(options.get('url'), data=json_dumps(data), auth=auth, headers=headers, verify=False)
+  File "/usr/local/lib/python2.7/dist-packages/requests/api.py", line 110, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/api.py", line 56, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 475, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/sessions.py", line 596, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/requests/adapters.py", line 497, in send
+    raise SSLError(e, request=request)
+SSLError: bad handshake: Error([('SSL routines', 'SSL3_GET_SERVER_CERTIFICATE', 'certificate verify failed')],)
+</code></pre>
+<p>The problem is with SSL. I searched this error, and I found <a href="https://github.com/getredash/redash/issues/3999" rel="noopener nofollow ugc">an issue on GitHub</a> that states:</p>
+<blockquote>
+<p>Support for Redis and SSL was implemented in <a href="https://github.com/getredash/redash/pull/3848" rel="noopener nofollow ugc">#3848</a>. Which was after the v7 release.</p>
+</blockquote>
+<p>If we update our Redash, we will be able to send WebHooks?</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/6</link>
+        <pubDate>Thu, 21 Jul 2022 15:53:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-6</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>I saw the version on the dashboard. It is Redash 4.0.1+b4038</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/5</link>
+        <pubDate>Tue, 19 Jul 2022 14:05:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-5</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes, the app version would be useful to know <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/4</link>
+        <pubDate>Sat, 16 Jul 2022 01:21:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-4</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks a lot for the reply. Since you have answered I can try to contact the responsible team for the Redash deployment if they could check again for some logs when the alert occurs. Meanwhile, is there any other information I could provide you that might help? The app version, for example…?</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/3</link>
+        <pubDate>Sat, 16 Jul 2022 00:42:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-3</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for posting here and sorry for the late response. Without the server logs it’s not possible to isolate the exact cause in your situation. I added an item to my list to see if I can reproduce this from what you describe. If I detect a bug I’ll open it against our repository.</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/2</link>
+        <pubDate>Fri, 15 Jul 2022 17:49:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-2</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+      <item>
+        <title>Alert with Webhook notification not sent</title>
+        <dc:creator><![CDATA[LBeghini]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello!</p>
+<p>I am trying to test Redash Webhooks and I have set up an alert from a query that just counts some fields and if is greater than 0, alerts (this condition is always true).</p>
+<p>The alert has the notifications send to my personal email, and a mock Webhook. At first I just wanted to see if it works and visualize the payload, so I am using the <a href="https://webhook.site/" rel="noopener nofollow ugc">https://webhook.site</a> to do so.</p>
+<p>When I run the query, I receive an email however I do not receive anything in the webhook.site. I do not have access to the logs nor the Redash installation to verify if there is something wrong.</p>
+<p>I would like to know if there is anything that could be possibly preventing this alert to send to the Webhook?</p>
+<p>Thanks in advance.</p>
+          <p><a href="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679/1</link>
+        <pubDate>Mon, 27 Jun 2022 12:56:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10679-1</guid>
+        <source url="https://discuss.redash.io/t/alert-with-webhook-notification-not-sent/10679.rss">Alert with Webhook notification not sent</source>
+      </item>
+  </channel>
+</rss>

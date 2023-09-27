@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Where can I find the REDASH_SECRET_KEY?</title>
+    <link>https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350</link>
+    <description>Hello everyone,
+For several months I have been working on a Redash v10.0.0 instance and now I would like to put it in production on a new server with Docker. Dump/restore works but the data-sources are encrypted. I would like to re-encrypt the data with my old key but I can&#39;t find it in the configuration files. 
+
+Can you tell me where the secret key is located ?
+
+Then, I only have to use this ?
+```
+docker-compose run --rm server manage database reencrypt ${old_secret} ${new_secret}
+```
+(source : [https://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret](https://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret))
+
+Or have you any better idea to do what i&#39;m looking for ?
+
+Thank you for your help, 
+
+William</description>
+    
+    <lastBuildDate>Fri, 29 Apr 2022 08:07:09 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Where can I find the REDASH_SECRET_KEY?</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>According to this <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv" rel="noopener nofollow ugc">CVE</a> and the <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv" rel="noopener nofollow ugc">Docker Based Developer Installation Guide</a>, this is our way to move an instance of Redash to another server (<em>pg_dump</em> and <em>pg_restore</em>) with the reencryption of datasources. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+<ol>
+<li>Extract your old database</li>
+</ol>
+<pre><code class="lang-auto">pg_dump -FC -h $old_ip_adress -U $old_user -p $old_port -d $old_database_name &gt; file.sql
+</code></pre>
+<ol start="2">
+<li>Create your new Redash instance</li>
+</ol>
+<pre><code class="lang-auto">docker -v /*return: 20.10.14*/
+node -v /*return: 14.19.1*/
+yarn -v /*return: 1.22.10*/
+
+git clone https://github.com/getredash/redash.git
+cd redash/
+ 
+pwgen -1s 64 /*retourne : $new_key*/ 
+vim .env /* inscription de REDASH_COOKIE_SECRET="$new_key"*/
+  
+docker-compose up -d
+yarn --frozen-lockfile
+docker-compose run --rm server create_db
+yarn build
+
+yarn start /*CTRL + C to stop when launched*/
+</code></pre>
+<ol start="3">
+<li>The application is working. But you can’t access to the datasources and run queries as all datasources are encrypted. You have to reencrypt them according to this <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv" rel="noopener nofollow ugc">CVE</a>. This is our manipulation :</li>
+</ol>
+<pre><code class="lang-auto">
+/*Drop your postgres database and then restore it with file.sql */
+ 
+pg_restore -FC -h $new_ip_adress -p $new_port -U postgres -d postgres file.sql
+
+vim .env
+/* 
+ * Add this line (default Redash secret key) :
+ * REDASH_SECRET_KEY="c292a0a3aa32397cdb050e233733900f"
+ */
+ 
+/* Without any quote ! */
+docker-compose run --rm server manage database reencrypt c292a0a3aa32397cdb050e233733900f $new_key
+ 
+vim .env
+/*
+ * Finally, update both variables :
+ * REDASH_SECRET_KEY="$new_key"
+ * REDASH_COOKIE_SECRET="$new_key"
+ */
+ 
+docker-compose restart
+</code></pre>
+<ol start="4">
+<li>Eveything works now, enjoy ! <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20">
+</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/4</link>
+        <pubDate>Fri, 29 Apr 2022 08:07:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10350-4</guid>
+        <source url="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350.rss">Where can I find the REDASH_SECRET_KEY?</source>
+      </item>
+      <item>
+        <title>Where can I find the REDASH_SECRET_KEY?</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse ! Thank you so much for your answer ! It works ! <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"><br>
+Some details for others people (according to the <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv" rel="noopener nofollow ugc">CVE</a>) :</p>
+<p><strong>1. Set the <code>REDASH_SECRET_KEY</code> environment variable to be the default (current) cookie_secret : <code>c292a0a3aa32397cdb050e233733900f</code></strong><br>
+ → we wrote in .env file : REDASH_SECRET_KEY = “c292a0a3aa32397cdb050e233733900f”</p>
+<p><strong>2. Set <code>REDASH_COOKIE_SECRET</code> to a different value</strong><br>
+ → to generate our secret key, we used :</p>
+<pre><code class="lang-auto">pwgen -1s 64
+</code></pre>
+<p><strong>3. Use the Redash CLI to re-encrypt using a secret key different from step 1 (see <a href="http://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret" rel="noopener nofollow ugc">docs</a>)</strong><br>
+ → we used :</p>
+<pre><code class="lang-auto">docker-compose run --rm server manage database reencrypt ${old_secret} ${new_secret}
+</code></pre>
+<p>with ${old_secret} without quote LIKE c292a0a3aa32397cdb050e233733900f</p>
+<p><strong>4. Set the <code>REDASH_SECRET_KEY</code> environment variable to the new value you used in step 3</strong><br>
+ → syntax like in step 1</p>
+<p><strong>5. Restart Redash</strong><br>
+ → docker compose restart</p>
+<p>Well… Thank you again for your help ! Now everything is working for us <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+<p>See you later !</p>
+          <p><a href="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/3</link>
+        <pubDate>Thu, 21 Apr 2022 06:36:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10350-3</guid>
+        <source url="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350.rss">Where can I find the REDASH_SECRET_KEY?</source>
+      </item>
+      <item>
+        <title>Where can I find the REDASH_SECRET_KEY?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum and thanks for your question. Do you remember if you configured a specified secret key when you first set up your v10 instance? If not, then you probably are impacted by <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv">this CVE</a>. If so, your secret key is <code>c292a0a3aa32397cdb050e233733900f</code> and you should follow the instructions in the CVE disclosure to re-encrypt your data sources before you productionise everything.</p>
+<p>This has been patched since v10.1.</p>
+          <p><a href="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/2</link>
+        <pubDate>Wed, 20 Apr 2022 18:36:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10350-2</guid>
+        <source url="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350.rss">Where can I find the REDASH_SECRET_KEY?</source>
+      </item>
+      <item>
+        <title>Where can I find the REDASH_SECRET_KEY?</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello everyone,<br>
+For several months I have been working on a Redash v10.0.0 instance and now I would like to put it in production on a new server with Docker. Dump/restore works but the data-sources are encrypted. I would like to re-encrypt the data with my old key but I can’t find it in the configuration files.</p>
+<p>Can you tell me where the secret key is located ?</p>
+<p>Then, I only have to use this ?</p>
+<pre><code class="lang-auto">docker-compose run --rm server manage database reencrypt ${old_secret} ${new_secret}
+</code></pre>
+<p>(source : <a href="https://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret</a>)</p>
+<p>Or have you any better idea to do what i’m looking for ?</p>
+<p>Thank you for your help,</p>
+<p>William</p>
+          <p><a href="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350/1</link>
+        <pubDate>Wed, 20 Apr 2022 13:06:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10350-1</guid>
+        <source url="https://discuss.redash.io/t/where-can-i-find-the-redash-secret-key/10350.rss">Where can I find the REDASH_SECRET_KEY?</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>クエリの同時実行数を２より上げたい - Japanese - Redash Discourse</title>
+    <meta name="description" content="redash 11.0.0-dev をECS Fargate で実行しています。 
+Redashへの同時接続数が１００件以上になりそうなので、 
+クエリの同時実行数を２より上げたいのですが、 
+環境変数等、どこで設定したらよろしいのでしょうか。 
+ご存知の方いらっしゃれば、お願い致します。">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/topic/10259" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;クエリの同時実行数を２より上げたい&#39;" href="https://discuss.redash.io/t/topic/10259.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/topic/10259" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/topic/10259" />
+<meta property="og:title" content="クエリの同時実行数を２より上げたい" />
+<meta name="twitter:title" content="クエリの同時実行数を２より上げたい" />
+<meta property="og:description" content="redash 11.0.0-dev をECS Fargate で実行しています。  Redashへの同時接続数が１００件以上になりそうなので、  クエリの同時実行数を２より上げたいのですが、  環境変数等、どこで設定したらよろしいのでしょうか。  ご存知の方いらっしゃれば、お願い致します。" />
+<meta name="twitter:description" content="redash 11.0.0-dev をECS Fargate で実行しています。  Redashへの同時接続数が１００件以上になりそうなので、  クエリの同時実行数を２より上げたいのですが、  環境変数等、どこで設定したらよろしいのでしょうか。  ご存知の方いらっしゃれば、お願い致します。" />
+<meta property="og:article:section" content="Japanese" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="og:article:tag" content="parameters" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="5 ❤" />
+<meta property="article:published_time" content="2022-04-04T11:43:59+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/topic/10259">クエリの同時実行数を２より上げたい</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/japanese/12" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Japanese</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/parameters' class='discourse-tag' rel="tag">parameters</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='クエリの同時実行数を２より上げたい'>
+        <meta itemprop='articleSection' content='Japanese'>
+      <meta itemprop='keywords' content='parameters'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kaori'><span itemprop='name'>kaori</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-04T11:43:59Z' class='post-time'>
+                    April 4, 2022, 11:43am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-04T11:43:59Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>redash 11.0.0-dev をECS Fargate で実行しています。<br>
+Redashへの同時接続数が１００件以上になりそうなので、<br>
+クエリの同時実行数を２より上げたいのですが、<br>
+環境変数等、どこで設定したらよろしいのでしょうか。<br>
+ご存知の方いらっしゃれば、お願い致します。<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png" data-download-href="/uploads/short-url/6H6vlrjCCgbkPMMe2IYdQWt9PwM.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84_2_690x204.png" alt="image" data-base62-sha1="6H6vlrjCCgbkPMMe2IYdQWt9PwM" width="690" height="204" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84_2_690x204.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">820×243 9.81 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/loco-diwamoto'><span itemprop='name'>loco-diwamoto</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-05T04:09:52Z' class='post-time'>
+                    April 5, 2022,  4:09am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-05T04:09:52Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><code>WORKERS_COUNT </code>を上げることにより、同時実行数が増えます。<br>
+ご存知かとは思いますが、あげすぎるとRDSへの負荷が増えるはずなので、ご注意下さい。</p><aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml">
+  <header class="source">
+
+      <a href="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml" target="_blank" rel="noopener nofollow ugc">getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml</a></h4>
+
+
+      <pre><code class="lang-yml">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:8.0.0.b32245
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+</code></pre>
+
+
+
+  This file has been truncated. <a href="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kaori'><span itemprop='name'>kaori</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T01:41:16Z' class='post-time'>
+                    April 12, 2022,  1:41am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T01:41:16Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="loco-diwamoto" data-post="2" data-topic="10259">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/loco-diwamoto/40/3242_2.png" class="avatar"> loco-diwamoto:</div>
+<blockquote>
+<p><code>REDASH_WEB_WORKERS: 4</code></p>
+</blockquote>
+</aside>
+<p>ありがとうございます。<br>
+REDASH_WEB_WORKERS: 4<br>
+に設定してRedash再起動しても、“Started Jobs  2” のままで、Queued Jobs が増えていくだけなのです。<br>
+何か見方が違うのでしょうか？<br>
+もしくは、ほかに設定する箇所があるのでしょうか？<br>
+よろしくおねがいします。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kaori'><span itemprop='name'>kaori</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T02:19:20Z' class='post-time'>
+                    April 12, 2022,  2:19am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T02:19:20Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>RQになると、celeryと書き方が違うとか、あるのでしょうか？？？</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ariarijp'><span itemprop='name'>ariarijp</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T04:02:23Z' class='post-time'>
+                    April 12, 2022,  4:02am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T04:02:23Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Redash の再起動はどのように実行されていますか？</p>
+<p>また、Docker を使用されている場合、worker のコンテナに exec で入って、環境変数 <code>REDASH_WEB_WORKERS </code> が反映されているか確認してみてください。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kaori'><span itemprop='name'>kaori</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T05:02:11Z' class='post-time'>
+                    April 12, 2022,  5:02am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T05:02:11Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>返信ありがとうございます。</p>
+<h1>
+<a name="printenv-more-1" class="anchor" href="#printenv-more-1"></a>printenv | more</h1>
+<h1>
+<a name="redash_web_workers4-2" class="anchor" href="#redash_web_workers4-2"></a>REDASH_WEB_WORKERS=4</h1>
+<p>で見ると、設定はされているようには見えます。<br>
+再起動とは、JenkinsからRedashデプロイしなおしてます。<br>
+よろしくおねがいします。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ariarijp'><span itemprop='name'>ariarijp</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T05:21:53Z' class='post-time'>
+                    April 12, 2022,  5:21am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T05:21:53Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>確認ありがとうございます。</p>
+<p>11.0.0 とのことなので以下を参考に <code>WORKERS_COUNT</code> で指定してみてはいかがでしょうか？</p>
+<p><code>REDASH_WEB_WORKERS</code> はおそらく gunicorn のワーカー数ですね。</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint#L19">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint#L19" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint#L19" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/master/bin/docker-entrypoint#L19</a></h4>
+
+
+
+    <pre class="onebox">      <code class="lang-">
+        <ol class="start lines" start="9" style="counter-reset: li-counter 8 ;">
+            <li>
+            </li>
+<li>dev_scheduler() {</li>
+            <li>  echo "Starting dev RQ scheduler..."</li>
+            <li>
+            </li>
+<li>  exec watchmedo auto-restart --directory=./redash/ --pattern=*.py --recursive -- ./manage.py rq scheduler</li>
+            <li>}</li>
+            <li>
+            </li>
+<li>worker() {</li>
+            <li>  echo "Starting RQ worker..."</li>
+            <li>
+            </li>
+<li class="selected">  export WORKERS_COUNT=${WORKERS_COUNT:-2}</li>
+            <li>  export QUEUES=${QUEUES:-}</li>
+            <li>
+            </li>
+<li>  exec supervisord -c worker.conf</li>
+            <li>}</li>
+            <li>
+            </li>
+<li>dev_worker() {</li>
+            <li>  echo "Starting dev RQ worker..."</li>
+            <li>
+            </li>
+<li>  exec watchmedo auto-restart --directory=./redash/ --pattern=*.py --recursive -- ./manage.py rq worker $QUEUES</li>
+            <li>}</li>
+        </ol>
+      </code>
+    </pre>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kaori'><span itemprop='name'>kaori</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T08:06:01Z' class='post-time'>
+                    April 12, 2022,  8:06am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T08:06:01Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Continuing the discussion from <a href="http://discuss.redash.io/t/topic/10259/7">クエリの同時実行数を２より上げたい</a>:</p>
+<p>ありがとうございます。<br>
+WORKERS_COUNT=4<br>
+を追加しただけじゃ変わらかったので、QUEUESの設定も何か必要ということでしょうか？<br>
+よろしくおねがいします。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ariarijp'><span itemprop='name'>ariarijp</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T23:59:29Z' class='post-time'>
+                    April 12, 2022, 11:59pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T23:59:29Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><code>WORKERS_COUNT</code> の設定だけでは実行数が変わらなかったのですね。</p>
+<p><code>QUEUES</code> の設定を変更してみる前に、worker のコンテナで環境変数 <code>WORKERS_COUNT</code> の値が4になっているか、また、可能であれば以下のコマンドでワーカー数がいくつになっているか確認してみてください。<br>
+(Redis の URL は環境にあわせて変更してみてください。</p>
+<pre><code class="lang-auto">rq info -u redis://redis
+</code></pre>
+<p>を実行すると、<code>4 workers, 5 queues</code> のようにワーカー数が表示されるはずです。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kaori'><span itemprop='name'>kaori</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-14T02:29:07Z' class='post-time'>
+                    April 14, 2022,  2:29am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-14T02:29:07Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>ありがとうございます。<br>
+3 workers, 6 queues<br>
+で、増えていたのですが、どこから３が来たのかが謎です・・</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ariarijp'><span itemprop='name'>ariarijp</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/topic/10259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-14T15:26:00Z' class='post-time'>
+                    April 14, 2022,  3:26pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-14T15:26:00Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>設定したはずのない 3 という値は気になりますね。<br>
+現時点で私が知る限り <code>WORKERS_COUNT</code> の変更のみでワーカー数は変更される理解でおりますが、<br>
+11.0.0-dev をお使いで、Fargate 上で動作されているとのことですので、環境に依存するなにか要因があるのかもしれません。</p>
+<p>お力になれずすみませんが、解決方法がわかったらぜひ共有いただけますとうれしいです。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

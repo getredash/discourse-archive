@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Redash 10 Excel data source - Redash Discourse</title>
+    <meta name="description" content="Is there any info out there on how the new Excel data source works?">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Redash 10 Excel data source&#39;" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/redash-10-excel-data-source/9207" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/redash-10-excel-data-source/9207" />
+<meta property="og:title" content="Redash 10 Excel data source" />
+<meta name="twitter:title" content="Redash 10 Excel data source" />
+<meta property="og:description" content="Is there any info out there on how the new Excel data source works?" />
+<meta name="twitter:description" content="Is there any info out there on how the new Excel data source works?" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="2 ❤" />
+<meta property="article:published_time" content="2021-10-06T15:16:19+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/redash-10-excel-data-source/9207">Redash 10 Excel data source</a>
+    </h1>
+
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Redash 10 Excel data source'>
+        <meta itemprop='articleSection' content='Uncategorized'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/SunlinkHealthTech'><span itemprop='name'>SunlinkHealthTech</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-06T15:16:19Z' class='post-time'>
+                    October 6, 2021,  3:16pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-06T15:16:19Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Is there any info out there on how the new Excel data source works?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="https://discuss.redash.io/t/how-works-excel-and-csv-datasources/10356">How works Excel and CSV datasources?</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-06T19:36:23Z' class='post-time'>
+                    October 6, 2021,  7:36pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-06T19:36:23Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Great question <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+<p>This merged as part of V10 but isn’t included in the docs yet. I haven’t used it before but I just loaded it up and have a working version. I’ll open a PR to the documentation website soon. I figured this out just by looking at the query runner source code <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=12" title=":wink:" class="emoji" alt=":wink:" loading="lazy" width="20" height="20"></p>
+<p>But for now here you go:</p>
+<hr>
+<h2>
+<a name="excel-data-source-1" class="anchor" href="#excel-data-source-1"></a>Excel Data Source</h2>
+<p>The Excel data source introduced in V10 accepts queries in <code>yaml</code> format. Your <code>yaml</code> may contain two different tags:</p>
+<ul>
+<li>
+<strong>url</strong> - the URL that will be fetched</li>
+<li>
+<strong>ua</strong> - the user agent string that will be passed in with the request</li>
+</ul>
+<p>An example query that uses a <a href="https://www.dol.gov/agencies/eta/national-agricultural-workers-survey/data/files-excel-csv">publicly available data set</a>:</p>
+<pre data-code-wrap="yaml"><code class="lang-nohighlight">url: https://www.dol.gov/sites/dolgov/files/ETA/naws/pdfs/NAWS_A2E191.xlsx
+</code></pre>
+<p>It produces this table:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca.jpeg" data-download-href="/uploads/short-url/nI1fpW3tcJyZHc4rbuO90SdyU9Y.jpeg?dl=1" title="CleanShot 2021-10-06 at 14.36.06"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca_2_690x476.jpeg" alt="CleanShot 2021-10-06 at 14.36.06" data-base62-sha1="nI1fpW3tcJyZHc4rbuO90SdyU9Y" width="690" height="476" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca_2_690x476.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca_2_1035x714.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca_2_1380x952.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a62bde6d468bcb3b6641f956d6cb1aaee3bfefca_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">CleanShot 2021-10-06 at 14.36.06</span><span class="informations">1590×1098 137 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/excel-data-source-load-multiple-same-structure-files-from-the-location/9300">Excel data source: load multiple (same structure) files from the location</a>
+                        <meta itemprop='position' content='3'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/vucu'><span itemprop='name'>vucu</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-19T15:39:56Z' class='post-time'>
+                    October 19, 2021,  3:39pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-19T15:39:56Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Not sure if I should create a new topic, or if i am allowed to continue here, but i was wondering if the excel data source allows picking up multiple files from the location ( something like location*.xlsx, or location test%.xlsx)</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-19T15:45:22Z' class='post-time'>
+                    October 19, 2021,  3:45pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-19T15:45:22Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Not as far as I know. But this could be a good addition. How would you expect this to behave? Since most queries return at most one set of tabular data, would you expect multiple table visualisations to appear? Would the tables be concatenated?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/vucu'><span itemprop='name'>vucu</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-19T15:53:21Z' class='post-time'>
+                    October 19, 2021,  3:53pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-19T15:53:21Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>i was thinking of a scenario where the files are similar in structure (eg: different day logs , etc), so the expected behavior in this case would be indeed concatenation.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-19T16:00:17Z' class='post-time'>
+                    October 19, 2021,  4:00pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-19T16:00:17Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>That makes sense. Can you create a feature request thread for this here on the forum? Just specify the expected behavior. This way the community can get visibility on outstanding pull requests.</p>
+<p>Alternatively, if you want to implement this yourself I’m happy to answer questions, review, merge etc.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ilyaminati'><span itemprop='name'>ilyaminati</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-19T19:43:39Z' class='post-time'>
+                    October 19, 2021,  7:43pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-19T19:43:39Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>How does the Excel data source handle spreadsheets that contain multiple sheets / tabs?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-19T19:49:52Z' class='post-time'>
+                    October 19, 2021,  7:49pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-19T19:49:52Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>If you look at the query runner code it appears to use the default behavior of <code>read_excel</code> in Pandas. Which is to pull the first sheet. It would be a trivial adjustment to make this configurable in the query, though.</p>
+<p>See the query runner code <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/excel.py">here</a>.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/willy-dauphin'><span itemprop='name'>willy-dauphin</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7074f18696249975e881ed57edaf83ec415314f8.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-05-12T06:51:58Z' class='post-time'>
+                    May 12, 2022,  6:51am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-05-12T06:51:58Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi !<br>
+I rode the <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/excel.py" rel="noopener nofollow ugc">query runner</a> again and <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html" rel="noopener nofollow ugc">documentation</a> too. Actually, it’s already possible to query a sheet number with XLS file <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+<p>The solution is here (<em>excel.py</em>, line 57) :</p>
+<pre><code class="lang-auto">workbook = pd.read_excel(response.content, **args)
+</code></pre>
+<p>As you can see, the list called <em>args</em> is depacted as function parameters. So, we just have to use the correct parameter name to use it, according to the <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_excel.html" rel="noopener nofollow ugc">read_excel</a> function !</p>
+<p>For example, this is my nextcloud spreadsheet. First share the link (yellow rectangle) :<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7074f18696249975e881ed57edaf83ec415314f8.jpeg" data-download-href="/uploads/short-url/g2Q1ForjmmK425mXL6WTFA0cpUA.jpeg?dl=1" title="C1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7074f18696249975e881ed57edaf83ec415314f8_2_690x318.jpeg" alt="C1" data-base62-sha1="g2Q1ForjmmK425mXL6WTFA0cpUA" width="690" height="318" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7074f18696249975e881ed57edaf83ec415314f8_2_690x318.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7074f18696249975e881ed57edaf83ec415314f8_2_1035x477.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7074f18696249975e881ed57edaf83ec415314f8_2_1380x636.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7074f18696249975e881ed57edaf83ec415314f8_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">C1</span><span class="informations">1920×887 96.5 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Then, copy the download link (yellow rectangle) :<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dc0ab8f4244624fa91f14a3bf0d2c8ab5113bcde.jpeg" data-download-href="/uploads/short-url/voA10DPVExzG25OCncDA8kVwJpc.jpeg?dl=1" title="C2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc0ab8f4244624fa91f14a3bf0d2c8ab5113bcde_2_690x319.jpeg" alt="C2" data-base62-sha1="voA10DPVExzG25OCncDA8kVwJpc" width="690" height="319" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc0ab8f4244624fa91f14a3bf0d2c8ab5113bcde_2_690x319.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc0ab8f4244624fa91f14a3bf0d2c8ab5113bcde_2_1035x478.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc0ab8f4244624fa91f14a3bf0d2c8ab5113bcde_2_1380x638.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc0ab8f4244624fa91f14a3bf0d2c8ab5113bcde_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">C2</span><span class="informations">1917×887 137 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Create a new query with excel datasource and fill parameters “url” with the link copied and “sheet_name” with the sheet number. First sheet = 0 (by default) / second sheet = 1 / etc.<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/756d4d8ce7f218befa2d5c7b90cbaeb9bb154ef8.jpeg" data-download-href="/uploads/short-url/gKO2L1T2J1wQGPYZmirDli09DO8.jpeg?dl=1" title="C3" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/756d4d8ce7f218befa2d5c7b90cbaeb9bb154ef8_2_690x318.jpeg" alt="C3" data-base62-sha1="gKO2L1T2J1wQGPYZmirDli09DO8" width="690" height="318" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/756d4d8ce7f218befa2d5c7b90cbaeb9bb154ef8_2_690x318.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/756d4d8ce7f218befa2d5c7b90cbaeb9bb154ef8_2_1035x477.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/756d4d8ce7f218befa2d5c7b90cbaeb9bb154ef8_2_1380x636.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/756d4d8ce7f218befa2d5c7b90cbaeb9bb154ef8_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">C3</span><span class="informations">1920×887 98.2 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>You can easily change the sheetnumber like this :<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9b6b729b5ff0a51d094e30ed36ea36d9cfcd01ad.jpeg" data-download-href="/uploads/short-url/maUdeLF1ArwXqwci9vNC57ITS1L.jpeg?dl=1" title="C4" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b6b729b5ff0a51d094e30ed36ea36d9cfcd01ad_2_690x318.jpeg" alt="C4" data-base62-sha1="maUdeLF1ArwXqwci9vNC57ITS1L" width="690" height="318" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b6b729b5ff0a51d094e30ed36ea36d9cfcd01ad_2_690x318.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b6b729b5ff0a51d094e30ed36ea36d9cfcd01ad_2_1035x477.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b6b729b5ff0a51d094e30ed36ea36d9cfcd01ad_2_1380x636.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b6b729b5ff0a51d094e30ed36ea36d9cfcd01ad_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">C4</span><span class="informations">1920×887 96.4 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>And of course others parameters like <em>nrows</em> :<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7834925a46c3ad74dd1037030142e5576c77c8ca.jpeg" data-download-href="/uploads/short-url/h9nVHUZXuF4S4I4xJOQZC1Y4uMO.jpeg?dl=1" title="C5" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7834925a46c3ad74dd1037030142e5576c77c8ca_2_690x318.jpeg" alt="C5" data-base62-sha1="h9nVHUZXuF4S4I4xJOQZC1Y4uMO" width="690" height="318" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7834925a46c3ad74dd1037030142e5576c77c8ca_2_690x318.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7834925a46c3ad74dd1037030142e5576c77c8ca_2_1035x477.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7834925a46c3ad74dd1037030142e5576c77c8ca_2_1380x636.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7834925a46c3ad74dd1037030142e5576c77c8ca_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">C5</span><span class="informations">1920×887 96.9 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>see you <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-19T17:02:37Z' class='post-time'>
+                    July 19, 2022,  5:02pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-19T17:02:37Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>could someone help with authenticating to excel datasource, e.g. if we have an excel hosted on sharepoint, it will require authentication.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-19T17:22:02Z' class='post-time'>
+                    July 19, 2022,  5:22pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-19T17:22:02Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>What kind of authentication is needed? HTTP Basic auth? Oauth?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-19T18:49:19Z' class='post-time'>
+                    July 19, 2022,  6:49pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-19T18:49:19Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>yes basic auth should work</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-19T18:57:38Z' class='post-time'>
+                    July 19, 2022,  6:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-19T18:57:38Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Alright the existing excel query runner doesn’t support basic auth. This means there are a couple options:</p>
+<ol>
+<li>Write a custom sharepoint query runner so you enter the username and password in secret fields on the data source configuration screen (I can help you with this).</li>
+<li>Update the excel query runner to accept HTTP basic auth key-value-pairs</li>
+<li>Use the existing Python query runner so you can access <code>requests</code> directly and also transform the data however you need.</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/angelochu7'><span itemprop='name'>angelochu7</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9e1d6aa57e62e36335230221f1f10b05abfd4ce5.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-10-12T04:48:21Z' class='post-time'>
+                    October 12, 2022,  4:48am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-10-12T04:48:21Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>May I know whether it will work with Microsoft OneDrive hyperlink? It seems it’s not working.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9e1d6aa57e62e36335230221f1f10b05abfd4ce5.png" data-download-href="/uploads/short-url/myKsPLsZprGjHF1Ltn3sdhdyteJ.png?dl=1" title="Screenshot 2022-10-12 at 12.40.04 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9e1d6aa57e62e36335230221f1f10b05abfd4ce5.png" alt="Screenshot 2022-10-12 at 12.40.04 PM" data-base62-sha1="myKsPLsZprGjHF1Ltn3sdhdyteJ" width="690" height="50" data-dominant-color="F9CFB4"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2022-10-12 at 12.40.04 PM</span><span class="informations">1163×85 4.02 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Another question is, I got the following error when trying to load the sample excel file (url: <a href="https://www.dol.gov/sites/dolgov/files/ETA/naws/pdfs/NAWS_A2E191.xlsx" rel="noopener nofollow ugc">https://www.dol.gov/sites/dolgov/files/ETA/naws/pdfs/NAWS_A2E191.xlsx</a>):</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cb6a5cce2a6def36d7d176fee039a11c5f663cff.png" data-download-href="/uploads/short-url/t1uO2GHAKHbTRsRKdAWooibTWi3.png?dl=1" title="Screenshot 2022-10-12 at 12.47.01 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cb6a5cce2a6def36d7d176fee039a11c5f663cff.png" alt="Screenshot 2022-10-12 at 12.47.01 PM" data-base62-sha1="t1uO2GHAKHbTRsRKdAWooibTWi3" width="690" height="31" data-dominant-color="F6E9E7"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2022-10-12 at 12.47.01 PM</span><span class="informations">1163×53 3.79 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Thanks a million for your comment.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_16' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/willy-dauphin'><span itemprop='name'>willy-dauphin</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-10-excel-data-source/9207">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2023-01-15T06:44:33Z' class='post-time'>
+                    January 15, 2023,  6:44am
+                  </time>
+                  <meta itemprop='dateModified' content='2023-01-15T06:44:33Z'>
+              <span itemprop='position'>16</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hey <a class="mention" href="/u/jesse">@jesse</a> !<br>
+Is it possible to read an excel data source and provide a private token ? I’m working with <a href="https://support.kobotoolbox.org/synchronous_exports.html" rel="noopener nofollow ugc">KoboToolbox</a> and I would like to access to private data. Any idea ? <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

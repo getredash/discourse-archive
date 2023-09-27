@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Error 500 on data sources page</title>
+    <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776</link>
+    <description>### Issue Summary
+
+Installed Redash 8 on docker from scratch. Update env to point to v6 postgresql database. Ran migrations.
+Everything seems to be working, except Data Sources page, which returns a 500 error. Dashoards also show errors in place of widgets. Opening a query opens, shows sql, but schema browser is empty.
+
+### Technical details:
+
+* Redash Version: 8
+* Browser/OS: chrome, ubuntu
+* How did you install Redash: docker
+
+I looked at the datasources table and options are encrypted. I did not change any secrets in env file. May be I should have kept the secret from v6?
+
+Please help...</description>
+    
+    <lastBuildDate>Tue, 31 Jan 2023 08:29:23 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[Juliette]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I managed to fix the <em>postgres</em> authentication problem by changing the <em>postgres</em> password in psql.<br>
+But I’m back to the beginning, as I still have the error 500 on the data source page ^^.<br>
+(I changed the <code>REDASH_SECRET_KEY</code> value to the <code>REDASH_COOKIE_SECRET</code> one) …</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/12</link>
+        <pubDate>Tue, 31 Jan 2023 08:29:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-12</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[Juliette]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks, but it doesn’t work, I still have the same error. But before I changed the REDASH_SECRET_KEY and restarted the server, I was able to see the Redash home page, and the list of dashboards. So I guess that it was able to connect to the database. It seems that something went wrong when I restarted the server. (If I put back the original env file, I still have the postgres connection error).</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/11</link>
+        <pubDate>Mon, 23 Jan 2023 10:56:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-11</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <p>Look at the redash_database_url line. It has a password defined for user postgres. It’s hashed so you can’t see what it is. If you’re using the same database you have to keep the same pwd. Copy that value from the previous installation.</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/10</link>
+        <pubDate>Mon, 23 Jan 2023 09:35:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-10</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[Juliette]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks a lot, I must have been tired last friday because I didn’t see this env file <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"> I edited it and restarted the server, but now I have an error 500 on the whole Redash application <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"> In the redash server logs I found "password authentication failed for user “postgres”.<br>
+My env file:</p>
+<pre><code class="lang-auto">REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=oeN29nv7S4LbAlSSqyYPkcIUl3eBIsif
+REDASH_COOKIE_SECRET=7frzsIeoZda4BWTgcVzFTcBXwqIC6kQk
+REDASH_SECRET_KEY=7frzsIeoZda4BWTgcVzFTcBXwqIC6kQk
+REDASH_DATABASE_URL=postgresql://postgres:oeN29nv7S4LbAlSSqyYPkcIUl3eBIsif@postgres/postgres
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/9</link>
+        <pubDate>Mon, 23 Jan 2023 09:08:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-9</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey there. Just look for the redash.env file. All your env vars are there. Edit and restart redash docker container.</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/8</link>
+        <pubDate>Fri, 20 Jan 2023 17:37:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-8</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[Juliette]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,<br>
+I’m new to Redash, and I encounter the same problem: first I installed redash on a server and configured some dashboards. Then I re-installed redash on a new server, with docker, and I restored the database from a pg_dump of the previous server database. Now I have errors 500 on the data sources page. I want to try your solution, but I can’t figure how to set the REDASH_SECRET_KEY to the REDASH_COOKIE_SECRET value. I read the documentation about the secret keys but it’s really not my cup of tea and I really don’t know how to proceed ! Help would be really welcome <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"> Thanks !</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/7</link>
+        <pubDate>Fri, 20 Jan 2023 16:11:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-7</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <p>It’s the least we can do. Giving something back for this amazing product!</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/6</link>
+        <pubDate>Fri, 17 Jul 2020 16:55:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-6</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for sharing your solution! Glad you figured this out.</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/5</link>
+        <pubDate>Thu, 16 Jul 2020 18:09:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-5</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <p>So just to get over this error I’ve set REDASH_SECRET_KEY to the same key as REDASH_COOKIE_SECRET.</p>
+<p>Seems to be working.</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/4</link>
+        <pubDate>Thu, 16 Jul 2020 17:41:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-4</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <p>Oh my god… this sucks really…<br>
+</p><aside class="quote" data-post="2" data-topic="4833">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/database-migration-using-incorrect-key-for-encryption/4833/2">Database Migration using incorrect key for encryption</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Related. Possibly useful.
+  </blockquote>
+</aside>
+<p></p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/3</link>
+        <pubDate>Thu, 16 Jul 2020 17:23:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-3</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <p>So in the logs I get:</p>
+<p>[2020-07-16 16:43:09,769] ERROR in app: Exception on /api/data_sources [GET]<br>
+Traceback (most recent call last):<br>
+…<br>
+File “/usr/local/lib/python2.7/site-packages/cryptography/fernet.py”, line 119, in _decrypt_data<br>
+self._verify_signature(data)<br>
+File “/usr/local/lib/python2.7/site-packages/cryptography/fernet.py”, line 108, in _verify_signature<br>
+raise InvalidToken<br>
+InvalidToken<br>
+[2020-07-16 16:43:09,772][PID:16][INFO][metrics] method=GET path=/api/data_sources endpoint=data_sources status=500 content_type=application/json content_length=36 duration=12.55 query_count=5 query_duration=10.29</p>
+<p>Invalid token… hmmm… what would this be…</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/2</link>
+        <pubDate>Thu, 16 Jul 2020 17:15:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-2</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+      <item>
+        <title>Error 500 on data sources page</title>
+        <dc:creator><![CDATA[dncpax]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>Installed Redash 8 on docker from scratch. Update env to point to v6 postgresql database. Ran migrations.<br>
+Everything seems to be working, except Data Sources page, which returns a 500 error. Dashoards also show errors in place of widgets. Opening a query opens, shows sql, but schema browser is empty.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 8</li>
+<li>Browser/OS: chrome, ubuntu</li>
+<li>How did you install Redash: docker</li>
+</ul>
+<p>I looked at the datasources table and options are encrypted. I did not change any secrets in env file. May be I should have kept the secret from v6?</p>
+<p>Please help…</p>
+          <p><a href="https://discuss.redash.io/t/error-500-on-data-sources-page/6776/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-500-on-data-sources-page/6776/1</link>
+        <pubDate>Thu, 16 Jul 2020 16:59:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6776-1</guid>
+        <source url="https://discuss.redash.io/t/error-500-on-data-sources-page/6776.rss">Error 500 on data sources page</source>
+      </item>
+  </channel>
+</rss>

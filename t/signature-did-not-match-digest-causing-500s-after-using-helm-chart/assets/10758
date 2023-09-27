@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart - Support - Redash Discourse</title>
+    <meta name="description" content="I’ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at https://getredash.github.io/contrib-helm-chart/  This is using an external postgres for storage. 
+This has all been goin&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;&quot;Signature did not match digest&quot; causing 500s after using helm chart&#39;" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758" />
+<meta property="og:title" content="&quot;Signature did not match digest&quot; causing 500s after using helm chart" />
+<meta name="twitter:title" content="&quot;Signature did not match digest&quot; causing 500s after using helm chart" />
+<meta property="og:description" content="I’ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at https://getredash.github.io/contrib-helm-chart/  This is using an external postgres for storage.  This has all been going well, I set up a couple of data sources and lots and lots of queries on them.  However the last time I tried to reinstall from the helm chart it repeatedly timed out.  I eventually traced this to a problem with how the secrets were being generated - updating all the keys to new..." />
+<meta name="twitter:description" content="I’ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at https://getredash.github.io/contrib-helm-chart/  This is using an external postgres for storage.  This has all been going well, I set up a couple of data sources and lots and lots of queries on them.  However the last time I tried to reinstall from the helm chart it repeatedly timed out.  I eventually traced this to a problem with how the secrets were being generated - updating all the keys to new..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="2 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2022-07-14T07:36:18+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"\"Signature did not match digest\" causing 500s after using helm chart","mainEntity":{"@type":"Question","name":"\"Signature did not match digest\" causing 500s after using helm chart","text":"I’ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at <a href=\"https://getredash.github.io/contrib-helm-chart/\" rel=\"noopener nofollow ugc\">https://getredash.github.io/contrib-helm-chart/<\/a>  This is using an external postgres for storage.\n\nThis has all been going well, I set up a couple of data sources and lots and lots of queries on them.\n\n&hellip;","upvoteCount":0,"answerCount":1,"dateCreated":"2022-07-14T07:36:18.871Z","author":{"@type":"Person","name":null},"acceptedAnswer":{"@type":"Answer","text":"The procedure is going to be a little complicated. You will need to manually connect to your postgres instance and also run commands using the Redash CLI. It should go without saying that you should back up your postgres database before attempting this. I had to experiment for awhile before I found &hellip;","upvoteCount":0,"dateCreated":"2022-07-18T15:45:51.541Z","url":"https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/4","author":{"@type":"Person","name":"jesse"}}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">&quot;Signature did not match digest&quot; causing 500s after using helm chart</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='&quot;Signature did not match digest&quot; causing 500s after using helm chart'>
+        <meta itemprop='articleSection' content='Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/smee'><span itemprop='name'>smee</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-14T07:36:18Z' class='post-time'>
+                    July 14, 2022,  7:36am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-14T07:36:18Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>I’ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at <a href="https://getredash.github.io/contrib-helm-chart/" rel="noopener nofollow ugc">https://getredash.github.io/contrib-helm-chart/</a>  This is using an external postgres for storage.</p>
+<p>This has all been going well, I set up a couple of data sources and lots and lots of queries on them.</p>
+<p>However the last time I tried to reinstall from the helm chart it repeatedly timed out.  I eventually traced this to a problem with how the secrets were being generated - updating all the keys to new, good values, then meant redash came back up again.</p>
+<p>The problem now is that whenever I try to do anything involving a Data Source, redash throws an “Internal Server Error” message.  This means if I click through to view results from a query, or even if I go to Settings.</p>
+<p>Looking in the main redash pod’s log I see the following error</p>
+<pre><code class="lang-auto">File "/usr/local/lib/python3.7/site-packages/cryptography/hazmat/backends/openssl/hmac.py", line 74, in verify
+    raise InvalidSignature("Signature did not match digest.")
+</code></pre>
+<p>I’ve tried re-running the helm with various permutations of the secrets used when I was trying to fix the previous bug but have not had any success.  I’ve also tried the “default” key mentioned in the forums here, and still see the error above.</p>
+<p>Is there any way I can<br>
+A) manage to fix my current instance so that it can see the existing data sources again?</p>
+<p>Failing that is there any way I can<br>
+B) at least fix my data source state so that redash can allow me to edit them (without losing the queries associated with them)</p>
+<p>And failing that even is there anything else I can try to get things running again without losing all the query and dashboard data?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-14T21:34:59Z' class='post-time'>
+                    July 14, 2022,  9:34pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-14T21:34:59Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Oooooph.</p>
+<p>If you blew away the secrets used when you created the data sources then anything encrypted with those secrets is permanently unrecoverable. In this case that’s the data source configurations. Redash encrypts it because that’s where your database passwords are held (can’t be in plain text).</p>
+<p>The good news is your queries will be fine. Just recreate your data sources, get their id’s and do a mass update of the queries table to set them to use a new data source ID.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/smee'><span itemprop='name'>smee</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-15T06:45:52Z' class='post-time'>
+                    July 15, 2022,  6:45am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-15T06:45:52Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>OK, thanks for the reply Jesse.</p>
+<p>How would I go about recreating the data sources?  Everything in redash’s UI throws an internal error whenever I get close to data source management.  Is there some example code (postgres presumably) which I could use to clean out the existing ones so I can start adding new ones and get the environment back to the point I can add data sources again?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-18T15:45:51Z' class='post-time'>
+                    July 18, 2022,  3:45pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-18T15:45:51Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>The procedure is going to be a little complicated. You will need to manually connect to your postgres instance and also run commands using the Redash CLI. It should go without saying that you should back up your postgres database before attempting this. I had to experiment for awhile before I found a way to make this work.</p>
+<p><strong>Note</strong>: I’m using regular Docker-Compose. k8s is not (yet) officially supported for Redash. You will need to adapt these commands to your environment.</p>
+<h3>
+<a name="step-1-connect-to-postgres-1" class="anchor" href="#step-1-connect-to-postgres-1"></a>Step 1: Connect to Postgres</h3>
+<pre><code class="lang-bash">docker-compose exec postgres psql -U postgres     
+</code></pre>
+<p>Run</p>
+<pre><code class="lang-auto">select id, name from data_sources
+</code></pre>
+<p>This will list your existing data sources. Only the <code>id</code> and <code>name</code> fields are readable. Write down all of the <code>name</code> and <code>id</code> values.  Everything else is encrypted with a key that you’ve since lost. Our end goal is to replace these data sources with new ones.</p>
+<h3>
+<a name="step-2-modify-redash-cli-source-2" class="anchor" href="#step-2-modify-redash-cli-source-2"></a>Step 2: modify Redash CLI source</h3>
+<p>You need to modify <code>redash &gt; cli &gt; data_sources.py</code>. On line 183 the <code>delete()</code> method is defined. Make it look like the following:</p>
+<pre><code class="lang-python">def delete(name, organization="default"):
+    """Delete data source by name."""
+
+    from sqlalchemy.orm import load_only
+    try:
+        org = models.Organization.get_by_slug(organization)
+        data_source = models.DataSource.query.filter(
+            models.DataSource.name == name, models.DataSource.org == org
+        ).options(load_only(models.DataSource.id)).one()
+        print("Deleting data source: {} (id={})".format(name, data_source.id))
+        models.db.session.delete(data_source)
+        models.db.session.commit()
+    except NoResultFound:
+        print("Couldn't find data source named: {}".format(name))
+        exit(1)
+</code></pre>
+<p>The only change here is to add a call to <code>.options()</code> in the ORM call so that the CLI doesn’t attempt to load the entire object prior to deletion. Without this change, the CLI crash because it can’t decrypt the data source options fields. This is the same problem that happens when you try loading the data sources settings screen.</p>
+<p>By calling <code>load_only()</code> we limit SQLAlchemy to pulling a field that it doesn’t need to decrypt.</p>
+<p><strong>Follow-up item for me: open a pull request to add this to <code>master</code>.</strong></p>
+<h3>
+<a name="step-3-call-redash-cli-to-delete-data-sources-3" class="anchor" href="#step-3-call-redash-cli-to-delete-data-sources-3"></a>Step 3: Call Redash CLI to delete data sources</h3>
+<p>For each <code>name</code> you wrote down in step 1, execute the CLI data source delete command.</p>
+<pre><code class="lang-bash">docker-compose run --rm server manage ds delete "&lt;name of data source&gt;"
+</code></pre>
+<h3>
+<a name="step-4-create-new-data-sources-in-web-application-4" class="anchor" href="#step-4-create-new-data-sources-in-web-application-4"></a>Step 4: Create new data sources in web application</h3>
+<p>You can now reload the data source settings screen in Redash and create new ones. Take note of the new data source id that appears in your URL bar after you press save. Figure out which new data source id maps to the old id that we collected in step 1 and deleted in step 3.</p>
+<h3>
+<a name="step-5-update-queries-table-with-new-data_source_ids-5" class="anchor" href="#step-5-update-queries-table-with-new-data_source_ids-5"></a>Step 5: Update <code>queries</code> table with new <code>data_source_id</code>’s</h3>
+<p>In your terminal window from step 1, run SQL commands to update the <code>data_source_id</code> for your queries according to the mapping from step 4.</p>
+<p>For example if you delete data source <code>21</code> and replaced it with data source <code>29</code>, you can reassign all the queries like this:</p>
+<pre><code class="lang-sql">update queries set data_source_id = 29 where data_source_id = 21
+</code></pre>
+<hr>
+<p>After this, your queries will be visible and should execute like normal.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/lost-secret-key-now-what/10774/3">Lost Secret Key..now what</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/smee'><span itemprop='name'>smee</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-25T06:53:56Z' class='post-time'>
+                    July 25, 2022,  6:53am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-25T06:53:56Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks Jesse, I really appreciate the detail on how to do this.</p>
+<p>I’ve been away since the last message and in my absence one of my colleagues managed to fix the problem (I had pointed them to this thread).  We apparently had another instance of redash which happened to be pointing to the same database, and we were able to use the secret key which was still available there to restore the data.</p>
+<p>This means I’ve been unable to confirm whether or not your steps above would have fixed the problem.  Can I ask if anyone else comes to the thread and performs the steps above that they add a comment just letting the community know that this has worked for them?</p>
+<p>Thanks again Jesse for all the support on this.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/abcddcba'><span itemprop='name'>abcddcba</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2023-03-03T13:32:10Z' class='post-time'>
+                    March 3, 2023,  1:32pm
+                  </time>
+                  <meta itemprop='dateModified' content='2023-03-03T13:32:10Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hello,</p>
+<p>I got stuck in step 3, because the delete still fails even after modification. I suspect my changes are not taken into account for some reason, I don’t know if you have an idea maybe ?</p>
+<p>I opened an issue with more details, if needed <a href="https://discuss.redash.io/t/requests-fail-with-cryptography-exceptions-invalidsignature-signature-did-not-match-digest/11655" class="inline-onebox">Requests fail with cryptography.exceptions.InvalidSignature: Signature did not match digest</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

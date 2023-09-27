@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</title>
+    <link>https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540</link>
+    <description>### Issue Summary:
+
+I had to restart our EC2 instance as it was running out of space, All I did at first was to increase the volume size.
+After The instance had restarted I noted that the public Ip had changed, and I could no longer access the UI.
+
+I did check the status of all the containers, and it seem like Postgres did not properly start I then tried to force rebuild all the containers and I could see this error:
+
+&gt; redash_postgres_1 exited with code 1
+
+```
+$ docker ps:
+
+08700e4a5325   postgres:9.6-alpine               &quot;docker-entrypoint.s…&quot;   3 hours ago   Restarting (1) 14 seconds ago                                                redash_postgres_1`
+
+$ sudo docker-compose up --force-recreate --build -d
+
+redash_postgres_1 docker-entrypoint.sh postgres Restarting
+
+postgres_1          | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgres_1          |
+postgres_1          | LOG:  database system was shut down at 2021-11-23 12:28:52 UTC
+postgres_1          | LOG:  invalid record length at 6/17E95520: wanted 24, got 0
+postgres_1          | LOG:  invalid primary checkpoint record
+postgres_1          | LOG:  invalid resource manager ID in secondary checkpoint record
+postgres_1          | PANIC:  could not locate a valid checkpoint record
+postgres_1          | LOG:  startup process (PID 22) was terminated by signal 6: Aborted
+postgres_1          | LOG:  aborting startup due to startup process failure
+postgres_1          | LOG:  database system is shut down`
+```
+When trying to access the database I get this:
+psql: could not translate host name &quot;postgres&quot; to address: Try again
+
+Thank you for your assistance
+
+### Technical details:
+
+* Redash Version: V9
+* Browser/OS: Chrome
+* How did you install Redash: Docker</description>
+    
+    <lastBuildDate>Thu, 25 Nov 2021 14:23:23 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</title>
+        <dc:creator><![CDATA[Anice]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the pro tip <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"><br>
+Bellow the Docker-compose.yml file</p>
+<pre><code class="lang-auto">/opt/redash$ sudo nano docker-compose.yml
+
+version: '2'
+x-redash-service: &amp;redash-service
+  image: redash/redash:9.0.0-beta.b42121
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    ports:
+      - "5432:5432"
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+<p>I believe that aside Postgres all the other containers are up</p>
+<pre><code class="lang-auto">/opt/redash$ docker ps
+CONTAINER ID   IMAGE                             COMMAND                  CREATED        STATUS                          PORTS                                        NAMES
+ecfbf2a07110   redash/redash:9.0.0-beta.b42121   "/app/bin/docker-ent…"   12 hours ago   Up 9 hours                      5000/tcp                                     redash_adhoc_worker_1
+46bfd1697384   redash/redash:9.0.0-beta.b42121   "/app/bin/docker-ent…"   12 hours ago   Up 9 hours                      5000/tcp                                     redash_scheduled_worker_1
+126c437edf4d   redash/redash:9.0.0-beta.b42121   "/app/bin/docker-ent…"   12 hours ago   Up 9 hours                      5000/tcp                                     redash_worker_1
+352ef41688e1   redash/nginx:latest               "nginx -g 'daemon of…"   12 hours ago   Up 9 hours                      0.0.0.0:80-&gt;80/tcp, :::80-&gt;80/tcp, 443/tcp   redash_nginx_1
+01f4b9f9b135   redash/redash:9.0.0-beta.b42121   "/app/bin/docker-ent…"   12 hours ago   Up 9 hours                      0.0.0.0:5000-&gt;5000/tcp, :::5000-&gt;5000/tcp    redash_server_1
+65db0fe55db3   redash/redash:9.0.0-beta.b42121   "/app/bin/docker-ent…"   12 hours ago   Up 9 hours                      5000/tcp                                     redash_scheduler_1
+70e01f210483   redis:5.0-alpine                  "docker-entrypoint.s…"   12 hours ago   Up 9 hours                      6379/tcp                                     redash_redis_1
+08700e4a5325   postgres:9.6-alpine               "docker-entrypoint.s…"   12 hours ago   Restarting (1) 42 seconds ago                                                redash_postgres_1
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540/3</link>
+        <pubDate>Wed, 24 Nov 2021 23:25:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9540-3</guid>
+        <source url="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540.rss">Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</source>
+      </item>
+      <item>
+        <title>Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I edited your post to make your terminal outputs more reasonable.</p>
+<p>Pro tip: use triple backticks above and below a block  to do this yourself.</p>
+<p>Rebuilding all the containers was not necessary here.</p>
+<p>Can you share your docker-compose file? Why are none of your other containers running?</p>
+          <p><a href="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540/2</link>
+        <pubDate>Wed, 24 Nov 2021 15:11:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9540-2</guid>
+        <source url="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540.rss">Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</source>
+      </item>
+      <item>
+        <title>Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</title>
+        <dc:creator><![CDATA[Anice]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary:</h3>
+<p>I had to restart our EC2 instance as it was running out of space, All I did at first was to increase the volume size.<br>
+After The instance had restarted I noted that the public Ip had changed, and I could no longer access the UI.</p>
+<p>I did check the status of all the containers, and it seem like Postgres did not properly start I then tried to force rebuild all the containers and I could see this error:</p>
+<blockquote>
+<p>redash_postgres_1 exited with code 1</p>
+</blockquote>
+<pre><code class="lang-auto">$ docker ps:
+
+08700e4a5325   postgres:9.6-alpine               "docker-entrypoint.s…"   3 hours ago   Restarting (1) 14 seconds ago                                                redash_postgres_1`
+
+$ sudo docker-compose up --force-recreate --build -d
+
+redash_postgres_1 docker-entrypoint.sh postgres Restarting
+
+postgres_1          | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgres_1          |
+postgres_1          | LOG:  database system was shut down at 2021-11-23 12:28:52 UTC
+postgres_1          | LOG:  invalid record length at 6/17E95520: wanted 24, got 0
+postgres_1          | LOG:  invalid primary checkpoint record
+postgres_1          | LOG:  invalid resource manager ID in secondary checkpoint record
+postgres_1          | PANIC:  could not locate a valid checkpoint record
+postgres_1          | LOG:  startup process (PID 22) was terminated by signal 6: Aborted
+postgres_1          | LOG:  aborting startup due to startup process failure
+postgres_1          | LOG:  database system is shut down`
+</code></pre>
+<p>When trying to access the database I get this:<br>
+psql: could not translate host name “postgres” to address: Try again</p>
+<p>Thank you for your assistance</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V9</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540/1</link>
+        <pubDate>Wed, 24 Nov 2021 14:58:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9540-1</guid>
+        <source url="https://discuss.redash.io/t/could-not-translate-host-name-postgres-to-address-temporary-failure-in-name-resolution/9540.rss">Could not translate host name &quot;postgres&quot; to address: Temporary failure in name resolution</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How to tell the difference between NULL and empty string</title>
+    <link>https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619</link>
+    <description>When I run my query in Redash, I get the results and am generally very happy with the way they&#39;re displayed - I also export to spreadsheets sometimes. However, for my latest use-case I need to be able to tell the difference between an empty string and a null value but I don&#39;t seem to see any difference in either the UI or the spreadsheet export. Am I missing something? Is there a setting for this?</description>
+    
+    <lastBuildDate>Wed, 16 Jun 2021 17:24:35 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How to tell the difference between NULL and empty string</title>
+        <dc:creator><![CDATA[mjaggard]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s really helpful, thank you. Actually, just looking at the JSON returned in the developer console will suit me fine for now.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/4</link>
+        <pubDate>Wed, 16 Jun 2021 17:24:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8619-4</guid>
+        <source url="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619.rss">How to tell the difference between NULL and empty string</source>
+      </item>
+      <item>
+        <title>How to tell the difference between NULL and empty string</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I put together a quick demo of how we could displays NULLs explicitly in the table visualisation.</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/036a4a71678246d6db01832cfba6b4389f5810fe.gif" alt="CleanShot 2021-06-16 at 11.29.52" data-base62-sha1="ud9SFSNidqlSHTLShJvcpGK2yG" width="673" height="500" class="animated"></p>
+          <p><a href="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/3</link>
+        <pubDate>Wed, 16 Jun 2021 16:31:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8619-3</guid>
+        <source url="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619.rss">How to tell the difference between NULL and empty string</source>
+      </item>
+      <item>
+        <title>How to tell the difference between NULL and empty string</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Interesting question. See the workaround at the end.</p>
+<h3>
+<a name="discussion-1" class="anchor" href="https://discuss.redash.io#discussion-1"></a>Discussion</h3>
+<p>Internally, Redash knows the difference between a <code>null</code> and an empty string. You can see this in the JSON payload from the <code>/results</code> API.</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/d77109a6b7071e216658c1488357536e21989f27.png" alt="CleanShot 2021-06-16 at 09.05.54" data-base62-sha1="uJSPYqRL9lwQW7v8CnnS5wuMVf1" width="687" height="82"></p>
+<p>The table visualisation and Excel export are separate processes:</p>
+<p><strong>Table Vis</strong>: there’s no setting for how Null’s are displayed. This is a good idea though. Would you mind making a feature request for it here on the forum? Or I can move this thread into the feature request category.</p>
+<p><strong>Excel export</strong>: I wonder if things will <a href="https://github.com/getredash/redash/pull/2478">this PR</a> might solve your concern.</p>
+<h3>
+<a name="workaround-2" class="anchor" href="https://discuss.redash.io#workaround-2"></a>Workaround</h3>
+<p>For now you can work around this in your query by CASE-ing <code>NULL</code> values into a string you prefer. Here’s how you’d do it in postgres or mssql, for example:</p>
+<pre><code class="lang-sql">SELECT COALESCE([table].[field], '&lt;None&gt;') FROM ...
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/2</link>
+        <pubDate>Wed, 16 Jun 2021 14:13:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8619-2</guid>
+        <source url="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619.rss">How to tell the difference between NULL and empty string</source>
+      </item>
+      <item>
+        <title>How to tell the difference between NULL and empty string</title>
+        <dc:creator><![CDATA[mjaggard]]></dc:creator>
+        <description><![CDATA[
+            <p>When I run my query in Redash, I get the results and am generally very happy with the way they’re displayed - I also export to spreadsheets sometimes. However, for my latest use-case I need to be able to tell the difference between an empty string and a null value but I don’t seem to see any difference in either the UI or the spreadsheet export. Am I missing something? Is there a setting for this?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619/1</link>
+        <pubDate>Wed, 16 Jun 2021 08:25:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8619-1</guid>
+        <source url="https://discuss.redash.io/t/how-to-tell-the-difference-between-null-and-empty-string/8619.rss">How to tell the difference between NULL and empty string</source>
+      </item>
+  </channel>
+</rss>

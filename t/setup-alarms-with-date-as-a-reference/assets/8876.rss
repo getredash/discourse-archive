@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Setup alarms with date as a reference</title>
+    <link>https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876</link>
+    <description>Hi there,
+I want to clarify if there is a possibility to set up alerts with a date as a reference. Or maybe a value from another column.
+We are doing a daily data load and I want to create an alarm in case if data was failed to load. So, I have a query that returns the load date and today&#39;s date and I want to compare these values in an alert configuration. Can you please advise? 
+
+![redash1|690x498](upload://91Y0YDZJE0sKcpY90wGMO89HChM.png)
+![redash2|689x146](upload://mLDZ6gsSr5VfAL2O8vWhhMdqHC.png)</description>
+    
+    <lastBuildDate>Fri, 06 Aug 2021 15:02:33 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Setup alarms with date as a reference</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            
+          <p><a href="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/4</link>
+        <pubDate>Fri, 06 Aug 2021 21:47:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8876-4</guid>
+        <source url="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876.rss">Setup alarms with date as a reference</source>
+      </item>
+      <item>
+        <title>Setup alarms with date as a reference</title>
+        <dc:creator><![CDATA[iho01]]></dc:creator>
+        <description><![CDATA[
+            <p>thanks, Jesse. It works fine for me.</p>
+          <p><a href="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/3</link>
+        <pubDate>Fri, 06 Aug 2021 15:02:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8876-3</guid>
+        <source url="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876.rss">Setup alarms with date as a reference</source>
+      </item>
+      <item>
+        <title>Setup alarms with date as a reference</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I would do it this way:</p>
+<pre><code class="lang-sql">SELECT
+  CASE
+    WHEN load_date = (current_date) THEN 1
+    ELSE 0
+  END AS `match`
+FROM some_table
+LIMIT 1;
+</code></pre>
+<p>Then set your alert to evaluate whether <code>match == 1</code>.</p>
+          <p><a href="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/2</link>
+        <pubDate>Thu, 05 Aug 2021 13:41:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8876-2</guid>
+        <source url="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876.rss">Setup alarms with date as a reference</source>
+      </item>
+      <item>
+        <title>Setup alarms with date as a reference</title>
+        <dc:creator><![CDATA[iho01]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi there,<br>
+I want to clarify if there is a possibility to set up alerts with a date as a reference. Or maybe a value from another column.<br>
+We are doing a daily data load and I want to create an alarm in case if data was failed to load. So, I have a query that returns the load date and today’s date and I want to compare these values in an alert configuration. Can you please advise?</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3f4c8423b8666c211576e02a87ca809647034c9e.png" data-download-href="/uploads/short-url/91Y0YDZJE0sKcpY90wGMO89HChM.png?dl=1" title="redash1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3f4c8423b8666c211576e02a87ca809647034c9e.png" alt="redash1" data-base62-sha1="91Y0YDZJE0sKcpY90wGMO89HChM" width="690" height="498" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3f4c8423b8666c211576e02a87ca809647034c9e_2_10x10.png"></a></div><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0292e1676d4ea4a7e0e3ca464c827550e3893ab0.png" data-download-href="/uploads/short-url/mLDZ6gsSr5VfAL2O8vWhhMdqHC.png?dl=1" title="redash2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0292e1676d4ea4a7e0e3ca464c827550e3893ab0_2_689x146.png" alt="redash2" data-base62-sha1="mLDZ6gsSr5VfAL2O8vWhhMdqHC" width="689" height="146" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0292e1676d4ea4a7e0e3ca464c827550e3893ab0_2_689x146.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0292e1676d4ea4a7e0e3ca464c827550e3893ab0_2_1033x219.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0292e1676d4ea4a7e0e3ca464c827550e3893ab0.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0292e1676d4ea4a7e0e3ca464c827550e3893ab0_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876/1</link>
+        <pubDate>Thu, 05 Aug 2021 13:22:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8876-1</guid>
+        <source url="https://discuss.redash.io/t/setup-alarms-with-date-as-a-reference/8876.rss">Setup alarms with date as a reference</source>
+      </item>
+  </channel>
+</rss>

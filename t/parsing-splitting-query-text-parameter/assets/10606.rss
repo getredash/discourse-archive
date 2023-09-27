@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Parsing/splitting query text parameter</title>
+    <link>https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606</link>
+    <description>Hi, I am not too familiar with SQL queries but I am trying to setup a SQL redash query where I would like to parse an input query parameter. 
+
+For example: I have one query parameter called model_one. This is basically a comma separated input model_name,run_id. Example: abcd,1234
+
+I am trying to run a query as:
+
+
+```
+SELECT run_id,
+      model_name,
+      username,
+FROM test.table
+WHERE (model_name LIKE SUBSTRING_INDEX(&#39;{{model_one}}&#39;, &#39;/&#39;, 1)
+      AND (run_id LIKE &#39;%SUBSTRING_INDEX(&#39;{{model_one}}&#39;, &#39;/&#39;, 1)%&#39;))
+```
+
+But this is giving me an error:
+
+```
+Function substring_index not registered
+```
+
+Is it possible to split the text parameter input in query code?</description>
+    
+    <lastBuildDate>Wed, 15 Jun 2022 18:11:53 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Parsing/splitting query text parameter</title>
+        <dc:creator><![CDATA[anjandeepsahni]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for explaining. Data source is presto db. So I was able to resolve it by using split_part.<br>
+<a href="https://prestodb.io/docs/current/functions/string.html" class="onebox" target="_blank" rel="noopener nofollow ugc">https://prestodb.io/docs/current/functions/string.html</a></p>
+          <p><a href="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606/3</link>
+        <pubDate>Wed, 15 Jun 2022 18:11:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10606-3</guid>
+        <source url="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606.rss">Parsing/splitting query text parameter</source>
+      </item>
+      <item>
+        <title>Parsing/splitting query text parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There’s no reason Redash won’t support this. It just depends which database you’re querying. For example, the error you see:</p>
+<aside class="quote no-group" data-username="anjandeepsahni" data-post="1" data-topic="10606">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/anjandeepsahni/40/4109_2.png" class="avatar"> anjandeepsahni:</div>
+<blockquote>
+<p><code>Function substring_index not registered</code></p>
+</blockquote>
+</aside>
+<p>comes from the data source you are querying. It doesn’t have a <code>substring_index</code> function. What data source is this?</p>
+<aside class="quote no-group" data-username="anjandeepsahni" data-post="1" data-topic="10606">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/anjandeepsahni/40/4109_2.png" class="avatar"> anjandeepsahni:</div>
+<blockquote>
+<p>Is it possible to split the text parameter input in query code?</p>
+</blockquote>
+</aside>
+<p>That depends on whether your data source supports any kind of substring indexing.</p>
+<hr>
+<p>Side note: there appears to be a typo in the final line of your query. I believe it should be:</p>
+<pre><code class="lang-sql">SELECT run_id,
+      model_name,
+      username,
+FROM test.table
+WHERE (model_name LIKE SUBSTRING_INDEX('{{model_one}}', '/', 1)
+      AND (run_id LIKE '%' + SUBSTRING_INDEX('{{model_one}}', '/', 1) + '%'))
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606/2</link>
+        <pubDate>Tue, 14 Jun 2022 17:34:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10606-2</guid>
+        <source url="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606.rss">Parsing/splitting query text parameter</source>
+      </item>
+      <item>
+        <title>Parsing/splitting query text parameter</title>
+        <dc:creator><![CDATA[anjandeepsahni]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I am not too familiar with SQL queries but I am trying to setup a SQL redash query where I would like to parse an input query parameter.</p>
+<p>For example: I have one query parameter called model_one. This is basically a comma separated input model_name,run_id. Example: abcd,1234</p>
+<p>I am trying to run a query as:</p>
+<pre><code class="lang-auto">SELECT run_id,
+      model_name,
+      username,
+FROM test.table
+WHERE (model_name LIKE SUBSTRING_INDEX('{{model_one}}', '/', 1)
+      AND (run_id LIKE '%SUBSTRING_INDEX('{{model_one}}', '/', 1)%'))
+</code></pre>
+<p>But this is giving me an error:</p>
+<pre><code class="lang-auto">Function substring_index not registered
+</code></pre>
+<p>Is it possible to split the text parameter input in query code?</p>
+          <p><a href="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606/1</link>
+        <pubDate>Fri, 10 Jun 2022 07:16:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10606-1</guid>
+        <source url="https://discuss.redash.io/t/parsing-splitting-query-text-parameter/10606.rss">Parsing/splitting query text parameter</source>
+      </item>
+  </channel>
+</rss>

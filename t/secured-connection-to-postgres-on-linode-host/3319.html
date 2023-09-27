@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Secured Connection to Postgres on Linode host</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/secured-connection-to-postgres-on-linode-host/3319">Secured Connection to Postgres on Linode host</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Secured Connection to Postgres on Linode host" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-01T09:25:18Z" itemprop="datePublished">
+                    March 1, 2019,  9:25am
+                  </time>
+<meta content="2019-03-01T09:25:18Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<h3>Issue Summary</h3>
+<p>Secured Local Hosted Redash Connection to a remote Postgre SQL hosted on Linode</p>
+<h3>Technical details:</h3>
+<p>Hi,<br/>
+I would like to run Redash on my local Macbookpro and connect to a PostgreSQL hosted on Linode VPS.<br/>
+Please let me know what is the most secured connection method to make this remote connection.<br/>
+The reason is we are running our live eCommerce platform on the Linode and need the most secured method to connect to the database directly.<br/>
+Regards,<br/>
+Chee</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-01T12:12:16Z" itemprop="datePublished">
+                    March 1, 2019, 12:12pm
+                  </time>
+<meta content="2019-03-01T12:12:16Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Could you spin up Redash at Linode so the data traffic never leaves their network?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-01T13:56:22Z" itemprop="datePublished">
+                    March 1, 2019,  1:56pm
+                  </time>
+<meta content="2019-03-01T13:56:22Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi Jesse,</p>
+<p>Yes that could be it.</p>
+<p>Will be secured.</p>
+<p>Thanks.</p>
+<p>Chee</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-02T15:46:09Z" itemprop="datePublished">
+                    March 2, 2019,  3:46pm
+                  </time>
+<meta content="2019-03-02T15:46:09Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi Jesse,</p>
+<p>I was trying to install Redash on a local macbookpro OSX 10.14 using Docker as the build process.</p>
+<p>The auto script managed to run but show some error.</p>
+<p>When I try to access the frontend, it shows on the browser:</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-04T04:22:01Z" itemprop="datePublished">
+                    March 4, 2019,  4:22am
+                  </time>
+<meta content="2019-03-04T04:22:01Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Another approach would be to create an SSH tunnel from your local macbook pro to the remote Linode VPS, configured so Redash (running on the macbook) can query PostgreSQL over the connection.</p>
+<p>This is what I’m doing presently, for connecting to a remote host on Scaleway (instead of Linode).  The raw command line to run is:</p>
+<pre><code>ssh -L127.0.0.1:5431:127.0.0.1:5432 -N linodeserver &amp;
+</code></pre>
+<p>Where <code>linodeserver</code> should be the DNS name, or IP address, of your Linode VPS.</p>
+<p>With that command run, ssh will start listening on port 5431.  Anything that connects to it will be transparently connected through to 127.0.0.1 (localhost), port 5432 on the remote server.</p>
+<p>You tell Redash to run queries against <code>127.0.0.1:5431</code> (localhost on your macbook), and ssh will do the tunneling between things.</p>
+<p>That may be more secure than setting up Redash on a remote server if you’re not comfortable with securing servers on the internet.  If you have a team that can secure a remote server for you though, that may be the better option. <img alt=":smile:" class="emoji" src="assets/smile.png" title=":smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T03:40:56Z" itemprop="datePublished">
+                    March 5, 2019,  3:40am
+                  </time>
+<meta content="2019-03-05T03:40:56Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi Justine,</p>
+<p>Thanks for the help.</p>
+<p>I will try this SSH method to connect into our server.</p>
+<p>May I also ask for you advise on making sql update,delete,alter command, are there any safety mechanism on Redash that provide accident rollback?</p>
+<p>Regards,</p>
+<p>Chee</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="3" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T10:16:54Z" itemprop="datePublished">
+                    March 5, 2019, 10:16am
+                  </time>
+<meta content="2019-03-05T10:16:54Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="6" data-topic="3319" data-username="cheekc">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/ecccb3/40.png" width="20"/> cheekc:</div>
+<blockquote>
+<p>May I also ask for you advise on making sql update,delete,alter command, are there any safety mechanism on Redash that provide accident rollback?</p>
+</blockquote>
+</aside>
+<p>Not sure, I haven’t been using Redash for long myself either. <img alt=":wink:" class="emoji" src="assets/wink.png" title=":wink:"/></p>
+<p>From a “maximum safety” perspective, it’s probably best to develop your queries against a copy of the database (on a different server) instead of doing it live on a production one.</p>
+<p>With SQL in general it’s possible to write bad queries that can impact the entire database.  Many companies create replicas of their database on a different server, specifically so people can run all kinds of queries on that and not have a bad effect on their main database server.  Not sure how much that applies to your situation though. <img alt=":smile:" class="emoji" src="assets/smile.png" title=":smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/MathieuBossaert.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/MathieuBossaert_avatar.png" tabindex="-1" width="48"/><span itemprop="name">MathieuBossaert</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T10:30:30Z" itemprop="datePublished">
+                    March 5, 2019, 10:30am
+                  </time>
+<meta content="2019-03-05T10:30:30Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Good morning,<br/>
+I don’t understand your need.<br/>
+Do you plan to run update/delete and alter queries from Redash ?<br/>
+If you only plan to execute select queries to feed your dashbord and you’re afraid of “bad queries”, you may create a PotgresSQL user for your Redash datasource who only have “reading rights” (connect on database , usage on schema , select table/views rights)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T11:22:33Z" itemprop="datePublished">
+                    March 5, 2019, 11:22am
+                  </time>
+<meta content="2019-03-05T11:22:33Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="8" data-topic="3319">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/932_2.png" width="20"/> MathieuBossaert:</div>
+<blockquote>
+<p>I don’t understand your need.</p>
+</blockquote>
+</aside>
+<p>It’s probably from a “playing it safe with a new product I’m not yet familiar with” viewpoint. <img alt=":smile:" class="emoji" src="assets/smile.png" title=":smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T11:53:40Z" itemprop="datePublished">
+                    March 5, 2019, 11:53am
+                  </time>
+<meta content="2019-03-05T11:53:40Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="6" data-topic="3319" data-username="cheekc">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/ecccb3/40.png" width="20"/> cheekc:</div>
+<blockquote>
+<p>are there any safety mechanism on Redash that provide accident rollback?</p>
+</blockquote>
+</aside>
+<p>Just to confirm here: no, Redash does not include rollback protection. It’s designed for data visualization and is not tuned towards the full suite of DB admin activities.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/MathieuBossaert.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/MathieuBossaert_avatar.png" tabindex="-1" width="48"/><span itemprop="name">MathieuBossaert</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T12:30:30Z" itemprop="datePublished">
+                    March 5, 2019, 12:30pm
+                  </time>
+<meta content="2019-03-05T12:30:30Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Sorry Justin,<br/>
+I was talking about <a class="mention" href="/u/cheekc">@cheekc</a> 's need.<br/>
+And I do understand you point of view <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-05T13:42:42Z" itemprop="datePublished">
+                    March 5, 2019,  1:42pm
+                  </time>
+<meta content="2019-03-05T13:42:42Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi All,</p>
+<p>Thanks everyone for the supportive advice.</p>
+<p>We are going to make a db replication and perform our analytics on that data source.</p>
+<p>And the suggestion to create a dedicated user with restricted permissions is a good idea. We will surely try that.</p>
+<p>Best Regards,</p>
+<p>Chee KC</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-12T13:28:14Z" itemprop="datePublished">
+                    March 12, 2019,  1:28pm
+                  </time>
+<meta content="2019-03-12T13:28:14Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi Justin,</p>
+<p>How are you doing?</p>
+<p>Our company is interested to consider integrating Redash for our Customer Facing use case.</p>
+<p>We are a startup company from Singapore and our SaaS is of the same name as our company “<a href="https://acornity.com" rel="nofollow noopener">Acornity</a>”. It is an eCommerce ads platform. We engage bloggers to provide publication space for merchants to deliver product advertisement.</p>
+<p>We have 2 use case:</p>
+<p>Case 1: For integrating Redash into Acornity to allow merchant and blogger to check on how their campaigns are doing and provide insight to fine tune their promotion activity and blog content direction. We charge a fee to the merchant to use Acornity. We would like to make this a While Label arrangement and not to display any Redash logo in our service. We will not make code change to Redash.</p>
+<p>Case 2: For our internal staff operation usage. To check the various status of operation and optimize our service delivery. This is an internal facing use and we will be able to show and adhere to all Redash license logo display. We will not make code change to Redash.</p>
+<p>Please let us know how much the Commercial License will cost and are there any further restriction on use.</p>
+<p>Please also let us know if our Case 2 will qualify for a free usage license.</p>
+<p>Regards,</p>
+<p>Chee</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-13T07:48:54Z" itemprop="datePublished">
+                    March 13, 2019,  7:48am
+                  </time>
+<meta content="2019-03-13T07:48:54Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="13" data-topic="3319" data-username="cheekc">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/ecccb3/40.png" width="20"/> cheekc:</div>
+<blockquote>
+<p>We are a startup company from Singapore and our SaaS is of the same name as our company “<a href="https://acornity.com" rel="noopener nofollow ugc">Acornity </a>”.</p>
+</blockquote>
+</aside>
+<p>Looks interesting. <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+<p>I’m definitely not the correct person to ask about licensing though, as I’m just helping out on here on the forums when I feel like it, rather than working for Redash.</p>
+<p>The best person to ask is likely <a class="mention" href="/u/arikfr">@arikfr</a>, who’ll probably read this message and hopefully respond anyway. <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cheekc.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cheekc_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cheekc</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-13T08:22:29Z" itemprop="datePublished">
+                    March 13, 2019,  8:22am
+                  </time>
+<meta content="2019-03-13T08:22:29Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks Justin for the feedback.</p>
+<p>Hi Arikfr,</p>
+<p>May be you direct email me on the license fee part.</p>
+<p>I didn’t realize this is a public forum.</p>
+<p>Regards,</p>
+<p>Chee</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/secured-connection-to-postgres-on-linode-host/3319" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-03-13T15:18:05Z" itemprop="datePublished">
+                    March 13, 2019,  3:18pm
+                  </time>
+<meta content="2019-03-13T15:18:05Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,</p>
+<p>I’m not sure if Redash is the best tool for Case 1 at the moment. We’re working on capabilities to allow embedded analytics scenarios, but we’re not 100% there yet. But this also depends on what functionality you want to provide for your merchants.</p>
+<p>Anyway, the open source code is licensed with a standard BSD license and there is nothing preventing you from commercial usage. No license fees are required.</p>
+<p>Good luck,<br/>
+Arik</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

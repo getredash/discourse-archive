@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Upgrade redash v8 to v10 helm k8s</title>
+    <link>https://discuss.redash.io/t/upgrade-redash-v8-to-v10-helm-k8s/10020</link>
+    <description>Hi!
+
+i trying upgrade redash with helm chart:
+https://github.com/getredash/contrib-helm-chart
+
+I understand that you cannot be responsible for a third-party chart, but perhaps you can help solve the problem or analyze it in more detail
+
+to update I tried using the following images:
+[10.1.0.b50633]
+[10.0.0.b50363]
+[preview]
+
+kept getting the same error in the new redash server container:
+kubectl -n redash-prod logs -f redash-686b459fc7-bd4xn redash-server
+
+Using Database: postgresql://redash:******@redash-postgresql:5432/redash
+
+Using Redis: redis://:******@redash-redis-master:6379/0
+
+[2022-02-15 21:54:28 +0000] [6] [INFO] Starting gunicorn 20.0.4
+
+[2022-02-15 21:54:28 +0000] [6] [INFO] Listening at: http://0.0.0.0:5000 (6)
+
+[2022-02-15 21:54:28 +0000] [6] [INFO] Using worker: sync
+
+[2022-02-15 21:54:28 +0000] [9] [INFO] Booting worker with pid: 9
+
+[2022-02-15 21:54:28 +0000] [10] [INFO] Booting worker with pid: 10
+
+[2022-02-15 21:54:28 +0000] [11] [INFO] Booting worker with pid: 11
+
+[2022-02-15 21:54:28 +0000] [12] [INFO] Booting worker with pid: 12
+
+[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:9)
+
+[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:10)
+
+[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:11)
+
+[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:12)
+
+[2022-02-15 21:54:58 +0000] [9] [INFO] Worker exiting (pid: 9)
+
+[2022-02-15 21:54:58 +0000] [10] [INFO] Worker exiting (pid: 10)
+
+[2022-02-15 21:54:58 +0000] [12] [INFO] Worker exiting (pid: 12)
+
+[2022-02-15 21:54:58 +0000] [11] [INFO] Worker exiting (pid: 11)
+
+[2022-02-15 21:54:59 +0000] [47] [INFO] Booting worker with pid: 47
+
+[2022-02-15 21:54:59 +0000] [48] [INFO] Booting worker with pid: 48
+
+[2022-02-15 21:55:00 +0000] [49] [INFO] Booting worker with pid: 49
+
+[2022-02-15 21:55:00 +0000] [50] [INFO] Booting worker with pid: 50
+
+[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:47)
+
+[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:48)
+
+[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:49)
+
+[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:50)
+
+[2022-02-15 21:55:30 +0000] [49] [INFO] Worker exiting (pid: 49)
+
+at the same time, all the workers are running and I don’t see any problems with their logs
+
+kubectl -n redash-prod get po 
+NAME                                     READY   STATUS      RESTARTS   AGE
+redash-686b459fc7-bd4xn                  1/2     Running     9          41m
+redash-68c85d74db-6vxng                  2/2     Running     0          66m
+redash-68c85d74db-l9lnf                  2/2     Running     0          65m
+redash-adhocworker-d8fd59cb5-zpwng       2/2     Running     0          21m
+redash-genericworker-58d878cccd-cd8z8    2/2     Running     0          41m
+redash-postgresql-0                      2/2     Running     0          11d
+redash-redis-master-0                    2/2     Running     0          21m
+redash-scheduledworker-d46865c6b-lsfmp   2/2     Running     0          41m
+redash-scheduler-84b5cfd798-mnd65        2/2     Running     4          41m
+
+but in redash-genericworker i see this:
+
+2022/02/15 22:13:01 [worker_healthcheck] Received TICK_60 event from supervisor
+
+2022/02/15 22:13:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+
+2022/02/15 22:13:01 [worker_healthcheck] `RQ Worker Healthcheck` check raised error for process worker-0: WRONGPASS invalid username-password pair</description>
+    
+    <lastBuildDate>Tue, 15 Feb 2022 22:19:54 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/upgrade-redash-v8-to-v10-helm-k8s/10020.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Upgrade redash v8 to v10 helm k8s</title>
+        <dc:creator><![CDATA[homiakos]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi!</p>
+<p>i trying upgrade redash with helm chart:</p><aside class="onebox allowlistedgeneric" data-onebox-src="https://github.com/getredash/contrib-helm-chart">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="32" height="32">
+
+      <a href="https://github.com/getredash/contrib-helm-chart" target="_blank" rel="noopener nofollow ugc">GitHub</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/345;"><img src="https://opengraph.githubassets.com/0c2f95a4ea71c1762878b425da6009d16ec7843f9a8f03fc68407729b5fe184b/getredash/contrib-helm-chart" class="thumbnail" width="690" height="345"></div>
+
+<h3><a href="https://github.com/getredash/contrib-helm-chart" target="_blank" rel="noopener nofollow ugc">GitHub - getredash/contrib-helm-chart: Community maintained Redash Helm Chart</a></h3>
+
+  <p>Community maintained Redash Helm Chart. Contribute to getredash/contrib-helm-chart development by creating an account on GitHub.</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>I understand that you cannot be responsible for a third-party chart, but perhaps you can help solve the problem or analyze it in more detail</p>
+<p>to update I tried using the following images:<br>
+[10.1.0.b50633]<br>
+[10.0.0.b50363]<br>
+[preview]</p>
+<p>kept getting the same error in the new redash server container:<br>
+kubectl -n redash-prod logs -f redash-686b459fc7-bd4xn redash-server</p>
+<p>Using Database: postgresql://redash:******<span class="mention">@redash-postgresql</span>:5432/redash</p>
+<p>Using Redis: redis://:******<span class="mention">@redash-redis-master</span>:6379/0</p>
+<p>[2022-02-15 21:54:28 +0000] [6] [INFO] Starting gunicorn 20.0.4</p>
+<p>[2022-02-15 21:54:28 +0000] [6] [INFO] Listening at: <a href="http://0.0.0.0:5000" rel="noopener nofollow ugc">http://0.0.0.0:5000</a> (6)</p>
+<p>[2022-02-15 21:54:28 +0000] [6] [INFO] Using worker: sync</p>
+<p>[2022-02-15 21:54:28 +0000] [9] [INFO] Booting worker with pid: 9</p>
+<p>[2022-02-15 21:54:28 +0000] [10] [INFO] Booting worker with pid: 10</p>
+<p>[2022-02-15 21:54:28 +0000] [11] [INFO] Booting worker with pid: 11</p>
+<p>[2022-02-15 21:54:28 +0000] [12] [INFO] Booting worker with pid: 12</p>
+<p>[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:9)</p>
+<p>[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:10)</p>
+<p>[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:11)</p>
+<p>[2022-02-15 21:54:58 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:12)</p>
+<p>[2022-02-15 21:54:58 +0000] [9] [INFO] Worker exiting (pid: 9)</p>
+<p>[2022-02-15 21:54:58 +0000] [10] [INFO] Worker exiting (pid: 10)</p>
+<p>[2022-02-15 21:54:58 +0000] [12] [INFO] Worker exiting (pid: 12)</p>
+<p>[2022-02-15 21:54:58 +0000] [11] [INFO] Worker exiting (pid: 11)</p>
+<p>[2022-02-15 21:54:59 +0000] [47] [INFO] Booting worker with pid: 47</p>
+<p>[2022-02-15 21:54:59 +0000] [48] [INFO] Booting worker with pid: 48</p>
+<p>[2022-02-15 21:55:00 +0000] [49] [INFO] Booting worker with pid: 49</p>
+<p>[2022-02-15 21:55:00 +0000] [50] [INFO] Booting worker with pid: 50</p>
+<p>[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:47)</p>
+<p>[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:48)</p>
+<p>[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:49)</p>
+<p>[2022-02-15 21:55:30 +0000] [6] [CRITICAL] WORKER TIMEOUT (pid:50)</p>
+<p>[2022-02-15 21:55:30 +0000] [49] [INFO] Worker exiting (pid: 49)</p>
+<p>at the same time, all the workers are running and I don’t see any problems with their logs</p>
+<p>kubectl -n redash-prod get po<br>
+NAME                                     READY   STATUS      RESTARTS   AGE<br>
+redash-686b459fc7-bd4xn                  1/2     Running     9          41m<br>
+redash-68c85d74db-6vxng                  2/2     Running     0          66m<br>
+redash-68c85d74db-l9lnf                  2/2     Running     0          65m<br>
+redash-adhocworker-d8fd59cb5-zpwng       2/2     Running     0          21m<br>
+redash-genericworker-58d878cccd-cd8z8    2/2     Running     0          41m<br>
+redash-postgresql-0                      2/2     Running     0          11d<br>
+redash-redis-master-0                    2/2     Running     0          21m<br>
+redash-scheduledworker-d46865c6b-lsfmp   2/2     Running     0          41m<br>
+redash-scheduler-84b5cfd798-mnd65        2/2     Running     4          41m</p>
+<p>but in redash-genericworker i see this:</p>
+<p>2022/02/15 22:13:01 [worker_healthcheck] Received TICK_60 event from supervisor</p>
+<p>2022/02/15 22:13:01 [worker_healthcheck] Performing <code>RQ Worker Healthcheck</code> check for process name worker-0</p>
+<p>2022/02/15 22:13:01 [worker_healthcheck] <code>RQ Worker Healthcheck</code> check raised error for process worker-0: WRONGPASS invalid username-password pair</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-redash-v8-to-v10-helm-k8s/10020/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-redash-v8-to-v10-helm-k8s/10020/1</link>
+        <pubDate>Tue, 15 Feb 2022 22:19:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10020-1</guid>
+        <source url="https://discuss.redash.io/t/upgrade-redash-v8-to-v10-helm-k8s/10020.rss">Upgrade redash v8 to v10 helm k8s</source>
+      </item>
+  </channel>
+</rss>

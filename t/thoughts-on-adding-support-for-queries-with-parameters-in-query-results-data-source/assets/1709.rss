@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Thoughts on adding support for queries with parameters in query results data source</title>
+    <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709</link>
+    <description>Following @ariarijp pull request on changing the way we find query IDs in _Query Results_ queries to later support queries with parameters, I wanted to start a discussion on how this might work and to share some thoughts I had:
+
+There are two use cases for querying from queries with parameters:
+
+1\.
+
+The simple use case: you just want to use a query with parameters and you &quot;know&quot; what the values are:
+
+* We can detect that the query you&#39;re querying from needs parameters and show the needed parameter input fields and pass those values along when loading this query (will require adding the logic of detecting query IDs in client side code).
+* Allow for some syntax of passing parameters like @ariarijp suggested (although I feel that using JSON is not very user friendly, although very pragmatic).
+
+2\.
+
+There is another more advanced use case: you want to pass returning values from one query into another. Here&#39;s an example:
+
+Datasource A has users list, datasource B has user events. You want to return list of active users in the past day along with their details. So you need to filter the users list in A based on ids from B.
+
+So the query A on data source A might be:
+
+```sql
+SELECT name FROM users WHERE id IN ({{user_ids}});
+```
+
+The query B on B might be:
+
+```
+SELECT distinct user_id FROM events WHERE created_at &gt; &#39;...&#39;;
+```
+
+And you want the results from query B to be merged into the the query A.
+
+Maybe this doesn&#39;t have to be implemented as part of query results feature, though? Maybe it can be some syntax like parameters:
+
+```sql
+SELECT name FROM users WHERE id IN ({% query_results 456 %});
+```
+
+`query_results` is a function to load query results and we can have others to insert snippets and maybe other things?
+
+---
+
+I hope the explanation makes sense. Of course we can implement use case 1 without implementing use case 2. 
+
+Any feedback or thoughts will be welcomed :slight_smile:</description>
+    
+    <lastBuildDate>Mon, 21 Mar 2022 23:37:50 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[Elena]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> PR is right here: <a href="https://github.com/getredash/redash/pull/5723/files" class="inline-onebox" rel="noopener nofollow ugc">Query results query parameters by ehearty · Pull Request #5723 · getredash/redash · GitHub</a></p>
+<p>Let me know if you have any feedback - my only real question at this point is where I’d need to update the official documentation.</p>
+<p>Oh, and just a heads up that I changed the format a little - now parameterized queries are prefixed with “param” to make things a little easier to read and more consistent with the rest of the code. I documented that along with examples in the PR, but reach out if you have questions or experience any problems getting it to work.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/56">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/56</link>
+        <pubDate>Mon, 21 Mar 2022 23:35:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-56</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Feel free to ping me if you have questions. I work during CST (GMT-6).</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/55">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/55</link>
+        <pubDate>Mon, 21 Mar 2022 20:21:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-55</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[Elena]]></dc:creator>
+        <description><![CDATA[
+            <p>Sweet! I literally just put it together, so give me a couple of days to kick the tires.</p>
+<aside class="quote group-Team" data-username="jesse" data-post="53" data-topic="1709">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>Is this it’s own query runner or does it overlay the existing one?</p>
+</blockquote>
+</aside>
+<p>Uses the Query Results query runner. I swear it isn’t a massive rewrite. <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=12" title=":wink:" class="emoji" alt=":wink:" loading="lazy" width="20" height="20"></p>
+<aside class="quote group-Team" data-username="jesse" data-post="53" data-topic="1709">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>If it overlays the existing one: is it backwards compatible</p>
+</blockquote>
+</aside>
+<p>Should be 100% backward compatible.</p>
+<aside class="quote group-Team" data-username="jesse" data-post="53" data-topic="1709">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>What tests can we run to make sure it’s stable?</p>
+</blockquote>
+</aside>
+<p>I’ll work on that tonight and get back to you.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/54">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/54</link>
+        <pubDate>Mon, 21 Mar 2022 20:14:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-54</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes by all means open a PR so we can all play around with it <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:" loading="lazy" width="20" height="20"></p>
+<p>As far as implementation my concerns are:</p>
+<ul>
+<li>Is this it’s own query runner or does it overlay the existing one?</li>
+<li>If it overlays the existing one: is it backwards compatible</li>
+<li>What tests can we run to make sure it’s stable?</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/53">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/53</link>
+        <pubDate>Mon, 21 Mar 2022 20:10:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-53</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[Elena]]></dc:creator>
+        <description><![CDATA[
+            <p>Since I haven’t heard back, I whipped up my own implementation that looks like this:</p>
+<p>QUERY 1:<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/53104fca2ab1637ba7663a664517289282a98b68.png" data-download-href="/uploads/short-url/bQOzOvWikdy6nTfkF7qfSHLoLIQ.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/53104fca2ab1637ba7663a664517289282a98b68_2_439x500.png" alt="image" data-base62-sha1="bQOzOvWikdy6nTfkF7qfSHLoLIQ" width="439" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/53104fca2ab1637ba7663a664517289282a98b68_2_439x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/53104fca2ab1637ba7663a664517289282a98b68_2_658x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/53104fca2ab1637ba7663a664517289282a98b68_2_878x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/53104fca2ab1637ba7663a664517289282a98b68_2_10x10.png"></a></div><p></p>
+<p>QUERY 2 (where we pass parameters):<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/387b443cda6f28643b100486b235f4e589d02a68.png" data-download-href="/uploads/short-url/83EPOv1HInsHgg1opB2neHDDRnG.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/387b443cda6f28643b100486b235f4e589d02a68_2_518x500.png" alt="image" data-base62-sha1="83EPOv1HInsHgg1opB2neHDDRnG" width="518" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/387b443cda6f28643b100486b235f4e589d02a68_2_518x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/387b443cda6f28643b100486b235f4e589d02a68_2_777x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/387b443cda6f28643b100486b235f4e589d02a68_2_1036x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/387b443cda6f28643b100486b235f4e589d02a68_2_10x10.png"></a></div><p></p>
+<p>So the format is <code>query_&lt;query num&gt;_{url encoded key=value query string}</code></p>
+<p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> If you don’t have any major objections to that format, and assuming you don’t have any major objections to my code changes, would you be amenable to looking at this if I submit as a PR? I’ve still gotta add tests/documentation, but wanted to run the idea by you before going too much further down this path.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/52">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/52</link>
+        <pubDate>Mon, 21 Mar 2022 20:02:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-52</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[Elena]]></dc:creator>
+        <description><![CDATA[
+            <p>Oh I guess I’d just assumed that there was a PR for that feature. <a class="mention" href="https://discuss.redash.io/u/ariarijp">@ariarijp</a> were you simply waiting on <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a>’s feedback before issuing a PR, or is there additional work needed? I’d be happy to chip in on that, btw, I’m a developer with a vested interest in seeing it completed <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/51">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/51</link>
+        <pubDate>Thu, 17 Mar 2022 19:53:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-51</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the ping. Is there already an open pull request on getredash/redash that introduces this query runner?</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/50">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/50</link>
+        <pubDate>Thu, 17 Mar 2022 18:35:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-50</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[Elena]]></dc:creator>
+        <description><![CDATA[
+            <p>Any update on the status of <a class="mention" href="https://discuss.redash.io/u/ariarijp">@ariarijp</a> 's PR? I’d really love to get my hands on this feature…</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/49">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/49</link>
+        <pubDate>Thu, 17 Mar 2022 18:05:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-49</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Wow this looks awesome! I will test this out soon.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/48">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/48</link>
+        <pubDate>Tue, 17 Aug 2021 18:04:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-48</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, there</p>
+<p>Here is my new version of PoC of Parameter supported QRDS implementation.<br>
+It will works with Redash v10.0.0-beta.</p>
+<p><a href="https://github.com/ariarijp/redash-parameter-supported-query-results-query-runner" class="onebox" target="_blank" rel="noopener nofollow ugc">https://github.com/ariarijp/redash-parameter-supported-query-results-query-runner</a></p>
+<p>I hope that it helps you out, and I would like to continue discussing about this feature with Redash users.</p>
+<p>Thanks,</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/47">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/47</link>
+        <pubDate>Tue, 17 Aug 2021 16:15:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-47</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is likely going to be a priority after V10 is released. More discussion to come soon.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/46">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/46</link>
+        <pubDate>Fri, 13 Aug 2021 01:56:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-46</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[ornic]]></dc:creator>
+        <description><![CDATA[
+            <p>That feature would be great to have, yes. We’re <em>this close</em> to start writing our own stats app, since without ability to pass params to stored query results many requests from biz guys had to be written by hand in pure SQL.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/45">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/45</link>
+        <pubDate>Thu, 12 Aug 2021 16:56:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-45</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>That will be built based on above my PoC for now.</p>
+<p>If I made that as Python package, I want to split and organize some my complexed codes.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/44">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/44</link>
+        <pubDate>Wed, 16 Jun 2021 00:35:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-44</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Is the plan to implement the exact solution outlined above or something different?</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/43">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/43</link>
+        <pubDate>Tue, 15 Jun 2021 16:24:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-43</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[danny]]></dc:creator>
+        <description><![CDATA[
+            <p>I have been hoping for years that this feature would be added.  It would allow us to merge our sales data with our phone system data.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/42">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/42</link>
+        <pubDate>Tue, 15 Jun 2021 15:43:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-42</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[shida]]></dc:creator>
+        <description><![CDATA[
+            <p>I hope this feature will be developed someday!</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/41">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/41</link>
+        <pubDate>Tue, 15 Jun 2021 14:30:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-41</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, there</p>
+<p>Does anyone interested in this topic?</p>
+<p>Now, I’m planning to re-build Parameter supported QRDS as Python package for Redash 9.0.0 or later.</p>
+<p>If someone interested in it, please any comments or reactions for this post.</p>
+<p>Thanks,</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/40">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/40</link>
+        <pubDate>Tue, 15 Jun 2021 12:56:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-40</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>No movement. It’s not a development priority for the team and I don’t believe we have an open pull request for it either.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/39">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/39</link>
+        <pubDate>Fri, 12 Jun 2020 19:11:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-39</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[zudijyr]]></dc:creator>
+        <description><![CDATA[
+            <p>Any movement on this? This would be extremely helpful for my company</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/38">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/38</link>
+        <pubDate>Fri, 12 Jun 2020 00:51:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-38</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, folks</p>
+<p>Thank you for your feedback for my implementation.<br>
+It would be greatly appreciated!</p>
+<p>I hope to merge it to upstream in the near future.<br>
+But I think we have to care about stability, security and maintainability of it.</p>
+<p>I think my implementation is one of the choices for solving issue of Query Results.<br>
+I would like to polish it and I’m looking forward to someone’s another shiny implementation.</p>
+<p>Thank you</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/37">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/37</link>
+        <pubDate>Thu, 16 Jan 2020 00:37:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-37</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Agreed this would look great in the finished product. It’s not on the immediate horizon until the React, RQ, and Python 3 migrations are complete later this quarter. When it becomes available we’ll announce it on the user forum.</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/36">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/36</link>
+        <pubDate>Wed, 15 Jan 2020 17:00:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-36</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[pdow]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/ariarijp">@ariarijp</a> - cool PoC. Did you already submit a pull request to master? Would be nice to get this in the official product</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/35">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/35</link>
+        <pubDate>Wed, 15 Jan 2020 15:47:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-35</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey, <a class="mention" href="https://discuss.redash.io/u/ivanli1990">@ivanli1990</a></p>
+<p>My PoC code is only focused like below situation.</p>
+<pre><code class="lang-sql">-- query 1
+SELECT {{ a }} as a. {{ b }} as b;
+
+-- query 2
+SELECT * FROM query_1('{"a":1, "b":2}');
+</code></pre>
+<p>You cannot pass parameters from query_1 to query_2.</p>
+<p>Thanks</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/34">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/34</link>
+        <pubDate>Wed, 15 Jan 2020 15:38:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-34</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[adikhel]]></dc:creator>
+        <description><![CDATA[
+            <p>Any plans to support parameters in ‘query results’?</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/33">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/33</link>
+        <pubDate>Wed, 15 Jan 2020 10:21:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-33</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+      <item>
+        <title>Thoughts on adding support for queries with parameters in query results data source</title>
+        <dc:creator><![CDATA[tnightengale]]></dc:creator>
+        <description><![CDATA[
+            <p>Ping. What’s the status of this today? Currently I get <code>Error running query: 'query_&lt;id&gt;' is not a function</code> when running <code>SELECT * FROM query_&lt;id&gt;('{"some":"json"}')</code>.</p>
+<p>However I am not an admin for my organizations Redash account, and I don’t know what version we are using.</p>
+<p>Is this feature stable and working in master and we are behind in pulling the latest?</p>
+          <p><a href="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/32">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709/32</link>
+        <pubDate>Tue, 05 Nov 2019 21:28:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1709-32</guid>
+        <source url="https://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709.rss">Thoughts on adding support for queries with parameters in query results data source</source>
+      </item>
+  </channel>
+</rss>

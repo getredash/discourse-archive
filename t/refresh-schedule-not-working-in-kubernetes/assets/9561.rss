@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Refresh Schedule not working in kubernetes</title>
+    <link>https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561</link>
+    <description>### Issue Summary
+
+I set the refresh schedule for a query every 30 minutes and it is not refreshing the data, last execution was a day ago.
+
+![image|451x246](upload://9MRulgwN0UABxgY6F9bqazaWOwQ.png)
+
+The app is deployed in GKE using Helm Chart. All the pods are running.
+
+![image|591x147](upload://4dz2d2w4gGr6cis28JWyLSLpT5a.png)
+
+
+### Technical details:
+
+* Redash Version: 10.0.0.b50363
+* Browser/OS: Chrome
+* How did you install Redash: contrib-helm-chart
+
+config.yaml
+```
+image:
+  repository: redash/redash
+  tag: 10.0.0.b50363
+  pullPolicy: IfNotPresent
+
+redash:
+  cookieSecret: &lt;cookie-secret&gt;
+  secretKey: &lt;secret-key&gt;
+  sqlAlchemyEnablePoolPrePing: &quot;true&quot;
+  logLevel: &quot;DEBUG&quot;
+postgresql:
+  enabled: false
+externalPostgreSQL: &lt;postgresql-connection-string&gt;
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: &lt;my-ip-address&gt;
+```</description>
+    
+    <lastBuildDate>Sat, 27 Nov 2021 01:49:13 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Refresh Schedule not working in kubernetes</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The common culprit for things like this is if you have multiple redis instances in your k8s deployment. Redash needs exactly one Redis.</p>
+<p>For debugging it will be easiest if you set the refresh schedule to once per minute. Then you can work to figure out what isn’t happening that should be (if the answer to any of the below questions is “yes”, then proceed to the next question, otherwise debug):</p>
+<ol>
+<li>Is your scheduler instance periodically creating an execution job in Redis?</li>
+<li>Is that job persisted to redis?</li>
+<li>Does a worker pick up the job?</li>
+<li>Does the execution succeed?</li>
+<li>Is a result saved to Redash’s postgres?</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561/2</link>
+        <pubDate>Sat, 27 Nov 2021 01:49:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9561-2</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561.rss">Refresh Schedule not working in kubernetes</source>
+      </item>
+      <item>
+        <title>Refresh Schedule not working in kubernetes</title>
+        <dc:creator><![CDATA[gperezmanjarrez]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I set the refresh schedule for a query every 30 minutes and it is not refreshing the data, last execution was a day ago.</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/449991d335e45fc6ebd7149f199796d80335edac.png" alt="image" data-base62-sha1="9MRulgwN0UABxgY6F9bqazaWOwQ" width="451" height="246"></p>
+<p>The app is deployed in GKE using Helm Chart. All the pods are running.</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1d913f150250f1485011d3465c2f588b2e141c44.png" alt="image" data-base62-sha1="4dz2d2w4gGr6cis28JWyLSLpT5a" width="591" height="147"></p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0.b50363</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: contrib-helm-chart</li>
+</ul>
+<p>config.yaml</p>
+<pre><code class="lang-auto">image:
+  repository: redash/redash
+  tag: 10.0.0.b50363
+  pullPolicy: IfNotPresent
+
+redash:
+  cookieSecret: &lt;cookie-secret&gt;
+  secretKey: &lt;secret-key&gt;
+  sqlAlchemyEnablePoolPrePing: "true"
+  logLevel: "DEBUG"
+postgresql:
+  enabled: false
+externalPostgreSQL: &lt;postgresql-connection-string&gt;
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: &lt;my-ip-address&gt;
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561/1</link>
+        <pubDate>Sat, 27 Nov 2021 01:06:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9561-1</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-not-working-in-kubernetes/9561.rss">Refresh Schedule not working in kubernetes</source>
+      </item>
+  </channel>
+</rss>

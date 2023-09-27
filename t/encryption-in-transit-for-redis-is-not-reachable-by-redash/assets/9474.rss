@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Encryption in-transit for Redis is not reachable by Redash</title>
+    <link>https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474</link>
+    <description>We self-host Redash in AWS with Fargate, Elasticache Redis &amp; RDS. Redis was reachable when Encryption in-transit was OFF. After we changed the REDASH_REDIS_URL to encryption enabled endpoint, there is no connection. 
+
+Fargate started the service with the latest [Redash](https://github.com/getredash/redash) docker image to spin up. All security groups configured inbound allowing port 6379 &amp; 443. Without &quot;encryption in-transit&quot;, the data is vulnerable. Does anyone have experience to make Redis Encryption in-transit work for Redash? Assistance highly appreciated.
+
+Original URL was http://&lt;fargate_ip&gt;:5000/ reachable when Redis is direct to non encryption in-transit Redis url.
+
+* Redash Version: V.10.0.0
+* Browser/OS: Chrome 90.0.4430.212</description>
+    
+    <lastBuildDate>Wed, 17 Nov 2021 23:01:09 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Encryption in-transit for Redis is not reachable by Redash</title>
+        <dc:creator><![CDATA[ed_xplor]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a>  That works!! New revision I changed REDASH_REDIS_URL=rediss://…, no more pending, logs normally.</p>
+          <p><a href="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474/3</link>
+        <pubDate>Wed, 17 Nov 2021 23:01:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9474-3</guid>
+        <source url="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474.rss">Encryption in-transit for Redis is not reachable by Redash</source>
+      </item>
+      <item>
+        <title>Encryption in-transit for Redis is not reachable by Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Try changing the redis URL in your environment from:</p>
+<pre><code class="lang-auto">redis://&lt;ip address of your elasticache&gt;:6379/0
+</code></pre>
+<p>to</p>
+<pre><code class="lang-auto">rediss://&lt;ip address of your elasticache&gt;:6379/0
+</code></pre>
+<h2>
+<a name="background-1" class="anchor" href="https://discuss.redash.io#background-1"></a>Background</h2>
+<p><a href="https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/in-transit-encryption.html">ElasticCache</a> uses SSL for encrypted-in-transit connections.</p>
+<p>Redash uses the official redis python client (see <a href="https://docs.redis.com/latest/rs/references/client_references/client_python/">here</a>), which requires an extra <code>s</code> on the connection string to support SSL.</p>
+          <p><a href="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474/2</link>
+        <pubDate>Wed, 17 Nov 2021 15:27:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9474-2</guid>
+        <source url="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474.rss">Encryption in-transit for Redis is not reachable by Redash</source>
+      </item>
+      <item>
+        <title>Encryption in-transit for Redis is not reachable by Redash</title>
+        <dc:creator><![CDATA[ed_xplor]]></dc:creator>
+        <description><![CDATA[
+            <p>We self-host Redash in AWS with Fargate, Elasticache Redis &amp; RDS. Redis was reachable when Encryption in-transit was OFF. After we changed the REDASH_REDIS_URL to encryption enabled endpoint, there is no connection.</p>
+<p>Fargate started the service with the latest <a href="https://github.com/getredash/redash" rel="noopener nofollow ugc">Redash</a> docker image to spin up. All security groups configured inbound allowing port 6379 &amp; 443. Without “encryption in-transit”, the data is vulnerable. Does anyone have experience to make Redis Encryption in-transit work for Redash? Assistance highly appreciated.</p>
+<p>Original URL was http://&lt;fargate_ip&gt;:5000/ reachable when Redis is direct to non encryption in-transit Redis url.</p>
+<ul>
+<li>Redash Version: V.10.0.0</li>
+<li>Browser/OS: Chrome 90.0.4430.212</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474/1</link>
+        <pubDate>Tue, 16 Nov 2021 16:06:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9474-1</guid>
+        <source url="https://discuss.redash.io/t/encryption-in-transit-for-redis-is-not-reachable-by-redash/9474.rss">Encryption in-transit for Redis is not reachable by Redash</source>
+      </item>
+  </channel>
+</rss>

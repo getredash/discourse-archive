@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Separate dockerization of frontend(build &amp; run)</title>
+    <link>https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361</link>
+    <description>### Issue Summary
+
+I&#39;m trying to run frontend docker container separately.
+I splited redash codebase into server side and client side.
+I set up as following.
+
+* I didn&#39;t configure server-side static files path.
+
+* .env
+
+REDASH_BACKEND=&quot;http://my-backend-ip:5000&quot;
+
+* Dockerfile
+```
+FROM node:14.17 as frontend-builder
+
+RUN npm install --global --force yarn@1.22.10
+
+# Controls whether to build the frontend assets
+ARG skip_frontend_build
+
+ENV CYPRESS_INSTALL_BINARY=0
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+
+RUN useradd -m -d /frontend redash
+USER redash
+
+WORKDIR /frontend
+COPY --chown=redash package.json yarn.lock .yarnrc /frontend/
+COPY --chown=redash viz-lib /frontend/viz-lib
+
+# Controls whether to instrument code for coverage information
+ARG code_coverage
+ENV BABEL_ENV=${code_coverage:+test}
+
+RUN if [ &quot;x$skip_frontend_build&quot; = &quot;x&quot; ] ; then yarn --frozen-lockfile --network-concurrency 1; fi
+
+COPY --chown=redash client /frontend/client
+COPY --chown=redash webpack.config.js /frontend/
+RUN if [ &quot;x$skip_frontend_build&quot; = &quot;x&quot; ] ; then yarn build; else mkdir -p /frontend/client/dist &amp;&amp; touch /frontend/client/dist/multi_org.html &amp;&amp; touch /frontend/client/dist/index.html; fi
+```
+
+* docker-compose.yml
+
+```
+version: &quot;2.2&quot;
+
+x-redash-service: &amp;redash-service
+    build:
+      context: .
+      # dockerfile: Dockerfile path
+    volumes:
+      - ./package.json:/frontend/package.json
+      - ./yarn.lock:/frontend/yarn.lock
+      - ./.yarnrc:/frontend/.yarnrc
+      - ./.yarn:/frontend/.yarn
+      - ./webpack.config.js:/frontend/webpack.config.js
+      - ./client:/frontend/client
+      - ./viz-lib:/frontend/viz-lib
+    env_file:
+      - .env
+    
+services:
+  frontend:
+    &lt;&lt;: *redash-service
+    command: yarn start
+    ports:
+      - &quot;8080:8080&quot;
+
+```
+
+
+Docker-compose logs seem fine, but nothing showed up in browser.
+
+
+
+
+### Technical details:
+
+* Redash Version: master branch (e6ebef1e5ab866ce1e706eaee6260edaffdc2bd7)
+* Browser/OS:Chrome / macOS Monterey 12.2.1 (M1)
+* How did you install Redash: docker-compose</description>
+    
+    <lastBuildDate>Fri, 22 Apr 2022 16:15:36 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Separate dockerization of frontend(build &amp; run)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This question is really beyond what this forum is intended for. Splitting the codebase is obviously not impossible, but there’s many ways it can fail. It’s not worth the time to debug it because this effort won’t benefit anyone else in the community.</p>
+<p>I’m happy to help get your development setup running using the current repository layout. Otherwise you’re welcome to fork it and carry on.</p>
+<aside class="quote no-group" data-username="hurcy" data-post="3" data-topic="10361">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/hurcy/40/3962_2.png" class="avatar"> hurcy:</div>
+<blockquote>
+<p>Frontend developers in my team wants to have separate code repository.</p>
+</blockquote>
+</aside>
+<p>This is a pretty radical change to Redash, and I’ve not seen it before. I wonder if there is a specific issue or problem with the codebase that makes this seem attractive? Perhaps the front-end developers are not comfortable spinning up the Python back-end? If that’s the case they can simply run the javascript locally and connect to a shared Python back-end (it’s all configurable with environment variables anyway).</p>
+          <p><a href="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/4</link>
+        <pubDate>Fri, 22 Apr 2022 16:15:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10361-4</guid>
+        <source url="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361.rss">Separate dockerization of frontend(build &amp; run)</source>
+      </item>
+      <item>
+        <title>Separate dockerization of frontend(build &amp; run)</title>
+        <dc:creator><![CDATA[hurcy]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I got ERR_EMPTY_RESPONSE.</p>
+<p>I deleted browser cache, but it didn’t work.</p>
+<p>Frontend developers in my team wants to have separate code repository.</p>
+          <p><a href="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/3</link>
+        <pubDate>Fri, 22 Apr 2022 02:01:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10361-3</guid>
+        <source url="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361.rss">Separate dockerization of frontend(build &amp; run)</source>
+      </item>
+      <item>
+        <title>Separate dockerization of frontend(build &amp; run)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi there and welcome to the forum!</p>
+<p>Do you see any errors in your browser’s console?</p>
+<p>I’m curious what’s the motivation for this split?</p>
+          <p><a href="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/2</link>
+        <pubDate>Thu, 21 Apr 2022 14:40:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10361-2</guid>
+        <source url="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361.rss">Separate dockerization of frontend(build &amp; run)</source>
+      </item>
+      <item>
+        <title>Separate dockerization of frontend(build &amp; run)</title>
+        <dc:creator><![CDATA[hurcy]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I’m trying to run frontend docker container separately.<br>
+I splited redash codebase into server side and client side.<br>
+I set up as following.</p>
+<ul>
+<li>
+<p>I didn’t configure server-side static files path.</p>
+</li>
+<li>
+<p>.env</p>
+</li>
+</ul>
+<p>REDASH_BACKEND=“<a href="http://my-backend-ip:5000" rel="noopener nofollow ugc">http://my-backend-ip:5000</a>”</p>
+<ul>
+<li>Dockerfile</li>
+</ul>
+<pre><code class="lang-auto">FROM node:14.17 as frontend-builder
+
+RUN npm install --global --force yarn@1.22.10
+
+# Controls whether to build the frontend assets
+ARG skip_frontend_build
+
+ENV CYPRESS_INSTALL_BINARY=0
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+
+RUN useradd -m -d /frontend redash
+USER redash
+
+WORKDIR /frontend
+COPY --chown=redash package.json yarn.lock .yarnrc /frontend/
+COPY --chown=redash viz-lib /frontend/viz-lib
+
+# Controls whether to instrument code for coverage information
+ARG code_coverage
+ENV BABEL_ENV=${code_coverage:+test}
+
+RUN if [ "x$skip_frontend_build" = "x" ] ; then yarn --frozen-lockfile --network-concurrency 1; fi
+
+COPY --chown=redash client /frontend/client
+COPY --chown=redash webpack.config.js /frontend/
+RUN if [ "x$skip_frontend_build" = "x" ] ; then yarn build; else mkdir -p /frontend/client/dist &amp;&amp; touch /frontend/client/dist/multi_org.html &amp;&amp; touch /frontend/client/dist/index.html; fi
+</code></pre>
+<ul>
+<li>docker-compose.yml</li>
+</ul>
+<pre><code class="lang-auto">version: "2.2"
+
+x-redash-service: &amp;redash-service
+    build:
+      context: .
+      # dockerfile: Dockerfile path
+    volumes:
+      - ./package.json:/frontend/package.json
+      - ./yarn.lock:/frontend/yarn.lock
+      - ./.yarnrc:/frontend/.yarnrc
+      - ./.yarn:/frontend/.yarn
+      - ./webpack.config.js:/frontend/webpack.config.js
+      - ./client:/frontend/client
+      - ./viz-lib:/frontend/viz-lib
+    env_file:
+      - .env
+    
+services:
+  frontend:
+    &lt;&lt;: *redash-service
+    command: yarn start
+    ports:
+      - "8080:8080"
+
+</code></pre>
+<p>Docker-compose logs seem fine, but nothing showed up in browser.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: master branch (e6ebef1e5ab866ce1e706eaee6260edaffdc2bd7)</li>
+<li>Browser/OS:Chrome / macOS Monterey 12.2.1 (M1)</li>
+<li>How did you install Redash: docker-compose</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361/1</link>
+        <pubDate>Thu, 21 Apr 2022 12:44:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10361-1</guid>
+        <source url="https://discuss.redash.io/t/separate-dockerization-of-frontend-build-run/10361.rss">Separate dockerization of frontend(build &amp; run)</source>
+      </item>
+  </channel>
+</rss>

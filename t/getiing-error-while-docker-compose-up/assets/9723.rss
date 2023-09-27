@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Getiing Error while docker compose up</title>
+    <link>https://discuss.redash.io/t/getiing-error-while-docker-compose-up/9723</link>
+    <description>Hi, I was trying to run redash n my local but when running docker-compose up I got this error : 
+[SQL: SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at 
+worker_1     | FROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id 
+worker_1     | WHERE queries.schedule IS NOT NULL ORDER BY queries.id]
+worker_1     | (Background on this error at: http://sqlalche.me/e/f405)
+worker_1     | Traceback (most recent call last):
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1249, in _execute_context
+worker_1     |     cursor, statement, parameters, context
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py&quot;, line 580, in do_execute
+worker_1     |     cursor.execute(statement, parameters)
+worker_1     | psycopg2.errors.UndefinedTable: relation &quot;queries&quot; does not exist
+worker_1     | LINE 2: FROM queries LEFT OUTER JOIN query_results AS query_results_...
+worker_1     |              ^
+worker_1     | 
+worker_1     | 
+worker_1     | The above exception was the direct cause of the following exception:
+worker_1     | 
+worker_1     | Traceback (most recent call last):
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/rq/worker.py&quot;, line 934, in perform_job
+worker_1     |     rv = job.perform()
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/rq/job.py&quot;, line 686, in perform
+worker_1     |     self._result = self._execute()
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/rq/job.py&quot;, line 692, in _execute
+worker_1     |     return self.func(*self.args, **self.kwargs)
+worker_1     |   File &quot;/app/redash/tasks/queries/maintenance.py&quot;, line 89, in refresh_queries
+worker_1     |     for query in models.Query.outdated_queries():
+worker_1     |   File &quot;/app/redash/models/__init__.py&quot;, line 641, in outdated_queries
+worker_1     |     .order_by(Query.id)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py&quot;, line 3186, in all
+worker_1     |     return list(self)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py&quot;, line 3342, in __iter__
+worker_1     |     return self._execute_and_instances(context)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py&quot;, line 3367, in _execute_and_instances
+worker_1     |     result = conn.execute(querycontext.statement, self._params)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 988, in execute
+worker_1     |     return meth(self, multiparams, params)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/sql/elements.py&quot;, line 287, in _execute_on_connection
+worker_1     |     return connection._execute_clauseelement(self, multiparams, params)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1107, in _execute_clauseelement
+worker_1     |     distilled_params,
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1253, in _execute_context
+worker_1     |     e, statement, parameters, cursor, context
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1473, in _handle_dbapi_exception
+worker_1     |     util.raise_from_cause(sqlalchemy_exception, exc_info)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py&quot;, line 398, in raise_from_cause
+worker_1     |     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py&quot;, line 152, in reraise
+worker_1     |     raise value.with_traceback(tb)
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1249, in _execute_context
+worker_1     |     cursor, statement, parameters, context
+worker_1     |   File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py&quot;, line 580, in do_execute
+worker_1     |     cursor.execute(statement, parameters)
+worker_1     | sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation &quot;queries&quot; does not exist
+worker_1     | LINE 2: FROM queries LEFT OUTER JOIN query_results AS query_results_...
+worker_1     |              ^
+
+
+
+Can anyone help ?</description>
+    
+    <lastBuildDate>Wed, 15 Dec 2021 17:39:29 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/getiing-error-while-docker-compose-up/9723.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Getiing Error while docker compose up</title>
+        <dc:creator><![CDATA[ayaz]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I was trying to run redash n my local but when running docker-compose up I got this error :<br>
+[SQL: SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at<br>
+worker_1     | FROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id<br>
+worker_1     | WHERE queries.schedule IS NOT NULL ORDER BY queries.id]<br>
+worker_1     | (Background on this error at: <a href="http://sqlalche.me/e/f405" class="inline-onebox" rel="noopener nofollow ugc">Error Messages — SQLAlchemy 1.4 Documentation</a>)<br>
+worker_1     | Traceback (most recent call last):<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1249, in <em>execute_context<br>
+worker_1     |     cursor, statement, parameters, context<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py”, line 580, in do_execute<br>
+worker_1     |     cursor.execute(statement, parameters)<br>
+worker_1     | psycopg2.errors.UndefinedTable: relation “queries” does not exist<br>
+worker_1     | LINE 2: FROM queries LEFT OUTER JOIN query_results AS query_results</em>…<br>
+worker_1     |              ^<br>
+worker_1     |<br>
+worker_1     |<br>
+worker_1     | The above exception was the direct cause of the following exception:<br>
+worker_1     |<br>
+worker_1     | Traceback (most recent call last):<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/rq/worker.py”, line 934, in perform_job<br>
+worker_1     |     rv = job.perform()<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/rq/job.py”, line 686, in perform<br>
+worker_1     |     self._result = self._execute()<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/rq/job.py”, line 692, in _execute<br>
+worker_1     |     return self.func(*self.args, **self.kwargs)<br>
+worker_1     |   File “/app/redash/tasks/queries/maintenance.py”, line 89, in refresh_queries<br>
+worker_1     |     for query in models.Query.outdated_queries():<br>
+worker_1     |   File “/app/redash/models/<strong>init</strong>.py”, line 641, in outdated_queries<br>
+worker_1     |     .order_by(Query.id)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py”, line 3186, in all<br>
+worker_1     |     return list(self)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py”, line 3342, in <strong>iter</strong><br>
+worker_1     |     return self._execute_and_instances(context)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py”, line 3367, in _execute_and_instances<br>
+worker_1     |     result = conn.execute(querycontext.statement, self._params)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 988, in execute<br>
+worker_1     |     return meth(self, multiparams, params)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/sql/elements.py”, line 287, in _execute_on_connection<br>
+worker_1     |     return connection._execute_clauseelement(self, multiparams, params)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1107, in _execute_clauseelement<br>
+worker_1     |     distilled_params,<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1253, in _execute_context<br>
+worker_1     |     e, statement, parameters, cursor, context<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1473, in _handle_dbapi_exception<br>
+worker_1     |     util.raise_from_cause(sqlalchemy_exception, exc_info)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py”, line 398, in raise_from_cause<br>
+worker_1     |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py”, line 152, in reraise<br>
+worker_1     |     raise value.with_traceback(tb)<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1249, in <em>execute_context<br>
+worker_1     |     cursor, statement, parameters, context<br>
+worker_1     |   File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py”, line 580, in do_execute<br>
+worker_1     |     cursor.execute(statement, parameters)<br>
+worker_1     | sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation “queries” does not exist<br>
+worker_1     | LINE 2: FROM queries LEFT OUTER JOIN query_results AS query_results</em>…<br>
+worker_1     |              ^</p>
+<p>Can anyone help ?</p>
+          <p><a href="https://discuss.redash.io/t/getiing-error-while-docker-compose-up/9723/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/getiing-error-while-docker-compose-up/9723/1</link>
+        <pubDate>Wed, 15 Dec 2021 17:39:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9723-1</guid>
+        <source url="https://discuss.redash.io/t/getiing-error-while-docker-compose-up/9723.rss">Getiing Error while docker compose up</source>
+      </item>
+  </channel>
+</rss>

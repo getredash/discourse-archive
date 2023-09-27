@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+    <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910</link>
+    <description>we have redash configured in docker 1.12.6-1.0.1.el6
+OS oracle 6
+image: redash/redash:8.0.0.b32245
+image: redis:5.0-alpine
+image: postgres:9.6-alpine
+clickhouse-server 21.6.6.51-2
+
+We have a problem with executing requests to Clickhouse.
+The show tables or select * from session limit 5 queries work, but select * from session limit 10 does not work, we see an error in the log:
+
+[PID:793][ERROR][ForkPoolWorker-775] Connection error to: http://our_IP:8123 (ReadTimeout).
+Traceback (most recent call last):
+  File &quot;/app/redash/query_runner/clickhouse.py&quot;, line 152, in run_query
+    q = self._clickhouse_query(query)
+  File &quot;/app/redash/query_runner/clickhouse.py&quot;, line 113, in _clickhouse_query
+    result = self._send_query(query)
+  File &quot;/app/redash/query_runner/clickhouse.py&quot;, line 92, in _send_query
+    raise Exception(&quot;Connection error to: {} {}.&quot;.format(url, details))
+Exception: Connection error to: http://our_IP:8123 (ReadTimeout).
+[2021-08-10 17:14:20,393][PID:793][INFO][ForkPoolWorker-775] task_name=redash.tasks.execute_query task_id=318a2269-1a0c-438d-a203-14bce8baaf7e task=execute_query query_hash=18b0e4746278e9cfab5bb1c00765c574 data_length=None error=[Connection error to: http://our_IP:8123 (
+ReadTimeout).]
+[2021-08-10 17:14:20,394][PID:793][ERROR][ForkPoolWorker-775] Task redash.tasks.execute_query[318a2269-1a0c-438d-a203-14bce8baaf7e] raised unexpected: QueryExecutionError(u&#39;Connection error to: http://our_IP:8123 (ReadTimeout).&#39;,)
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File &quot;/app/redash/worker.py&quot;, line 84, in __call__
+    return TaskBase.__call__(self, *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File &quot;/app/redash/tasks/queries.py&quot;, line 436, in execute_query
+    scheduled_query).run()
+  File &quot;/app/redash/tasks/queries.py&quot;, line 382, in run
+    raise result
+QueryExecutionError: Connection error to: http://our_IP:8123 (ReadTimeout).</description>
+    
+    <lastBuildDate>Thu, 12 Aug 2021 14:31:28 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Sounds like a bug in our query runner, then.</p>
+<p>Happy to review a pull request implementing a fix. Not something we can take on first-class since we don’t use Clickhouse or have a demo environment to test against.</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/7</link>
+        <pubDate>Thu, 12 Aug 2021 14:31:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-7</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[maks]]></dc:creator>
+        <description><![CDATA[
+            <p>yes, all requests via clickhouse-client work from the same server where redash is configured</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/6</link>
+        <pubDate>Thu, 12 Aug 2021 14:26:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-6</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes it seems like a buffer somewhere isn’t configured properly. Just to be sure: do these queries work if you run them from a separate tool?</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/5</link>
+        <pubDate>Thu, 12 Aug 2021 14:23:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-5</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[maks]]></dc:creator>
+        <description><![CDATA[
+            <p>it looks very strange, some queries are executed for example:<br>
+SELECT count(*)<br>
+FROM search</p>
+<p>but the request will not work:<br>
+SELECT *<br>
+FROM search<br>
+limit 10</p>
+<p>and with less limits it is executed successfully<br>
+SELECT *<br>
+FROM search<br>
+limit 5</p>
+<p>I think some kind of clipboard is very small, to which the result is added before being output to redash</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/4</link>
+        <pubDate>Thu, 12 Aug 2021 08:21:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-4</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[maks]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,<br>
+There are no errors in the clickhouse log.</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/3</link>
+        <pubDate>Wed, 11 Aug 2021 18:59:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-3</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Looks like your clickhouse server terminated the connection and left Redash waiting. What do your clickhouse logs show?</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/2</link>
+        <pubDate>Wed, 11 Aug 2021 15:58:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-2</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+      <item>
+        <title>[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</title>
+        <dc:creator><![CDATA[maks]]></dc:creator>
+        <description><![CDATA[
+            <p>we have redash configured in docker 1.12.6-1.0.1.el6<br>
+OS oracle 6<br>
+image: redash/redash:8.0.0.b32245<br>
+image: redis:5.0-alpine<br>
+image: postgres:9.6-alpine<br>
+clickhouse-server 21.6.6.51-2</p>
+<p>We have a problem with executing requests to Clickhouse.<br>
+The show tables or select * from session limit 5 queries work, but select * from session limit 10 does not work, we see an error in the log:</p>
+<p>[PID:793][ERROR][ForkPoolWorker-775] Connection error to: http://our_IP:8123 (ReadTimeout).<br>
+Traceback (most recent call last):<br>
+File “/app/redash/query_runner/clickhouse.py”, line 152, in run_query<br>
+q = self._clickhouse_query(query)<br>
+File “/app/redash/query_runner/clickhouse.py”, line 113, in _clickhouse_query<br>
+result = self._send_query(query)<br>
+File “/app/redash/query_runner/clickhouse.py”, line 92, in _send_query<br>
+raise Exception(“Connection error to: {} {}.”.format(url, details))<br>
+Exception: Connection error to: http://our_IP:8123 (ReadTimeout).<br>
+[2021-08-10 17:14:20,393][PID:793][INFO][ForkPoolWorker-775] task_name=redash.tasks.execute_query task_id=318a2269-1a0c-438d-a203-14bce8baaf7e task=execute_query query_hash=18b0e4746278e9cfab5bb1c00765c574 data_length=None error=[Connection error to: http://our_IP:8123 (<br>
+ReadTimeout).]<br>
+[2021-08-10 17:14:20,394][PID:793][ERROR][ForkPoolWorker-775] Task redash.tasks.execute_query[318a2269-1a0c-438d-a203-14bce8baaf7e] raised unexpected: QueryExecutionError(u’Connection error to: http://our_IP:8123 (ReadTimeout).’,)<br>
+Traceback (most recent call last):<br>
+File “/usr/local/lib/python2.7/site-packages/celery/app/trace.py”, line 385, in trace_task<br>
+R = retval = fun(*args, **kwargs)<br>
+File “/app/redash/worker.py”, line 84, in <strong>call</strong><br>
+return TaskBase.<strong>call</strong>(self, *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/celery/app/trace.py”, line 648, in <strong>protected_call</strong><br>
+return self.run(*args, **kwargs)<br>
+File “/app/redash/tasks/queries.py”, line 436, in execute_query<br>
+scheduled_query).run()<br>
+File “/app/redash/tasks/queries.py”, line 382, in run<br>
+raise result<br>
+QueryExecutionError: Connection error to: http://our_IP:8123 (ReadTimeout).</p>
+          <p><a href="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910/1</link>
+        <pubDate>Wed, 11 Aug 2021 07:57:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8910-1</guid>
+        <source url="https://discuss.redash.io/t/error-forkpoolworker-781-connection-error-to-http-ip-8123-readtimeout/8910.rss">[ERROR][ForkPoolWorker-781] Connection error to: http://ip:8123 (ReadTimeout)</source>
+      </item>
+  </channel>
+</rss>

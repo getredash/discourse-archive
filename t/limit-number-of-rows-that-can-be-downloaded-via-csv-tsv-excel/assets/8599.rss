@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+    <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599</link>
+    <description>We want have a limit to the number of records the users can download from a single query result. I completely agree that the API would still return a JSON representation of the data so the user could get the data after some effort or maybe just copy and paste from the screen.
+
+Not sure if most of the users would bother to take the extra effort. Thougths?</description>
+    
+    <lastBuildDate>Wed, 16 Feb 2022 11:52:54 +0000</lastBuildDate>
+    <category>Feature Requests</category>
+    <atom:link href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+        <dc:creator><![CDATA[zhongshaoming1]]></dc:creator>
+        <description><![CDATA[
+            <p>This is very easy to do with a few lines of code.<br>
+I implemented the ability to set the number of lines downloaded to a given group to be unlimited, and then to limit the number of lines downloaded to other users<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b5ed357fe5384750cbc29b2e17943d8ae95a5f64.png" data-download-href="/uploads/short-url/pXoDGmyhhyuoXOwUPYV8rOxoOUY.png?dl=1" title="Snipaste_2022-02-16_19-48-44" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b5ed357fe5384750cbc29b2e17943d8ae95a5f64_2_554x499.png" alt="Snipaste_2022-02-16_19-48-44" data-base62-sha1="pXoDGmyhhyuoXOwUPYV8rOxoOUY" width="554" height="499" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b5ed357fe5384750cbc29b2e17943d8ae95a5f64_2_554x499.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b5ed357fe5384750cbc29b2e17943d8ae95a5f64_2_831x748.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b5ed357fe5384750cbc29b2e17943d8ae95a5f64_2_1108x998.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b5ed357fe5384750cbc29b2e17943d8ae95a5f64_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/6</link>
+        <pubDate>Wed, 16 Feb 2022 11:52:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8599-6</guid>
+        <source url="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss">Limit number of rows that can be downloaded via CSV, TSV, Excel</source>
+      </item>
+      <item>
+        <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+        <dc:creator><![CDATA[tanuj99]]></dc:creator>
+        <description><![CDATA[
+            <p>Cool, thank you for your thoughts.</p>
+          <p><a href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/5</link>
+        <pubDate>Wed, 23 Jun 2021 13:17:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8599-5</guid>
+        <source url="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss">Limit number of rows that can be downloaded via CSV, TSV, Excel</source>
+      </item>
+      <item>
+        <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I wonder if this is the right solution to that problem.</p>
+<p>Data visibility is the entire point of Redash. There is an obvious need to completely restrict users from accessing some data (financials, payroll files, health info etc.). But apart from performance concerns, restricting the download size (without also restricting the query result size) is just odd. It sounds like a software solution to a training problem.</p>
+<p>Like you mentioned, it won’t stop a determined person from stealing data.  But it <em>will</em> overcomplicate legitimate use-cases. Especially considering that Redash queries which return large numbers of records (10k+) are exactly the ones that <em>should</em> be downloaded in Excel! Results that size are simply too big to be visualised in Redash.</p>
+<p>Here are a few other ways to reach the same target:</p>
+<ul>
+<li>Create two data source connections + groups: one for visualising queries and one for making “extracts”. Trusted users have Full Access to both groups. But untrusted users have “View Only” access to the “visualising” group. This way they can view dashboards and small amounts of data but can’t write their own queries.</li>
+<li>If you don’t need extracts for <em>anything</em>, modify your query runner to append a <code>LIMIT 500</code> or <code>LIMIT 2000</code> at the end of each query.</li>
+<li>Add an option to disable downloads completely either by query or by group. And potentially add logic that obscures API requests to make it harder to bypass this restriction</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/4</link>
+        <pubDate>Thu, 17 Jun 2021 15:35:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8599-4</guid>
+        <source url="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss">Limit number of rows that can be downloaded via CSV, TSV, Excel</source>
+      </item>
+      <item>
+        <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+        <dc:creator><![CDATA[tanuj99]]></dc:creator>
+        <description><![CDATA[
+            <p>Use-Case: Prevent users from readily downloading large number of records.</p>
+          <p><a href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/3</link>
+        <pubDate>Thu, 17 Jun 2021 07:06:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8599-3</guid>
+        <source url="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss">Limit number of rows that can be downloaded via CSV, TSV, Excel</source>
+      </item>
+      <item>
+        <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What’s the use-case for this?</p>
+          <p><a href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/2</link>
+        <pubDate>Mon, 14 Jun 2021 18:37:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8599-2</guid>
+        <source url="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss">Limit number of rows that can be downloaded via CSV, TSV, Excel</source>
+      </item>
+      <item>
+        <title>Limit number of rows that can be downloaded via CSV, TSV, Excel</title>
+        <dc:creator><![CDATA[tanuj99]]></dc:creator>
+        <description><![CDATA[
+            <p>We want have a limit to the number of records the users can download from a single query result. I completely agree that the API would still return a JSON representation of the data so the user could get the data after some effort or maybe just copy and paste from the screen.</p>
+<p>Not sure if most of the users would bother to take the extra effort. Thougths?</p>
+          <p><a href="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599/1</link>
+        <pubDate>Fri, 11 Jun 2021 07:56:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8599-1</guid>
+        <source url="https://discuss.redash.io/t/limit-number-of-rows-that-can-be-downloaded-via-csv-tsv-excel/8599.rss">Limit number of rows that can be downloaded via CSV, TSV, Excel</source>
+      </item>
+  </channel>
+</rss>

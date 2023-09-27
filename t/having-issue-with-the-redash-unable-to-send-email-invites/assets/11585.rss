@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Having issue with the redash unable to send email invites</title>
+    <link>https://discuss.redash.io/t/having-issue-with-the-redash-unable-to-send-email-invites/11585</link>
+    <description>Here is my docker-compose 
+
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 6
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 2
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;email,queries,default,periodic&quot;
+      WORKERS_COUNT: 2
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+
+
+Here is my env file
+
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=XXXXXXXXXXXXXXXXXXXXX
+REDASH_COOKIE_SECRET=XXXXXXXXXXXXXXXxxx
+REDASH_SECRET_KEY=XXXXXXXXXXXXXXXXXXXXXXxxxxx
+REDASH_DATABASE_URL=postgresql://postgres:XXXXXXXXXXXXXXXXXXxxxx@postgres/postgres
+REDASH_RATELIMIT_ENABLED=false
+REDASH_MAIL_SERVER=email-smtp.us-east-1.amazonaws.com
+REDASH_MAIL_PORT=587
+REDASH_MAIL_USE_SSL=true
+REDASH_MAIL_USE_TLS=true
+REDASH_MAIL_USERNAME=XXXXXXXXXXXXX
+REDASH_MAIL_PASSWORD=XXXXXXXXXXXXXXXXXXXXX
+REDASH_MAIL_DEFAULT_SENDER=XXXXXXXXXXxxxxxxxxx
+REDASH_HOST=https://redash.exmaple.in
+
+No errors in the logs unable to add new users and invite emails are not receiving from redash
+
+Please any guidence here 
+Thanks in advance.</description>
+    
+    <lastBuildDate>Thu, 16 Feb 2023 12:44:42 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/having-issue-with-the-redash-unable-to-send-email-invites/11585.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Having issue with the redash unable to send email invites</title>
+        <dc:creator><![CDATA[Sheshma.B]]></dc:creator>
+        <description><![CDATA[
+            <p>Here is my docker-compose</p>
+<p>version: “2”<br>
+x-redash-service: &amp;redash-service<br>
+image: redash/redash:10.0.0.b50363<br>
+depends_on:<br>
+- postgres<br>
+- redis<br>
+env_file: /opt/redash/env<br>
+restart: always<br>
+services:<br>
+server:<br>
+&lt;&lt;: *redash-service<br>
+command: server<br>
+ports:<br>
+- “5000:5000”<br>
+environment:<br>
+REDASH_WEB_WORKERS: 6<br>
+scheduler:<br>
+&lt;&lt;: *redash-service<br>
+command: scheduler<br>
+scheduled_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “scheduled_queries,schemas”<br>
+WORKERS_COUNT: 2<br>
+adhoc_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “email,queries,default,periodic”<br>
+WORKERS_COUNT: 2<br>
+worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “periodic emails default”<br>
+WORKERS_COUNT: 2<br>
+redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+env_file: /opt/redash/env<br>
+volumes:<br>
+- /opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest<br>
+ports:<br>
+- “80:80”<br>
+depends_on:<br>
+- server<br>
+links:<br>
+- server:redash<br>
+restart: always</p>
+<p>Here is my env file</p>
+<p>PYTHONUNBUFFERED=0<br>
+REDASH_LOG_LEVEL=INFO<br>
+REDASH_REDIS_URL=redis://redis:6379/0<br>
+POSTGRES_PASSWORD=XXXXXXXXXXXXXXXXXXXXX<br>
+REDASH_COOKIE_SECRET=XXXXXXXXXXXXXXXxxx<br>
+REDASH_SECRET_KEY=XXXXXXXXXXXXXXXXXXXXXXxxxxx<br>
+REDASH_DATABASE_URL=postgresql://postgres:XXXXXXXXXXXXXXXXXXxxxx@postgres/postgres<br>
+REDASH_RATELIMIT_ENABLED=false<br>
+REDASH_MAIL_SERVER=<a href="http://email-smtp.us-east-1.amazonaws.com" rel="noopener nofollow ugc">email-smtp.us-east-1.amazonaws.com</a><br>
+REDASH_MAIL_PORT=587<br>
+REDASH_MAIL_USE_SSL=true<br>
+REDASH_MAIL_USE_TLS=true<br>
+REDASH_MAIL_USERNAME=XXXXXXXXXXXXX<br>
+REDASH_MAIL_PASSWORD=XXXXXXXXXXXXXXXXXXXXX<br>
+REDASH_MAIL_DEFAULT_SENDER=XXXXXXXXXXxxxxxxxxx<br>
+REDASH_HOST=<a href="https://redash.exmaple.in" rel="noopener nofollow ugc">https://redash.exmaple.in</a></p>
+<p>No errors in the logs unable to add new users and invite emails are not receiving from redash</p>
+<p>Please any guidence here<br>
+Thanks in advance.</p>
+          <p><a href="https://discuss.redash.io/t/having-issue-with-the-redash-unable-to-send-email-invites/11585/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/having-issue-with-the-redash-unable-to-send-email-invites/11585/1</link>
+        <pubDate>Thu, 16 Feb 2023 12:44:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11585-1</guid>
+        <source url="https://discuss.redash.io/t/having-issue-with-the-redash-unable-to-send-email-invites/11585.rss">Having issue with the redash unable to send email invites</source>
+      </item>
+  </channel>
+</rss>

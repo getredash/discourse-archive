@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash PagerDuty Notifications Not Firing</title>
+    <link>https://discuss.redash.io/t/redash-pagerduty-notifications-not-firing/10104</link>
+    <description>### Issue Summary
+
+Alerts are triggering but not firing off PagerDuty.  The queries are triggered, but nothing fires to PagerDuty.  I have tried the webhooks and those are firing but nothing on the Pagerduty side.
+
+### Technical details:
+
+* Redash Version: 10.1
+* Browser/OS: Linux/Docker/AMI
+* How did you install Redash: Docker
+
+If am seeing the following in the DEBUG log:
+
+```
+worker_1            | [2022-03-07 22:18:51,885][PID:53][DEBUG][urllib3.connectionpool] https://webhook.site:443 &quot;POST /526d61ec-64fa-4f58-b38f-f6e176a58381 HTTP/1.1&quot; 200 None
+worker_1            | [2022-03-07 22:18:51,891][PID:53][DEBUG][metrics] table=notification_destinations query=select duration=0.79
+worker_1            | [2022-03-07 22:18:51,896][PID:53][DEBUG][pypd] Doing HTTP [post] request: https://events.pagerduty.com/v2/enqueue/ - headers: {&#39;Accept&#39;: &#39;application/vnd.pagerduty+json;version=2&#39;, &#39;Authorization&#39;: &#39;Token token=None&#39;, &#39;Content-Type&#39;: &#39;application/json&#39;} - payload: {&#39;routing_key&#39;: &#39;[INTEGRATION_KEY]&#39;, &#39;incident_key&#39;: &#39;1_242&#39;, &#39;dedup_key&#39;: &#39;1_242&#39;, &#39;payload&#39;: {&#39;summary&#39;: &#39;Apaleo Custom Payment Alert&#39;, &#39;severity&#39;: &#39;error&#39;, &#39;source&#39;: &#39;redash&#39;, &#39;custom_details&#39;: &#39;Date,Timestamp,DebitedAccountName,ReceiptType,Amount\n2022-03-02,2022-03-02T18:23:55,Liabilities for Reservation JRDXINAN-1,Custom,1.0\n2022-03-02,2022-03-02T18:24:59,Liabilities for Reservation ZRFRQBSA-1,Custom,1.0\n2022-03-02,2022-03-02T18:25:07,Liabilities for Reservation ZRFRQBSA-1,Custom,0.25\n2022-03-02,2022-03-02T18:25:19,Liabilities for Reservation ZRFRQBSA-1,Custom,0.25\n2022-03-02,2022-03-03T00:04:09,Visa Credit Card Payment,Custom,2.0\n2022-03-02,2022-03-03T00:04:28,Credit Card Payment,Custom,1.0\n&#39;}, &#39;event_action&#39;: &#39;trigger&#39;}
+worker_1            | [2022-03-07 22:18:51,898][PID:53][DEBUG][urllib3.connectionpool] Starting new HTTPS connection (1): events.pagerduty.com:443
+worker_1            | [2022-03-07 22:18:52,114][PID:53][DEBUG][snowflake.connector.ssl_wrap_socket] OCSP Mode: FAIL_OPEN, OCSP response cache file name: None
+worker_1            | [2022-03-07 22:18:52,114][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] ocsp_response_cache_uri: file:///home/redash/.cache/snowflake/ocsp_response_cache.json
+worker_1            | [2022-03-07 22:18:52,115][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] OCSP_VALIDATION_CACHE size: 0
+worker_1            | [2022-03-07 22:18:52,115][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] OCSP response cache server is enabled: http://ocsp.snowflakecomputing.com/ocsp_response_cache.json
+worker_1            | [2022-03-07 22:18:52,115][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] OCSP dynamic cache server RETRY URL: None
+worker_1            | [2022-03-07 22:18:52,116][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] Failed to check OCSP response cache file. No worry. It will validate with OCSP server: file: /home/redash/.cache/snowflake/ocsp_response_cache.json, lock directory: /home/redash/.cache/snowflake/ocsp_response_cache.json.lck, error: [Errno 2] No such file or directory: &#39;/home/redash/.cache/snowflake/ocsp_response_cache.json&#39;
+worker_1            | [2022-03-07 22:18:52,116][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] Failed to locate OCSP response cache file. No worry. It will validate with OCSP server: /home/redash/.cache/snowflake/ocsp_response_cache.json
+worker_1            | [2022-03-07 22:18:52,116][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] validating certificate: events.pagerduty.com
+worker_1            | [2022-03-07 22:18:52,117][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] skipping OCSP check: events.pagerduty.com
+worker_1            | [2022-03-07 22:18:52,198][PID:53][DEBUG][urllib3.connectionpool] https://events.pagerduty.com:443 &quot;POST /v2/enqueue/ HTTP/1.1&quot; 202 87
+worker_1            | [2022-03-07 22:18:52,201][PID:53][WARNING][root] {&#39;status&#39;: &#39;success&#39;, &#39;message&#39;: &#39;Event processed&#39;, &#39;dedup_key&#39;: &#39;1_242&#39;}
+```</description>
+    
+    <lastBuildDate>Mon, 07 Mar 2022 22:23:08 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-pagerduty-notifications-not-firing/10104.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash PagerDuty Notifications Not Firing</title>
+        <dc:creator><![CDATA[stevenmccord]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Alerts are triggering but not firing off PagerDuty.  The queries are triggered, but nothing fires to PagerDuty.  I have tried the webhooks and those are firing but nothing on the Pagerduty side.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.1</li>
+<li>Browser/OS: Linux/Docker/AMI</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+<p>If am seeing the following in the DEBUG log:</p>
+<pre><code class="lang-auto">worker_1            | [2022-03-07 22:18:51,885][PID:53][DEBUG][urllib3.connectionpool] https://webhook.site:443 "POST /526d61ec-64fa-4f58-b38f-f6e176a58381 HTTP/1.1" 200 None
+worker_1            | [2022-03-07 22:18:51,891][PID:53][DEBUG][metrics] table=notification_destinations query=select duration=0.79
+worker_1            | [2022-03-07 22:18:51,896][PID:53][DEBUG][pypd] Doing HTTP [post] request: https://events.pagerduty.com/v2/enqueue/ - headers: {'Accept': 'application/vnd.pagerduty+json;version=2', 'Authorization': 'Token token=None', 'Content-Type': 'application/json'} - payload: {'routing_key': '[INTEGRATION_KEY]', 'incident_key': '1_242', 'dedup_key': '1_242', 'payload': {'summary': 'Apaleo Custom Payment Alert', 'severity': 'error', 'source': 'redash', 'custom_details': 'Date,Timestamp,DebitedAccountName,ReceiptType,Amount\n2022-03-02,2022-03-02T18:23:55,Liabilities for Reservation JRDXINAN-1,Custom,1.0\n2022-03-02,2022-03-02T18:24:59,Liabilities for Reservation ZRFRQBSA-1,Custom,1.0\n2022-03-02,2022-03-02T18:25:07,Liabilities for Reservation ZRFRQBSA-1,Custom,0.25\n2022-03-02,2022-03-02T18:25:19,Liabilities for Reservation ZRFRQBSA-1,Custom,0.25\n2022-03-02,2022-03-03T00:04:09,Visa Credit Card Payment,Custom,2.0\n2022-03-02,2022-03-03T00:04:28,Credit Card Payment,Custom,1.0\n'}, 'event_action': 'trigger'}
+worker_1            | [2022-03-07 22:18:51,898][PID:53][DEBUG][urllib3.connectionpool] Starting new HTTPS connection (1): events.pagerduty.com:443
+worker_1            | [2022-03-07 22:18:52,114][PID:53][DEBUG][snowflake.connector.ssl_wrap_socket] OCSP Mode: FAIL_OPEN, OCSP response cache file name: None
+worker_1            | [2022-03-07 22:18:52,114][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] ocsp_response_cache_uri: file:///home/redash/.cache/snowflake/ocsp_response_cache.json
+worker_1            | [2022-03-07 22:18:52,115][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] OCSP_VALIDATION_CACHE size: 0
+worker_1            | [2022-03-07 22:18:52,115][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] OCSP response cache server is enabled: http://ocsp.snowflakecomputing.com/ocsp_response_cache.json
+worker_1            | [2022-03-07 22:18:52,115][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] OCSP dynamic cache server RETRY URL: None
+worker_1            | [2022-03-07 22:18:52,116][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] Failed to check OCSP response cache file. No worry. It will validate with OCSP server: file: /home/redash/.cache/snowflake/ocsp_response_cache.json, lock directory: /home/redash/.cache/snowflake/ocsp_response_cache.json.lck, error: [Errno 2] No such file or directory: '/home/redash/.cache/snowflake/ocsp_response_cache.json'
+worker_1            | [2022-03-07 22:18:52,116][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] Failed to locate OCSP response cache file. No worry. It will validate with OCSP server: /home/redash/.cache/snowflake/ocsp_response_cache.json
+worker_1            | [2022-03-07 22:18:52,116][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] validating certificate: events.pagerduty.com
+worker_1            | [2022-03-07 22:18:52,117][PID:53][DEBUG][snowflake.connector.ocsp_snowflake] skipping OCSP check: events.pagerduty.com
+worker_1            | [2022-03-07 22:18:52,198][PID:53][DEBUG][urllib3.connectionpool] https://events.pagerduty.com:443 "POST /v2/enqueue/ HTTP/1.1" 202 87
+worker_1            | [2022-03-07 22:18:52,201][PID:53][WARNING][root] {'status': 'success', 'message': 'Event processed', 'dedup_key': '1_242'}
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-pagerduty-notifications-not-firing/10104/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-pagerduty-notifications-not-firing/10104/1</link>
+        <pubDate>Mon, 07 Mar 2022 22:08:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10104-1</guid>
+        <source url="https://discuss.redash.io/t/redash-pagerduty-notifications-not-firing/10104.rss">Redash PagerDuty Notifications Not Firing</source>
+      </item>
+  </channel>
+</rss>

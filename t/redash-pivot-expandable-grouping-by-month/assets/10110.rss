@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash pivot : expandable grouping by month</title>
+    <link>https://discuss.redash.io/t/redash-pivot-expandable-grouping-by-month/10110</link>
+    <description>I want to create expandable structure like this with pivot table result 
+![image|550x341](upload://rUJrH0t6z4of7NI0e1JSKQoZ70a.png)
+
+I have some what created a pivot table and achieved desired result like these 
+
+![image|690x266](upload://xXMuq0FP9UsN7Dh3yXnAxdXGImh.png)
+
+i m only not able to put expandable structure and grouping total by each month 
+
+My query is  a wrapper query like this , what more can i try in redash
+
+
+SELECT MONTHNAME(Date) as `Month`, 
+       Invoice_Type,
+       count(Case_ID) AS &#39;Count of Case ID&#39;,
+       round(sum(Unit_Price),2) AS &#39;Sum of Unit Price&#39;,
+       round(sum(Gross_Sale_List)) AS &#39;Gross_Sale  For List Price&#39;
+FROM
+  ( SELECT cast(convert_tz(rlic.dateapproved_c, &#39;UTC&#39;, &#39;US/Central&#39;) AS date) AS &#39;Date&#39;,
+           concat(u.first_name,&#39; &#39;,u.last_name) AS &#39;Analyst Group::multi-filter&#39;,
+           (pt.name) AS Invoice_Type,
+           (lc.case_id_c) AS Case_ID,
+           concat(l.first_name,&#39; &#39;,l.last_name) AS &#39;Client&#39;,
+           (CASE
+                WHEN rlic.for_entity_c = &#39;Individual&#39; THEN &#39;Individual&#39;
+                ELSE epib.name
+            END) AS &#39;Entity&#39;,
+           rlic.product_catalog_type_c AS &#39;Invoice Type Group::multi-filter&#39;,
+           (rli.likely_case) AS &#39;Unit_Price&#39;,
+           (rli.list_price) AS &#39;list_Price&#39;,
+           rli.quantity AS &#39;Quantity&#39;,
+           (rli.quantity*rli.likely_case) AS &#39;Gross Sale&#39;,
+           (rli.quantity*rli.list_price) AS Gross_Sale_List,
+           (CASE
+                WHEN rlic.recurring_type_c IS NULL THEN rli.likely_case
+                ELSE rlic.total_due_c
+            END) AS &#39;Total Billed&#39;,
+           (rlic.amount_paid_c) AS &#39;Total Paid&#39;,
+           (COALESCE((CASE
+                          WHEN rlic.recurring_type_c IS NULL THEN rli.likely_case
+                          ELSE rlic.total_due_c
+                      END-(rlic.amount_credit_c+rlic.debit_amount_c))-rlic.amount_paid_c, 0 )) AS &#39;Balance&#39;,
+           rli.status AS &#39;Invoice Status Group::multi-filter&#39;,
+           epibc.business_service_status_c AS &#39;Fpal Service Status Group::multi-filter&#39;,
+           CASE
+               WHEN rlic.lead_from_c LIKE &#39;%CTAX%&#39; THEN concat(coalesce(cc.ctax_status_c,&#39;&#39;),&#39; : CTAX&#39;)
+               WHEN rlic.lead_from_c = &#39;Monitoring&#39; THEN concat(coalesce(cc.tap_status_c,&#39;&#39;),&#39; : Monitoring&#39;)
+               WHEN rlic.lead_from_c = &#39;FPal&#39; THEN concat(coalesce(cc.fpal_status_c,&#39;&#39;),&#39; : FPal&#39;)
+               WHEN rlic.lead_from_c = &#39;BAM&#39; THEN concat(coalesce(cc.fpal_status_c,&#39;&#39;),&#39; : BAM&#39;)
+               WHEN rlic.lead_from_c IS NULL THEN &#39;UNRELATED&#39;
+               WHEN rlic.lead_from_c = &#39;&#39; THEN &#39;UNRELATED&#39;
+               ELSE &#39;UNRELATED&#39;
+           END AS &#39;Client Status&#39;,
+           rlic.years_list_c AS &#39;Years&#39;,
+           rli.description AS &#39;Description&#39;,
+           c.date_entered AS &#39;Create Date&#39;,
+           rlic.sale_type_c AS &#39;Sale level&#39;
+   FROM revenue_line_items rli
+   INNER JOIN revenue_line_items_cstm rlic ON rli.id=rlic.id_c
+   AND rli.deleted = &#39;0&#39;
+   AND rlic.lead_from_c = &#39;FPal&#39;
+   AND rlic.dateapproved_c IS NOT NULL
+   INNER JOIN product_templates pt ON pt.id=rli.product_template_id
+   INNER JOIN leads l ON rli.opportunity_id = l.opportunity_id
+   AND l.deleted = &#39;0&#39;
+   INNER JOIN leads_cstm lc ON lc.id_c=l.id
+   AND l.first_name NOT LIKE &#39;%test%&#39;
+   AND l.last_name NOT LIKE &#39;%test%&#39;
+   LEFT JOIN contacts c ON c.id = l.contact_id
+   INNER JOIN contacts_cstm cc ON cc.id_c = c.id
+   LEFT JOIN users u ON u.id = rlic.user_id2_c
+   AND u.deleted=0
+   LEFT JOIN epi_business_revenuelineitems_1_c ebr ON ebr.epi_business_revenuelineitems_1revenuelineitems_idb = rli.id
+   LEFT JOIN epi_business epib ON epib.id = ebr.epi_business_revenuelineitems_1epi_business_ida
+   LEFT JOIN epi_business_cstm epibc ON epibc.id_c = epib.id
+   WHERE u.id IN (&#39;7ec5821c-0405-11ea-bc5a-0a1db36945e2&#39;,
+                  &#39;52111c30-0406-11ea-9fa7-0a1db36945e2&#39;,
+                  &#39;4251be34-794c-11e9-be9c-0a1db36945e2&#39;)
+     AND rlic.product_catalog_type_c IN (&#39;Accounting -Misc&#39;,
+                                         &#39;Tax Preparation&#39;,
+                                         &#39;Accounting&#39;) -- AND rlic.service_parent_id_c IS NOT NULL
+  AND  cast(convert_tz(rlic.dateapproved_c, &#39;UTC&#39;, &#39;US/Central&#39;) AS date) between   
+   &#39;{{ Date Range.start }}&#39; and &#39;{{ Date Range.end }}&#39; 
+ ) P
+ GROUP BY MONTHNAME(Date), Invoice_Type
+ORDER BY MONTHNAME(Date),
+         Invoice_Type ;</description>
+    
+    <lastBuildDate>Wed, 09 Mar 2022 09:28:39 +0000</lastBuildDate>
+    <category>UX</category>
+    <atom:link href="https://discuss.redash.io/t/redash-pivot-expandable-grouping-by-month/10110.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash pivot : expandable grouping by month</title>
+        <dc:creator><![CDATA[neeraj1]]></dc:creator>
+        <description><![CDATA[
+            <p>I want to create expandable structure like this with pivot table result<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c3a474169c720ab6e9d2fb0eddae10b68dacfcbe.png" alt="image" data-base62-sha1="rUJrH0t6z4of7NI0e1JSKQoZ70a" width="550" height="341"></p>
+<p>I have some what created a pivot table and achieved desired result like these</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/ee09bba035d2477a8fcd9c24283bfe647178cc15.png" data-download-href="/uploads/short-url/xXMuq0FP9UsN7Dh3yXnAxdXGImh.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/ee09bba035d2477a8fcd9c24283bfe647178cc15.png" alt="image" data-base62-sha1="xXMuq0FP9UsN7Dh3yXnAxdXGImh" width="690" height="266" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/ee09bba035d2477a8fcd9c24283bfe647178cc15_2_10x10.png"></a></div><p></p>
+<p>i m only not able to put expandable structure and grouping total by each month</p>
+<p>My query is  a wrapper query like this , what more can i try in redash</p>
+<p>SELECT MONTHNAME(Date) as <code>Month</code>,<br>
+Invoice_Type,<br>
+count(Case_ID) AS ‘Count of Case ID’,<br>
+round(sum(Unit_Price),2) AS ‘Sum of Unit Price’,<br>
+round(sum(Gross_Sale_List)) AS ‘Gross_Sale  For List Price’<br>
+FROM<br>
+( SELECT cast(convert_tz(rlic.dateapproved_c, ‘UTC’, ‘US/Central’) AS date) AS ‘Date’,<br>
+concat(u.first_name,’ ‘,u.last_name) AS ‘Analyst Group::multi-filter’,<br>
+(pt.name) AS Invoice_Type,<br>
+(lc.case_id_c) AS Case_ID,<br>
+concat(l.first_name,’ ‘,l.last_name) AS ‘Client’,<br>
+(CASE<br>
+WHEN rlic.for_entity_c = ‘Individual’ THEN ‘Individual’<br>
+ELSE epib.name<br>
+END) AS ‘Entity’,<br>
+rlic.product_catalog_type_c AS ‘Invoice Type Group::multi-filter’,<br>
+(rli.likely_case) AS ‘Unit_Price’,<br>
+(rli.list_price) AS ‘list_Price’,<br>
+rli.quantity AS ‘Quantity’,<br>
+(rli.quantity<em>rli.likely_case) AS ‘Gross Sale’,<br>
+(rli.quantity</em>rli.list_price) AS Gross_Sale_List,<br>
+(CASE<br>
+WHEN rlic.recurring_type_c IS NULL THEN rli.likely_case<br>
+ELSE rlic.total_due_c<br>
+END) AS ‘Total Billed’,<br>
+(rlic.amount_paid_c) AS ‘Total Paid’,<br>
+(COALESCE((CASE<br>
+WHEN rlic.recurring_type_c IS NULL THEN rli.likely_case<br>
+ELSE rlic.total_due_c<br>
+END-(rlic.amount_credit_c+rlic.debit_amount_c))-rlic.amount_paid_c, 0 )) AS ‘Balance’,<br>
+rli.status AS ‘Invoice Status Group::multi-filter’,<br>
+epibc.business_service_status_c AS ‘Fpal Service Status Group::multi-filter’,<br>
+CASE<br>
+WHEN rlic.lead_from_c LIKE ‘%CTAX%’ THEN concat(coalesce(cc.ctax_status_c,’‘),’ : CTAX’)<br>
+WHEN rlic.lead_from_c = ‘Monitoring’ THEN concat(coalesce(cc.tap_status_c,‘’),’ : Monitoring’)<br>
+WHEN rlic.lead_from_c = ‘FPal’ THEN concat(coalesce(cc.fpal_status_c,‘’),’ : FPal’)<br>
+WHEN rlic.lead_from_c = ‘BAM’ THEN concat(coalesce(cc.fpal_status_c,‘’),’ : BAM’)<br>
+WHEN rlic.lead_from_c IS NULL THEN ‘UNRELATED’<br>
+WHEN rlic.lead_from_c = ‘’ THEN ‘UNRELATED’<br>
+ELSE ‘UNRELATED’<br>
+END AS ‘Client Status’,<br>
+rlic.years_list_c AS ‘Years’,<br>
+rli.description AS ‘Description’,<br>
+c.date_entered AS ‘Create Date’,<br>
+rlic.sale_type_c AS ‘Sale level’<br>
+FROM revenue_line_items rli<br>
+INNER JOIN revenue_line_items_cstm rlic ON rli.id=rlic.id_c<br>
+AND rli.deleted = ‘0’<br>
+AND rlic.lead_from_c = ‘FPal’<br>
+AND rlic.dateapproved_c IS NOT NULL<br>
+INNER JOIN product_templates pt ON pt.id=rli.product_template_id<br>
+INNER JOIN leads l ON rli.opportunity_id = l.opportunity_id<br>
+AND l.deleted = ‘0’<br>
+INNER JOIN leads_cstm lc ON lc.id_c=l.id<br>
+AND l.first_name NOT LIKE ‘%test%’<br>
+AND l.last_name NOT LIKE ‘%test%’<br>
+LEFT JOIN contacts c ON c.id = l.contact_id<br>
+INNER JOIN contacts_cstm cc ON cc.id_c = c.id<br>
+LEFT JOIN users u ON u.id = rlic.user_id2_c<br>
+AND u.deleted=0<br>
+LEFT JOIN epi_business_revenuelineitems_1_c ebr ON ebr.epi_business_revenuelineitems_1revenuelineitems_idb = rli.id<br>
+LEFT JOIN epi_business epib ON epib.id = ebr.epi_business_revenuelineitems_1epi_business_ida<br>
+LEFT JOIN epi_business_cstm epibc ON epibc.id_c = epib.id<br>
+WHERE u.id IN (‘7ec5821c-0405-11ea-bc5a-0a1db36945e2’,<br>
+‘52111c30-0406-11ea-9fa7-0a1db36945e2’,<br>
+‘4251be34-794c-11e9-be9c-0a1db36945e2’)<br>
+AND rlic.product_catalog_type_c IN (‘Accounting -Misc’,<br>
+‘Tax Preparation’,<br>
+‘Accounting’) – AND rlic.service_parent_id_c IS NOT NULL<br>
+AND  cast(convert_tz(rlic.dateapproved_c, ‘UTC’, ‘US/Central’) AS date) between<br>
+‘{{ Date Range.start }}’ and ‘{{ Date Range.end }}’<br>
+) P<br>
+GROUP BY MONTHNAME(Date), Invoice_Type<br>
+ORDER BY MONTHNAME(Date),<br>
+Invoice_Type ;</p>
+          <p><a href="https://discuss.redash.io/t/redash-pivot-expandable-grouping-by-month/10110/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-pivot-expandable-grouping-by-month/10110/1</link>
+        <pubDate>Wed, 09 Mar 2022 09:28:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10110-1</guid>
+        <source url="https://discuss.redash.io/t/redash-pivot-expandable-grouping-by-month/10110.rss">Redash pivot : expandable grouping by month</source>
+      </item>
+  </channel>
+</rss>

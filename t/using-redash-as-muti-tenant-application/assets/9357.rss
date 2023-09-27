@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Using Redash as Muti-Tenant application</title>
+    <link>https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357</link>
+    <description>Hello There,
+
+We need some information on if we can use current Redash opensource app as Multi tenant app. Where everything would be separated between multiple tenant accounts. (Similar to what was being provided on Redash cloud hosted app which is getting discontinued next month)
+
+What might be the quick way to achieving the same? we need the same for some of our internal departments</description>
+    
+    <lastBuildDate>Thu, 28 Oct 2021 12:25:43 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Using Redash as Muti-Tenant application</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>For anyone interested: here’s how I got multi-tenant to behave as expected on OSS.</p>
+<p>Mind you: this is <em>very rough</em>. Do not think you will do this without some manual wrangling in the database. It’s completely as-is.</p>
+<h2>
+<a name="approach-1" class="anchor" href="https://discuss.redash.io#approach-1"></a>Approach</h2>
+<p>You need to set the environment variable <code>REDASH_MULTI_ORG</code> to <code>"true"</code>.</p>
+<p>OSS Redash doesn’t have handlers for creating new organizations. So to create a new org and begin using it, you need to duplicate the existing org and set some new values. The <code>default</code> organization is created when you first start Redash.</p>
+<p>Once you’ve created a new organization you’ll also need a user who can log-in. And before a user can log-in they will need to be present in a <code>group</code>. So here’s the approach.</p>
+<h2>
+<a name="sql-statements-2" class="anchor" href="https://discuss.redash.io#sql-statements-2"></a>SQL Statements</h2>
+<pre><code class="lang-sql">-- ## QUERY 1
+-- Use this query to copy the default organization
+INSERT INTO organizations (
+  updated_at,
+  created_at,
+  name,
+  slug,
+  settings
+)
+SELECT
+  updated_at,
+  created_at,
+  &lt;new organisation name&gt;
+  &lt;new organisation slug&gt;,
+  settings
+FROM
+  organizations WHERE id = 1
+
+-- After you insert this organization there should be a new org
+-- on the organizations table. SELECT its `id` as you will need 
+-- it in the subsequent queries.
+
+-- ## QUERY 2
+-- Use the following query to clone the built-in definitions to
+-- your new or new organisation, yielding two new ids.
+INSERT INTO groups (
+  "org_id",
+  "type",
+  "name",
+  "permissions",
+  "created_at"
+)
+SELECT
+  &lt;new org id from query 1&gt;,
+  "type",
+  "name",
+  "permissions",
+  now()
+FROM
+  groups WHERE id in (1,2)
+
+-- QUERY #3
+-- Finally, you can duplicate an admin user from the default org
+-- to your newly created one.
+
+INSERT INTO users (
+  updated_at,
+  created_at,
+  org_id,
+  name,
+  email,
+  password_hash,
+  groups,
+  api_key,
+  details
+)
+SELECT
+  updated_at,
+  created_at,
+  &lt;new org id from query 1&gt;,
+  name,
+  email,
+  password_hash,
+  ARRAY &lt;two new ids from query 2&gt;,
+  'abcd',
+  details
+FROM
+  users WHERE id = 1
+</code></pre>
+<p>Now you can log-in to your new organization using the same email and password as your base user on the <code>default</code> org. You should do so and reset the API key from the profile screen, set a new password etc.</p>
+          <p><a href="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357/3</link>
+        <pubDate>Thu, 28 Oct 2021 12:25:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9357-3</guid>
+        <source url="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357.rss">Using Redash as Muti-Tenant application</source>
+      </item>
+      <item>
+        <title>Using Redash as Muti-Tenant application</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The features are there but not documented as they were designed quite specific to the needs of <a href="http://app.redash.io">app.redash.io</a>.</p>
+<p>What are your requirements for multi-tenant behaviour?</p>
+          <p><a href="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357/2</link>
+        <pubDate>Thu, 28 Oct 2021 10:47:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9357-2</guid>
+        <source url="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357.rss">Using Redash as Muti-Tenant application</source>
+      </item>
+      <item>
+        <title>Using Redash as Muti-Tenant application</title>
+        <dc:creator><![CDATA[sumitjoshi]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello There,</p>
+<p>We need some information on if we can use current Redash opensource app as Multi tenant app. Where everything would be separated between multiple tenant accounts. (Similar to what was being provided on Redash cloud hosted app which is getting discontinued next month)</p>
+<p>What might be the quick way to achieving the same? we need the same for some of our internal departments</p>
+          <p><a href="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357/1</link>
+        <pubDate>Thu, 28 Oct 2021 10:44:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9357-1</guid>
+        <source url="https://discuss.redash.io/t/using-redash-as-muti-tenant-application/9357.rss">Using Redash as Muti-Tenant application</source>
+      </item>
+  </channel>
+</rss>

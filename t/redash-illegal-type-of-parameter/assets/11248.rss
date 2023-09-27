@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Illegal Type of Parameter</title>
+    <link>https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248</link>
+    <description>Hi,
+
+I have redash 8.0.0+b32245 (a16f551e) connected to Clickhouse 22.9.3.18.
+I am trying to run the query below with a date parameter.
+
+*SELECT C.REVENUE_DATE, C.BUSINESS_DATE, CUR_ROOMS/257 AS CUR_OCC, sum(NO_DEFINITE_ROOMS) AS CUR_ROOMS, sum(REVENUE) AS CUR_REVENUE, CUR_REVENUE/CUR_ROOMS AS CUR_ARR, CUR_OCC * CUR_ARR AS CUR_REV_PAR*
+*FROM rktaboxx_db.market_statistics_daily C*
+*WHERE C.REVENUE_DATE = {{ rpt_revenue_date }}*
+*GROUP BY REVENUE_DATE, BUSINESS_DATE*
+*ORDER BY C.BUSINESS_DATE*
+
+Unfortunately I get the error below.
+![Redash_Error|690x47](upload://iHsCv7jfs8vKmrNIiS3h8T5YaUt.jpeg)
+
+When I remove the parameter and use a literal date like &#39;2022-11-03&#39; the query is successful.
+
+Please advise how to get this to work correctly.
+
+Best regards,
+MS</description>
+    
+    <lastBuildDate>Wed, 09 Nov 2022 14:52:43 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Illegal Type of Parameter</title>
+        <dc:creator><![CDATA[msadiq]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/xavier-d">@xavier-d</a></p>
+<p>Thank you so much. It was that easy! <img src="https://emoji.discourse-cdn.com/twitter/scream.png?v=12" title=":scream:" class="emoji" alt=":scream:" loading="lazy" width="20" height="20"> <img src="https://emoji.discourse-cdn.com/twitter/scream.png?v=12" title=":scream:" class="emoji" alt=":scream:" loading="lazy" width="20" height="20"> <img src="https://emoji.discourse-cdn.com/twitter/scream.png?v=12" title=":scream:" class="emoji" alt=":scream:" loading="lazy" width="20" height="20"> <img src="https://emoji.discourse-cdn.com/twitter/exploding_head.png?v=12" title=":exploding_head:" class="emoji" alt=":exploding_head:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248/3</link>
+        <pubDate>Wed, 09 Nov 2022 14:52:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11248-3</guid>
+        <source url="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248.rss">Redash Illegal Type of Parameter</source>
+      </item>
+      <item>
+        <title>Redash Illegal Type of Parameter</title>
+        <dc:creator><![CDATA[xavier-d]]></dc:creator>
+        <description><![CDATA[
+            <p>I think SQL is trying to perform a subtraction<br>
+look at the error message:  <em>((2022 - 11) -3)</em><br>
+Try to add quotes to your variable<br>
+WHERE C.REVENUE_DATE = <strong>'</strong>{{ rpt_revenue_date }}<strong>’</strong></p>
+<p>or use the convert function</p>
+<p>WHERE C.REVENUE_DATE = CONVERT(DATETIME,<strong>'</strong>{{ rpt_revenue_date }}<strong>'</strong>)</p>
+          <p><a href="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248/2</link>
+        <pubDate>Mon, 07 Nov 2022 17:08:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11248-2</guid>
+        <source url="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248.rss">Redash Illegal Type of Parameter</source>
+      </item>
+      <item>
+        <title>Redash Illegal Type of Parameter</title>
+        <dc:creator><![CDATA[msadiq]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>I have redash 8.0.0+b32245 (a16f551e) connected to Clickhouse 22.9.3.18.<br>
+I am trying to run the query below with a date parameter.</p>
+<p><em>SELECT C.REVENUE_DATE, C.BUSINESS_DATE, CUR_ROOMS/257 AS CUR_OCC, sum(NO_DEFINITE_ROOMS) AS CUR_ROOMS, sum(REVENUE) AS CUR_REVENUE, CUR_REVENUE/CUR_ROOMS AS CUR_ARR, CUR_OCC * CUR_ARR AS CUR_REV_PAR</em><br>
+<em>FROM rktaboxx_db.market_statistics_daily C</em><br>
+<em>WHERE C.REVENUE_DATE = {{ rpt_revenue_date }}</em><br>
+<em>GROUP BY REVENUE_DATE, BUSINESS_DATE</em><br>
+<em>ORDER BY C.BUSINESS_DATE</em></p>
+<p>Unfortunately I get the error below.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8310d62f1a242f5f3d87e2a132e35d03959f8be5.jpeg" data-download-href="/uploads/short-url/iHsCv7jfs8vKmrNIiS3h8T5YaUt.jpeg?dl=1" title="Redash_Error" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8310d62f1a242f5f3d87e2a132e35d03959f8be5_2_690x47.jpeg" alt="Redash_Error" data-base62-sha1="iHsCv7jfs8vKmrNIiS3h8T5YaUt" width="690" height="47" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8310d62f1a242f5f3d87e2a132e35d03959f8be5_2_690x47.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8310d62f1a242f5f3d87e2a132e35d03959f8be5.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8310d62f1a242f5f3d87e2a132e35d03959f8be5.jpeg 2x" data-dominant-color="F58881"></a></div><p></p>
+<p>When I remove the parameter and use a literal date like ‘2022-11-03’ the query is successful.</p>
+<p>Please advise how to get this to work correctly.</p>
+<p>Best regards,<br>
+MS</p>
+          <p><a href="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248/1</link>
+        <pubDate>Fri, 04 Nov 2022 16:14:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11248-1</guid>
+        <source url="https://discuss.redash.io/t/redash-illegal-type-of-parameter/11248.rss">Redash Illegal Type of Parameter</source>
+      </item>
+  </channel>
+</rss>

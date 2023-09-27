@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Switch between daily/weekly/monthly data view</title>
+    <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104</link>
+    <description>Hi everyone!
+I&#39;m looking for good solution of the following problem: 
+I have daily data for sales and I would like to have visualisation in which I can switch between displaying sum(sales) in different time periods (daily, weekly, monthly).
+In ideal version I have Date-Range parameter where I can chose the range of dates between which I can see the values and dropdown parameter where I choose time periods (day/week/month).
+
+As an example: it&#39;s 21st of September today and I&#39;ve chosen this month in Date-Range parameter. When on day/week/month parameter I choose:
+* &quot;day&quot;, I&#39;ll see 21 bars, one for each day
+* &quot;week&quot;, I&#39;ll see 3 bars, one for each Monday this month
+* &quot;month&quot;, I&#39;ll see only 1 bar, from the beginning of this month
+
+Much appreciate your hep!</description>
+    
+    <lastBuildDate>Mon, 08 Aug 2022 09:49:23 +0000</lastBuildDate>
+    <category>Tips, Tricks &amp; Query Examples</category>
+    <atom:link href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[Yiannis]]></dc:creator>
+        <description><![CDATA[
+            <p>A rather easy way a colleague showed me:</p>
+<pre><code class="lang-auto">SELECT 
+    EXTRACT(YEAR FROM creation_time) AS YEAR,
+    CASE
+        WHEN "{{ period }}" = "DAY" THEN DATE(creation_time)
+        ELSE EXTRACT({{ period }} FROM creation_time)
+    END AS period,
+    MIN(DATE(creation_time)) AS Date,
+    COUNT(*) AS value
+
+GROUP BY period, year
+ORDER BY Date```</code></pre>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/7</link>
+        <pubDate>Mon, 08 Aug 2022 09:49:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-7</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[TOc]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks <a class="mention" href="https://discuss.redash.io/u/ptr106">@ptr106</a> - this is the solution I want to try today - it seems to be easiest one to create and replicate if needed.</p>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/6</link>
+        <pubDate>Mon, 27 Sep 2021 00:42:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-6</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[ptr106]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/toc">@TOc</a> To address the issue with 31 bars you probably don’t want the datepart function in this case, you want the actual date. The logic can get pretty complex to switch between the two. In order to simplify this you might consider creating a calendar dimension table with one row for every date and capturing all the relevant attributes for these dates. There are plenty of examples on the web as to how this might look. But you might be interested in something like:</p>
+<pre><code class="lang-auto">dt | year | year_month | year_week
+2020-12-31 | 2020 | '2020-12' | '2020-53'
+2021-01-01 | 2021 | '2021-01' | '2020-53'
+</code></pre>
+<p>Then you could join to this table in your query and just specify the column names (dt, year_month, year_week) in the filter you want using the dropdown that <a class="mention" href="https://discuss.redash.io/u/xavier-d">@xavier-d</a> suggested. The calendar dimension table would also allow you to better align what defines a week/month with your business (does a week start on Monday/Sunday, are we looking for fiscal months instead of calendar months?). This table would also be re-usable for a lot of other queries as well.</p>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/5</link>
+        <pubDate>Fri, 24 Sep 2021 14:44:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-5</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey, I created a bit more complicated solution for my purposes.</p>
+<ol>
+<li>Start using Python Data source. It’s like +10000 features to readsh.</li>
+<li>Create dropdown with group by types</li>
+</ol>
+<ul>
+<li>Day</li>
+<li>Week</li>
+<li>Month</li>
+</ul>
+<ol start="3">
+<li>Write simple if-else. Smth like</li>
+</ol>
+<pre><code class="lang-auto">if '{{Group By}}' == 'day':
+    grouper_value = 'toDate(date) as grouper'
+elif '{{Group By}}' == 'month':
+   grouper_value = 'toYearMonth(date) as grouper'
+</code></pre>
+<ol start="4">
+<li>Your query string no will look like this:</li>
+</ol>
+<pre><code class="lang-auto">SELECT {}, 
+         other values
+FROM table
+GROUP BY grouper
+'''.format( grouper_value)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/4</link>
+        <pubDate>Thu, 23 Sep 2021 09:28:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-4</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[TOc]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you <a class="mention" href="https://discuss.redash.io/u/xavier-d">@xavier-d</a> this is very interesting direction.<br>
+This solution works almost as what I need. There is one problem I found with selecting “day” and looking for the whole year time-span:<br>
+as DATEPART({{my_dropdown}}, date) return day as int type, the graph is showing 31 bars (one for each number for day in date), not 1 bar for each day (on September 21st it should be 264 bars).</p>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/3</link>
+        <pubDate>Wed, 22 Sep 2021 05:14:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-3</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[xavier-d]]></dc:creator>
+        <description><![CDATA[
+            <p>If I’d to do it, I’d use a dropdown with the wanted value for the group by</p>
+<ul>
+<li>Day</li>
+<li>Week</li>
+<li>Month</li>
+</ul>
+<p>then use this value in my<br>
+<code>GROUP BY DATEPART({{my_dropdown}}, date)</code><br>
+<em>(sql)</em></p>
+<p>By changing the value of the dropdown it will refresh the graph with the wanted precision</p>
+<p>You can keep your datepicker to select the period you want;</p>
+<p><em>In some of my dashboards, I’m even computing the “precision” according to the period selected.</em></p>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/2</link>
+        <pubDate>Tue, 21 Sep 2021 09:03:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-2</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+      <item>
+        <title>Switch between daily/weekly/monthly data view</title>
+        <dc:creator><![CDATA[TOc]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi everyone!<br>
+I’m looking for good solution of the following problem:<br>
+I have daily data for sales and I would like to have visualisation in which I can switch between displaying sum(sales) in different time periods (daily, weekly, monthly).<br>
+In ideal version I have Date-Range parameter where I can chose the range of dates between which I can see the values and dropdown parameter where I choose time periods (day/week/month).</p>
+<p>As an example: it’s 21st of September today and I’ve chosen this month in Date-Range parameter. When on day/week/month parameter I choose:</p>
+<ul>
+<li>“day”, I’ll see 21 bars, one for each day</li>
+<li>“week”, I’ll see 3 bars, one for each Monday this month</li>
+<li>“month”, I’ll see only 1 bar, from the beginning of this month</li>
+</ul>
+<p>Much appreciate your hep!</p>
+          <p><a href="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104/1</link>
+        <pubDate>Tue, 21 Sep 2021 05:08:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9104-1</guid>
+        <source url="https://discuss.redash.io/t/switch-between-daily-weekly-monthly-data-view/9104.rss">Switch between daily/weekly/monthly data view</source>
+      </item>
+  </channel>
+</rss>

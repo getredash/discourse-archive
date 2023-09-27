@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Queries, parameters and public dashboards</title>
+    <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824</link>
+    <description>Hello,
+
+We have three pressing issues with our redash public dashboard and hoping that someone could point us in a right direction. 
+
+**Issue #1.** 
+
+We ran into some issues with parameters. We have the following query:
+
+```
+
+SELECT user_id,
+       `top_prediction_%`,
+       `top_prediction_(text)`,
+       datetime(DateTime) AS thedate,
+       UserIdNum
+FROM query_3
+WHERE cast(useridnum as int) = &#39;{{ useridnum }}&#39;
+  AND thedate &gt;= &#39;{{ mydate.start }}&#39;
+  AND thedate &lt;= datetime(&#39;{{ mydate.end }}&#39;)
+  AND RequestType = &#39;3&#39;
+```
+We use it to create a visualization on a dashboard that we publish publicly. However we get this warning:
+
+&gt; sharing is currently not supported for dashboards containing queries with text parameters
+
+Where in our query exactly do we have text parameters? We thought that the date parameters are allowed on public dashboards and the useridnum does not seem to be a text parameter. 
+
+**Issue #2.** 
+
+We have a number of users and would like to have one public dashboard for all of them, with user ids being in a dropdown list. However, we need somehow restrict this dropdown list so our users can only select their user id with other user ids being greyed out, not shown, or restricted somehow. What is the best way to go about it?
+
+**Issue #3**
+
+The public dashboard with visualizations from both non-parameters and with parameters queries does not refresh automatically. 
+
+### Technical details:
+
+* Redash Version: 10
+* Browser/OS: chrome 
+* How did you install Redash: self hosted on AWS</description>
+    
+    <lastBuildDate>Tue, 25 Jan 2022 19:16:03 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[cetalingua]]></dc:creator>
+        <description><![CDATA[
+            <p>Ok, got it , thank you. I have another question about the dates and our heatmap, I posted a new question.</p>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/7</link>
+        <pubDate>Tue, 25 Jan 2022 19:16:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-7</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>A public dashboard only updates when the page is refreshed. It will pull the most recently cached result. If you schedule a query to update once per hour and then load a public dashboard that includes that data, the public dashboard will show the same values for eternity until you refresh the page.</p>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/6</link>
+        <pubDate>Wed, 19 Jan 2022 20:27:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-6</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[cetalingua]]></dc:creator>
+        <description><![CDATA[
+            <p>ok, <span class="hashtag">#1</span> is solved.</p>
+<p>For <span class="hashtag">#3</span>, can you explain in more detail how does the public dashboard update? I understand what happens for widgets based on parametrized queries, but for the widgets that are based on non-parametrized queries, how do they update on a public dashboard? Let’s say the query is set to update every hour, if I load the public dashboard it will show me the results cashed from the hour ago? And in two hours, it will show the results from the last update 60 min ago?</p>
+<p>We do not need data to be shown in real time to the second, but one or more updates per day is what we would like to have.</p>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/5</link>
+        <pubDate>Wed, 19 Jan 2022 01:06:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-5</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Regarding <span class="hashtag">#1</span>, you haven’t checked the <em>parameter type</em> in Redash. You can do this while editing the query. Click the little gear icon beside the parameter widget and confirm it’s of type number:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0c8be3481a69861e049f6823c737f276b6d9e5a2.png" data-download-href="/uploads/short-url/1MZr9lt5sxwvnXmHK028Hi7npcu.png?dl=1" title="CleanShot 2022-01-18 at 18.36.16@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0c8be3481a69861e049f6823c737f276b6d9e5a2_2_669x500.png" alt="CleanShot 2022-01-18 at 18.36.16@2x" data-base62-sha1="1MZr9lt5sxwvnXmHK028Hi7npcu" width="669" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0c8be3481a69861e049f6823c737f276b6d9e5a2_2_669x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0c8be3481a69861e049f6823c737f276b6d9e5a2_2_1003x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0c8be3481a69861e049f6823c737f276b6d9e5a2.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0c8be3481a69861e049f6823c737f276b6d9e5a2_2_10x10.png"></a></div><p></p>
+<p>Regarding <span class="hashtag">#3</span>, public dashboards don’t execute queries automatically. They simply load the most recently cached value. The one exception is for parameterised queries which will be executed when the user changes a value and clicks “Apply”. But when the dashboard first loads it will pull the cached value.</p>
+<p>We’ve said for years: Redash isn’t really designed for this use case.</p>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/4</link>
+        <pubDate>Wed, 19 Jan 2022 00:39:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-4</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[cetalingua]]></dc:creator>
+        <description><![CDATA[
+            <p><span class="hashtag">#1</span>.</p>
+<p>This is from our query:</p>
+<p><code>WHERE cast(useridnum as int) = '{{ useridnum }}'</code><br>
+and the data source this variable is set up as number too. How else can we verify that it is set up as a number type parameter?</p>
+<p><span class="hashtag">#3</span>. We have a public dashboard that has widgets from both non-parametrized and with parameterized queries. We can set up query update schedule for all like every hour. How will such public dashboard update for a user? Non-parametrized widgets will update automatically, but to update parametrized widgets, the user will have to load the dashboard again (or refresh it)?</p>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/3</link>
+        <pubDate>Tue, 18 Jan 2022 22:43:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-3</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>For issue <span class="hashtag">#1</span> can you verify that you have definitely changed the <code>useridnum</code> parameter to a number type parameter?</p>
+<p>For issue <span class="hashtag">#2</span>, I responded to your PM on this subject. The short answer is that what you describe is not supported in Redash.</p>
+<p>For issue <span class="hashtag">#3</span>, there’s not enough information to help you yet. Parameterised dashboards will not refresh automatically ever. If you observe this behaviour with a non-parameterised dashboard it would be good to provide a bit more context about your query schedule. Does it seem to refresh on a schedule when <em>not</em> viewed from the public link?</p>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/2</link>
+        <pubDate>Tue, 18 Jan 2022 21:18:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-2</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+      <item>
+        <title>Queries, parameters and public dashboards</title>
+        <dc:creator><![CDATA[cetalingua]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,</p>
+<p>We have three pressing issues with our redash public dashboard and hoping that someone could point us in a right direction.</p>
+<p><strong>Issue <span class="hashtag">#1</span>.</strong></p>
+<p>We ran into some issues with parameters. We have the following query:</p>
+<pre><code class="lang-auto">
+SELECT user_id,
+       `top_prediction_%`,
+       `top_prediction_(text)`,
+       datetime(DateTime) AS thedate,
+       UserIdNum
+FROM query_3
+WHERE cast(useridnum as int) = '{{ useridnum }}'
+  AND thedate &gt;= '{{ mydate.start }}'
+  AND thedate &lt;= datetime('{{ mydate.end }}')
+  AND RequestType = '3'
+</code></pre>
+<p>We use it to create a visualization on a dashboard that we publish publicly. However we get this warning:</p>
+<blockquote>
+<p>sharing is currently not supported for dashboards containing queries with text parameters</p>
+</blockquote>
+<p>Where in our query exactly do we have text parameters? We thought that the date parameters are allowed on public dashboards and the useridnum does not seem to be a text parameter.</p>
+<p><strong>Issue <span class="hashtag">#2</span>.</strong></p>
+<p>We have a number of users and would like to have one public dashboard for all of them, with user ids being in a dropdown list. However, we need somehow restrict this dropdown list so our users can only select their user id with other user ids being greyed out, not shown, or restricted somehow. What is the best way to go about it?</p>
+<p><strong>Issue <span class="hashtag">#3</span></strong></p>
+<p>The public dashboard with visualizations from both non-parameters and with parameters queries does not refresh automatically.</p>
+<h3>
+<a name="technical-details-1" class="anchor" href="https://discuss.redash.io#technical-details-1"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10</li>
+<li>Browser/OS: chrome</li>
+<li>How did you install Redash: self hosted on AWS</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824/1</link>
+        <pubDate>Tue, 11 Jan 2022 20:29:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9824-1</guid>
+        <source url="https://discuss.redash.io/t/queries-parameters-and-public-dashboards/9824.rss">Queries, parameters and public dashboards</source>
+      </item>
+  </channel>
+</rss>

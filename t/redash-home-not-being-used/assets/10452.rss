@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>REDASH_HOME not being used?</title>
+    <link>https://discuss.redash.io/t/redash-home-not-being-used/10452</link>
+    <description>Dear Folks,
+
+(I can&#39;t put links in my post :) because I&#39;m a new user. thus please substitute &lt;example_org&gt; https://example.org from here on and &lt;localhost_5000&gt; with http://localhost:5000
+
+I&#39;m trying to deploy redash on my &lt;example_org&gt; server under the &lt;example_org&gt;/redash path. The server already has an nginx listening on port 80 so the redash docker-compose starts all the containers successfully, except the nginx one. But this is not a problem since the system seems to be working:
+
+the following work
+    curl &lt;localhost_5000&gt; 
+    curl &lt;localhost_5000&gt;/login
+    curl &lt;localhost_5000&gt;/static/server.5cdfe7b4f652b665b03f.css
+
+are all successful locally on the server.
+
+the following works from the outside
+
+    curl &lt;example_org&gt;/redash/static/server.5cdfe7b4f652b665b03f.css
+
+i get to see the css. 
+
+however, when I try to 
+
+    curl &lt;example_org&gt;/redash
+
+it fails because the page redirects to the &lt;example_org&gt;/login  instead of &lt;example_org&gt;/redash/login
+
+I thought that this was the point of REDASH_HOME variable to allow the redash to generate prefixed urls. So I set it in the /opt/redash/env file, but as far as I can see, this does not work. The generated urls are still not prefixed with it.
+
+Am I doing something wrong? 
+Is this question even clear? :slight_smile: 
+Can somebody provide an advice?
+
+Thanks!
+M.</description>
+    
+    <lastBuildDate>Thu, 12 May 2022 15:27:44 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-home-not-being-used/10452.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>REDASH_HOME not being used?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>For future readers: Redash is not intended to mount at a subdirectory. It’s meant to run at the root location for the server. I believe there are some workarounds to make it work (and we’d be happy to merge a pull request making this an option). But for the moment it’s not supported as of V10.</p>
+          <p><a href="https://discuss.redash.io/t/redash-home-not-being-used/10452/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-home-not-being-used/10452/3</link>
+        <pubDate>Thu, 12 May 2022 15:27:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10452-3</guid>
+        <source url="https://discuss.redash.io/t/redash-home-not-being-used/10452.rss">REDASH_HOME not being used?</source>
+      </item>
+      <item>
+        <title>REDASH_HOME not being used?</title>
+        <dc:creator><![CDATA[mircealungu]]></dc:creator>
+        <description><![CDATA[
+            <p>ah, forget about this folks. I’ve deployed under <a href="http://redash.example.com" rel="noopener nofollow ugc">redash.example.com</a> and this solved the problem <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/redash-home-not-being-used/10452/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-home-not-being-used/10452/2</link>
+        <pubDate>Thu, 12 May 2022 09:05:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10452-2</guid>
+        <source url="https://discuss.redash.io/t/redash-home-not-being-used/10452.rss">REDASH_HOME not being used?</source>
+      </item>
+      <item>
+        <title>REDASH_HOME not being used?</title>
+        <dc:creator><![CDATA[mircealungu]]></dc:creator>
+        <description><![CDATA[
+            <p>Dear Folks,</p>
+<p>(I can’t put links in my post <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"> because I’m a new user. thus please substitute &lt;example_org&gt; <a href="https://example.org" rel="noopener nofollow ugc">https://example.org</a> from here on and &lt;localhost_5000&gt; with <a href="http://localhost:5000" rel="noopener nofollow ugc">http://localhost:5000</a></p>
+<p>I’m trying to deploy redash on my &lt;example_org&gt; server under the &lt;example_org&gt;/redash path. The server already has an nginx listening on port 80 so the redash docker-compose starts all the containers successfully, except the nginx one. But this is not a problem since the system seems to be working:</p>
+<p>the following work<br>
+curl &lt;localhost_5000&gt;<br>
+curl &lt;localhost_5000&gt;/login<br>
+curl &lt;localhost_5000&gt;/static/server.5cdfe7b4f652b665b03f.css</p>
+<p>are all successful locally on the server.</p>
+<p>the following works from the outside</p>
+<pre><code>curl &lt;example_org&gt;/redash/static/server.5cdfe7b4f652b665b03f.css
+</code></pre>
+<p>i get to see the css.</p>
+<p>however, when I try to</p>
+<pre><code>curl &lt;example_org&gt;/redash
+</code></pre>
+<p>it fails because the page redirects to the &lt;example_org&gt;/login  instead of &lt;example_org&gt;/redash/login</p>
+<p>I thought that this was the point of REDASH_HOME variable to allow the redash to generate prefixed urls. So I set it in the /opt/redash/env file, but as far as I can see, this does not work. The generated urls are still not prefixed with it.</p>
+<p>Am I doing something wrong?<br>
+Is this question even clear? <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"><br>
+Can somebody provide an advice?</p>
+<p>Thanks!<br>
+M.</p>
+          <p><a href="https://discuss.redash.io/t/redash-home-not-being-used/10452/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-home-not-being-used/10452/1</link>
+        <pubDate>Thu, 12 May 2022 08:32:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10452-1</guid>
+        <source url="https://discuss.redash.io/t/redash-home-not-being-used/10452.rss">REDASH_HOME not being used?</source>
+      </item>
+  </channel>
+</rss>

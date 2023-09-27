@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Failed to refresh AWS OpenSearch Data Source</title>
+    <link>https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076</link>
+    <description>### Issue Summary
+
+Gives schema refresh failed error when trying to create query.
+
+### Technical details:
+
+Returns 200 from OS:
+[2022-09-27 20:35:23,402][PID:41][DEBUG][urllib3.connectionpool] https://search_domain.us-west-2.es.amazonaws.com:443 &quot;GET /_mappings HTTP/1.1&quot; 200 None
+
+
+* Redash Version: 10.1.0.b50633
+* Browser/OS: Chrome
+* How did you install Redash: Docker</description>
+    
+    <lastBuildDate>Wed, 28 Sep 2022 21:16:34 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Failed to refresh AWS OpenSearch Data Source</title>
+        <dc:creator><![CDATA[BGarber42]]></dc:creator>
+        <description><![CDATA[
+            <p>Looks like it’s not handling mappings properly,</p>
+<pre><code class="lang-auto">@@ -93,8 +94,8 @@ class ElasticSearch2(BaseHTTPQueryRunner):
+             try:
+                 for m in index_mappings.get("mappings", {}):
+                     _parse_properties('', index_mappings['mappings'][m]['properties'])
+-            except KeyError:
+-                _parse_properties('', index_mappings['mappings']['properties'])
++            except (KeyError, TypeError):
++                _parse_properties('', index_mappings['mappings'].get('properties', {}))
+
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076/2</link>
+        <pubDate>Wed, 28 Sep 2022 21:16:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11076-2</guid>
+        <source url="https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076.rss">Failed to refresh AWS OpenSearch Data Source</source>
+      </item>
+      <item>
+        <title>Failed to refresh AWS OpenSearch Data Source</title>
+        <dc:creator><![CDATA[BGarber42]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Gives schema refresh failed error when trying to create query.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<p>Returns 200 from OS:<br>
+[2022-09-27 20:35:23,402][PID:41][DEBUG][urllib3.connectionpool] https://search_domain.us-west-2.es.amazonaws.com:443 “GET /_mappings HTTP/1.1” 200 None</p>
+<ul>
+<li>Redash Version: 10.1.0.b50633</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076/1</link>
+        <pubDate>Tue, 27 Sep 2022 20:41:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11076-1</guid>
+        <source url="https://discuss.redash.io/t/failed-to-refresh-aws-opensearch-data-source/11076.rss">Failed to refresh AWS OpenSearch Data Source</source>
+      </item>
+  </channel>
+</rss>

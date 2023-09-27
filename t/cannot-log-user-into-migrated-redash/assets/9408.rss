@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Cannot log user into migrated Redash</title>
+    <link>https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408</link>
+    <description>### Issue Summary
+
+ After successfully going through the migration script https://github.com/getredash/redash-toolbelt/tree/master/redash_toolbelt/docs/redash-migrate#readme , meta.json was generated with user invite links. 
+
+However, some of my users&#39; invite links have expired. Our mail server isn&#39;t set up so we can&#39;t use the &quot;I forgot my password&quot; process. How do I get these users to login? 
+
+### Technical details:
+
+* Redash Version: v10
+* Browser/OS: Redash on Docker/Chrome browser
+* How did you install Redash: https://github.com/getnewdash/setup</description>
+    
+    <lastBuildDate>Tue, 09 Nov 2021 13:57:58 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Cannot log user into migrated Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="4" data-topic="9408">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>If you look at the API response from the <code>/users</code> endpoint you’ll see that <code>is_disabled: true</code> .</p>
+</blockquote>
+</aside>
+<p>Interesting.  I captured the json output after the migration, and for that user in the target instance it had:</p>
+<pre><code class="lang-auto">  "disabled_at": null,
+</code></pre>
+<p>Hmmm, I could potentially run the migration again into a test instance to double check that, but it won’t be tonight.</p>
+<p>I’ll try to double check this over the next few days (just in case), around other things. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/5</link>
+        <pubDate>Tue, 09 Nov 2021 13:57:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9408-5</guid>
+        <source url="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408.rss">Cannot log user into migrated Redash</source>
+      </item>
+      <item>
+        <title>Cannot log user into migrated Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It didn’t work because the user is disabled. You can’t reset passwords for disabled users. If you look at the API response from the <code>/users</code> endpoint you’ll see that <code>is_disabled: true</code>.</p>
+<aside class="quote no-group" data-username="justinclift" data-post="3" data-topic="9408">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/justinclift/40/811_2.png" class="avatar"> justinclift:</div>
+<blockquote>
+<p><code>{"message": "Not found"}</code></p>
+</blockquote>
+</aside>
+<p>This message is generated on these two lines:</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/2e67227f1bb6068c3f23bc044ad76ef7d4bccdc7/redash/handlers/users.py#L190-L191">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/2e67227f1bb6068c3f23bc044ad76ef7d4bccdc7/redash/handlers/users.py#L190-L191" target="_blank" rel="noopener">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/2e67227f1bb6068c3f23bc044ad76ef7d4bccdc7/redash/handlers/users.py#L190-L191" target="_blank" rel="noopener">getredash/redash/blob/2e67227f1bb6068c3f23bc044ad76ef7d4bccdc7/redash/handlers/users.py#L190-L191</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-py">
+      <ol class="start lines" start="190" style="counter-reset: li-counter 189 ;">
+          <li>if user.is_disabled:</li>
+          <li>    abort(404, message="Not found")</li>
+      </ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>To re-enable the user:</p>
+<ol>
+<li>Go to <strong>Settings &gt; Users</strong>
+</li>
+<li>Filter by Disabled Users</li>
+<li>Select the user you’d like to enable</li>
+<li>Click the “Enable User” button</li>
+<li>Try your network request again</li>
+</ol>
+<p>Or if you need to do a lot of them, use the API to <code>DELETE</code> to <code>/api/users/&lt;user_id&gt;/disable</code>. This “deletes” the disabled status.</p>
+<p>We should probably update the message to be more clear <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/4</link>
+        <pubDate>Mon, 08 Nov 2021 15:25:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9408-4</guid>
+        <source url="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408.rss">Cannot log user into migrated Redash</source>
+      </item>
+      <item>
+        <title>Cannot log user into migrated Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>As a data point, that …/reset_password link wasn’t working for me tonight in a customer’s v10 (release image) instance.  It just kept on returning:</p>
+<pre><code class="lang-auto">{"message": "Not found"}
+</code></pre>
+<p>That “not found” response kind of looks like I’d made a typo or something.  But no, it <em>definitely</em> was correct, and the same url without the <code>/reset_password</code> text fragment after the user id indeed returned the user’s info json.  And later on, the <code>/disable</code> version of the url worked for the users.</p>
+<p>At some point I’ll probably investigate with a debugger in a development instance to gain more insight, but that’s not here and now.  So, just mentioning it for awareness in the meantime. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/3</link>
+        <pubDate>Mon, 08 Nov 2021 13:03:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9408-3</guid>
+        <source url="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408.rss">Cannot log user into migrated Redash</source>
+      </item>
+      <item>
+        <title>Cannot log user into migrated Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Use this API:</p>
+<pre><code class="lang-bash">curl --request POST \
+  --url http(s)://&lt;redash host&gt;/api/users/&lt;user-id&gt;/reset_password \
+  --header 'Authorization: Key &lt;admin-api-key&gt;' \
+  --header 'Content-Type: application/json' \
+  --data '{}'
+</code></pre>
+<p>It will return a response that includes a new password reset link.</p>
+          <p><a href="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/2</link>
+        <pubDate>Thu, 04 Nov 2021 20:47:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9408-2</guid>
+        <source url="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408.rss">Cannot log user into migrated Redash</source>
+      </item>
+      <item>
+        <title>Cannot log user into migrated Redash</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>After successfully going through the migration script <a href="https://github.com/getredash/redash-toolbelt/tree/master/redash_toolbelt/docs/redash-migrate#readme" class="inline-onebox" rel="noopener nofollow ugc">redash-toolbelt/redash_toolbelt/docs/redash-migrate at master · getredash/redash-toolbelt · GitHub</a> , meta.json was generated with user invite links.</p>
+<p>However, some of my users’ invite links have expired. Our mail server isn’t set up so we can’t use the “I forgot my password” process. How do I get these users to login?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v10</li>
+<li>Browser/OS: Redash on Docker/Chrome browser</li>
+<li>How did you install Redash: <a href="https://github.com/getnewdash/setup" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getnewdash/setup: Setup scripts for Redash Cloud Images</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408/1</link>
+        <pubDate>Thu, 04 Nov 2021 20:09:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9408-1</guid>
+        <source url="https://discuss.redash.io/t/cannot-log-user-into-migrated-redash/9408.rss">Cannot log user into migrated Redash</source>
+      </item>
+  </channel>
+</rss>

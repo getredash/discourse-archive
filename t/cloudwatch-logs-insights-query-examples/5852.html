@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Cloudwatch logs insights query examples</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/cloudwatch-logs-insights-query-examples/5852">Cloudwatch logs insights query examples</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-usage/10.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Usage Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Cloudwatch logs insights query examples" itemprop="headline"/>
+<meta content="Usage Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/geag34.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/geag34_avatar.png" tabindex="-1" width="48"/><span itemprop="name">geag34</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-30T09:03:24Z" itemprop="datePublished">
+                    March 30, 2020,  9:03am
+                  </time>
+<meta content="2020-03-30T13:54:47Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>How to do request to cloudwatch logs insights?</p>
+<p>For example I do this request in AWS cloudwatch console. How to do the same request in redash?</p>
+<p>fields <span class="mention">@timestamp</span>,body.id,body.to_pause_months,<span class="mention">@message</span><br/>
+| filter ispresent(body.id)<br/>
+| sort <span class="mention">@timestamp</span> desc<br/>
+| limit 20</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-30T14:52:15Z" itemprop="datePublished">
+                    March 30, 2020,  2:52pm
+                  </time>
+<meta content="2020-03-30T14:52:15Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Which version of Redash are you running?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/geag34.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/geag34_avatar.png" tabindex="-1" width="48"/><span itemprop="name">geag34</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-31T08:05:39Z" itemprop="datePublished">
+                    March 31, 2020,  8:05am
+                  </time>
+<meta content="2020-03-31T08:05:39Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi thank for your reply<br/>
+I have version 9.0.0 alpha (dev)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-04-01T17:36:15Z" itemprop="datePublished">
+                    April 1, 2020,  5:36pm
+                  </time>
+<meta content="2020-04-01T17:36:15Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I haven’t used Cloud Watch personally. And since V9 is not released yet we don’t have documentation for this one.</p>
+<p>But its <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/cloudwatch_insights.py">query runner</a> accepts YAML input and passes the key-value-pairs directly into Amazon’s <code>boto3</code> <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/cw-examples.html">Python adapter</a>. There’s some examples in <a href="https://stackoverflow.com/questions/59240107/how-to-query-cloudwatch-logs-using-boto3-in-python">this SO question</a>.   You’ll need to provide a <code>logGroupName</code>. So your query would look like this:</p>
+<pre><code class="lang-auto">logGroupName: &lt;whatever log group you need&gt;
+startTime: &lt;your desired startTime string&gt;
+queryString: fields @timestamp,body.id,body.to_pause_months,@message | filter ispresent(body.id) | sort @timestamp desc | limit 20
+</code></pre>
+<p>I believe you can insert newline characters in the queryString without impacting the query (which helps readability).</p>
+<p>If you don’t provide an <code>endTime</code> key-value-pairt it’s implicitly the time of execution.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/stefan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/stefan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">stefan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-06-01T03:24:40Z" itemprop="datePublished">
+                    June 1, 2020,  3:24am
+                  </time>
+<meta content="2020-06-01T03:26:52Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m trying out this functionality at the moment with a very recent dev build (commit 733bc1c109f1b72250f67c14cd5fb50d6a46593a on master). I have been able to run a Cloudwatch Log Insights query, specifying an integer value for <code>startTime</code>.<br/>
+In general, how could an integer value determined from a date be passed in the Redash query?</p>
+<p>An example of a value for <code>startTime</code> of 3hrs ago would be</p>
+<pre><code class="lang-python">int((datetime.utcnow() - timedelta(hours=3)).timestamp())
+</code></pre>
+<p>But how could something like that be built in to the Redash query?</p>
+<p>My working Redash query looks something like this,</p>
+<pre><code class="lang-auto">{
+    logGroupName: '&lt;my log group name&gt;',
+    startTime: 1590926139,
+    queryString: '
+        fields @timestamp,@message |
+        sort @timestamp desc |
+        limit 5
+    '
+}
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-06-01T16:37:59Z" itemprop="datePublished">
+                    June 1, 2020,  4:37pm
+                  </time>
+<meta content="2020-06-01T16:37:59Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Redash doesn’t support this at the moment. Speaking generally, I think a UDF would be the right solution.</p>
+<p>You could also use the API to “fake” this behavior. Just calculate the interval in your script language of choice and then force the refresh that way…<img alt=":thinking:" class="emoji" src="assets/thinking.png" title=":thinking:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/stefan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/stefan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">stefan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-06-01T23:20:10Z" itemprop="datePublished">
+                    June 1, 2020, 11:20pm
+                  </time>
+<meta content="2020-06-01T23:20:10Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for the reply, <a class="mention" href="/u/jesse">@jesse</a>.</p>
+<p>I like the idea of a UDF as the general approach. I’ve had a quick poke around and found some references to UDF support for Big Query. It would be really convenient to be able to embed calls to UDFs in a query, with passing query parameters to the UDF as a bonus.</p>
+<p>In the meantime, a periodic API call could be made to manually run a query with a calculated <code>startTime</code>, as you suggest. The obvious downside is that there is another moving part (running process with a schedule, program run from cron, etc.) that needs to be managed.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-06-01T23:22:00Z" itemprop="datePublished">
+                    June 1, 2020, 11:22pm
+                  </time>
+<meta content="2020-06-01T23:22:00Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="8" data-topic="5852" data-username="stefan">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/s/bbce88/40.png" width="20"/> stefan:</div>
+<blockquote>
+<p>The obvious downside is that there is another moving part (running process with a schedule, program run from cron, etc.) that needs to be managed.</p>
+</blockquote>
+</aside>
+<p>Exactly.</p>
+<p>That said, if you (like me) already have a bunch of scheduled scripts then <em>what’s one more added to the queue</em>? <img alt=":wink:" class="emoji" src="assets/wink.png" title=":wink:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/stefan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/stefan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">stefan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/cloudwatch-logs-insights-query-examples/5852" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-06-01T23:25:53Z" itemprop="datePublished">
+                    June 1, 2020, 11:25pm
+                  </time>
+<meta content="2020-06-01T23:25:53Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p>That said, if you (like me) already have a bunch of scheduled scripts then <em>what’s one more added to the queue</em>?</p>
+</blockquote>
+<p>Oeff!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

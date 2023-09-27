@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Query API - Visualizations Data not recognized when creating new query</title>
+    <link>https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622</link>
+    <description>Hey hey everyone,
+
+I&#39;ve currently been playing with the API in Python and I&#39;m already facing a wall which I can&#39;t seem to be able to move past. My goal is to create a redash query with certain visualizations already set up. My json data looks like this:
+
+```
+dictCounters = {&#39;query&#39;: &#39;1SLF2Q-L5L4TMZUcZ9vzTGQr37onfe83q5RKXitbYVhQ|1&#39;,
+                &#39;data_source_id&#39;: 3,
+                &#39;schedule&#39;: {&#39;interval&#39;: 900,&#39;until&#39;: &#39;2022-01-18&#39;,&#39;day_of_week&#39;: None,&#39;time&#39;: None},
+                &#39;name&#39;: &quot;API_Test_3&quot;,
+                &#39;is_draft&#39;: False,
+                &#39;visualizations&#39;: [{&#39;type&#39;: &#39;TABLE&#39;,
+                                    &#39;options&#39;: {},
+                                    &#39;name&#39;: &quot;Table&quot;},
+                                   {&#39;type&#39;: &#39;COUNTER&#39;,
+                                    &#39;options&#39;: {&#39;tooltipFormat&#39;: &#39;0,0.000&#39;,
+                                                &#39;rowNumber&#39;: 1,
+                                                &#39;stringDecChar&#39;: &#39;.&#39;,
+                                                &#39;stringDecimal&#39;: 0,
+                                                &#39;counterColName&#39;: &#39;#&#39;,
+                                                &#39;counterLabel&#39;: &#39;Backlinks&#39;,
+                                                &#39;stringThouSep&#39;: &#39;,&#39;,
+                                                &#39;targetRowNumber&#39;: 1},
+                                    &#39;name&#39;: &quot;Counter_Backlinks&quot;},
+                                   {&#39;type&#39;: &#39;COUNTER&#39;,
+                                    &#39;options&#39;: {&#39;tooltipFormat&#39;: &#39;0,0.000&#39;,
+                                                &#39;rowNumber&#39;: 5,
+                                                &#39;stringDecChar&#39;: &#39;.&#39;,
+                                                &#39;stringDecimal&#39;: 0,
+                                                &#39;counterColName&#39;: &#39;#&#39;,
+                                                &#39;counterLabel&#39;: &#39;Mentions&#39;,
+                                                &#39;stringThouSep&#39;: &#39;,&#39;,
+                                                &#39;targetRowNumber&#39;: 1},
+                                    &#39;name&#39;: &quot;Counter_Mentions&quot;}]}
+```
+
+Assume the indentation is correct in my code. However for some reason, the only parameters that are recognized is the query&#39;s name, the scheduling parameters and the query itself (Which is a Google Sheets data source). The rest does not show up. I would also like for the query to be published and not in draft mode but for some reason this is not recognized as well.
+
+Does anyone have an idea of what I&#39;m missing here? I&#39;ve been trying to create the query first and then update it with new parameters but it does not seem to work. I&#39;ve also tried to json.dumps the parameters dictionary before using the create_query function but I get a INTERNAL SERVER ERROR when using the function then. So I&#39;m a bit out of ideas right now :/</description>
+    
+    <lastBuildDate>Mon, 06 Dec 2021 15:53:27 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Query API - Visualizations Data not recognized when creating new query</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You need to make several network requests to do this. You cannot create visualisations at the same time as the query. You use an entirely different endpoint to do this.</p>
+<p>You can POST to <code>/queries</code> to create a new query with a name, query text, data source id. This returns the query object and the visualisation id for the default vis (a table).<br>
+You can POST to <code>/queries/&lt;id&gt;</code> to publish the query.<br>
+You can POST to <code>/visualizations</code> to create visualisations that link to to the <code>id</code> for your new query.<br>
+You can PSOT to <code>/visualizations/&lt;id of default vis&gt;</code> to change the default table details.</p>
+          <p><a href="https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622/2</link>
+        <pubDate>Mon, 06 Dec 2021 15:53:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9622-2</guid>
+        <source url="https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622.rss">Redash Query API - Visualizations Data not recognized when creating new query</source>
+      </item>
+      <item>
+        <title>Redash Query API - Visualizations Data not recognized when creating new query</title>
+        <dc:creator><![CDATA[yanissi]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey hey everyone,</p>
+<p>I’ve currently been playing with the API in Python and I’m already facing a wall which I can’t seem to be able to move past. My goal is to create a redash query with certain visualizations already set up. My json data looks like this:</p>
+<pre><code class="lang-auto">dictCounters = {'query': '1SLF2Q-L5L4TMZUcZ9vzTGQr37onfe83q5RKXitbYVhQ|1',
+                'data_source_id': 3,
+                'schedule': {'interval': 900,'until': '2022-01-18','day_of_week': None,'time': None},
+                'name': "API_Test_3",
+                'is_draft': False,
+                'visualizations': [{'type': 'TABLE',
+                                    'options': {},
+                                    'name': "Table"},
+                                   {'type': 'COUNTER',
+                                    'options': {'tooltipFormat': '0,0.000',
+                                                'rowNumber': 1,
+                                                'stringDecChar': '.',
+                                                'stringDecimal': 0,
+                                                'counterColName': '#',
+                                                'counterLabel': 'Backlinks',
+                                                'stringThouSep': ',',
+                                                'targetRowNumber': 1},
+                                    'name': "Counter_Backlinks"},
+                                   {'type': 'COUNTER',
+                                    'options': {'tooltipFormat': '0,0.000',
+                                                'rowNumber': 5,
+                                                'stringDecChar': '.',
+                                                'stringDecimal': 0,
+                                                'counterColName': '#',
+                                                'counterLabel': 'Mentions',
+                                                'stringThouSep': ',',
+                                                'targetRowNumber': 1},
+                                    'name': "Counter_Mentions"}]}
+</code></pre>
+<p>Assume the indentation is correct in my code. However for some reason, the only parameters that are recognized is the query’s name, the scheduling parameters and the query itself (Which is a Google Sheets data source). The rest does not show up. I would also like for the query to be published and not in draft mode but for some reason this is not recognized as well.</p>
+<p>Does anyone have an idea of what I’m missing here? I’ve been trying to create the query first and then update it with new parameters but it does not seem to work. I’ve also tried to json.dumps the parameters dictionary before using the create_query function but I get a INTERNAL SERVER ERROR when using the function then. So I’m a bit out of ideas right now <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=10" title=":confused:" class="emoji" alt=":confused:"></p>
+          <p><a href="https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622/1</link>
+        <pubDate>Fri, 03 Dec 2021 14:56:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9622-1</guid>
+        <source url="https://discuss.redash.io/t/redash-query-api-visualizations-data-not-recognized-when-creating-new-query/9622.rss">Redash Query API - Visualizations Data not recognized when creating new query</source>
+      </item>
+  </channel>
+</rss>

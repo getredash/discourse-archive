@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Redash V10 query execution - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+A summary of the issue and the browser/OS environment in which it occurs. 
+
+For some queries we have to click “execute” button  multiple times.
+Sometimes alerts are not getting triggered.
+
+No errors I can &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/redash-v10-query-execution/9516" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Redash V10 query execution&#39;" href="https://discuss.redash.io/t/redash-v10-query-execution/9516.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/redash-v10-query-execution/9516" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/redash-v10-query-execution/9516" />
+<meta property="og:title" content="Redash V10 query execution" />
+<meta name="twitter:title" content="Redash V10 query execution" />
+<meta property="og:description" content="Issue Summary A summary of the issue and the browser/OS environment in which it occurs.   For some queries we have to click “execute” button  multiple times. Sometimes alerts are not getting triggered.  No errors I can find in any of container logs . We are open to pay for consulting engagement   Technical details:  Redash Version: V10 Browser/OS: Chrome/ MAC How did you install Redash: AMI then upgrade, added Oracle support  Here our docker-compose.yml:  version: &quot;2&quot; x-redash-service: &amp;redash-..." />
+<meta name="twitter:description" content="Issue Summary A summary of the issue and the browser/OS environment in which it occurs.   For some queries we have to click “execute” button  multiple times. Sometimes alerts are not getting triggered.  No errors I can find in any of container logs . We are open to pay for consulting engagement   Technical details:  Redash Version: V10 Browser/OS: Chrome/ MAC How did you install Redash: AMI then upgrade, added Oracle support  Here our docker-compose.yml:  version: &quot;2&quot; x-redash-service: &amp;redash-..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="2 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2021-11-23T05:06:16+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+        <link rel="next" href="/t/redash-v10-query-execution/9516?page=2">
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Redash V10 query execution","mainEntity":{"@type":"Question","name":"Redash V10 query execution","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\nA summary of the issue and the browser/OS environment in which it occurs.\n\nFor some queries we have to click “execute” button  multiple times.\n\nSometimes alerts are not getting triggered.\n\nNo errors I can find in any of container logs . We are open to pay for consulting engagement\n\n<a name=\"technical-details-2\" class=\"anchor\" href=\"#technical-details-2\"><\/a>T&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-11-23T05:06:16.551Z","author":{"@type":"Person","name":"Alex"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/redash-v10-query-execution/9516">Redash V10 query execution</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Redash V10 query execution'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-23T05:06:16Z' class='post-time'>
+                    November 23, 2021,  5:06am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-23T14:43:12Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>A summary of the issue and the browser/OS environment in which it occurs.</p>
+<ol>
+<li>For some queries we have to click “execute” button  multiple times.</li>
+<li>Sometimes alerts are not getting triggered.</li>
+</ol>
+<p>No errors I can find in any of container logs . We are open to pay for consulting engagement</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V10</li>
+<li>Browser/OS: Chrome/ MAC</li>
+<li>How did you install Redash: AMI then upgrade, added Oracle support<br>
+Here our docker-compose.yml:</li>
+</ul>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash_oracle_v10:latest
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries,schemas"
+      WORKERS_COUNT: 4
+  worker:
+   &lt;&lt;: *redash-service
+   command: worker
+   environment:
+    QUEUES: "periodic,emails,default"
+    WORKERS_COUNT: 1
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-23T14:44:35Z' class='post-time'>
+                    November 23, 2021,  2:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-23T14:44:35Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Where did you find the <code>redash_oracle_v10:latest</code> image you’re using? This is not one of the official ones.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-23T15:01:01Z' class='post-time'>
+                    November 23, 2021,  3:01pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-23T16:46:17Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It was created while adding Oracle support, here is Dockerfile:</p>
+<hr>
+<pre><code class="lang-auto">FROM redash/redash:10.0.0.b50363
+
+USER root
+
+# Oracle instantclient
+ADD oracle/instantclient-basic-linux.x64-11.2.0.4.0.zip /tmp/instantclient-basic-linux.x64-11.2.0.4.0.zip
+ADD oracle/instantclient-sdk-linux.x64-11.2.0.4.0.zip /tmp/instantclient-sdk-linux.x64-11.2.0.4.0.zip
+ADD oracle/instantclient-sqlplus-linux.x64-11.2.0.4.0.zip /tmp/instantclient-sqlplus-linux.x64-11.2.0.4.0.zip
+
+RUN apt-get update  -y
+RUN apt-get install -y unzip
+
+RUN unzip /tmp/instantclient-basic-linux.x64-11.2.0.4.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sdk-linux.x64-11.2.0.4.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sqlplus-linux.x64-11.2.0.4.0.zip -d /usr/local/
+RUN ln -s /usr/local/instantclient_11_2 /usr/local/instantclient
+RUN ln -s /usr/local/instantclient/libclntsh.so.11.1 /usr/local/instantclient/libclntsh.so
+RUN ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN apt-get install libaio-dev -y
+RUN apt-get clean -y
+
+ENV ORACLE_HOME=/usr/local/instantclient
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+RUN pip install cx_Oracle==5.2.1
+
+USER redash
+#Add REDASH ENV to add Oracle Query Runner 
+ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-23T16:47:55Z' class='post-time'>
+                    November 23, 2021,  4:47pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-23T16:47:55Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Good thanks.</p>
+<p>You have not provided enough information to debug, yet.</p>
+<p>Please examine your browser’s network inspector when you click the Execute button. Are there multiple network requests? Or does the first press do nothing?</p>
+<p>It’s not clear if the issue is with your front-end or the API.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T05:14:56Z' class='post-time'>
+                    November 24, 2021,  5:14am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T05:14:56Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I do see multiple network requests, sometime a lot of them , when query return results, sometime just 3</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35.png" data-download-href="/uploads/short-url/m9V7z1QIhHEqx3GX1uRtIRM3e0R.png?dl=1" title="Screen Shot 2021-11-23 at 11.11.54 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_689x112.png" alt="Screen Shot 2021-11-23 at 11.11.54 PM" data-base62-sha1="m9V7z1QIhHEqx3GX1uRtIRM3e0R" width="689" height="112" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_689x112.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_1033x168.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9b4eeef55986d6b9105d1469897c258b04a3ed35_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screen Shot 2021-11-23 at 11.11.54 PM</span><span class="informations">1240×202 24.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T05:29:35Z' class='post-time'>
+                    November 24, 2021,  5:29am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T05:29:35Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>good. now focus on the network requests <em>when the problem reproduces</em>. You said the problem is you click Execute and nothing happens.</p>
+<p>When “nothing happens”, what do you see in these network requests? Particularly the call to the /results endpoint.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Nir'><span itemprop='name'>Nir</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T08:12:38Z' class='post-time'>
+                    November 24, 2021,  8:12am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T08:12:38Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>nothing happens refers to:</p>
+<ol>
+<li>not getting results back</li>
+<li>at the bottom (where the result count) we see “0 rows - runtime”</li>
+</ol>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6.jpeg" data-download-href="/uploads/short-url/gnR3J1mAH7rxCPyeXz3EGxroitU.jpeg?dl=1" title="redash" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_690x345.jpeg" alt="redash" data-base62-sha1="gnR3J1mAH7rxCPyeXz3EGxroitU" width="690" height="345" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_690x345.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_1035x517.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_1380x690.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/72d52139e37d3be84cea5223ff6be49d2235e5d6_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">redash</span><span class="informations">1915×960 130 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>we see 3 requests when that happens:</p>
+<ol>
+<li>results:<br>
+{“job”: {“id”: “2bee02b3-3a2a-4138-bfc0-f7b39ff324ae”, “updated_at”: 0, “status”: 1, “error”: “”, “result”: null, “query_result_id”: null}}</li>
+<li>api/jobs/2bee02b3-3a2a-4138-bfc0-f7b39ff324ae:<br>
+{“job”: {“id”: “2bee02b3-3a2a-4138-bfc0-f7b39ff324ae”, “updated_at”: 0, “status”: 4, “error”: “”, “result”: null, “query_result_id”: null}}<br>
+3… events:<br>
+null</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T19:14:14Z' class='post-time'>
+                    November 24, 2021,  7:14pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T19:14:14Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>How many rows does this query return if you run it on a separate tool? It looks like the worker is probably dying because it runs out of memory.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T19:44:34Z' class='post-time'>
+                    November 24, 2021,  7:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T19:44:34Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>16, I can’t find any errors in the logs</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T19:51:15Z' class='post-time'>
+                    November 24, 2021,  7:51pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T19:51:15Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>There wouldn’t be errors in the logs for this. If the worker dies it just dies.</p>
+<p>How much RAM on your instance?</p>
+<p>Also, is this a query results data source query?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T21:00:42Z' class='post-time'>
+                    November 24, 2021,  9:00pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T21:00:42Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>15 GB available on the host,<br>
+Yes, query done through data source</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T21:24:29Z' class='post-time'>
+                    November 24, 2021,  9:24pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T21:35:36Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="afridland" data-post="11" data-topic="9516">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/3be4f8/40.png" class="avatar"> afridland:</div>
+<blockquote>
+<p>15 GB available on the host,</p>
+</blockquote>
+</aside>
+<p>Available to Docker? Many system limit docker’s ram</p>
+<p>About the data source: I’m asking specifically what kind of data source the query uses.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Nir'><span itemprop='name'>Nir</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T22:03:01Z' class='post-time'>
+                    November 24, 2021, 10:03pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T22:03:01Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>The null/empty result comes from<br>
+MySQL, oracle, and redshift. I haven’t checked others.</p>
+<p>As to the ram limitation, how can we check?</p>
+<p>This installation is based of your IAM image on a bigger instance type.</p>
+<p>ATM we set 6 web servers, 20 workers, 16 adhoc. Free memory is 6g.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-24T22:19:54Z' class='post-time'>
+                    November 24, 2021, 10:19pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-24T22:19:54Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Why do you have six web servers? Are you running k8s by chance? That might explain the weird performance…</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-25T05:13:47Z' class='post-time'>
+                    November 25, 2021,  5:13am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-25T05:13:47Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We do have 6 redash_web_workers, not web servers, we are running on EC2, not k8s</p>
+<p>Here id docker container stats:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64.png" data-download-href="/uploads/short-url/7Mc03Hw5O7v5zp7NUmUwP87Rs1K.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_690x94.png" alt="image" data-base62-sha1="7Mc03Hw5O7v5zp7NUmUwP87Rs1K" width="690" height="94" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_690x94.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_1035x141.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_1380x188.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3681db6b103c2c09dba03f16dba1cf70e3832a64_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1922×262 27.9 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_16' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-25T18:42:48Z' class='post-time'>
+                    November 25, 2021,  6:42pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-25T18:42:48Z'>
+              <span itemprop='position'>16</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Cool thanks. The next step is to check the logs for your <code>adhoc_worker</code>. In the network response you pasted above, the job returns a code 4 which means query execution failed. The logs for adhoc worker will show more about what went wrong.</p>
+<p>You can do this by SSH’ing into the server:</p>
+<pre><code class="lang-auto">$ sudo docker-compose logs -f --tail 100 adhoc_worker
+</code></pre>
+<p>Then execute the query in your browser and watch the logs for a stack trace.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="3" />
+              </div>
+
+          </div>
+          <div id='post_17' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Nir'><span itemprop='name'>Nir</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-25T19:02:12Z' class='post-time'>
+                    November 25, 2021,  7:02pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-25T19:02:12Z'>
+              <span itemprop='position'>17</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>There isn’t any stacktrace.</p>
+<p>also looking for the failed run didn’t show anything</p>
+<p>root@ip-x-x-x-x:/opt/redash# docker logs --tail 1000 redash_adhoc_worker_1 &amp;&gt; log.log<br>
+root@ip-x-x-x-x:/opt/redash# grep “8b579138-cef8-456d-9e81-ab9ab4a5dc7b” log.log</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_18' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Nir'><span itemprop='name'>Nir</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-25T19:04:22Z' class='post-time'>
+                    November 25, 2021,  7:04pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-25T19:04:22Z'>
+              <span itemprop='position'>18</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>wait, i miss spoke</p>
+<p>adhoc_worker_1 | [2021-11-25 19:03:33,420][PID:2416][WARNING][rq.job.redash.tasks.queries.execution] job.func_name=redash.tasks.queries.execution.execute_query <a href="http://job.id" rel="noopener nofollow ugc">job.id</a>=edb92cb8-6ab2-4d40-8180-e9396dc04584 Unexpected error while running query:<br>
+adhoc_worker_1 | Traceback (most recent call last):<br>
+adhoc_worker_1 | File “/app/redash/tasks/queries/execution.py”, line 188, in run<br>
+adhoc_worker_1 | data, error = query_runner.run_query(annotated_query, self.user)<br>
+adhoc_worker_1 | File “/app/redash/query_runner/mysql.py”, line 168, in run_query<br>
+adhoc_worker_1 | while not ev.wait(1):<br>
+adhoc_worker_1 | File “/usr/local/lib/python3.7/threading.py”, line 552, in wait<br>
+adhoc_worker_1 | signaled = self._cond.wait(timeout)<br>
+adhoc_worker_1 | File “/usr/local/lib/python3.7/threading.py”, line 300, in wait<br>
+adhoc_worker_1 | gotit = waiter.acquire(True, timeout)<br>
+adhoc_worker_1 | File “/app/redash/tasks/queries/execution.py”, line 129, in signal_handler<br>
+adhoc_worker_1 | raise InterruptException<br>
+adhoc_worker_1 | redash.query_runner.InterruptException</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_19' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Nir'><span itemprop='name'>Nir</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-25T19:26:12Z' class='post-time'>
+                    November 25, 2021,  7:26pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-25T19:26:12Z'>
+              <span itemprop='position'>19</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>interesting thing is that I tried it a few more times and did not get stack trace for those failures.</p>
+<p><strong>Thanks,</strong><br>
+<strong>Nir Ben Ezri</strong><br>
+<strong>DBA Team Lead</strong><br>
+<strong>DistroKid</strong><br>
+<a href="https://distrokid.com/" rel="noopener nofollow ugc"><strong>https://distrokid.com</strong></a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_20' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/afridland'><span itemprop='name'>afridland</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-v10-query-execution/9516">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-25T20:02:43Z' class='post-time'>
+                    November 25, 2021,  8:02pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-25T20:02:43Z'>
+              <span itemprop='position'>20</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Also on some queries, I’ve noticed following warning, but it happens only sometimes</p>
+<p>cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 13627’”)<br>
+cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 13798’”)<br>
+cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 14970’”)<br>
+cursor.execute(query)<br>
+/app/redash/query_runner/mysql.py:181: Warning: (1292, “Truncated incorrect DOUBLE value: ‘646030 15302’”)<br>
+cursor.execute(query)</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+    </div>
+
+    <div role='navigation' itemscope itemtype='http://schema.org/SiteNavigationElement' class="topic-body crawler-post">
+        <span itemprop='name'><b><a rel="next" itemprop="url" href="/t/redash-v10-query-execution/9516?page=2">next page →</a></b></span>
+    </div>
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

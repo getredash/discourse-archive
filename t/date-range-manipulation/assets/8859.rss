@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Date range manipulation</title>
+    <link>https://discuss.redash.io/t/date-range-manipulation/8859</link>
+    <description>I want to search the number of success responses for all the requests on a particular date range, I might get success response on next day as well. I am trying **date_part&lt;= &#39;{{Date-range.end}}&#39; + interval 1 day**
+but that query is not working.
+How can we add 1 day in {{Date-range.end}} parameter ??
+
+```sql
+SELECT count(*),
+       date_part
+FROM wc
+WHERE date_part&gt;=&#39;{{Date-range.start}}&#39;
+  AND date_part&lt;= &#39;{{Date-range.end}}&#39; + interval 1 day
+  AND response = &#39;SUCCESS&#39;
+  AND  flowStep =&#39;RESPONSE&#39;
+  AND requestNo IN
+    (SELECT DISTINCT requestNo
+     FROM wc
+     WHERE date_part&gt;=&#39;{{Date-range.start}}&#39;
+       and date_part&lt;=&#39;{{Date-range.end}}&#39; 
+      and  flowStep =&#39;REQUEST&#39;
+)
+GROUP BY date_part
+```</description>
+    
+    <lastBuildDate>Tue, 03 Aug 2021 14:21:01 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/date-range-manipulation/8859.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Date range manipulation</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>For future searchers: this only applies to postgres.</p>
+<p>There are two problems.</p>
+<ol>
+<li>
+<code>interval</code> requires its first argument to be in quotes: <code>interval '1 day'</code>
+</li>
+<li>You must cast the parameter to a date type first: <code>CAST('{{ param }}' as date)</code>
+</li>
+</ol>
+<pre><code class="lang-sql">...
+WHERE date_part &gt;= '{{ Date-range.start }}'
+  AND date_part &lt;= CAST('{{ Date-range.start }}' as date) + interval '1 day'
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/date-range-manipulation/8859/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/date-range-manipulation/8859/2</link>
+        <pubDate>Tue, 03 Aug 2021 14:21:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8859-2</guid>
+        <source url="https://discuss.redash.io/t/date-range-manipulation/8859.rss">Date range manipulation</source>
+      </item>
+      <item>
+        <title>Date range manipulation</title>
+        <dc:creator><![CDATA[msdhillon8989]]></dc:creator>
+        <description><![CDATA[
+            <p>I want to search the number of success responses for all the requests on a particular date range, I might get success response on next day as well. I am trying <strong>date_part&lt;= ‘{{Date-range.end}}’ + interval 1 day</strong><br>
+but that query is not working.<br>
+How can we add 1 day in {{Date-range.end}} parameter ??</p>
+<pre><code class="lang-sql">SELECT count(*),
+       date_part
+FROM wc
+WHERE date_part&gt;='{{Date-range.start}}'
+  AND date_part&lt;= '{{Date-range.end}}' + interval 1 day
+  AND response = 'SUCCESS'
+  AND  flowStep ='RESPONSE'
+  AND requestNo IN
+    (SELECT DISTINCT requestNo
+     FROM wc
+     WHERE date_part&gt;='{{Date-range.start}}'
+       and date_part&lt;='{{Date-range.end}}' 
+      and  flowStep ='REQUEST'
+)
+GROUP BY date_part
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/date-range-manipulation/8859/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/date-range-manipulation/8859/1</link>
+        <pubDate>Tue, 03 Aug 2021 08:24:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8859-1</guid>
+        <source url="https://discuss.redash.io/t/date-range-manipulation/8859.rss">Date range manipulation</source>
+      </item>
+  </channel>
+</rss>

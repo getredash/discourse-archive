@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Python Data source and PIP install new libraries</title>
+    <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227</link>
+    <description>### Issue Summary
+
+I have installed a new python library via pip on the redash server docker container:
+&gt;&gt;pip install hl7
+The install is successful and shows when I run:
+&gt;&gt;pip list
+I then created the python data source:
+![image|603x434](upload://8wQAIeE5hqfJVzN6JTa9rHAYgdc.png)
+when I try to import the new module that was just installed I get:
+Error running query: **&lt;class &#39;ModuleNotFoundError&#39;&gt; No module named &#39;hl7&#39;**
+
+Does redash need to be reloaded after new python libraries are installed
+
+### Technical details:
+
+* Redash Version: 10.1.0 (2589bef1)
+* Browser/OS:Chrome
+* How did you install Redash: Docker via docker-compose</description>
+    
+    <lastBuildDate>Fri, 01 Apr 2022 16:38:53 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for posting your follow-up. I’m sure that will help future searchers <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/8</link>
+        <pubDate>Fri, 01 Apr 2022 16:38:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-8</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[SunlinkHealthTech]]></dc:creator>
+        <description><![CDATA[
+            <p>I actually got it sorted.  The to_json was the issue as I had already created a json type structure for the rows.</p>
+<p>see the code and the result below:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4427a4e6388b8ea1730de6eec8f1ada9ec927638.png" data-download-href="/uploads/short-url/9IVp7rYZc87obFxGn7aSWqqSK5q.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4427a4e6388b8ea1730de6eec8f1ada9ec927638_2_690x328.png" alt="image" data-base62-sha1="9IVp7rYZc87obFxGn7aSWqqSK5q" width="690" height="328" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4427a4e6388b8ea1730de6eec8f1ada9ec927638_2_690x328.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4427a4e6388b8ea1730de6eec8f1ada9ec927638_2_1035x492.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4427a4e6388b8ea1730de6eec8f1ada9ec927638_2_1380x656.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4427a4e6388b8ea1730de6eec8f1ada9ec927638_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/7</link>
+        <pubDate>Thu, 31 Mar 2022 17:22:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-7</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Interesting. What kind of error do you get?</p>
+<p>Depending on the complexity of your needs it might make sense to <a href="https://redash.io/help/open-source/dev-guide/write-a-query-runner">create your own query runner</a> for this data.  particularly if you’ll have many queries that contain the same boilerplate just to get the data into Redash’s format.</p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/6</link>
+        <pubDate>Thu, 31 Mar 2022 16:40:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-6</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[SunlinkHealthTech]]></dc:creator>
+        <description><![CDATA[
+            <p>Understood.  Proof of concept testing at this point to see if we can get functionality to parse raw hl7 as a data source with redash.  The proof of concept works up till I try to return the data frame in a json format and the to_json pandas function breaks the query.</p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/5</link>
+        <pubDate>Thu, 31 Mar 2022 15:46:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-5</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Glad to hear that worked. Just keep in mind that if you bounce the containers in the future you may need to reinstall this package. To guarantee the dependency is installed you can write your own Dockerfile that extends our image.</p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/4</link>
+        <pubDate>Thu, 31 Mar 2022 15:25:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-4</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[SunlinkHealthTech]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks Jesse.  That did the trick.  I install the package on the worker, adhoc_worker and the schedule_worker.</p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/3</link>
+        <pubDate>Thu, 31 Mar 2022 15:21:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-3</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Queries are executed on the <code>worker</code> services, not the <code>server</code> service. If you didn’t <code>pip install hl7</code> on the workers then you’ll see this import error.</p>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/2</link>
+        <pubDate>Thu, 31 Mar 2022 00:59:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-2</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+      <item>
+        <title>Python Data source and PIP install new libraries</title>
+        <dc:creator><![CDATA[SunlinkHealthTech]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I have installed a new python library via pip on the redash server docker container:</p>
+<blockquote>
+<blockquote>
+<p>pip install hl7<br>
+The install is successful and shows when I run:<br>
+pip list<br>
+I then created the python data source:<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3bc7f6d812482b4995c4959551bdc63db80a90b2.png" alt="image" data-base62-sha1="8wQAIeE5hqfJVzN6JTa9rHAYgdc" width="603" height="434"><br>
+when I try to import the new module that was just installed I get:<br>
+Error running query: <strong>&lt;class ‘ModuleNotFoundError’&gt; No module named ‘hl7’</strong></p>
+</blockquote>
+</blockquote>
+<p>Does redash need to be reloaded after new python libraries are installed</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.1.0 (2589bef1)</li>
+<li>Browser/OS:Chrome</li>
+<li>How did you install Redash: Docker via docker-compose</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227/1</link>
+        <pubDate>Tue, 29 Mar 2022 21:12:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10227-1</guid>
+        <source url="https://discuss.redash.io/t/python-data-source-and-pip-install-new-libraries/10227.rss">Python Data source and PIP install new libraries</source>
+      </item>
+  </channel>
+</rss>

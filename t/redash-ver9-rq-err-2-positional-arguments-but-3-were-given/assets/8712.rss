@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash ver9 rq err, &quot;2 positional arguments but 3 were given&quot;</title>
+    <link>https://discuss.redash.io/t/redash-ver9-rq-err-2-positional-arguments-but-3-were-given/8712</link>
+    <description>From v8, I tried to migrate v9.
+Since celery is removed and RQ is added, I updated supervisor conf
+however, worker doesn&#39;t work as it expected
+
+Can I get advice for this?
+```
+
+[inet_http_server]
+port = 127.0.0.1:9001
+
+[program:redash_server]
+command=/opt/redash/current/bin/run gunicorn -b 127.0.0.1:5000 --name redash -w 4 --max-requests 1000 redash.wsgi:app
+directory=/opt/redash/current
+process_name=redash_server
+user=redash
+numprocs=1
+autostart=true
+autorestart=true
+
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[program:scheduler]
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq scheduler
+process_name=%(program_name)s-%(process_num)s
+user=redash
+numprocs=1
+directory=/opt/redash/current
+stopsignal=TERM
+autostart=true
+autorestart=true
+
+[program:worker_adhoc]
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq worker queries
+process_name=%(program_name)s-%(process_num)s
+user=redash
+numprocs=3
+directory=/opt/redash/current
+stopsignal=TERM
+autostart=true
+autorestart=true
+
+[program:worker]
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq worker emails default
+process_name=%(program_name)s-%(process_num)s
+user=redash
+numprocs=1
+directory=/opt/redash/current
+stopsignal=TERM
+autostart=true
+autorestart=true
+
+[eventlistener:worker_healthcheck]
+serverurl=AUTO
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq healthcheck
+events=TICK_60
+```
+
+worker error
+
+
+```
+==&gt; /var/log/supervisor/worker-0-stderr---supervisor-r4461dcp.log &lt;==
+ * Tip: There are .env or .flaskenv files present. Do &quot;pip install python-dotenv&quot; to use them.
+[2021-07-07 11:42:35,195][PID:24749][INFO][rq.worker] Worker rq:worker:cc7abf1886a347aba8cf1201faeb4de8: started, version 1.5.0
+[2021-07-07 11:42:35,195][PID:24749][INFO][rq.worker] *** Listening on emails, default...
+[2021-07-07 11:42:35,199][PID:24749][INFO][rq.worker] default: 472d7087-2be7-471d-b4ff-011161970747
+[2021-07-07 11:42:35,206][PID:24749][ERROR][rq.worker] Worker rq:worker:cc7abf1886a347aba8cf1201faeb4de8: found an unhandled exception, quitting...
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.7/dist-packages/rq/worker.py&quot;, line 552, in work
+    self.execute_job(job, queue)
+  File &quot;/opt/redash/redash-9.0.0-beta/redash/tasks/worker.py&quot;, line 56, in execute_job
+    super().execute_job(job, queue)
+  File &quot;/usr/local/lib/python3.7/dist-packages/rq/worker.py&quot;, line 776, in execute_job
+    self.monitor_work_horse(job, queue)
+TypeError: monitor_work_horse() takes 2 positional arguments but 3 were given
+[2021-07-07 11:42:35,263][PID:24772][INFO][rq.job.redash.tasks.alerts] job.func_name=redash.tasks.alerts.check_alerts_for_query job.id=472d7087-2be7-471d-b4ff-011161970747 Checking alert (101) of query 3401.
+
+```
+
+### Technical details:
+
+* Redash Version: ver 9
+* Browser/OS: ubuntu 18
+* How did you install Redash: self hosted</description>
+    
+    <lastBuildDate>Wed, 07 Jul 2021 12:52:03 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-ver9-rq-err-2-positional-arguments-but-3-were-given/8712.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash ver9 rq err, &quot;2 positional arguments but 3 were given&quot;</title>
+        <dc:creator><![CDATA[Daniel_Park]]></dc:creator>
+        <description><![CDATA[
+            <p>From v8, I tried to migrate v9.<br>
+Since celery is removed and RQ is added, I updated supervisor conf<br>
+however, worker doesn’t work as it expected</p>
+<p>Can I get advice for this?</p>
+<pre><code class="lang-auto">
+[inet_http_server]
+port = 127.0.0.1:9001
+
+[program:redash_server]
+command=/opt/redash/current/bin/run gunicorn -b 127.0.0.1:5000 --name redash -w 4 --max-requests 1000 redash.wsgi:app
+directory=/opt/redash/current
+process_name=redash_server
+user=redash
+numprocs=1
+autostart=true
+autorestart=true
+
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[program:scheduler]
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq scheduler
+process_name=%(program_name)s-%(process_num)s
+user=redash
+numprocs=1
+directory=/opt/redash/current
+stopsignal=TERM
+autostart=true
+autorestart=true
+
+[program:worker_adhoc]
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq worker queries
+process_name=%(program_name)s-%(process_num)s
+user=redash
+numprocs=3
+directory=/opt/redash/current
+stopsignal=TERM
+autostart=true
+autorestart=true
+
+[program:worker]
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq worker emails default
+process_name=%(program_name)s-%(process_num)s
+user=redash
+numprocs=1
+directory=/opt/redash/current
+stopsignal=TERM
+autostart=true
+autorestart=true
+
+[eventlistener:worker_healthcheck]
+serverurl=AUTO
+command=/opt/redash/current/bin/run /opt/redash/current/manage.py rq healthcheck
+events=TICK_60
+</code></pre>
+<p>worker error</p>
+<pre><code class="lang-auto">==&gt; /var/log/supervisor/worker-0-stderr---supervisor-r4461dcp.log &lt;==
+ * Tip: There are .env or .flaskenv files present. Do "pip install python-dotenv" to use them.
+[2021-07-07 11:42:35,195][PID:24749][INFO][rq.worker] Worker rq:worker:cc7abf1886a347aba8cf1201faeb4de8: started, version 1.5.0
+[2021-07-07 11:42:35,195][PID:24749][INFO][rq.worker] *** Listening on emails, default...
+[2021-07-07 11:42:35,199][PID:24749][INFO][rq.worker] default: 472d7087-2be7-471d-b4ff-011161970747
+[2021-07-07 11:42:35,206][PID:24749][ERROR][rq.worker] Worker rq:worker:cc7abf1886a347aba8cf1201faeb4de8: found an unhandled exception, quitting...
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/dist-packages/rq/worker.py", line 552, in work
+    self.execute_job(job, queue)
+  File "/opt/redash/redash-9.0.0-beta/redash/tasks/worker.py", line 56, in execute_job
+    super().execute_job(job, queue)
+  File "/usr/local/lib/python3.7/dist-packages/rq/worker.py", line 776, in execute_job
+    self.monitor_work_horse(job, queue)
+TypeError: monitor_work_horse() takes 2 positional arguments but 3 were given
+[2021-07-07 11:42:35,263][PID:24772][INFO][rq.job.redash.tasks.alerts] job.func_name=redash.tasks.alerts.check_alerts_for_query job.id=472d7087-2be7-471d-b4ff-011161970747 Checking alert (101) of query 3401.
+
+</code></pre>
+<h3>
+<a name="technical-details-1" class="anchor" href="https://discuss.redash.io#technical-details-1"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: ver 9</li>
+<li>Browser/OS: ubuntu 18</li>
+<li>How did you install Redash: self hosted</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-ver9-rq-err-2-positional-arguments-but-3-were-given/8712/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-ver9-rq-err-2-positional-arguments-but-3-were-given/8712/1</link>
+        <pubDate>Wed, 07 Jul 2021 09:36:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8712-1</guid>
+        <source url="https://discuss.redash.io/t/redash-ver9-rq-err-2-positional-arguments-but-3-were-given/8712.rss">Redash ver9 rq err, &quot;2 positional arguments but 3 were given&quot;</source>
+      </item>
+  </channel>
+</rss>

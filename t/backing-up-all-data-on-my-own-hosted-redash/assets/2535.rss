@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Backing up all data on my own hosted redash</title>
+    <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535</link>
+    <description>Hi,
+
+We are hosting our own redash instance (I worked with it in the past - it rocks!)
+I&#39;d like to create a daily backup of all the data, so that in the case where we need to re-install the instance, we can just restore it from the backup.
+
+What is the best way to do it?
+I noticed that there are numerous api endpoints I can call (/api/[queries|dashboards|...]), but I couldn&#39;t find any documentation for them, it is not clear if I need anything else and how what is the process to restore things with the data I got from the above api.
+
+Thanks,
+Yotam.
+
+P.S., btw, the in only reason for us to be using a self-hosted redash is security...</description>
+    
+    <lastBuildDate>Wed, 13 Apr 2022 14:20:14 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[matt.au]]></dc:creator>
+        <description><![CDATA[
+            <p>I needed to move my hosted redash server from one cloud platform to another, and since they were different platforms, snapshots didn’t work.  I followed <a class="mention" href="https://discuss.redash.io/u/justinclift">@justinclift</a> directions, and it worked for me.   Here are my steps:</p>
+<ol>
+<li>start a fresh instance of redash on a new server.  (I used the official AMI from redash)</li>
+<li>shutdown all the docker containers on this server.</li>
+<li>shutdown all the docker containers on the old redash server, and zip up /opt/redash.  I zip up /opt/redash and not just /opt/redash/postgres-data because I want to copy all my settings in the /opt/redash/env file to the new server as well, as it contains many important configuration such as the REDASH_SECRET_KEY</li>
+<li>copy over the zip file and replace /opt/redash with its content</li>
+<li>start redash containers with: docker-compose up -d</li>
+</ol>
+<p>I find this method much better than dumping the postgres database, which didn’t work well for me.  This upgrades my fresh instance to the redash version I was running, since the zip file included the docker-compose.yml from my old server, and the AMI version was running an older version.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/19</link>
+        <pubDate>Wed, 13 Apr 2022 14:20:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-19</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[yaj1245]]></dc:creator>
+        <description><![CDATA[
+            <p>Can anyone please provide a documentation for connecting postgres via VM? I couldn’t seem to find any docs. Thank you</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/18</link>
+        <pubDate>Sun, 12 Jul 2020 02:44:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-18</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[leolle]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, did you figure it out back&amp;restore via the sql file method?</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/17</link>
+        <pubDate>Thu, 02 Jan 2020 03:04:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-17</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Ahhh, that’s interesting.  It looks like the SQL commands in the backup aren’t using CASCADE properly, and that’s causing problems.  Looks like an alternative approach to backing up is probably needed. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=6" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>An important thing I noticed after writing down the steps I first used… is that the PostgreSQL database is actually created in a standard directory (for me, it’s <code>/opt/redash/postgres-data</code>), outside of the Docker containers.  When the Docker PostgreSQL container starts, it mounts that directory into itself and reads/writes data there.</p>
+<p>So, a much easier approach to backup the database is to shut down the Docker containers, then copy that <code>/opt/redash/postgres-data</code> directory somewhere safe.  That’ll be your backup. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=6" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p>To copy the old Redash4 database across to your newer Redash 6 installation, I’d do this:</p>
+<ol>
+<li>Make a backup of your Redash4 database for safety (eg in case something goes wrong)
+<ul>
+<li>On the Redash 4 server: <code>rsync -aP /opt/redash/postgres-data /somewhere/safe</code>
+</li>
+</ul>
+</li>
+<li>Make a backup of your Redash6 database for safety (again, in case something goes wrong)
+<ul>
+<li>On the Redash 6 server: <code>rsync -aP /opt/redash/postgres-data /somewhere/else/safe</code>
+</li>
+</ul>
+</li>
+<li>Delete the Redash6 database directory (<code>/opt/redash/postgres-data</code>)
+<ul>
+<li>On the Redash 6 server: <code>rm -rf /opt/redash/postgres-data</code>
+</li>
+</ul>
+</li>
+<li>Copy the Redash 4 database to the Redash 6 server
+<ul>
+<li>The command really depends where you’ve put stuff. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=6" title=":slight_smile:" class="emoji" alt=":slight_smile:">
+</li>
+</ul>
+</li>
+<li>Upgrade the Redash 4 database to Redash 6
+<ul>
+<li>On the Redash 6 server: <code>docker-compose run --rm server manage db upgrade</code>
+</li>
+<li>(that’s copied from the <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="nofollow noopener">How to Upgrade</a> page.</li>
+</ul>
+</li>
+</ol>
+<p>That’s the concept I’m thinking of anyway.  Make sure you backup everything first, (etc) and have read the How to Upgrade page before you try it.</p>
+<p>Does it make sense so far? <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=6" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/16</link>
+        <pubDate>Wed, 13 Mar 2019 07:45:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-16</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[hananv]]></dc:creator>
+        <description><![CDATA[
+            <p>postgres_1          | ERROR:  column queries.tags does not exist at character 840<br>
+postgres_1          | STATEMENT:  SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at<br>
+postgres_1          |   FROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id<br>
+postgres_1          |   WHERE queries.schedule IS NOT NULL ORDER BY queries.id<br>
+postgres_1          | ERROR:  column users.disabled_at does not exist at character 348<br>
+postgres_1          | STATEMENT:  SELECT users.profile_image_url AS users_profile_image_url, users.groups AS users_groups, users.updated_at AS users_updated_at, users.created_at AS users_created_at, users.id AS users_id, users.org_id AS users_org_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.api_key AS users_api_key, users.disabled_at AS users_disabled_at<br>
+postgres_1          |   FROM users<br>
+postgres_1          |   WHERE users.id = ‘1’ AND 1 = users.org_id<br>
+postgres_1          | ERROR:  column users.disabled_at does not exist at character 348<br>
+postgres_1          | STATEMENT:  SELECT users.profile_image_url AS users_profile_image_url, users.groups AS users_groups, users.updated_at AS users_updated_at, users.created_at AS users_created_at, users.id AS users_id, users.org_id AS users_org_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.api_key AS users_api_key, users.disabled_at AS users_disabled_at<br>
+postgres_1          |   FROM users<br>
+postgres_1          |   WHERE users.id = ‘1’ AND 1 = users.org_id<br>
+postgres_1          | ERROR:  column queries.tags does not exist at character 840<br>
+postgres_1          | STATEMENT:  SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at<br>
+postgres_1          |   FROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id<br>
+postgres_1          |   WHERE queries.schedule IS NOT NULL ORDER BY queries.id<br>
+postgres_1          | ERROR:  column queries.tags does not exist at character 840<br>
+postgres_1          | STATEMENT:  SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at<br>
+postgres_1          |   FROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id<br>
+postgres_1          |   WHERE queries.schedule IS NOT NULL ORDER BY queries.id<br>
+postgres_1          | ERROR:  column queries.tags does not exist at character 840<br>
+postgres_1          | STATEMENT:  SELECT queries.query AS queries_query, queries.updated_at AS queries_updated_at, queries.created_at AS queries_created_at, queries.id AS queries_id, queries.version AS queries_version, queries.org_id AS queries_org_id, queries.data_source_id AS queries_data_source_id, queries.latest_query_data_id AS queries_latest_query_data_id, queries.name AS queries_name, queries.description AS queries_description, queries.query_hash AS queries_query_hash, queries.api_key AS queries_api_key, queries.user_id AS queries_user_id, queries.last_modified_by_id AS queries_last_modified_by_id, queries.is_archived AS queries_is_archived, queries.is_draft AS queries_is_draft, queries.schedule AS queries_schedule, queries.schedule_failures AS queries_schedule_failures, queries.options AS queries_options, queries.search_vector AS queries_search_vector, queries.tags AS queries_tags, query_results_1.id AS query_results_1_id, query_results_1.retrieved_at AS query_results_1_retrieved_at<br>
+postgres_1          |   FROM queries LEFT OUTER JOIN query_results AS query_results_1 ON query_results_1.id = queries.latest_query_data_id<br>
+postgres_1          |   WHERE queries.schedule IS NOT NULL ORDER BY queries.id<br>
+postgres_1          | ERROR:  column queries.tags does not exist at character 840</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/15</link>
+        <pubDate>Wed, 13 Mar 2019 06:04:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-15</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[hananv]]></dc:creator>
+        <description><![CDATA[
+            <hr>
+<p>erver_1            | [2019-03-13 05:40:53,080] ERROR in app: Exception on /login [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1988, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1641, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_restful/<strong>init</strong>.py”, line 271, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1544, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1639, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1625, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_limiter/extension.py”, line 442, in __inner<br>
+server_1            |     return obj(*a, **k)<br>
+server_1            |   File “/app/redash/handlers/authentication.py”, line 104, in login<br>
+server_1            |     if current_org == None and not settings.MULTI_ORG:<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 365, in <br>
+server_1            |     <strong>eq</strong> = lambda x, o: x._get_current_object() == o<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/app/redash/authentication/org_resolving.py”, line 14, in _get_current_org<br>
+server_1            |     <a href="http://g.org" rel="nofollow noopener">g.org</a> = Organization.get_by_slug(slug)<br>
+server_1            |   File “/app/redash/models.py”, line 325, in get_by_slug<br>
+server_1            |     return cls.query.filter(cls.slug == slug).first()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2825, in first<br>
+server_1            |     ret = list(self[0:1])<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2617, in <strong>getitem</strong><br>
+server_1            |     return list(res)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2925, in <strong>iter</strong><br>
+server_1            |     return self._execute_and_instances(context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2948, in _execute_and_instances<br>
+server_1            |     result = conn.execute(querycontext.statement, self._params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+server_1            |     return meth(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+server_1            |     compiled_sql, distilled_params<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+server_1            |     exc_info<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py”, line 203, in raise_from_cause<br>
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py”, line 507, in do_execute<br>
+server_1            |     cursor.execute(statement, parameters)<br>
+server_1            | OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly<br>
+server_1            |   This probably means the server terminated abnormally<br>
+server_1            |   before or while processing the request.<br>
+server_1            |  [SQL: ‘SELECT organizations.updated_at AS organizations_updated_at, organizations.created_at AS organizations_created_at, organizations.id AS organizations_id, organizations.name AS organizations_name, organizations.slug AS organizations_slug, organizations.settings AS organizations_settings \nFROM organizations \nWHERE organizations.slug = %(slug_1)s \n LIMIT %(param_1)s’] [parameters: {‘slug_1’: ‘default’, ‘param_1’: 1}] (Background on this error at: <a href="http://sqlalche.me/e/e3q8" rel="nofollow noopener">http://sqlalche.me/e/e3q8</a>)<br>
+server_1            | [2019-03-13 05:40:53,080][PID:13][ERROR][redash] Exception on /login [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1988, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1641, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_restful/<strong>init</strong>.py”, line 271, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1544, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1639, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1625, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_limiter/extension.py”, line 442, in __inner<br>
+server_1            |     return obj(*a, **k)<br>
+server_1            |   File “/app/redash/handlers/authentication.py”, line 104, in login<br>
+server_1            |     if current_org == None and not settings.MULTI_ORG:<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 365, in <br>
+server_1            |     <strong>eq</strong> = lambda x, o: x._get_current_object() == o<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/app/redash/authentication/org_resolving.py”, line 14, in _get_current_org<br>
+server_1            |     <a href="http://g.org" rel="nofollow noopener">g.org</a> = Organization.get_by_slug(slug)<br>
+server_1            |   File “/app/redash/models.py”, line 325, in get_by_slug<br>
+server_1            |     return cls.query.filter(cls.slug == slug).first()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2825, in first<br>
+server_1            |     ret = list(self[0:1])<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2617, in <strong>getitem</strong><br>
+server_1            |     return list(res)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2925, in <strong>iter</strong><br>
+server_1            |     return self._execute_and_instances(context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2948, in _execute_and_instances<br>
+server_1            |     result = conn.execute(querycontext.statement, self._params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+server_1            |     return meth(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+server_1            |     compiled_sql, distilled_params<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+server_1            |     exc_info<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py”, line 203, in raise_from_cause<br>
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py”, line 507, in do_execute<br>
+server_1            |     cursor.execute(statement, parameters)<br>
+server_1            | OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly<br>
+server_1            |   This probably means the server terminated abnormally<br>
+server_1            |   before or while processing the request.<br>
+server_1            |  [SQL: ‘SELECT organizations.updated_at AS organizations_updated_at, organizations.created_at AS organizations_created_at, organizations.id AS organizations_id, organizations.name AS organizations_name, organizations.slug AS organizations_slug, organizations.settings AS organizations_settings \nFROM organizations \nWHERE organizations.slug = %(slug_1)s \n LIMIT %(param_1)s’] [parameters: {‘slug_1’: ‘default’, ‘param_1’: 1}] (Background on this error at: <a href="http://sqlalche.me/e/e3q8" rel="nofollow noopener">http://sqlalche.me/e/e3q8</a>)<br>
+server_1            | [2019-03-13 05:40:53,092][PID:13][INFO][metrics] method=GET path=/login endpoint=redash_login status=500 content_type=? content_length=-1 duration=17.29 query_count=0 query_duration=0.00<br>
+server_1            | [2019-03-13 05:40:53,666] ERROR in app: Exception on /favicon.ico [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1988, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1641, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_restful/<strong>init</strong>.py”, line 271, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1544, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1639, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1625, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 226, in decorated_view<br>
+server_1            |     elif not current_user.is_authenticated:<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 343, in <strong>getattr</strong><br>
+server_1            |     return getattr(self._get_current_object(), name)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 26, in <br>
+server_1            |     current_user = LocalProxy(lambda: _get_user())<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 302, in _get_user<br>
+server_1            |     current_app.login_manager._load_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 317, in _load_user<br>
+server_1            |     return self.reload_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 279, in reload_user<br>
+server_1            |     user = self.user_callback(user_id)<br>
+server_1            |   File “/app/redash/authentication/<strong>init</strong>.py”, line 44, in load_user<br>
+server_1            |     org = current_org._get_current_object()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/app/redash/authentication/org_resolving.py”, line 14, in _get_current_org<br>
+server_1            |     <a href="http://g.org" rel="nofollow noopener">g.org</a> = Organization.get_by_slug(slug)<br>
+server_1            |   File “/app/redash/models.py”, line 325, in get_by_slug<br>
+server_1            |     return cls.query.filter(cls.slug == slug).first()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2825, in first<br>
+server_1            |     ret = list(self[0:1])<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2617, in <strong>getitem</strong><br>
+server_1            |     return list(res)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2925, in <strong>iter</strong><br>
+server_1            |     return self._execute_and_instances(context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2948, in _execute_and_instances<br>
+server_1            |     result = conn.execute(querycontext.statement, self._params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+server_1            |     return meth(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+server_1            |     compiled_sql, distilled_params<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+server_1            |     exc_info<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py”, line 203, in raise_from_cause<br>
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py”, line 507, in do_execute<br>
+server_1            |     cursor.execute(statement, parameters)<br>
+server_1            | OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly<br>
+server_1            |   This probably means the server terminated abnormally<br>
+server_1            |   before or while processing the request.<br>
+server_1            |  [SQL: ‘SELECT organizations.updated_at AS organizations_updated_at, organizations.created_at AS organizations_created_at, organizations.id AS organizations_id, organizations.name AS organizations_name, organizations.slug AS organizations_slug, organizations.settings AS organizations_settings \nFROM organizations \nWHERE organizations.slug = %(slug_1)s \n LIMIT %(param_1)s’] [parameters: {‘slug_1’: ‘default’, ‘param_1’: 1}] (Background on this error at: <a href="http://sqlalche.me/e/e3q8" rel="nofollow noopener">http://sqlalche.me/e/e3q8</a>)<br>
+server_1            | [2019-03-13 05:40:53,666][PID:19][ERROR][redash] Exception on /favicon.ico [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1988, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1641, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_restful/<strong>init</strong>.py”, line 271, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1544, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1639, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1625, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 226, in decorated_view<br>
+server_1            |     elif not current_user.is_authenticated:<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 343, in <strong>getattr</strong><br>
+server_1            |     return getattr(self._get_current_object(), name)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 26, in <br>
+server_1            |     current_user = LocalProxy(lambda: _get_user())<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 302, in _get_user<br>
+server_1            |     current_app.login_manager._load_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 317, in _load_user<br>
+server_1            |     return self.reload_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 279, in reload_user<br>
+server_1            |     user = self.user_callback(user_id)<br>
+server_1            |   File “/app/redash/authentication/<strong>init</strong>.py”, line 44, in load_user<br>
+server_1            |     org = current_org._get_current_object()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/app/redash/authentication/org_resolving.py”, line 14, in _get_current_org<br>
+server_1            |     <a href="http://g.org" rel="nofollow noopener">g.org</a> = Organization.get_by_slug(slug)<br>
+server_1            |   File “/app/redash/models.py”, line 325, in get_by_slug<br>
+server_1            |     return cls.query.filter(cls.slug == slug).first()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2825, in first<br>
+server_1            |     ret = list(self[0:1])<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2617, in <strong>getitem</strong><br>
+server_1            |     return list(res)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2925, in <strong>iter</strong><br>
+server_1            |     return self._execute_and_instances(context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2948, in _execute_and_instances<br>
+server_1            |     result = conn.execute(querycontext.statement, self._params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+server_1            |     return meth(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+server_1            |     compiled_sql, distilled_params<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+server_1            |     exc_info<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py”, line 203, in raise_from_cause<br>
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py”, line 507, in do_execute<br>
+server_1            |     cursor.execute(statement, parameters)<br>
+server_1            | OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly<br>
+server_1            |   This probably means the server terminated abnormally</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/14</link>
+        <pubDate>Wed, 13 Mar 2019 06:04:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-14</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[hananv]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/justinclift">@justinclift</a><br>
+logs are long</p>
+<p>Redash6 was install via dockers on new computer and i can access to it at test:5000<br>
+then i tried to restore DB from another Redash4 DB</p>
+<p>hanan@test:~<span class="math"> docker-compose stop
+Stopping redash_nginx_1            ... done
+Stopping redash_server_1           ... done
+Stopping redash_adhoc_worker_1     ... done
+Stopping redash_scheduled_worker_1 ... done
+Stopping redash_scheduler_1        ... done
+Stopping redash_postgres_1         ... done
+Stopping redash_redis_1            ... done
+hanan@test:~</span><br>
+hanan@test:~<span class="math">
+hanan@test:~</span><br>
+hanan@test:~$ docker inspect --format ‘{{ .NetworkSettings.Networks.redash_default.IPAddress }}’ redash_postgres_1</p>
+<h2>hanan@test:~<span class="math"> docker start redash_postgres_1
+redash_postgres_1
+hanan@test:~</span> docker inspect --format ‘{{ .NetworkSettings.Networks.redash_default.IPAddress }}’ redash_postgres_1<br>
+172.18.0.2<br>
+hanan@test:~$ psql -h 172.18.0.2 -U postgres postgres &lt; backup.sql<br>
+Password for user postgres:<br>
+SET<br>
+SET<br>
+SET<br>
+SET<br>
+SET<br>
+SET<br>
+SET<br>
+SET<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+DROP TRIGGER<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+DROP INDEX<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ERROR:  cannot drop constraint users_pkey on table users because other objects depend on it<br>
+DETAIL:  constraint favorites_user_id_fkey on table favorites depends on index users_pkey<br>
+HINT:  Use DROP … CASCADE to drop the dependent objects too.<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ERROR:  cannot drop constraint organizations_pkey on table organizations because other objects depend on it<br>
+DETAIL:  constraint favorites_org_id_fkey on table favorites depends on index organizations_pkey<br>
+HINT:  Use DROP … CASCADE to drop the dependent objects too.<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+ERROR:  cannot drop table users because other objects depend on it<br>
+DETAIL:  constraint favorites_user_id_fkey on table favorites depends on table users<br>
+HINT:  Use DROP … CASCADE to drop the dependent objects too.<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+ERROR:  cannot drop table organizations because other objects depend on it<br>
+DETAIL:  constraint favorites_org_id_fkey on table favorites depends on table organizations<br>
+HINT:  Use DROP … CASCADE to drop the dependent objects too.<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP TABLE<br>
+DROP SEQUENCE<br>
+DROP TABLE<br>
+DROP FUNCTION<br>
+DROP EXTENSION<br>
+ERROR:  cannot drop schema public because other objects depend on it<br>
+DETAIL:  table organizations depends on schema public<br>
+table users depends on schema public<br>
+table favorites depends on schema public<br>
+HINT:  Use DROP … CASCADE to drop the dependent objects too.<br>
+COMMENT<br>
+ERROR:  schema “public” already exists<br>
+ALTER SCHEMA<br>
+COMMENT<br>
+CREATE EXTENSION<br>
+COMMENT<br>
+SET<br>
+CREATE FUNCTION<br>
+ALTER FUNCTION<br>
+SET<br>
+SET<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+ERROR:  relation “organizations” already exists<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+ERROR:  relation “users” already exists<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+CREATE TABLE<br>
+ALTER TABLE<br>
+CREATE SEQUENCE<br>
+ALTER TABLE<br>
+ALTER SEQUENCE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+COPY 0<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 1<br>
+COPY 0<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 0<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 7<br>
+setval</h2>
+<pre><code>  7
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 201<br>
+setval</h2>
+<pre><code>201
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 18<br>
+setval</h2>
+<pre><code> 18
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 2<br>
+setval</h2>
+<pre><code>  2
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 1<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 28436<br>
+setval</h2>
+<p>28436<br>
+(1 row)</p>
+<h2>COPY 4<br>
+setval</h2>
+<pre><code>  4
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 0<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 1<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 182<br>
+setval</h2>
+<pre><code>182
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 349<br>
+setval</h2>
+<p>4666<br>
+(1 row)</p>
+<h2>COPY 0<br>
+setval</h2>
+<pre><code>  1
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 39<br>
+setval</h2>
+<pre><code> 39
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 247<br>
+setval</h2>
+<pre><code>258
+</code></pre>
+<p>(1 row)</p>
+<h2>COPY 56<br>
+setval</h2>
+<pre><code> 69
+</code></pre>
+<p>(1 row)</p>
+<p>ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ERROR:  multiple primary keys for table “organizations” are not allowed<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ERROR:  multiple primary keys for table “users” are not allowed<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE INDEX<br>
+CREATE TRIGGER<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+ALTER TABLE<br>
+REVOKE<br>
+REVOKE<br>
+GRANT<br>
+GRANT</p>
+<hr>
+<p>server_1            | [2019-03-12 22:06:25,885] ERROR in app: Exception on / [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1988, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1641, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_restful/<strong>init</strong>.py”, line 271, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1544, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1639, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1625, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 226, in decorated_view<br>
+server_1            |     elif not current_user.is_authenticated:<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 343, in <strong>getattr</strong><br>
+server_1            |     return getattr(self._get_current_object(), name)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 26, in <br>
+server_1            |     current_user = LocalProxy(lambda: _get_user())<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 302, in _get_user<br>
+server_1            |     current_app.login_manager._load_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 311, in _load_user<br>
+server_1            |     return self._load_from_cookie(request.cookies[cookie_name])<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 350, in _load_from_cookie<br>
+server_1            |     self.reload_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 279, in reload_user<br>
+server_1            |     user = self.user_callback(user_id)<br>
+server_1            |   File “/app/redash/authentication/<strong>init</strong>.py”, line 46, in load_user<br>
+server_1            |     user = models.User.get_by_id_and_org(user_id, org)<br>
+server_1            |   File “/app/redash/models.py”, line 250, in get_by_id_and_org<br>
+server_1            |     return db.session.query(cls).filter(cls.id == object_id, <a href="http://cls.org" rel="nofollow noopener">cls.org</a> == org).one()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2884, in one<br>
+server_1            |     ret = self.one_or_none()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2854, in one_or_none<br>
+server_1            |     ret = list(self)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2925, in <strong>iter</strong><br>
+server_1            |     return self._execute_and_instances(context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2948, in _execute_and_instances<br>
+server_1            |     result = conn.execute(querycontext.statement, self._params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+server_1            |     return meth(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+server_1            |     compiled_sql, distilled_params<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+server_1            |     exc_info<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py”, line 203, in raise_from_cause<br>
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py”, line 507, in do_execute<br>
+server_1            |     cursor.execute(statement, parameters)<br>
+server_1            | ProgrammingError: (psycopg2.ProgrammingError) column users.disabled_at does not exist<br>
+server_1            | LINE 1: …rs_password_hash, users.api_key AS users_api_key, users.disa…<br>
+server_1            |                                                              ^<br>
+server_1            |  [SQL: ‘SELECT users.profile_image_url AS users_profile_image_url, users.groups AS users_groups, users.updated_at AS users_updated_at, users.created_at AS users_created_at, users.id AS users_id, users.org_id AS users_org_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.api_key AS users_api_key, users.disabled_at AS users_disabled_at \nFROM users \nWHERE users.id = %(id_1)s AND %(param_1)s = users.org_id’] [parameters: {‘id_1’: u’1’, ‘param_1’: 1}] (Background on this error at: <a href="http://sqlalche.me/e/f405" rel="nofollow noopener">http://sqlalche.me/e/f405</a>)<br>
+server_1            | [2019-03-12 22:06:25,885][PID:19][ERROR][redash] Exception on / [GET]<br>
+server_1            | Traceback (most recent call last):<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1988, in wsgi_app<br>
+server_1            |     response = self.full_dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1641, in full_dispatch_request<br>
+server_1            |     rv = self.handle_user_exception(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_restful/<strong>init</strong>.py”, line 271, in error_router<br>
+server_1            |     return original_handler(e)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1544, in handle_user_exception<br>
+server_1            |     reraise(exc_type, exc_value, tb)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1639, in full_dispatch_request<br>
+server_1            |     rv = self.dispatch_request()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask/app.py”, line 1625, in dispatch_request<br>
+server_1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 226, in decorated_view<br>
+server_1            |     elif not current_user.is_authenticated:<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 343, in <strong>getattr</strong><br>
+server_1            |     return getattr(self._get_current_object(), name)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/werkzeug/local.py”, line 302, in _get_current_object<br>
+server_1            |     return self.__local()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 26, in <br>
+server_1            |     current_user = LocalProxy(lambda: _get_user())<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/utils.py”, line 302, in _get_user<br>
+server_1            |     current_app.login_manager._load_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 311, in _load_user<br>
+server_1            |     return self._load_from_cookie(request.cookies[cookie_name])<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 350, in _load_from_cookie<br>
+server_1            |     self.reload_user()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py”, line 279, in reload_user<br>
+server_1            |     user = self.user_callback(user_id)<br>
+server_1            |   File “/app/redash/authentication/<strong>init</strong>.py”, line 46, in load_user<br>
+server_1            |     user = models.User.get_by_id_and_org(user_id, org)<br>
+server_1            |   File “/app/redash/models.py”, line 250, in get_by_id_and_org<br>
+server_1            |     return db.session.query(cls).filter(cls.id == object_id, <a href="http://cls.org" rel="nofollow noopener">cls.org</a> == org).one()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2884, in one<br>
+server_1            |     ret = self.one_or_none()<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2854, in one_or_none<br>
+server_1            |     ret = list(self)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2925, in <strong>iter</strong><br>
+server_1            |     return self._execute_and_instances(context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py”, line 2948, in _execute_and_instances<br>
+server_1            |     result = conn.execute(querycontext.statement, self._params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+server_1            |     return meth(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+server_1            |     return connection._execute_clauseelement(self, multiparams, params)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+server_1            |     compiled_sql, distilled_params<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+server_1            |     exc_info<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py”, line 203, in raise_from_cause<br>
+server_1            |     reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+server_1            |     context)<br>
+server_1            |   File “/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py”, line 507, in do_execute<br>
+server_1            |     cursor.execute(statement, parameters)<br>
+server_1            | ProgrammingError: (psycopg2.ProgrammingError) column users.disabled_at does not exist<br>
+server_1            | LINE 1: …rs_password_hash, users.api_key AS users_api_key, users.disa…</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/13</link>
+        <pubDate>Wed, 13 Mar 2019 06:03:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-13</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/hananv">@hananv</a> No worries. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=6" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>Are you ok to cut-n-paste the error message for the server here?  Also, was the error when you were doing the backup, the upgrade, or starting the server after the upgrade?</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/12</link>
+        <pubDate>Tue, 05 Mar 2019 10:12:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-12</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[hananv]]></dc:creator>
+        <description><![CDATA[
+            <p>yes, i still need help , thanks</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/11</link>
+        <pubDate>Mon, 04 Mar 2019 05:17:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-11</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Oops, didn’t see this.  Did you get it figured out, or do you still need help with it? <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=6" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/10</link>
+        <pubDate>Mon, 04 Mar 2019 04:23:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-10</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[hananv]]></dc:creator>
+        <description><![CDATA[
+            <p>I have the same issue of internal server error<br>
+i’m using docker images and i tried to backup data of one server (4.0) and move it to another server (6.0)<br>
+I follow this instruction with these instructions</p><aside class="quote quote-modified" data-post="1" data-topic="3041">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/justinclift/40/811_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/exact-steps-needed-for-upgrade/3041">Exact steps needed for upgrade?</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Issue Summary
+It turns out the docker image based redash I’m using is now outdated (v5), whereas there’s a newer (v6) version available. 
+However, the <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="noopener nofollow ugc">“documentation” on how to upgrade</a> seems to be more of a high level overview, missing the more detailed specifics needed by new Redash users.  For example, the first line of the current doc: 
+
+Make sure to backup your data. You only need to backup your PostgreSQL metadata as the data in Redis is transient. 
+
+For someone new to Redash, that’s really…
+  </blockquote>
+</aside>
+
+<p>but still got server error<br>
+could someone suggest a solution ?</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/9</link>
+        <pubDate>Mon, 18 Feb 2019 21:10:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-9</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[achin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>Thanks for the post, it helped me a lot in setting up redash for the first time.</p>
+<p>Though I am stuck at this point right now where I am not able to get past my login screen after dumping the old data to new screen.</p>
+<p>So now, I am not getting setup redash screen.<br>
+instead, I am getting sign in screen and once I put anything and press enter it gives this error:</p>
+<p><strong>Internal Server Error</strong><br>
+<strong>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</strong></p>
+<p>Not sure what am I missing here.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/8</link>
+        <pubDate>Thu, 06 Dec 2018 11:59:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-8</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[bbrowski]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you arikfr. For others like me who want to move all their quires/users/dashboards from one server to a new server this is what I did to get it working after I copied the backup_filename.sql to the new server (im not using a docker version):</p>
+<p>first stop everything because you cant drop the db without stopping the services that are using the db:<br>
+sudo supervisorctl stop all</p>
+<p>then drop the existing redash db (I would probably would make a backup of this before you do it - like you did to backup the other server but call it something else):<br>
+sudo -u redash dropdb redash</p>
+<p>create an new empty db:<br>
+sudo -u postgres createdb redash --owner=redash</p>
+<p>replace the db with the sql you took from your other instance<br>
+sudo -u redash psql -d redash &lt; backup_filename.sql</p>
+<p>restart everything:<br>
+sudo supervisorctl restart all</p>
+<p>It should be good to go. This works on a clean install where you haven’t set us the server yet and created the admin account. I noticed that on one of the servers that I had created the admin account it was not displaying the new queries (the same email address was used for the admin) - when I checked the .env file there were missing lines (database_url, redis_url, log_level). Once I put them back in and restarted the services it all worked.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/7</link>
+        <pubDate>Mon, 29 Oct 2018 17:14:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-7</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-post="4" data-topic="2535">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bbrowski/40/658_1.png" class="avatar"> bbrowski:</div>
+<blockquote>
+<p>There were a lot of errors telling me about access permissions and that things already exist. I still cant see the queries or the dashboards. What am I doing wrong. I realise it’s probably some noob error.</p>
+</blockquote>
+</aside>
+<p>Maybe your new server already has database created? Just drop it before trying to restore the old one.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/6</link>
+        <pubDate>Sun, 28 Oct 2018 07:54:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-6</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-post="3" data-topic="2535" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/safo/40/293_1.png" class="avatar"> safo:</div>
+<blockquote>
+<p>Follow up Question - I tried to back up the DB using pg_dump and It took a lot of time because of the events table (it has 10M rows) and the query_results table(1M rows). can u please elaborate what this data is used for and if it can be purged?</p>
+</blockquote>
+</aside>
+<p><code>events</code> table can be purged / backed up without data (just the structure). <code>query_results</code> needs to be backed up, although you probably don’t need all the 1M rows (only the ones still referenced by <code>queries.latest_query_data_id</code>). There is a cleanup process that runs once a week, you might need to run it more frequently so it can keep up with deleting the unused query results.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/5</link>
+        <pubDate>Sun, 28 Oct 2018 07:53:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-5</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[bbrowski]]></dc:creator>
+        <description><![CDATA[
+            <p>Im a bit stuck here as well. I created all my queries and some dashboards on a vm and now want to move them all to our production machine.</p>
+<p>I did: sudo -u redash pg_dump &gt; backup_filename.sql<br>
+Then I copied the sql file to the new server - both servers were running the newest and same version of redash.</p>
+<p>on the new server I ran: sudo -u redash psql -d redash &lt; backup_filename.sql</p>
+<p>There were a lot of errors telling me about access permissions and that things already exist. I still cant see the queries or the dashboards. What am I doing wrong. I realise it’s probably some noob error.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/4</link>
+        <pubDate>Mon, 22 Oct 2018 09:27:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-4</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[safo]]></dc:creator>
+        <description><![CDATA[
+            <p>Follow up Question - I tried to back up the DB using pg_dump and It took a lot of time because of the events table (it has 10M rows) and the query_results table(1M rows). can u please elaborate what this data is used for and if it can be purged?</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/3</link>
+        <pubDate>Thu, 18 Oct 2018 11:55:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-3</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi!</p>
+<p>The easiest way is to take a backup of the Postgres database used for metadata by Redash. This way you get a snapshot of everything and there are standard tools to do this backup.</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/2</link>
+        <pubDate>Thu, 18 Oct 2018 07:54:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-2</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+      <item>
+        <title>Backing up all data on my own hosted redash</title>
+        <dc:creator><![CDATA[yotam.ggt]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>We are hosting our own redash instance (I worked with it in the past - it rocks!)<br>
+I’d like to create a daily backup of all the data, so that in the case where we need to re-install the instance, we can just restore it from the backup.</p>
+<p>What is the best way to do it?<br>
+I noticed that there are numerous api endpoints I can call (/api/[queries|dashboards|…]), but I couldn’t find any documentation for them, it is not clear if I need anything else and how what is the process to restore things with the data I got from the above api.</p>
+<p>Thanks,<br>
+Yotam.</p>
+<p>P.S., btw, the in only reason for us to be using a self-hosted redash is security…</p>
+          <p><a href="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535/1</link>
+        <pubDate>Thu, 18 Oct 2018 06:49:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2535-1</guid>
+        <source url="https://discuss.redash.io/t/backing-up-all-data-on-my-own-hosted-redash/2535.rss">Backing up all data on my own hosted redash</source>
+      </item>
+  </channel>
+</rss>

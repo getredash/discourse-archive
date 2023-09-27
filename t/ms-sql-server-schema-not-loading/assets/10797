@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MS SQL Server schema not loading - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+@jesse 
+Redash V10 - Not able to use SQL server datasource to create new queries, not loading schema as well as not saving the query even if you write everything manually. 
+V8 is working fine with similar &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;MS SQL Server schema not loading&#39;" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797" />
+<meta property="og:title" content="MS SQL Server schema not loading" />
+<meta name="twitter:title" content="MS SQL Server schema not loading" />
+<meta property="og:description" content="Issue Summary @jesse  Redash V10 - Not able to use SQL server datasource to create new queries, not loading schema as well as not saving the query even if you write everything manually.  V8 is working fine with similar setup.   Technical details:  Redash Version: V10 Browser/OS: Chrome, Linux How did you install Redash: Docker" />
+<meta name="twitter:description" content="Issue Summary @jesse  Redash V10 - Not able to use SQL server datasource to create new queries, not loading schema as well as not saving the query even if you write everything manually.  V8 is working fine with similar setup.   Technical details:  Redash Version: V10 Browser/OS: Chrome, Linux How did you install Redash: Docker" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="2 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2022-07-21T16:30:19+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"MS SQL Server schema not loading","mainEntity":{"@type":"Question","name":"MS SQL Server schema not loading","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\n<a class=\"mention\" href=\"/u/jesse\">@jesse<\/a>\n\nRedash V10 - Not able to use SQL server datasource to create new queries, not loading schema as well as not saving the query even if you write everything manually.\n\nV8 is working fine with similar setup.\n\n<a name=\"technical-details-2\" class=\"anchor\" href=\"#technical-details-2\"><\/a>Technical details:\n\nRedash Version: V10\n\nBrowser/OS: Chrome, Linux\n\nHow d&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2022-07-21T16:30:19.231Z","author":{"@type":"Person","name":"Ra Geek"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/ms-sql-server-schema-not-loading/10797">MS SQL Server schema not loading</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='MS SQL Server schema not loading'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-21T16:30:19Z' class='post-time'>
+                    July 21, 2022,  4:30pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-21T18:40:34Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p><a class="mention" href="/u/jesse">@jesse</a><br>
+Redash V10 - Not able to use SQL server datasource to create new queries, not loading schema as well as not saving the query even if you write everything manually.<br>
+V8 is working fine with similar setup.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V10</li>
+<li>Browser/OS: Chrome, Linux</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-21T18:40:56Z' class='post-time'>
+                    July 21, 2022,  6:40pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-21T18:40:56Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>any known issues on V10 for sql server</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-21T23:57:44Z' class='post-time'>
+                    July 21, 2022, 11:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-21T23:57:44Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Sorry to hear about this. What errors do you see in your server logs?</p>
+<pre><code class="lang-auto">sudo docker-compose logs
+</code></pre>
+<p>I’m not aware of any issues with MSSQL on V10.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T16:34:36Z' class='post-time'>
+                    August 1, 2022,  4:34pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T16:34:36Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/jesse">@jesse</a> - we were able to resolve the schema loading issue. However we are facing a new issue now, where scheduled query refresh is not working and even the manual refresh doesn’t work until you make some dummy edit to the query and save it and then it executes.<br>
+we have below containers running</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be.png" data-download-href="/uploads/short-url/p2InVc1Cm1qmXt9rnl6YBvxRpr8.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be_2_492x500.png" alt="image" data-base62-sha1="p2InVc1Cm1qmXt9rnl6YBvxRpr8" width="492" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be_2_492x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be_2_738x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/af84f157bf6df8f60a88dfd10ee8ac53719ba8be_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">798×810 40.2 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T16:44:20Z' class='post-time'>
+                    August 1, 2022,  4:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T16:44:20Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="Rash1d" data-post="4" data-topic="10797">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/rash1d/40/3905_2.png" class="avatar"> Rash1d:</div>
+<blockquote>
+<p>we were able to resolve the schema loading issue</p>
+</blockquote>
+</aside>
+<p>For posterity, what was the issue here?</p>
+<aside class="quote no-group" data-username="Rash1d" data-post="4" data-topic="10797">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/rash1d/40/3905_2.png" class="avatar"> Rash1d:</div>
+<blockquote>
+<p>where scheduled query refresh is not working and even the manual refresh doesn’t work until you make some dummy edit to the query and save it</p>
+</blockquote>
+</aside>
+<p>Weird. Does this query use parameters? How do you know that it doesn’t execute unless you make a change?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T16:56:30Z' class='post-time'>
+                    August 1, 2022,  4:56pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T16:56:30Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>it says refreshed 3 days ago, even though we have 4hrs as refresh schedule</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T16:59:44Z' class='post-time'>
+                    August 1, 2022,  4:59pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T16:59:44Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Sorry you haven’t answered my questions.</p>
+<ol>
+<li>Does this query use parameters?</li>
+<li>How do you know that <strong>manual refresh</strong> doesn’t work unless you make a change?</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T17:34:07Z' class='post-time'>
+                    August 1, 2022,  5:34pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T17:34:07Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>we are not using query param.<br>
+it says query in queue, we need to cancel manually. It works fine in our V8 setup, reschedule as well as manual refresh.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b.png" data-download-href="/uploads/short-url/rF4GSwBeP1zQJyLVe5FSitGmuRZ.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b_2_690x53.png" alt="image" data-base62-sha1="rF4GSwBeP1zQJyLVe5FSitGmuRZ" width="690" height="53" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b_2_690x53.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b_2_1035x79.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b_2_1380x106.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c1df5b596585038b61eaf6c6478d7c837511ac5b_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1872×144 8.28 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T17:39:59Z' class='post-time'>
+                    August 1, 2022,  5:39pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T17:39:59Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thank you that’s helpful. This indicates that a query execution job was created but no worker picked it up from the queue. What queues are your workers monitoring? Can you shared your <code>docker-compose.yml</code> file?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T17:56:26Z' class='post-time'>
+                    August 1, 2022,  5:56pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T17:56:26Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <pre><code>   command:
+    - /bin/sh
+    env:
+    - name: QUEUES
+      value: queries,celery,schemas
+    - name: WORKERS_COUNT
+      value: "4"
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T18:06:49Z' class='post-time'>
+                    August 1, 2022,  6:06pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T18:06:49Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><strong>Note: that’s not a docker_compose.yml file. Do you happen to be using k8s?</strong></p>
+<hr>
+<p>It’s clear what is your problem: that configuration won’t work for V10. It looks like you copied something from an V8 deployment, not V10. Maybe you started from the getredash/setup repository? It hasn’t been updated since V8.</p>
+<p>Either way, you need to configure your queues differently for V10. Without knowing how you set up Redash it’s hard to know the best set of instructions to send you. But the release notes from V10.1 (the latest release) should point you in the right direction:</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://github.com/getredash/redash/releases/tag/v10.1.0">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="32" height="32">
+
+      <a href="https://github.com/getredash/redash/releases/tag/v10.1.0" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/345;"><img src="https://opengraph.githubassets.com/a56f4738a1d2c585cff42845469e3bef7e50522c0984e7620926be22d61a1cac/getredash/redash/releases/tag/v10.1.0" class="thumbnail" width="690" height="345"></div>
+
+<h3><a href="https://github.com/getredash/redash/releases/tag/v10.1.0" target="_blank" rel="noopener">Release v10.1.0 · getredash/redash</a></h3>
+
+  <p>Docker Tag: redash/redash:10.1.0.b50633
+Summary
+This release includes fixes for three security vulnerabilities (click the links for complete details to see whether your installation is affected):
+
+...</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T18:08:07Z' class='post-time'>
+                    August 1, 2022,  6:08pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T18:08:07Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Speaking more broadly, it would be helpful to know what instructions you followed to end in this state? We want to make the developer onboarding experience for Redash as painless as possible. If you can link to the instructions you followed I can take a stab at updating them.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Rash1d'><span itemprop='name'>Rash1d</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T21:20:07Z' class='post-time'>
+                    August 1, 2022,  9:20pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T21:20:07Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>we followed below but did some customization to make it work with our Kubernetes deployment pipeline. I can share the deployment.yaml if that wd help</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://redash.io/help/open-source/setup/">
+  <header class="source">
+      <img src="https://redash.io/assets/images/favicon.ico" class="site-icon" width="16" height="16">
+
+      <a href="https://redash.io/help/open-source/setup/" target="_blank" rel="noopener nofollow ugc">redash.io</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://redash.io/assets/images/social-facebook-1200x630.png" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://redash.io/help/open-source/setup/" target="_blank" rel="noopener nofollow ugc">Setting up a Redash Instance</a></h3>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T21:21:00Z' class='post-time'>
+                    August 1, 2022,  9:21pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T21:21:00Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>k8s is not formally supported for Redash so you’re somewhat flying blind here. I’m happy to take a look but I can’t guarantee a result.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-01T21:25:01Z' class='post-time'>
+                    August 1, 2022,  9:25pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-01T21:25:01Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I can see how you ended up with the environment variables you did, though. Because the instructions you linked point to our <code>setup</code> repository which hasn’t been updated in a few years. Please go ahead and post your deployment.yaml and I will advise on which env vars need to be corrected.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_16' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/abinesh89'><span itemprop='name'>abinesh89</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e3983455301bb59213af1a0d434d4618ea39b5e6.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-04T21:08:12Z' class='post-time'>
+                    August 4, 2022,  9:08pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-04T21:08:12Z'>
+              <span itemprop='position'>16</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi <a class="mention" href="/u/jesse">@jesse</a><br>
+PFA, deployment yaml file for your reference. Can, you please look into on why scheduled query refresh doesn’t work. Pls, zoom the image as I have to capture the entire file as image.<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e3983455301bb59213af1a0d434d4618ea39b5e6.jpeg" data-download-href="/uploads/short-url/wtotTQ1WKCgM1ij5TpUd1ikY1Fk.jpeg?dl=1" title="Redash_Deployment_File" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e3983455301bb59213af1a0d434d4618ea39b5e6_2_73x500.jpeg" alt="Redash_Deployment_File" data-base62-sha1="wtotTQ1WKCgM1ij5TpUd1ikY1Fk" width="73" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e3983455301bb59213af1a0d434d4618ea39b5e6_2_73x500.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e3983455301bb59213af1a0d434d4618ea39b5e6_2_109x750.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e3983455301bb59213af1a0d434d4618ea39b5e6_2_146x1000.jpeg 2x"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Redash_Deployment_File</span><span class="informations">1866×12775 840 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_17' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/abinesh89'><span itemprop='name'>abinesh89</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-15T19:33:30Z' class='post-time'>
+                    August 15, 2022,  7:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-15T19:33:30Z'>
+              <span itemprop='position'>17</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi <a class="mention" href="/u/jesse">@jesse</a><br>
+Did, you have a chance to look at it?<br>
+Are there any suggestions?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_18' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ms-sql-server-schema-not-loading/10797">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-15T19:43:51Z' class='post-time'>
+                    August 15, 2022,  7:43pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-15T19:43:51Z'>
+              <span itemprop='position'>18</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks for the ping. Was traveling last week. Will put eyes on this soon.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

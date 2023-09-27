@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Acquire parameter names in plotly</title>
+    <link>https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417</link>
+    <description>Hello.
+
+I&#39;m working on a dashboard to display data with three parameters: var, metric_1, and metric_2.
+
+This is my query:
+```
+method: 
+    post
+url: 
+  https:myurl.com/model
+headers : 
+    content-type: application/json
+data: &#39;{&quot;data&quot;: {&quot;event&quot;: {&quot;params&quot;: {&quot;var&quot;: &quot;{{var}}&quot;, &quot;metric_1&quot;: &quot;{{metric_1}}&quot;, &quot;metric_2&quot;: &quot;{{metric_2}}&quot;}}, &quot;context&quot;: 100}}&#39;
+path: result
+```
+
+Redash grabs the data and plots it very well via the following code:
+
+
+```
+console.log(x, ys)
+
+color1 = &#39;rgb(31, 119, 180)&#39;;
+color2 = &#39;rgb(0,0,0,)&#39;;
+
+var trace1 = {
+    x: x,
+    y: ys[&#39;metric_1&#39;],
+    name: &#39;Metric 1&#39;,
+    type: &#39;scatter&#39;,
+    mode: &#39;lines+markers&#39;,
+    hovermode: &quot;closest&quot;,
+    marker: {
+	symbol: 0,
+	color: color1,
+	size: 1,
+    opacity: 0.05,
+	line: {
+	    color: color1,
+	    width: 6
+	}
+    },
+};
+
+var trace2 = {
+    x: x,
+    y: ys[&#39;metric_2&#39;],
+    name: &#39;Metric 2&#39;,
+    yaxis: &#39;y2&#39;,
+    type: &#39;line&#39;,
+    mode: &#39;markers&#39;,
+    hovermode: &quot;closest&quot;,
+    marker: {
+	color: color2,
+	symbol: 2,
+	size: 0.2,
+	line: {
+	    color: color2,
+	    width: 6
+	}
+    },
+};
+
+var data = [trace1, trace2];
+
+var layout = {
+    xaxis: {
+	title: &#39;Date&#39;,
+	type: &#39;date&#39;
+    },
+    yaxis: {
+	title: &#39;Metric 1&#39;, // I want something like ys[&#39;metric_1&#39;][&#39;name&#39;]
+	titlefont: {color: color1},
+	tickfont: {color: color1},
+	side: &#39;left&#39;
+    },
+    yaxis2: {
+	title: &#39;Metric 2&#39;, //I want something like ys[&#39;metric_2&#39;][&#39;name&#39;]
+	titlefont: {color: color2},
+	tickfont: {color: color2},
+	overlaying: &#39;y&#39;,
+	side: &#39;right&#39;
+    },
+    showlegend: false
+};
+
+Plotly.newPlot(element, data, layout);
+```
+![newplot (2)|690x443, 100%](upload://trQmdkwgTaaqlwRDKjuy1AjOks5.png)
+
+However, instead of &quot;Metric 1&quot; and &quot;Metric 2&quot; for y-axis titles, I&#39;d like the actual metric (the name) I specified from the drop down on the queries page. Is it possible to access such information. If so, how?
+
+Many thanks!</description>
+    
+    <lastBuildDate>Wed, 04 May 2022 09:54:22 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Acquire parameter names in plotly</title>
+        <dc:creator><![CDATA[RedashUser]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi jesse, thanks for the response. However, I can’t seem to get this to apply to the outputs.</p>
+<p>I updated the query and selected from the dropdown menu.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7c6414169cb465dda5bfa3d6da7a3e8d8ba5ae25.png" data-download-href="/uploads/short-url/hKpCEC5bRiPWq6ZV1Q7Lgg40sgl.png?dl=1" title="my_metric2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c6414169cb465dda5bfa3d6da7a3e8d8ba5ae25_2_690x297.png" alt="my_metric2" data-base62-sha1="hKpCEC5bRiPWq6ZV1Q7Lgg40sgl" width="690" height="297" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c6414169cb465dda5bfa3d6da7a3e8d8ba5ae25_2_690x297.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c6414169cb465dda5bfa3d6da7a3e8d8ba5ae25_2_1035x445.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c6414169cb465dda5bfa3d6da7a3e8d8ba5ae25_2_1380x594.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c6414169cb465dda5bfa3d6da7a3e8d8ba5ae25_2_10x10.png"></a></div><p></p>
+<p>Ideally, what I’d like is the axes to be updated with the values from the dropdown.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/57544c8c4b420700cd6e6ec564fb02bf2762c025.png" data-download-href="/uploads/short-url/csy9hAAiKNbM37rArx936Mjrevj.png?dl=1" title="myname" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/57544c8c4b420700cd6e6ec564fb02bf2762c025_2_690x379.png" alt="myname" data-base62-sha1="csy9hAAiKNbM37rArx936Mjrevj" width="690" height="379" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/57544c8c4b420700cd6e6ec564fb02bf2762c025_2_690x379.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/57544c8c4b420700cd6e6ec564fb02bf2762c025_2_1035x568.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/57544c8c4b420700cd6e6ec564fb02bf2762c025_2_1380x758.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/57544c8c4b420700cd6e6ec564fb02bf2762c025_2_10x10.png"></a></div><p></p>
+<p>Thanks!</p>
+          <p><a href="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417/3</link>
+        <pubDate>Wed, 04 May 2022 09:54:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10417-3</guid>
+        <source url="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417.rss">Acquire parameter names in plotly</source>
+      </item>
+      <item>
+        <title>Acquire parameter names in plotly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I think you can do this by modifying your query as follows:</p>
+<pre data-code-wrap="yaml"><code class="lang-nohighlight">method: 
+    post
+url: 
+  https:myurl.com/model
+headers : 
+    content-type: application/json
+data: '{"data": {"event": {"params": {"var": "{{var}}", "{{ metric_1 }}": "{{metric_1}}", "{{ metric_2}}": "{{metric_2}}"}}, "context": 100}}'
+path: result
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417/2</link>
+        <pubDate>Tue, 03 May 2022 20:58:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10417-2</guid>
+        <source url="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417.rss">Acquire parameter names in plotly</source>
+      </item>
+      <item>
+        <title>Acquire parameter names in plotly</title>
+        <dc:creator><![CDATA[RedashUser]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello.</p>
+<p>I’m working on a dashboard to display data with three parameters: var, metric_1, and metric_2.</p>
+<p>This is my query:</p>
+<pre><code class="lang-auto">method: 
+    post
+url: 
+  https:myurl.com/model
+headers : 
+    content-type: application/json
+data: '{"data": {"event": {"params": {"var": "{{var}}", "metric_1": "{{metric_1}}", "metric_2": "{{metric_2}}"}}, "context": 100}}'
+path: result
+</code></pre>
+<p>Redash grabs the data and plots it very well via the following code:</p>
+<pre><code class="lang-auto">console.log(x, ys)
+
+color1 = 'rgb(31, 119, 180)';
+color2 = 'rgb(0,0,0,)';
+
+var trace1 = {
+    x: x,
+    y: ys['metric_1'],
+    name: 'Metric 1',
+    type: 'scatter',
+    mode: 'lines+markers',
+    hovermode: "closest",
+    marker: {
+	symbol: 0,
+	color: color1,
+	size: 1,
+    opacity: 0.05,
+	line: {
+	    color: color1,
+	    width: 6
+	}
+    },
+};
+
+var trace2 = {
+    x: x,
+    y: ys['metric_2'],
+    name: 'Metric 2',
+    yaxis: 'y2',
+    type: 'line',
+    mode: 'markers',
+    hovermode: "closest",
+    marker: {
+	color: color2,
+	symbol: 2,
+	size: 0.2,
+	line: {
+	    color: color2,
+	    width: 6
+	}
+    },
+};
+
+var data = [trace1, trace2];
+
+var layout = {
+    xaxis: {
+	title: 'Date',
+	type: 'date'
+    },
+    yaxis: {
+	title: 'Metric 1', // I want something like ys['metric_1']['name']
+	titlefont: {color: color1},
+	tickfont: {color: color1},
+	side: 'left'
+    },
+    yaxis2: {
+	title: 'Metric 2', //I want something like ys['metric_2']['name']
+	titlefont: {color: color2},
+	tickfont: {color: color2},
+	overlaying: 'y',
+	side: 'right'
+    },
+    showlegend: false
+};
+
+Plotly.newPlot(element, data, layout);
+</code></pre>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/ce64d125edf1c6006a79588aae8cad6b0a60237d.png" data-download-href="/uploads/short-url/trQmdkwgTaaqlwRDKjuy1AjOks5.png?dl=1" title="newplot (2)" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/ce64d125edf1c6006a79588aae8cad6b0a60237d_2_690x443.png" alt="newplot (2)" data-base62-sha1="trQmdkwgTaaqlwRDKjuy1AjOks5" width="690" height="443" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/ce64d125edf1c6006a79588aae8cad6b0a60237d_2_690x443.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/ce64d125edf1c6006a79588aae8cad6b0a60237d.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/ce64d125edf1c6006a79588aae8cad6b0a60237d.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/ce64d125edf1c6006a79588aae8cad6b0a60237d_2_10x10.png"></a></div><p></p>
+<p>However, instead of “Metric 1” and “Metric 2” for y-axis titles, I’d like the actual metric (the name) I specified from the drop down on the queries page. Is it possible to access such information. If so, how?</p>
+<p>Many thanks!</p>
+          <p><a href="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417/1</link>
+        <pubDate>Tue, 03 May 2022 11:50:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10417-1</guid>
+        <source url="https://discuss.redash.io/t/acquire-parameter-names-in-plotly/10417.rss">Acquire parameter names in plotly</source>
+      </item>
+  </channel>
+</rss>

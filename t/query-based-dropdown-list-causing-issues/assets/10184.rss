@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Query Based Dropdown List causing issues</title>
+    <link>https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184</link>
+    <description>I have a query that fetches data for a selection of units based on selections in a query based dropdown menu parameter.
+
+select *
+from dbo.Data d
+where d.Unitid in (&#39;{{ Unit }}&#39;)
+
+The query fetching the list of units returns the right values, but I get this error:
+
+**Error running query: Conversion failed when converting the varchar value &#39;3561,3714,4483&#39; to data type int.DB-Lib error message 20018, severity 16: General SQL Server error: Check messages from the SQL Server**
+
+With 3561,3714,4483 being the unit Id&#39;s returned by the parameter query. If I manually pase in the same values, the query works as expected.:
+
+select *
+from dbo.Data d
+where d.UnitId in( 3561,3714,4483 )
+
+Can anyone explain what might be causing this error and how to get around it? I have attempted to cast the unit values to int and changed the number formatting in the visualization editing tool, but this didn&#39;t solve the problem.
+
+Cheers, Mike</description>
+    
+    <lastBuildDate>Fri, 25 Mar 2022 17:10:16 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Query Based Dropdown List causing issues</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Glad to hear it works for you!</p>
+<p>And yes, what you’ve shown there is exactly how time range parameters are designed to be employed.</p>
+          <p><a href="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/4</link>
+        <pubDate>Fri, 25 Mar 2022 17:10:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10184-4</guid>
+        <source url="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184.rss">Query Based Dropdown List causing issues</source>
+      </item>
+      <item>
+        <title>Query Based Dropdown List causing issues</title>
+        <dc:creator><![CDATA[Michael]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi jesse,</p>
+<p>You were right, removing the quotation marks did the job. Strangely, If I want to slice the time axis, I have to do it like this, with quotation marks:</p>
+<pre><code class="lang-auto">Select *
+...
+and d.[TimeStamp] &gt;= '{{ myDate.start }}'
+and d.[TimeStamp] &lt;= '{{ myDate.end }}'
+</code></pre>
+<p>Cheers, Mike</p>
+          <p><a href="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/3</link>
+        <pubDate>Fri, 25 Mar 2022 06:11:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10184-3</guid>
+        <source url="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184.rss">Query Based Dropdown List causing issues</source>
+      </item>
+      <item>
+        <title>Query Based Dropdown List causing issues</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="Michael" data-post="1" data-topic="10184">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/4bbf92/40.png" class="avatar"> Michael:</div>
+<blockquote>
+<pre><code class="lang-sql">select *
+from dbo.Data d
+where d.Unitid in (’{{ Unit }}’)
+</code></pre>
+</blockquote>
+</aside>
+<p>It’s probably because of the quotation marks around the <code>Unit</code> parameter. What happens if you remove them?</p>
+          <p><a href="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/2</link>
+        <pubDate>Wed, 23 Mar 2022 16:48:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10184-2</guid>
+        <source url="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184.rss">Query Based Dropdown List causing issues</source>
+      </item>
+      <item>
+        <title>Query Based Dropdown List causing issues</title>
+        <dc:creator><![CDATA[Michael]]></dc:creator>
+        <description><![CDATA[
+            <p>I have a query that fetches data for a selection of units based on selections in a query based dropdown menu parameter.</p>
+<p>select *<br>
+from dbo.Data d<br>
+where d.Unitid in (’{{ Unit }}’)</p>
+<p>The query fetching the list of units returns the right values, but I get this error:</p>
+<p><strong>Error running query: Conversion failed when converting the varchar value ‘3561,3714,4483’ to data type int.DB-Lib error message 20018, severity 16: General SQL Server error: Check messages from the SQL Server</strong></p>
+<p>With 3561,3714,4483 being the unit Id’s returned by the parameter query. If I manually pase in the same values, the query works as expected.:</p>
+<p>select *<br>
+from dbo.Data d<br>
+where d.UnitId in( 3561,3714,4483 )</p>
+<p>Can anyone explain what might be causing this error and how to get around it? I have attempted to cast the unit values to int and changed the number formatting in the visualization editing tool, but this didn’t solve the problem.</p>
+<p>Cheers, Mike</p>
+          <p><a href="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184/1</link>
+        <pubDate>Wed, 23 Mar 2022 11:48:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10184-1</guid>
+        <source url="https://discuss.redash.io/t/query-based-dropdown-list-causing-issues/10184.rss">Query Based Dropdown List causing issues</source>
+      </item>
+  </channel>
+</rss>

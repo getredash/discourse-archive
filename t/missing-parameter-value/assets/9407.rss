@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Missing parameter value</title>
+    <link>https://discuss.redash.io/t/missing-parameter-value/9407</link>
+    <description>Hi Mrts. Redash,
+
+I get an error after created the query
+
+![image|690x261](upload://oTWHBEi5coPXKlC8mNzspysRcRV.png)
+
+this is the query used:
+
+```sql
+SELECT t1.TABLE_NAME AS tabla_nombre, t1.COLUMN_NAME AS columna_nombre, t1.COLUMN_DEFAULT AS columna_defecto, t1.IS_NULLABLE AS columna_nulo, t1.DATA_TYPE AS columna_tipo_dato, COALESCE(t1.NUMERIC_PRECISION, t1.CHARACTER_MAXIMUM_LENGTH) AS columna_longitud, PG_CATALOG.COL_DESCRIPTION(t2.OID, t1.DTD_IDENTIFIER::int) AS columna_descripcion, t1.DOMAIN_NAME AS columna_dominio FROM INFORMATION_SCHEMA.COLUMNS t1 INNER JOIN PG_CLASS t2 ON (t2.RELNAME = t1.TABLE_NAME) WHERE t1.TABLE_SCHEMA = &#39;public&#39; AND t1.table_name =&#39;{{table_name}}&#39; ORDER BY t1.TABLE_NAME;
+```
+
+however, after using the &quot;Format Query&quot; button and passing the parameter the string &quot;queries&quot; again, it works.
+
+![image|690x411](upload://e0ajhDQjiQK3bZK6rru618NMEtN.png)
+
+Here is the api call that I am making from ansible:
+
+variables
+![image|690x273](upload://8ttBxT1FKARVl2ofnWtYG1ZWBNY.png)
+
+json
+![image|690x253](upload://iyYXNZdZAOrDIpWgKIEvztCr8VA.png)
+
+![image|690x292](upload://yUXs6sYmTs4rvEhRI7YjE4SFggY.png)</description>
+    
+    <lastBuildDate>Thu, 04 Nov 2021 22:01:42 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/missing-parameter-value/9407.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Glad you figured this out! You did all the work <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=10" title=":smiley:" class="emoji" alt=":smiley:"></p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/11</link>
+        <pubDate>Thu, 04 Nov 2021 22:01:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-11</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>Solved</p>
+<p>I add the following parameters in the options section into json the api call:</p>
+<p>“options”: {</p>
+<pre><code>"parameters": [
+
+  {"name": "table_name", "title": "table_name", "global": false, "value": "queries", "type": "text", "locals": []
+
+  }
+
+]
+</code></pre>
+<p>thank you Jessie</p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/10</link>
+        <pubDate>Thu, 04 Nov 2021 22:01:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-10</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>I understand, I ask you something else, is there any way to make an api call using this function?</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e4d4a832d3a22df7f2e283a6d8ebefe1d0d7b856.png" alt="image" data-base62-sha1="wEktGEArFLlrWdyU0MBF6d1ZAGi" width="621" height="450"></p>
+<p>for once the query is created, I can refresh and sort the query.</p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/9</link>
+        <pubDate>Thu, 04 Nov 2021 21:47:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-9</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I would wrap the entire query contents to be on the safe side. Although I haven’t used Ansible so this might not be best practice.</p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/8</link>
+        <pubDate>Thu, 04 Nov 2021 21:29:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-8</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>I don’t understand, where should I place this scape if in the json the api call or in the query parameter.</p>
+<p>json<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4f98e9a0a1bb5c95820171d3005baef01795dfd.png" data-download-href="/uploads/short-url/pOYCkeVl901LfujiNgX2VHHvNj7.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4f98e9a0a1bb5c95820171d3005baef01795dfd.png" alt="image" data-base62-sha1="pOYCkeVl901LfujiNgX2VHHvNj7" width="690" height="252" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4f98e9a0a1bb5c95820171d3005baef01795dfd_2_10x10.png"></a></div><p></p>
+<p>or here</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e516e17f212b0c8df316ce90f5a24350ee670143.png" data-download-href="/uploads/short-url/wGCmuiddtmGx8dy5X8dv08AYyVd.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e516e17f212b0c8df316ce90f5a24350ee670143_2_690x66.png" alt="image" data-base62-sha1="wGCmuiddtmGx8dy5X8dv08AYyVd" width="690" height="66" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e516e17f212b0c8df316ce90f5a24350ee670143_2_690x66.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e516e17f212b0c8df316ce90f5a24350ee670143.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e516e17f212b0c8df316ce90f5a24350ee670143.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e516e17f212b0c8df316ce90f5a24350ee670143_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/7</link>
+        <pubDate>Thu, 04 Nov 2021 21:27:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-7</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for your prompt response, i is testing.</p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/6</link>
+        <pubDate>Thu, 04 Nov 2021 20:46:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-6</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>for these cases the following escape is used, but the api call does not run</p>
+<p>"character"</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2be9aa7942687bf01c6a0351d7b757245ee6dcfa.png" data-download-href="/uploads/short-url/6gt9NSQrhnpGm6Xkmxg2QRiHYwy.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2be9aa7942687bf01c6a0351d7b757245ee6dcfa.png" alt="image" data-base62-sha1="6gt9NSQrhnpGm6Xkmxg2QRiHYwy" width="690" height="140" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2be9aa7942687bf01c6a0351d7b757245ee6dcfa_2_10x10.png"></a></div><p></p>
+<p>error</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/84f822cc371d361eacb7adad2432b1dbb4c897bf.png" data-download-href="/uploads/short-url/iYiEBkUhOUBZWKzMRrMR96lfve7.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/84f822cc371d361eacb7adad2432b1dbb4c897bf.png" alt="image" data-base62-sha1="iYiEBkUhOUBZWKzMRrMR96lfve7" width="690" height="260" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/84f822cc371d361eacb7adad2432b1dbb4c897bf_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/5</link>
+        <pubDate>Thu, 04 Nov 2021 20:44:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-5</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Seems like you can avoid escaping the curly brackets entirely with the guidances from <a href="https://www.reddit.com/r/ansible/comments/jdyqvo/escape_curly_brackets_in_variables_or_facts_while/">this thread</a>. Just use a <code>{% raw %}</code> block.</p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/4</link>
+        <pubDate>Thu, 04 Nov 2021 20:40:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-4</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="2" data-topic="9407">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p><code>\{\{ table_name + \}\}</code></p>
+</blockquote>
+</aside>
+<p>Thank you for your prompt response, for the output you see below, this type of escape is not allowed in ansible:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/95c76663538dba626b2e31413b69128152153af5.png" data-download-href="/uploads/short-url/ln0m2DPKS1gkusqrcUBjmSdAB5X.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/95c76663538dba626b2e31413b69128152153af5.png" alt="image" data-base62-sha1="ln0m2DPKS1gkusqrcUBjmSdAB5X" width="690" height="293" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/95c76663538dba626b2e31413b69128152153af5_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/3</link>
+        <pubDate>Thu, 04 Nov 2021 20:33:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-3</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I haven’t used ansible but I think the problem is how it formats the parameter marker. I’m looking at the final line of the first image you shared</p>
+<pre><code class="lang-sql">AND t1.table_name = '{{'{{'+'table_name'+'}}'}}' ORDER BY t1.TABLE_NAME;
+</code></pre>
+<p>I think the double-curly braces (<code>{{}}</code>) are the problem. Does this syntax allow for escaping like this?</p>
+<pre><code class="lang-sql">AND t1.table_name = \{\{ table_name + \}\}  ORDER BY t1.TABLE_NAME;
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/2</link>
+        <pubDate>Thu, 04 Nov 2021 20:03:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-2</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+      <item>
+        <title>Missing parameter value</title>
+        <dc:creator><![CDATA[caos2060]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Mrts. Redash,</p>
+<p>I get an error after created the query</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/ae872e47937a8ac9484a3c27ff6825ce7f6ba557.png" data-download-href="/uploads/short-url/oTWHBEi5coPXKlC8mNzspysRcRV.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ae872e47937a8ac9484a3c27ff6825ce7f6ba557_2_690x261.png" alt="image" data-base62-sha1="oTWHBEi5coPXKlC8mNzspysRcRV" width="690" height="261" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ae872e47937a8ac9484a3c27ff6825ce7f6ba557_2_690x261.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ae872e47937a8ac9484a3c27ff6825ce7f6ba557_2_1035x391.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/ae872e47937a8ac9484a3c27ff6825ce7f6ba557.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ae872e47937a8ac9484a3c27ff6825ce7f6ba557_2_10x10.png"></a></div><p></p>
+<p>this is the query used:</p>
+<pre><code class="lang-sql">SELECT t1.TABLE_NAME AS tabla_nombre, t1.COLUMN_NAME AS columna_nombre, t1.COLUMN_DEFAULT AS columna_defecto, t1.IS_NULLABLE AS columna_nulo, t1.DATA_TYPE AS columna_tipo_dato, COALESCE(t1.NUMERIC_PRECISION, t1.CHARACTER_MAXIMUM_LENGTH) AS columna_longitud, PG_CATALOG.COL_DESCRIPTION(t2.OID, t1.DTD_IDENTIFIER::int) AS columna_descripcion, t1.DOMAIN_NAME AS columna_dominio FROM INFORMATION_SCHEMA.COLUMNS t1 INNER JOIN PG_CLASS t2 ON (t2.RELNAME = t1.TABLE_NAME) WHERE t1.TABLE_SCHEMA = 'public' AND t1.table_name ='{{table_name}}' ORDER BY t1.TABLE_NAME;
+</code></pre>
+<p>however, after using the “Format Query” button and passing the parameter the string “queries” again, it works.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/62233f8a8e8a7e10a86e52f2a16a9ef71eb759a7.png" data-download-href="/uploads/short-url/e0ajhDQjiQK3bZK6rru618NMEtN.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/62233f8a8e8a7e10a86e52f2a16a9ef71eb759a7_2_690x411.png" alt="image" data-base62-sha1="e0ajhDQjiQK3bZK6rru618NMEtN" width="690" height="411" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/62233f8a8e8a7e10a86e52f2a16a9ef71eb759a7_2_690x411.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/62233f8a8e8a7e10a86e52f2a16a9ef71eb759a7_2_1035x616.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/62233f8a8e8a7e10a86e52f2a16a9ef71eb759a7.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/62233f8a8e8a7e10a86e52f2a16a9ef71eb759a7_2_10x10.png"></a></div><p></p>
+<p>Here is the api call that I am making from ansible:</p>
+<p>variables<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3b666ba391817e79638b841da975f44b6e102d0e.png" data-download-href="/uploads/short-url/8ttBxT1FKARVl2ofnWtYG1ZWBNY.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3b666ba391817e79638b841da975f44b6e102d0e.png" alt="image" data-base62-sha1="8ttBxT1FKARVl2ofnWtYG1ZWBNY" width="690" height="273" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3b666ba391817e79638b841da975f44b6e102d0e_2_10x10.png"></a></div><p></p>
+<p>json<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/821b7d02adf1cdf5c4b9f1af99ed7a321e49ca3a.png" data-download-href="/uploads/short-url/iyYXNZdZAOrDIpWgKIEvztCr8VA.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/821b7d02adf1cdf5c4b9f1af99ed7a321e49ca3a.png" alt="image" data-base62-sha1="iyYXNZdZAOrDIpWgKIEvztCr8VA" width="690" height="253" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/821b7d02adf1cdf5c4b9f1af99ed7a321e49ca3a_2_10x10.png"></a></div><p></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f4ba3573a9db0e4195c58d9a883b0199c180c774.png" data-download-href="/uploads/short-url/yUXs6sYmTs4rvEhRI7YjE4SFggY.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f4ba3573a9db0e4195c58d9a883b0199c180c774.png" alt="image" data-base62-sha1="yUXs6sYmTs4rvEhRI7YjE4SFggY" width="690" height="292" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f4ba3573a9db0e4195c58d9a883b0199c180c774_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/missing-parameter-value/9407/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/missing-parameter-value/9407/1</link>
+        <pubDate>Thu, 04 Nov 2021 19:22:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9407-1</guid>
+        <source url="https://discuss.redash.io/t/missing-parameter-value/9407.rss">Missing parameter value</source>
+      </item>
+  </channel>
+</rss>

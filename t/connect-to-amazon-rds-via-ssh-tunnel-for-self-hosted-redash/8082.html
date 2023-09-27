@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jon234.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jon234_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jon234</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-03-03T20:38:20Z" itemprop="datePublished">
+                    March 3, 2021,  8:38pm
+                  </time>
+<meta content="2021-03-03T20:38:20Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Hey everyone,</p>
+<p>I’m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp; EC2 instance running Redash are in separate networks).</p>
+<p>I’ve read the instructions here:</p><aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" height="16" src="assets/favicon.ico" width="16"/>
+<a href="https://redash.io/help/user-guide/integrations-and-api/ssh-tunnel-api/" rel="noopener nofollow ugc" target="_blank">redash.io</a>
+</header>
+<article class="onebox-body">
+<div class="aspect-image" style="--aspect-ratio:690/362;"><img class="thumbnail" height="362" src="assets/social-facebook-1200x630.png" width="690"/></div>
+<h3><a href="https://redash.io/help/user-guide/integrations-and-api/ssh-tunnel-api/" rel="noopener nofollow ugc" target="_blank">SSH Tunnel API</a></h3>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>The part that was confusing is that it asks you to download the Redash public key and put it in the home of your bastion. For self-hosted Redash, should I generate my own private/public key pair, and then ssh into my EC2 server that is hosting Redash and copy that private key into the file under ssh_tunnel_auth here: <a class="inline-onebox" href="https://github.com/getredash/redash/pull/4797/files#diff-2b8c3360e32eb15eab426c242f90a24312923304700b324c4a0cdcfa3d51473fR30" rel="noopener nofollow ugc">Run queries through ad-hoc SSH tunnels by rauchy · Pull Request #4797 · getredash/redash · GitHub</a><br/>
+What’s the best way to do this?</p>
+<p>Then I take the corresponding public key I generated (as opposed to the Redash public key) and put it in the home of my user for the bastion?</p>
+<p>Thank you!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-03-08T15:20:54Z" itemprop="datePublished">
+                    March 8, 2021,  3:20pm
+                  </time>
+<meta content="2021-03-08T15:20:54Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>You have the right idea.</p>
+<p>The doc you linked is specific to customers of <a href="http://app.redash.io" rel="noopener nofollow ugc">app.redash.io</a>. For a self-hosted instance you need your own public/private key pair. Add the public key to the trusted hosts on your bastion. Add the path to the private key to the Python file you linked. And configure an <code>ssh_tunnel</code> object on the data source using the REST API.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-30T09:07:18Z" itemprop="datePublished">
+                    October 30, 2021,  9:07am
+                  </time>
+<meta content="2021-10-30T09:07:18Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>For a digital ocean droplet using Redash marketplace app, is it possible to modify the file redash/settings/dynamic_settings.py on the droplet itself?  Where would that file be located?  I’d prefer not to build my own Redash just to get the ssh tunnel feature.  Thanks</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-04T12:55:19Z" itemprop="datePublished">
+                    November 4, 2021, 12:55pm
+                  </time>
+<meta content="2021-11-04T12:55:19Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Any comment on using SSH tunnel with an image?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-04T12:56:46Z" itemprop="datePublished">
+                    November 4, 2021, 12:56pm
+                  </time>
+<meta content="2021-11-04T12:56:46Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Is there a way to do this with the AWS image or Digital Ocean’s marketplace App for Redash?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-04T18:10:51Z" itemprop="datePublished">
+                    November 4, 2021,  6:10pm
+                  </time>
+<meta content="2021-11-04T18:10:51Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hey sorry for my late response here! Yes you can totally edit the file on digital ocean, although it is probably more hassle than it should be (this is an area for improvement). I’ve been using <code>sed</code> since that’s the only built-in utility within the container itself.</p>
+<p>I’ll put together a guide of how to do it in the next couple days. Until then, you are welcome to message me directly through the forum.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-08T02:57:29Z" itemprop="datePublished">
+                    November 8, 2021,  2:57am
+                  </time>
+<meta content="2021-11-08T02:57:29Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That’s great to hear.  I’m eager to get it set up to avoid a last minute rush.  Which container would that change be part of?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-08T15:40:22Z" itemprop="datePublished">
+                    November 8, 2021,  3:40pm
+                  </time>
+<meta content="2021-11-08T15:40:22Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I haven’t done this before, but I think only the worker containers really need the change. They are the containers that actually connect and run queries. The others (server, scheduler, nginx, redis, postgres) never communicate outside the local network.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-11T14:17:57Z" itemprop="datePublished">
+                    November 11, 2021,  2:17pm
+                  </time>
+<meta content="2021-11-11T14:17:57Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Possibly a script that copies the python code into the container.  Although it would be better to have that as a mapped volume on the container so it doesn’t get removed if the container is re-created. Even better,  could the source be modified with a default key configured to a mapped volume?  That’d be best I think.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-11T14:22:18Z" itemprop="datePublished">
+                    November 11, 2021,  2:22pm
+                  </time>
+<meta content="2021-11-11T14:22:18Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>You can of course modify anything on the image itself. Will need to consider how we can update the defaults going forward (we’re getting ready to build the V10 images so this is topical <img alt=":smiley:" class="emoji" src="assets/smiley.png" title=":smiley:"/> )</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-11T16:15:17Z" itemprop="datePublished">
+                    November 11, 2021,  4:15pm
+                  </time>
+<meta content="2021-11-11T16:15:17Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I recall seeing this issue.  <a class="inline-onebox" href="https://github.com/getredash/redash/issues/2013" rel="noopener nofollow ugc">[Feature] Tunnel support in default Docker image · Issue #2013 · getredash/redash · GitHub</a>.  Perhaps that can be re-opened?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-11T17:59:32Z" itemprop="datePublished">
+                    November 11, 2021,  5:59pm
+                  </time>
+<meta content="2021-11-11T17:59:32Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>We won’t reopen that issue because we’re not going to make ssh tunnels the default behavior. But we could certainly use some documentation for setting one up. I’d love to review a PR adding those docs (along with many others <img alt=":sweat_smile:" class="emoji" src="assets/sweat_smile.png" title=":sweat_smile:"/>)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-14T03:48:22Z" itemprop="datePublished">
+                    November 14, 2021,  3:48am
+                  </time>
+<meta content="2021-11-14T03:48:22Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>One working approach for doing this with Docker based installs, is adding the keys and customised python into the containers using volumes:</p>
+<pre><code class="lang-auto">    volumes:
+      - /some/path/to/the/ssh/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+</code></pre>
+<p>That <code>/opt/redash/overrides/</code> directory is something you’d need to manually create, then put the modified <code>dynamic_settings.py</code> in.  The modified <code>dynamic_settings.py</code> has an updated <code>ssh_tunnel_auth()</code> function:</p>
+<pre><code class="lang-auto">def ssh_tunnel_auth():
+    """
+    To enable data source connections via SSH tunnels, provide your SSH authentication
+    pkey here. Return a string pointing at your **private** key's path (which will be used
+    to extract the public key), or a `paramiko.pkey.PKey` instance holding your **public** key.
+    """
+    return {
+        'ssh_pkey': '/keys/id_rsa'
+    }
+</code></pre>
+<p>Note that the <code>/keys/</code> directory there matches up with the <code>/keys</code> directory given in the volume clause above.  So, the <code>/keys/id_rsa</code> file is really just an <code>id_rsa</code> file that needs to exist in your actual keys directory.  The file needs to be readable by the <code>ubuntu</code> user inside the container too (uid 1000), which is probably easiest to do by <code>chown</code>-ing it.  eg <code>chown 1000: id_rsa</code>.</p>
+<p>As Jesse mentions above, only the <code>scheduled_worker</code>, <code>adhoc_worker</code>, and <code>worker</code> containers need the volume piece added, and they can all use the exact same keys.</p>
+<p>eg:</p>
+<pre><code class="lang-auto">  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-14T03:54:44Z" itemprop="datePublished">
+                    November 14, 2021,  3:54am
+                  </time>
+<meta content="2021-11-14T05:43:09Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>There’s also another approach - using persistent ssh tunnels - which doesn’t need using modified python scripts, instead having the ssh tunnel be set up externally to Redash.  eg using a container to manage the tunnel.</p>
+<p>Both ways seem to work fine, but have different strengths and weaknesses:</p>
+<ul>
+<li>
+<p>Redash managed SSH tunnel</p>
+<ul>
+<li>Slow to run queries due to tunnel creation each time
+<ul>
+<li>For long running queries, this extra time isn’t really noticeable</li>
+</ul>
+</li>
+<li>But, doesn’t really need separate monitoring</li>
+</ul>
+</li>
+<li>
+<p>Persistent SSH tunnel</p>
+<ul>
+<li>Quick to run queries, as the tunnel is already existing and ready to go
+<ul>
+<li>Better for fast queries, where faster GUI responsiveness is noticeable</li>
+</ul>
+</li>
+<li>Needs separate monitoring</li>
+<li>Each SSH tunnel needs manually setting up/configuring</li>
+</ul>
+</li>
+</ul>
+<p>Hopefully that helps. <img alt=":smile:" class="emoji" src="assets/smile.png" title=":smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-15T12:08:00Z" itemprop="datePublished">
+                    November 15, 2021, 12:08pm
+                  </time>
+<meta content="2021-11-15T12:08:00Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Beauty!  Setting up the volume mapping looks great!  I am not familiar enough with open source Redash but it appears the <code>overrides</code> folder is a mechanism built in to Redash to allow setting customization, right?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-15T14:12:38Z" itemprop="datePublished">
+                    November 15, 2021,  2:12pm
+                  </time>
+<meta content="2021-11-15T14:12:38Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="15" data-topic="8082" data-username="louisn">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/1707_2.png" width="20"/> louisn:</div>
+<blockquote>
+<p>but it appears the <code>overrides</code> folder is a mechanism built in to Redash to allow setting customization</p>
+</blockquote>
+</aside>
+<p>Almost.  Docker (Redash uses it for management) allows sharing files and folders from the host server with it’s containers.  So, in this case, it’s a way of both making SSH keys available to the worker containers + a way of persistently replacing specific Docker files.</p>
+<p>Without an override like that, people would need to build their own custom Redash docker images (possible, but a bunch of effort).  Or they’d need to manually log into their Docker containers and update files inside them.  Which would then lose the changes any time the Docker container is rebuilt (can be pretty often, depending on what’s happening).</p>
+<p>Does that help? <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-22T19:27:13Z" itemprop="datePublished">
+                    November 22, 2021,  7:27pm
+                  </time>
+<meta content="2021-11-22T19:27:13Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That helps tremendously!  Is there a way to see that the key is getting picked up correctly. A log file or similar?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-22T22:38:44Z" itemprop="datePublished">
+                    November 22, 2021, 10:38pm
+                  </time>
+<meta content="2021-11-22T22:39:10Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I configured the volume mapping with the key and placed the public key on the ssh tunnel host in the same manner as the hosted Redash configuration.  I’m getting an ssh negotiation error, most likely not picking up the key or something along those lines.  Any idea how to troubleshoot on the self hosted redash with Docker implementation?</p>
+<p>{<br/>
+“message”: “could not send SSL negotiation packet: Resource temporarily unavailable\n”,<br/>
+“ok”: false<br/>
+}</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_19" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/justinclift.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/justinclift_avatar.png" tabindex="-1" width="48"/><span itemprop="name">justinclift</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-23T02:30:13Z" itemprop="datePublished">
+                    November 23, 2021,  2:30am
+                  </time>
+<meta content="2021-11-23T02:51:13Z" itemprop="dateModified"/>
+<span itemprop="position">19</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="18" data-topic="8082" data-username="louisn">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/1707_2.png" width="20"/> louisn:</div>
+<blockquote>
+<p>“message”: “could not send SSL negotiation packet: Resource temporarily unavailable\n”,</p>
+</blockquote>
+</aside>
+<p>Hmmm, if you manually run SSH (using that key) from the host your Redash is on, does the connection succeed? eg:</p>
+<pre><code class="lang-auto">$ ssh -i path_to_key someuser@your_bastion_host
+</code></pre>
+<p>Note that a simple ssh like above will try creating a remote login session for your user (eg in order to run commands remotely).  That capability can be disabled on the bastion server, and isn’t needed for tunnels.  So, it’s very possible you’ll connect successfully when testing, then ssh will just close the connection without further message.</p>
+<p>The thing to look for is whether the attempted connection times out, generates an error, or something similar.  A timeout or “No route to host” will generally mean there’s a network layer problem that needs fixing (maybe a firewall needs updating?), whereas other things are more obvious.  eg if ssh prompts for acceptance of a host key, then it means the connection is getting to the server and it might be a public key problem after all</p>
+<p>So, try the connection, and let us know what happens with it… <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_20" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/louisn.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/louisn_avatar.png" tabindex="-1" width="48"/><span itemprop="name">louisn</span></a>
+</span>
+<link href="assets/8082" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-26T19:13:19Z" itemprop="datePublished">
+                    November 26, 2021,  7:13pm
+                  </time>
+<meta content="2021-11-26T19:13:19Z" itemprop="dateModified"/>
+<span itemprop="position">20</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Yes the ssh connection works.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+<span itemprop="name"><b><a href="/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082?page=2" itemprop="url" rel="next">next page →</a></b></span>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

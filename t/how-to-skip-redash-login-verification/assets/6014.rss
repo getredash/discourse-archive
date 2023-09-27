@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How to skip redash login verification?</title>
+    <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014</link>
+    <description>hi ,dear redash team:
+
+I want to use these api directly as a way for me to check the data;
+
+| api | method |
+|---|---|
+../api/query_results |POST|
+../api/jobs/{query_hash}|GET|
+../api/query_results/{query_result_id}|GET|
+
+
+But if don&#39;t log in first, will get this message:
+
+```
+Couldn&#39;t find resource. Please login and try again
+```
+
+I would like to ask, how can I skip the login restrictions, so that other systems can directly use these three api, and the three api of his own web page are still restricted by the login status</description>
+    
+    <lastBuildDate>Fri, 30 Dec 2022 13:43:51 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There are a lot of problems with your curl. Here’s an example of one that will work:</p>
+<pre><code class="lang-bash">curl --request POST \
+  --url $REDASHOST/api/queries \
+  --header 'Authorization: Key bz7VWCYfUagx7dsfBdFPhYlhBzdznDD1i2TLiDUg' \
+  --data '{
+	"data_source_id": 1,
+	"name": "Example Query",
+	"query": "select * from seller"
+}'
+</code></pre>
+<p>A few issues with yours:</p>
+<ul>
+<li>
+<code>max_age</code> is not accepted when creating or modifying queries. That only matters when executing a query.</li>
+<li>Your query has no <code>name</code> declaration. This will fail.</li>
+<li>You did not include an <code>Authorization</code> header. This is why you receive a 404. Probably would be better to receive a 400, honestly, but that would actually reveal too much information (i.e. this resource exists but you can’t access it). The API simply returns a 404 if you aren’t authorised properly.</li>
+<li>You’re using a <code>GET</code> request when a <code>POST</code> is required to create a new query.</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/13</link>
+        <pubDate>Tue, 21 Dec 2021 03:16:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-13</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[Lannt-teko]]></dc:creator>
+        <description><![CDATA[
+            <p>Here is curl<br>
+curl --location --request POST ‘{{redash_url}}/api/queries’ <br>
+–header ‘Key: {{api_key}}’ <br>
+–header ‘Content-Type: application/json’ \</p>
+<p>–data-raw '{</p>
+<pre><code>"data_source_id": 172,
+
+"parameters": {},
+
+"query": "select * from seller",
+
+"max_age": 0
+</code></pre>
+<p>}’</p>
+<p>Response:<br>
+{</p>
+<pre><code>"message": "Couldn't find resource. Please login and try again."
+</code></pre>
+<p>}</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/12</link>
+        <pubDate>Tue, 21 Dec 2021 02:37:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-12</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Without further information it’s hard to know the issue. If you can share the curl for your request that will be easier to debug <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=10" title=":smiley:" class="emoji" alt=":smiley:"></p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/11</link>
+        <pubDate>Tue, 21 Dec 2021 02:33:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-11</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[Lannt-teko]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m just trying create new query. I use endpoint /api/queries to do this but still get same error</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/10</link>
+        <pubDate>Tue, 21 Dec 2021 02:32:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-10</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p><code>api/query_results</code> is not a valid endpoint. You’re seeing a 404 error which means the resource is not found.</p>
+<p>What are you trying to do?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/9</link>
+        <pubDate>Tue, 21 Dec 2021 02:12:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-9</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[Lannt-teko]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a><br>
+I added headers<br>
+Authorization=Key {{user api_key}}<br>
+Accept=<em>/</em><br>
+Content-Type=application/json<br>
+to request POST {{redash_url}}/api/query_results<br>
+but it not work, it still show error 404 ```<br>
+Couldn’t find resource. Please login and try again</p>
+<pre><code class="lang-auto">How can i pass this error</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/8</link>
+        <pubDate>Tue, 21 Dec 2021 02:02:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-8</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[dancoder]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="5" data-topic="6014">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>You can do lots of cool things with the API <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=9" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>Here’s an example refreshing a dashboard:</p>
+</blockquote>
+</aside>
+<p>Ok ok, got it.！！！ thank you for your help！</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/7</link>
+        <pubDate>Thu, 16 Apr 2020 06:33:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-7</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can do lots of cool things with the API <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=9" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>Here’s an example refreshing a dashboard:</p>
+<div class="lazyYT" data-youtube-id="-7CpHW0D1J8" data-youtube-title="" data-width="480" data-height="270" data-parameters="feature=oembed&amp;wmode=opaque"></div>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/5</link>
+        <pubDate>Thu, 16 Apr 2020 03:30:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-5</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[dancoder]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="3" data-topic="6014">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>You don’t need to login to use the API. Just include an <code>Authorization</code> header with your API requests. Documentation <a href="https://redash.io/help/user-guide/integrations-and-api/api" rel="nofollow noopener">here</a>.</p>
+</blockquote>
+</aside>
+<p>wow! thank you ！thank you ！thank you ！thank you ！（It’s so important that it should be repeated for three times.）</p>
+<p>I found the configuration for the API key in edit profile.<br>
+also seen examples of the redash-toolbelt project.<br>
+Thank you for your help！！！</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/4</link>
+        <pubDate>Thu, 16 Apr 2020 02:49:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-4</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You don’t need to login to use the API. Just include an <code>Authorization</code> header with your API requests. Documentation <a href="https://redash.io/help/user-guide/integrations-and-api/api">here</a>.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/3</link>
+        <pubDate>Thu, 16 Apr 2020 02:09:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-3</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[dancoder]]></dc:creator>
+        <description><![CDATA[
+            <p>I have an idea;</p>
+<p>Create three new apis, continue to call those three methods, and then do the login verification skipping for the new API</p>
+<p>Now the question is how do I skip login validation?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/2</link>
+        <pubDate>Thu, 16 Apr 2020 01:55:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-2</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+      <item>
+        <title>How to skip redash login verification?</title>
+        <dc:creator><![CDATA[dancoder]]></dc:creator>
+        <description><![CDATA[
+            <p>hi ,dear redash team:</p>
+<p>I want to use these api directly as a way for me to check the data;</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>api</th>
+<th>method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>…/api/query_results</td>
+<td>POST</td>
+</tr>
+<tr>
+<td>…/api/jobs/{query_hash}</td>
+<td>GET</td>
+</tr>
+<tr>
+<td>…/api/query_results/{query_result_id}</td>
+<td>GET</td>
+</tr>
+</tbody>
+</table>
+</div><p>But if don’t log in first, will get this message:</p>
+<pre><code class="lang-auto">Couldn't find resource. Please login and try again
+</code></pre>
+<p>I would like to ask, how can I skip the login restrictions, so that other systems can directly use these three api, and the three api of his own web page are still restricted by the login status</p>
+          <p><a href="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014/1</link>
+        <pubDate>Thu, 16 Apr 2020 01:31:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6014-1</guid>
+        <source url="https://discuss.redash.io/t/how-to-skip-redash-login-verification/6014.rss">How to skip redash login verification?</source>
+      </item>
+  </channel>
+</rss>

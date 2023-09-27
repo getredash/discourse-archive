@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Celery worker fails. Why?</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/celery-worker-fails-why/627">Celery worker fails. Why?</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Celery worker fails. Why?" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-04T18:11:06Z" itemprop="datePublished">
+                    May 4, 2017,  6:11pm
+                  </time>
+<meta content="2017-05-04T18:11:06Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I am attempting to setup redash so I can debug a new query_runner.  Unfortunately, I need Celery to complicate the process.  I can click on “execute” new query, I see the query be put on a queue, I see the query being processed by my new query_runner, and the query runner returns a pair indicating success.</p>
+<p>The UI reports “Error running query: failed communicating with server. Please check your Internet connection and try again.”  (the celery worker stacktrace is below).  It would be nice if the errors revealed some particulars that would point to what went wrong, rather than the code that went wrong.</p>
+<p>What “target machine actively refused” what request?</p>
+<p>Thank you very much for this.</p>
+<p>[2017-05-04 13:59:25,522: ERROR/MainProcess] Task redash.tasks.execute_query[478ee3c9-84eb-47ec-a2ff-e1955c8e4bb2] raised unexpected: error(error(10061, ‘No connection could be made because the target machine actively refused it’),)<br/>
+Traceback (most recent call last):<br/>
+File “C:\Users\kyle\code\redash\celery\app\trace.py”, line 240, in trace_task<br/>
+R = retval = fun(*args, **kwargs)<br/>
+File “C:\Users\kyle\code\redash\celery\app\trace.py”, line 438, in <strong>protected_call</strong><br/>
+return self.run(*args, **kwargs)<br/>
+File “C:\Users\kyle\code\redash\redash\tasks\queries.py”, line 496, in execute_query<br/>
+scheduled_query).run()<br/>
+File “C:\Users\kyle\code\redash\redash\tasks\queries.py”, line 451, in run<br/>
+check_alerts_for_query.delay(query_id)<br/>
+File “C:\Users\kyle\code\redash\celery\app\task.py”, line 453, in delay<br/>
+return self.apply_async(args, kwargs)<br/>
+File “C:\Users\kyle\code\redash\celery\app\task.py”, line 565, in apply_async<br/>
+**dict(self._get_exec_options(), **options)<br/>
+File “C:\Users\kyle\code\redash\celery\app\base.py”, line 354, in send_task<br/>
+reply_to=reply_to or self.oid, **options<br/>
+File “C:\Users\kyle\code\redash\celery\app\amqp.py”, line 310, in publish_task<br/>
+**kwargs<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\messaging.py”, line 172, in publish<br/>
+routing_key, mandatory, immediate, exchange, declare)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\connection.py”, line 470, in <em>ensured<br/>
+interval_max)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\connection.py”, line 382, in ensure_connection<br/>
+interval_start, interval_step, interval_max, callback)<br/>
+File "C:\Users\kyle\code\redash.env\lib\site-packages\kombu\utils_<em>init</em></em>.py", line 246, in retry_over_time<br/>
+return fun(*args, **kwargs)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\connection.py”, line 250, in connect<br/>
+return self.connection<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\connection.py”, line 756, in connection<br/>
+self._connection = self._establish_connection()<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\connection.py”, line 711, in _establish_connection<br/>
+conn = self.transport.establish_connection()<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\kombu\transport\pyamqp.py”, line 116, in establish_connection<br/>
+conn = self.Connection(**opts)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\amqp\connection.py”, line 165, in <strong>init</strong><br/>
+self.transport = self.Transport(host, connect_timeout, ssl)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\amqp\connection.py”, line 186, in Transport<br/>
+return create_transport(host, connect_timeout, ssl)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\amqp\transport.py”, line 299, in create_transport<br/>
+return TCPTransport(host, connect_timeout)<br/>
+File “C:\Users\kyle\code\redash.env\lib\site-packages\amqp\transport.py”, line 95, in <strong>init</strong><br/>
+raise socket.error(last_err)<br/>
+error: [Errno 10061] No connection could be made because the target machine actively refused it</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-04T20:21:26Z" itemprop="datePublished">
+                    May 4, 2017,  8:21pm
+                  </time>
+<meta content="2017-05-04T20:21:26Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Based on the stacktrace it seems like Celery tries to use the amqp protocol for some reason. Because it does pick up the task from the queue, I think the results backend wasn’t configured properly for it.</p>
+<p>Did you modify anything in the code aside from adding the new query runner? What version of Celery do you use?</p>
+<p>Btw, you can easily test the query runner without Celery or even Redash itself – just create an instance of your query runner and pass a configuration dictionary to it.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-04T22:03:31Z" itemprop="datePublished">
+                    May 4, 2017, 10:03pm
+                  </time>
+<meta content="2017-05-04T22:03:31Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thank you! I have managed to determine that the code is attempting to contact</p>
+<pre><code>ampq://guest:**@127.0.0.1:5672//
+</code></pre>
+<p>I do not know what that means. What is that URL used for? Do I need an ampq server at that location?</p>
+<p>On the subject of testing a query_runner on it’s own: That will not work. I already learned that the query passed to the query_runner is prefixed with /* some metadata */ which would have broken the datasource parsing. This confirms that full end-to-end testing is a good idea; I would expect the data my query_runner returns to break some assumptions in the return data pipeline (maybe that is the problem I see now?).</p>
+<p>Here is Celery startup:</p>
+<pre><code> -------------- celery@ekyle29792 v3.1.23 (Cipater)
+---- **** ----- 
+--- * ***  * -- Windows-10-10.0.14393
+-- * - **** --- 
+- ** ---------- [config]
+- ** ---------- .&gt; app:         redash:0x596a870
+- ** ---------- .&gt; transport:   redis://localhost:6379/0
+- ** ---------- .&gt; results:     redis://localhost:6379/0
+- *** --- * --- .&gt; concurrency: 1 (prefork)
+-- ******* ---- 
+--- ***** ----- [queues]
+ -------------- .&gt; celery           exchange=celery(direct) key=celery
+                .&gt; queries          exchange=queries(direct) key=queries
+                .&gt; scheduled_queries exchange=scheduled_queries(direct) key=scheduled_queries</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-04T22:47:28Z" itemprop="datePublished">
+                    May 4, 2017, 10:47pm
+                  </time>
+<meta content="2017-05-04T22:47:28Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Here is the version I am working with</p>
+<p>SHA-1: 5ba6af6ad4bbb5e6be44044125d28e38fa155eef</p>
+<ul>
+<li>Merge pull request <span class="hashtag">#1713</span> from deecay/plotly-box<br/>
+Change: Box plot library from d3.js to Plotly.js</li>
+</ul>
+<p>My changes are only scripts added to run on Windows, and I inserted more debug lines where I needed to know more: <a href="https://github.com/klahnakoski/redash/commits/windows" rel="nofollow noopener">https://github.com/klahnakoski/redash/commits/windows</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-05T06:51:44Z" itemprop="datePublished">
+                    May 5, 2017,  6:51am
+                  </time>
+<meta content="2017-05-05T06:51:44Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p>Thank you! I have managed to determine that the code is attempting to contact<br/>
+ampq://guest:**<span class="mention">@127.0.0.1</span>:5672//<br/>
+I do not know what that means. What is that URL used for? Do I need an ampq server at that location?</p>
+</blockquote>
+<p>Celery can use RabbitMQ/amqp instead of Redis, but we use Redis. I would’ve thought Celery somehow doesn’t pickup the correct configuration, but the Celery startup screen shows it uses Redis so I’m not sure. :\ Maybe it’s some issue with Celery on Windows?</p>
+<blockquote>
+<p>On the subject of testing a query_runner on it’s own: That will not work. I already learned that the query passed to the query_runner is prefixed with /* some metadata */ which would have broken the datasource parsing. This confirms that full end-to-end testing is a good idea;</p>
+</blockquote>
+<p>You can disable the annotation like this: <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/url.py#L18-L20">https://github.com/getredash/redash/blob/master/redash/query_runner/url.py#L18-L20</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-05T14:23:54Z" itemprop="datePublished">
+                    May 5, 2017,  2:23pm
+                  </time>
+<meta content="2017-05-05T14:23:54Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote group-Team quote-modified" data-full="true" data-post="5" data-topic="627">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/2_1.png" width="20"/> arikfr:</div>
+<blockquote>
+<blockquote>
+<p>Thank you! I have managed to determine that the code is attempting to contact<br/>
+ampq://guest:**<span class="mention">@127.0.0.1</span>:5672//<br/>
+I do not know what that means. What is that URL used for? Do I need an ampq server at that location?</p>
+</blockquote>
+<p>Celery can use RabbitMQ/amqp instead of Redis, but we use Redis. I would’ve thought Celery somehow doesn’t pickup the correct configuration, but the Celery startup screen shows it uses Redis so I’m not sure. :\ Maybe it’s some issue with Celery on Windows?</p>
+</blockquote>
+</aside>
+<p>Maybe more direct questions may help me understand: Are you familiar with the query lifecycle in redash? Does the stack trace indicate it is part of that query lifecycle, or maybe some unimportant peripheral task? Given the stack trace, does it appear that Celery attempting to return the query result?</p>
+<p>Your response gives me some clue as to what the Celery worker might be doing: Celery loves to spawn processes, and might be relying on Linux propensity to copy the parent process state, and therefore the Celery state. Maybe Celery has a way to turn off this process-spawning feature?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-05T22:34:53Z" itemprop="datePublished">
+                    May 5, 2017, 10:34pm
+                  </time>
+<meta content="2017-05-05T22:34:53Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I wonder how much work it is to mock Celery. I looked at billiard, the multiprocessing library, and I fear it has too many spawning side effects that Celery may depend on.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-07T20:02:59Z" itemprop="datePublished">
+                    May 7, 2017,  8:02pm
+                  </time>
+<meta content="2017-05-07T20:02:59Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>After the query finishes running, Redash enqueues another Celery task to check alerts status (for alerts that use this query). At this point (when enqueueing the task) you get this exception.</p>
+<p>It’s strange that Celery starts with the correct configuration but changes mid-flight.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-07T20:04:49Z" itemprop="datePublished">
+                    May 7, 2017,  8:04pm
+                  </time>
+<meta content="2017-05-07T20:04:49Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I think that mocking Celery will be too much work, two alternatives:</p>
+<ol>
+<li>Use Docker or a VM to run Redash in Ubuntu.</li>
+<li>Invoke the <code>execute_quer</code> task without Celery (you can just run the function directly).</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/celery-worker-fails-why/627" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-05-10T23:52:07Z" itemprop="datePublished">
+                    May 10, 2017, 11:52pm
+                  </time>
+<meta content="2017-05-10T23:52:07Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thank you.</p>
+<p>I decided against attempting to remote debug a multiprocess Redash/Ubuntu instance. I decided to mock Celery instead. I did not invoke <code>execute_query</code> directly because I still must do integration testing; which revealed some corner cases with respect to query string (mentioned above), error handling and expected response format. I am now at the point where the frontend requests <a href="http://localhost:8080/api/query_results/73" rel="nofollow noopener">http://localhost:8080/api/query_results/73</a> and gets a response that matches what my query_runner provides.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

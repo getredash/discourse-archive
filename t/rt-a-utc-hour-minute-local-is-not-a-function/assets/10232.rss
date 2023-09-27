@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Rt.a.utc(...).hour(...).minute(...).local is not a function</title>
+    <link>https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232</link>
+    <description>![スクリーンショット 2022-03-31 11.33.26|690x236](upload://hL7a5KmaZxKdC03wiqpwv6P0HiZ.png)
+
+hello.
+
+i got this error message and since then, 
+I can no longer access the query page now. 
+Can anyone please help me?
+
+![スクリーンショット 2022-03-31 11.36.02|464x307](upload://rdB5QZ8kiuv9RZbk0s2bNhs2ZEt.png)
+
+I think the cause of the trouble was the wrong specification of the schedule.
+When setting the &#39;&#39; Refresh Schedule &#39;&#39; at the bottom left of the query edit screen,
+i wrote the schedule time directly, like &#39;10: 00&#39;, not using scroll. 
+i think that was the cause of the error. 
+
+but i cant fix the problem because i cant access to the query edit screen because of the error.
+how can i solve this problem?</description>
+    
+    <lastBuildDate>Fri, 01 Apr 2022 01:34:52 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Rt.a.utc(...).hour(...).minute(...).local is not a function</title>
+        <dc:creator><![CDATA[Jiminkim]]></dc:creator>
+        <description><![CDATA[
+            <p>to jesse</p>
+<pre><code class="lang-auto">UPDATE queries SET schedule = null where id =  --QUERY_ID_IN_QUESTION
+LIMIT 1
+</code></pre>
+<p>I appreciate your help.<br>
+I will retry this problem.</p>
+<blockquote>
+<p>The good news is I’m not able to reproduce it on V10 (the current release).<br>
+I’d recommend upgrading to avoid this in the future.</p>
+</blockquote>
+<p>I understood.<br>
+I will suggest it to engineering leader not to make this problem again.</p>
+          <p><a href="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232/3</link>
+        <pubDate>Fri, 01 Apr 2022 01:34:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10232-3</guid>
+        <source url="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232.rss">Rt.a.utc(...).hour(...).minute(...).local is not a function</source>
+      </item>
+      <item>
+        <title>Rt.a.utc(...).hour(...).minute(...).local is not a function</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum and thanks for your bug report!</p>
+<p>Your analysis looks correct to me. The query schedule was saved with an invalid time which causes the page to crash.</p>
+<h3>
+<a name="to-fix-1" class="anchor" href="https://discuss.redash.io#to-fix-1"></a>To Fix</h3>
+<p>You can fix this pretty easily by running this SQL against Redash’s metadata database:</p>
+<pre><code class="lang-sql">UPDATE queries SET schedule = null where id =  --QUERY_ID_IN_QUESTION
+LIMIT 1
+</code></pre>
+<p>This will remove the schedule so you can access the query and change it.</p>
+<p>If you don’t have access to Redash’s metadata database you should ask an admin to do it for you.</p>
+<h3>
+<a name="going-forward-2" class="anchor" href="https://discuss.redash.io#going-forward-2"></a>Going forward</h3>
+<p>It shouldn’t be possible to enter an invalid time in the refresh schedule modal. That’s a bug.</p>
+<p>You’re running V8 (I think). The good news is I’m not able to reproduce it on V10 (the current release). I’d recommend upgrading to avoid this in the future.</p>
+          <p><a href="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232/2</link>
+        <pubDate>Thu, 31 Mar 2022 11:32:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10232-2</guid>
+        <source url="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232.rss">Rt.a.utc(...).hour(...).minute(...).local is not a function</source>
+      </item>
+      <item>
+        <title>Rt.a.utc(...).hour(...).minute(...).local is not a function</title>
+        <dc:creator><![CDATA[Jiminkim]]></dc:creator>
+        <description><![CDATA[
+            <p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7c786679f69bbeccdc2f673bace78d90cc9af175.png" data-download-href="/uploads/short-url/hL7a5KmaZxKdC03wiqpwv6P0HiZ.png?dl=1" title="スクリーンショット 2022-03-31 11.33.26" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c786679f69bbeccdc2f673bace78d90cc9af175_2_690x236.png" alt="スクリーンショット 2022-03-31 11.33.26" data-base62-sha1="hL7a5KmaZxKdC03wiqpwv6P0HiZ" width="690" height="236" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c786679f69bbeccdc2f673bace78d90cc9af175_2_690x236.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c786679f69bbeccdc2f673bace78d90cc9af175_2_1035x354.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c786679f69bbeccdc2f673bace78d90cc9af175_2_1380x472.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7c786679f69bbeccdc2f673bace78d90cc9af175_2_10x10.png"></a></div><p></p>
+<p>hello.</p>
+<p>i got this error message and since then,<br>
+I can no longer access the query page now.<br>
+Can anyone please help me?</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bec435688f01d0d116f198377ace565eda4df811.png" alt="スクリーンショット 2022-03-31 11.36.02" data-base62-sha1="rdB5QZ8kiuv9RZbk0s2bNhs2ZEt" width="464" height="307"></p>
+<p>I think the cause of the trouble was the wrong specification of the schedule.<br>
+When setting the ‘’ Refresh Schedule ‘’ at the bottom left of the query edit screen,<br>
+i wrote the schedule time directly, like ‘10: 00’, not using scroll.<br>
+i think that was the cause of the error.</p>
+<p>but i cant fix the problem because i cant access to the query edit screen because of the error.<br>
+how can i solve this problem?</p>
+          <p><a href="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232/1</link>
+        <pubDate>Thu, 31 Mar 2022 02:44:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10232-1</guid>
+        <source url="https://discuss.redash.io/t/rt-a-utc-hour-minute-local-is-not-a-function/10232.rss">Rt.a.utc(...).hour(...).minute(...).local is not a function</source>
+      </item>
+  </channel>
+</rss>

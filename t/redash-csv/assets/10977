@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RedashのCSVダウンロード文字コードの変更について - Japanese - Redash Discourse</title>
+    <meta name="description" content="先日までSupervisor型の旧Redash(v4)を利用していたのですが、これをv10の Docker型に環境変更を実施しました。 
+元々v4を使用していた際に、csvファイルの文字コードがutf-8で使いづらいという話があり、以下サイトを参考に、cp932の設定を.envに入れ使っていました。 
+
+
+現在、v10の環境で関連の設定を一通り引き継いだつもりなのですが、文字コードがutf-8のままで困っています。 
+docker型での&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/redash-csv/10977" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;RedashのCSVダウンロード文字コードの変更について&#39;" href="https://discuss.redash.io/t/redash-csv/10977.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/redash-csv/10977" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/redash-csv/10977" />
+<meta property="og:title" content="RedashのCSVダウンロード文字コードの変更について" />
+<meta name="twitter:title" content="RedashのCSVダウンロード文字コードの変更について" />
+<meta property="og:description" content="先日までSupervisor型の旧Redash(v4)を利用していたのですが、これをv10の Docker型に環境変更を実施しました。  元々v4を使用していた際に、csvファイルの文字コードがutf-8で使いづらいという話があり、以下サイトを参考に、cp932の設定を.envに入れ使っていました。    現在、v10の環境で関連の設定を一通り引き継いだつもりなのですが、文字コードがutf-8のままで困っています。  docker型での設定方法などご存じの方はいらっしゃいますでしょうか？" />
+<meta name="twitter:description" content="先日までSupervisor型の旧Redash(v4)を利用していたのですが、これをv10の Docker型に環境変更を実施しました。  元々v4を使用していた際に、csvファイルの文字コードがutf-8で使いづらいという話があり、以下サイトを参考に、cp932の設定を.envに入れ使っていました。    現在、v10の環境で関連の設定を一通り引き継いだつもりなのですが、文字コードがutf-8のままで困っています。  docker型での設定方法などご存じの方はいらっしゃいますでしょうか？" />
+<meta property="og:article:section" content="Japanese" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2022-08-31T06:12:00+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/redash-csv/10977">RedashのCSVダウンロード文字コードの変更について</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/japanese/12" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Japanese</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='RedashのCSVダウンロード文字コードの変更について'>
+        <meta itemprop='articleSection' content='Japanese'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/tosawada'><span itemprop='name'>tosawada</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-csv/10977">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-08-31T06:12:00Z' class='post-time'>
+                    August 31, 2022,  6:12am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-08-31T06:12:00Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>先日までSupervisor型の旧Redash(v4)を利用していたのですが、これをv10の Docker型に環境変更を実施しました。</p>
+<p>元々v4を使用していた際に、csvファイルの文字コードがutf-8で使いづらいという話があり、以下サイトを参考に、cp932の設定を.envに入れ使っていました。</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://www.yamamanx.com/redash-csv-utf-8-other-code/">
+  <header class="source">
+      <img src="https://www.yamamanx.com/wp-content/themes/stinger5ver20140902/images/favicon.ico" class="site-icon" width="16" height="16">
+
+      <a href="https://www.yamamanx.com/redash-csv-utf-8-other-code/" target="_blank" rel="noopener nofollow ugc">ヤマムギ</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:504/219;"><img src="https://www.yamamanx.com/wp-content/uploads/2017/07/Contributors_to_getredash_redash.png" class="thumbnail" width="504" height="219"></div>
+
+<h3><a href="https://www.yamamanx.com/redash-csv-utf-8-other-code/" target="_blank" rel="noopener nofollow ugc">Re:dash CSVの出力コードをUTF-8から他の文字コードに変更する事が出来るようになります</a></h3>
+
+  <p>先日、Re:dash CSVの出力文字コードをUTF-8からShift-JISに ...</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>現在、v10の環境で関連の設定を一通り引き継いだつもりなのですが、文字コードがutf-8のままで困っています。<br>
+docker型での設定方法などご存じの方はいらっしゃいますでしょうか？</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ishiguro'><span itemprop='name'>ishiguro</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-csv/10977">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-09-01T11:05:35Z' class='post-time'>
+                    September 1, 2022, 11:05am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-09-01T11:05:35Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>恐らくredashのpython3化後、.envのREDASH_CSV_WRITER_ENCODINGはcsv生成に使われなくなってしまいました。最適な方法とは思えないのですが、私も困っていたため、（バージョンアップの度に再設定する必要がありますが）下記の箇所のソースコードを変更しました。</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436</a></h4>
+
+
+
+    <pre class="onebox"><code class="lang-py">
+      <ol class="start lines" start="426" style="counter-reset: li-counter 425 ;">
+          <li>    else:</li>
+          <li>        abort(404, message="No cached result found for this query.")</li>
+          <li>
+          </li>
+<li>@staticmethod</li>
+          <li>def make_json_response(query_result):</li>
+          <li>    data = json_dumps({"query_result": query_result.to_dict()})</li>
+          <li>    headers = {"Content-Type": "application/json"}</li>
+          <li>    return make_response(data, 200, headers)</li>
+          <li>
+          </li>
+<li>@staticmethod</li>
+          <li class="selected">def make_csv_response(query_result):</li>
+          <li>    headers = {"Content-Type": "text/csv; charset=UTF-8"}</li>
+          <li>    return make_response(</li>
+          <li>        serialize_query_result_to_dsv(query_result, ","), 200, headers</li>
+          <li>    )</li>
+          <li>
+          </li>
+<li>@staticmethod</li>
+          <li>def make_tsv_response(query_result):</li>
+          <li>    headers = {"Content-Type": "text/tab-separated-values; charset=UTF-8"}</li>
+          <li>    return make_response(</li>
+          <li>        serialize_query_result_to_dsv(query_result, "\t"), 200, headers</li>
+      </ol>
+    </code></pre>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>詳細は先程記事にしてみました。</p>
+<p>Redash v10でs-jisでcsvをダウンロードする方法</p><aside class="onebox allowlistedgeneric" data-onebox-src="https://qiita.com/koike_moyashi/items/d0d5dc37a93b398f0aaa">
+  <header class="source">
+      <img src="https://cdn.qiita.com/assets/favicons/public/production-c620d3e403342b1022967ba5e3db1aaa.ico" class="site-icon" width="120" height="120">
+
+      <a href="https://qiita.com/koike_moyashi/items/d0d5dc37a93b398f0aaa" target="_blank" rel="noopener nofollow ugc">Qiita</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://qiita-user-contents.imgix.net/https%3A%2F%2Fcdn.qiita.com%2Fassets%2Fpublic%2Farticle-ogp-background-9f5428127621718a910c8b63951390ad.png?ixlib=rb-4.0.0&amp;w=1200&amp;mark64=aHR0cHM6Ly9xaWl0YS11c2VyLWNvbnRlbnRzLmltZ2l4Lm5ldC9-dGV4dD9peGxpYj1yYi00LjAuMCZ3PTkxNiZ0eHQ9UmVkYXNoJTIwdjEwJUUzJTgxJUE3cy1qaXMlRTMlODElQTdjc3YlRTMlODIlOTIlRTMlODMlODAlRTMlODIlQTYlRTMlODMlQjMlRTMlODMlQUQlRTMlODMlQkMlRTMlODMlODklRTMlODElOTklRTMlODIlOEIlRTYlOTYlQjklRTYlQjMlOTUmdHh0LWNvbG9yPSUyMzIxMjEyMSZ0eHQtZm9udD1IaXJhZ2lubyUyMFNhbnMlMjBXNiZ0eHQtc2l6ZT01NiZ0eHQtY2xpcD1lbGxpcHNpcyZ0eHQtYWxpZ249bGVmdCUyQ3RvcCZzPTliZGY1NjY5OWYyZGYxNGU0NmE0Yjg3OGE5OTU0NDg1&amp;mark-x=142&amp;mark-y=112&amp;blend64=aHR0cHM6Ly9xaWl0YS11c2VyLWNvbnRlbnRzLmltZ2l4Lm5ldC9-dGV4dD9peGxpYj1yYi00LjAuMCZ3PTYxNiZ0eHQ9JTQwa29pa2VfbW95YXNoaSZ0eHQtY29sb3I9JTIzMjEyMTIxJnR4dC1mb250PUhpcmFnaW5vJTIwU2FucyUyMFc2JnR4dC1zaXplPTM2JnR4dC1hbGlnbj1sZWZ0JTJDdG9wJnM9MDZkYWQ2MTVhZWQ5OWE2OWZhOWU4MGI4OWI5ZDk0NTc&amp;blend-x=142&amp;blend-y=491&amp;blend-mode=normal&amp;s=348fa9920a0acb18a688d6a3dc037701" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://qiita.com/koike_moyashi/items/d0d5dc37a93b398f0aaa" target="_blank" rel="noopener nofollow ugc">Redash v10でs-jisでcsvをダウンロードする方法 - Qiita</a></h3>
+
+  <p>かつての方法
+python2時代のredashは.envに↓を書けば、shift-jisでcsvがダウンロードできました。
+export REDASH_CSV_WRITER_ENCODING="cp932" 
+
+しかし、v9からpy...</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>ご参考まで。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/tosawada'><span itemprop='name'>tosawada</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-csv/10977">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-09-09T00:54:03Z' class='post-time'>
+                    September 9, 2022, 12:54am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-09-09T00:54:03Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>ありがとうございます！<br>
+こちらの記事参考にさせていただき対応入れたところ、実現できました。</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

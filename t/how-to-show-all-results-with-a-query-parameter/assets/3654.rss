@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How to show all results with a query parameter</title>
+    <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654</link>
+    <description>Since I see this question a lot, here&#39;s a solution you can paste into your own queries. You can play around with this query on [the demo instance of Redash](demo.redash.io). Just login with any Google account to try it out. The Query is called *All or Specific Query Parameter Example*.
+
+```SQL
+SELECT count(*),
+       TYPE as &quot;type&quot;,
+       CASE WHEN date_part(&#39;month&#39;, created_at) &lt; 10 THEN
+       CAST(DATE_PART(&#39;year&#39;, created_at) || &#39;-0&#39; || DATE_PART(&#39;month&#39;, created_at) || &#39;-&#39; || &#39;01&#39; AS VARCHAR)
+       ELSE
+       CAST(DATE_PART(&#39;year&#39;, created_at) || &#39;-&#39; || DATE_PART(&#39;month&#39;, created_at) || &#39;-&#39; || &#39;01&#39; AS VARCHAR)
+       END AS month_created
+FROM visualizations
+WHERE (&#39;{{ chart_type}}&#39; = &#39;All&#39; OR type = &#39;{{ chart_type }}&#39;)
+GROUP BY TYPE,
+       case when date_part(&#39;month&#39;, created_at) &lt; 10 THEN
+       CAST(DATE_PART(&#39;year&#39;, created_at) || &#39;-0&#39; || DATE_PART(&#39;month&#39;, created_at) || &#39;-&#39; || &#39;01&#39; as varchar)
+       else
+       CAST(DATE_PART(&#39;year&#39;, created_at) || &#39;-&#39; || DATE_PART(&#39;month&#39;, created_at) || &#39;-&#39; || &#39;01&#39; as varchar)
+       END
+```
+
+This query shows how many charts in the demo instance were created each month along with their chart type. The critical part is the `WHERE` clause.
+
+The `chart_type` parameter is a Query Based Dropdown List that depends on a separate query in the demo instance. The separate query pulls the `DISTINCT` names of chart types. The addition of a union lets me include &quot;All&quot; as an option in the parameter dropdown.
+
+```sql
+SELECT &#39;All&#39; as chart_type
+UNION ALL
+(SELECT DISTINCT type AS chart_type FROM visualizations ORDER BY type ASC)
+```
+
+Here it is in action. The parameter lets you view all results or narrow down to a specific chart type. This performs better than query filter on large data sets. You can even map multiple visualizations together this way on a dashboard.
+
+![AllOrOne|390x338](upload://hiAl9cn4E8Aj5vsybyZpuIf0TCP.gif)</description>
+    
+    <lastBuildDate>Mon, 05 Sep 2022 12:21:03 +0000</lastBuildDate>
+    <category>Tips, Tricks &amp; Query Examples</category>
+    <atom:link href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[alexdzehil]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi I’m new to SQL and I’m trying to figure out how I can build a query to be able to select all authors and countries. Help me please.</p>
+<pre><code class="lang-auto">select * from core_report_pageviews, csv_data
+where core_report_pageviews.url = csv_data.permalink
+and core_report_pageviews.country = '{{ Country }}'
+and core_report_pageviews.date = '{{ Date }}'
+and csv_data.primary_editor_name = '{{ Author }}'
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/22">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/22</link>
+        <pubDate>Mon, 05 Sep 2022 12:21:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-22</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The old demo instance was decommissioned when <a href="http://app.redash.io">app.redash.io</a> was deprecated. You can use our latest preview build here: <a href="https://redash-preview.netlify.app">https://redash-preview.netlify.app</a></p>
+<p>If you have questions about this subject feel free to post them in this thread.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/20">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/20</link>
+        <pubDate>Thu, 12 May 2022 15:44:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-20</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[souki]]></dc:creator>
+        <description><![CDATA[
+            <p>the link "the demo instance of Redash. doesn’t work ", can you please sent me the link ,</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/19</link>
+        <pubDate>Thu, 12 May 2022 15:42:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-19</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[Mrmaxjaco1]]></dc:creator>
+        <description><![CDATA[
+            <p>You are a god! Finally got it to work, thank you so much!</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/18</link>
+        <pubDate>Mon, 13 Dec 2021 16:13:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-18</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your question. You’re looking for this response earlier in the thread:</p>
+<aside class="quote" data-post="2" data-topic="3654">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/i/c5a1d2/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/2">How to show all results with a query parameter</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/tips-tricks-query-examples/11"><span class="badge-category-bg" style="background-color: #652D90;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Created a really cool query or an awesome visualization? This is the place to share it with the broader Redash community.">Tips, Tricks &amp; Query Examples</span></a>
+  </div>
+  <blockquote>
+    Thanks Jesse, this was very helpful! 
+We wanted to allow multiple selections, let me share our solution for achieving that. Following your example: 
+
+Change the parameter settings for “Chart Type”:
+
+Mark the checkbox “Allow multiple values”
+Quotation: Select “Single Quotation Mark”
+
+
+Change the WHERE clause slightly to WHERE ('All' IN ({{ chart_type}}) OR type IN ({{ chart_type }}))
+  </blockquote>
+</aside>
+
+<p>Your two queries would look like this</p>
+<pre><code class="lang-sql">-- Dropdown parameter backing query
+SELECT NULL account_id, 'All' name
+UNION ALL
+SELECT transporters.account_id,
+transporters.name
+FROM transporters
+WHERE transporters.name NOT LIKE “%allocate%”
+AND transporters.is_disabled = “0”
+
+--Main query
+SELECT fields FROM table
+WHERE 'All' IN ({{ dropdown_param }})
+   OR field IN ({{ dropdown_param }})
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/17</link>
+        <pubDate>Mon, 13 Dec 2021 16:03:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-17</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[Mrmaxjaco1]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, quite new to SQL (as in started last week) and I have been cracking my mind over this but can’t quite figure it out. Any suggestions would be much appreciated;</p>
+<p>I am trying to use a query based dropdown list to filter results based on specific users as I am trying to create multiple queries using the same users as a base for the search results. For the dropdown list i am using the following query:</p>
+<pre><code class="lang-auto">SELECT transporters.account_id,
+transporters.name
+FROM transporters
+WHERE transporters.name NOT LIKE “%allocate%”
+AND transporters.is_disabled = “0”
+</code></pre>
+<p>This works fine for specific user analysis and displays the correct users in the dropdown list. However, I would like to include an option that returns the same information for all users, instead of just specific users so we can return and compare data on all users at the same time and filter on specific users when needed.</p>
+<p>I have been trying to make this happen by using some variation of the solution offered here but I just can’t seem to figure this out… Does anyone have any tips on how to get this done and if what I want is even possible?</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/16</link>
+        <pubDate>Mon, 13 Dec 2021 14:54:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-16</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[isaacdm]]></dc:creator>
+        <description><![CDATA[
+            <p>Done - <a href="http://discuss.redash.io/t/unable-to-execute-query-based-dropped-down-list/8764" class="inline-onebox">Unable to execute Query Based Dropped Down List</a></p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/15</link>
+        <pubDate>Fri, 16 Jul 2021 11:14:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-15</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Please make a separate thread for this and provide a complete description of the issue.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/14</link>
+        <pubDate>Thu, 15 Jul 2021 15:22:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-14</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[isaacdm]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse, I am able to run the multiparameter query and fetch a report in the server but the same query is not running on another server. It fails while fetching data for the second parameter and in the logs, i found that “0 rows found” issue.</p>
+<p>Can you please suggest…</p>
+<p>Thanks in advance</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/13</link>
+        <pubDate>Thu, 15 Jul 2021 12:40:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-13</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[SLR]]></dc:creator>
+        <description><![CDATA[
+            <p>When I try this solution I get an error that says ‘Error running query: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ‘ALL) OR site_name IN (ALL)) AND (‘ALL’ IN (ALL) OR oem_program IN (AL’ at line 21’</p>
+<p>I’m not sure what I’m doing wrong. My queries and all the settings match these examples perfectly. But it doesn’t seem to be working for me. I really need to have multi-select parameters that default to all the values or my department won’t be able to redash.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/12</link>
+        <pubDate>Mon, 12 Oct 2020 21:27:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-12</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[dsharp]]></dc:creator>
+        <description><![CDATA[
+            <p>This is awesome! I didn’t know I could do that. SQL is so much easier.</p>
+<p>Thanks.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/11</link>
+        <pubDate>Thu, 04 Jun 2020 18:37:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-11</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There are two ways to do it:</p>
+<ul>
+<li>Dynamically inject a document with an <code>all</code> field [hard]</li>
+<li>Use QRDS so you can do it in SQL [easy]</li>
+</ul>
+<pre><code class="lang-auto">SELECT fieldname FROM cached_query_xxxx
+UNION
+SELECT 'all' "fieldname"
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/10</link>
+        <pubDate>Thu, 04 Jun 2020 18:35:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-10</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[dsharp]]></dc:creator>
+        <description><![CDATA[
+            <p>This is very helpful. I think it will work, but now I have to figure out how to add “All” to the previous Query. I have a dynamic list of values and need to include the generic “All” in the results.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/9</link>
+        <pubDate>Thu, 04 Jun 2020 18:33:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-9</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="dsharp" data-post="7" data-topic="3654">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/d/8dc957/40.png" class="avatar"> dsharp:</div>
+<blockquote>
+<p>I am not sure how to check if parameter is “All”</p>
+</blockquote>
+</aside>
+<p>Here’s an example for you that uses <code>$expr</code> to perform a literal comparison between the parameter and <code>All</code>.</p>
+<pre><code class="lang-auto">{
+    "collection": "&lt;my collection&gt;",
+    "query": {
+        "$expr": {
+            "$or": [
+                {
+                    "$eq": ["$fieldname","{{ param }}"]
+                },
+                {
+                    "$eq": ["All", "{{ param }}" ]
+                }
+            ]
+        }
+    }
+}
+</code></pre>
+<p>I made a gif showing it in action:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6d3772c246afaa0a8058171f499cafc27e507ced.gif" data-download-href="/uploads/short-url/fAaQbmbkzxhHhvCbFF9Js2IFc4d.gif?dl=1" title="CleanShot 2020-06-04 at 13.26.08"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6d3772c246afaa0a8058171f499cafc27e507ced_2_690x388.gif" alt="CleanShot 2020-06-04 at 13.26.08" data-base62-sha1="fAaQbmbkzxhHhvCbFF9Js2IFc4d" width="690" height="388" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6d3772c246afaa0a8058171f499cafc27e507ced_2_690x388.gif, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6d3772c246afaa0a8058171f499cafc27e507ced.gif 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6d3772c246afaa0a8058171f499cafc27e507ced.gif 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6d3772c246afaa0a8058171f499cafc27e507ced_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/8</link>
+        <pubDate>Thu, 04 Jun 2020 18:14:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-8</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[dsharp]]></dc:creator>
+        <description><![CDATA[
+            <p>I was trying to use $or to conditionally apply the parameter. I am not sure how to check if parameter is “All”</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/7</link>
+        <pubDate>Thu, 04 Jun 2020 18:04:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-7</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>hi <a class="mention" href="https://discuss.redash.io/u/dsharp">@dsharp</a> and welcome to the forum! Can you provide any more information about your use-case here? There’s not much to gather from your question.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/6</link>
+        <pubDate>Thu, 04 Jun 2020 17:42:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-6</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[dsharp]]></dc:creator>
+        <description><![CDATA[
+            <p>This doesn’t work:</p>
+<pre><code class="lang-auto">{
+                        "$or":[
+                            {
+                                "InstanceName":"{{ Instance }}"
+                            },{
+                                "{{ Instance }}":"All"
+                            }
+                        ]
+                    }
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/5</link>
+        <pubDate>Thu, 04 Jun 2020 17:41:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-5</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I think you can do this with the <a href="https://docs.mongodb.com/manual/reference/operator/query/or/">$or</a> operator.</p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/4</link>
+        <pubDate>Tue, 24 Mar 2020 17:10:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-4</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[bzon]]></dc:creator>
+        <description><![CDATA[
+            <p>Can we do the same for MongoDB query?</p>
+<p>I have the following:</p>
+<pre><code>{
+    "collection": "organizations",
+    "query": {},
+    "fields": {
+        "_id": 1,
+        "name": 2
+    }
+}</code></pre>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/3</link>
+        <pubDate>Thu, 12 Mar 2020 08:33:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-3</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[ilmari-abaenglish]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks Jesse, this was very helpful!</p>
+<p>We wanted to allow multiple selections, let me share our solution for achieving that. Following your example:</p>
+<ul>
+<li>Change the parameter settings for “Chart Type”:
+<ul>
+<li>Mark the checkbox “Allow multiple values”</li>
+<li>Quotation: Select “Single Quotation Mark”</li>
+</ul>
+</li>
+<li>Change the WHERE clause slightly to <code>WHERE ('All' IN ({{ chart_type}}) OR type IN ({{ chart_type }}))</code>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/2</link>
+        <pubDate>Wed, 16 Oct 2019 15:51:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-2</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+      <item>
+        <title>How to show all results with a query parameter</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Since I see this question a lot, here’s a solution you can paste into your own queries. You can play around with this query on <a href="https://discuss.redash.io">the demo instance of Redash</a>. Just login with any Google account to try it out. The Query is called <em>All or Specific Query Parameter Example</em>.</p>
+<pre data-code-wrap="SQL"><code class="lang-nohighlight">SELECT count(*),
+       TYPE as "type",
+       CASE WHEN date_part('month', created_at) &lt; 10 THEN
+       CAST(DATE_PART('year', created_at) || '-0' || DATE_PART('month', created_at) || '-' || '01' AS VARCHAR)
+       ELSE
+       CAST(DATE_PART('year', created_at) || '-' || DATE_PART('month', created_at) || '-' || '01' AS VARCHAR)
+       END AS month_created
+FROM visualizations
+WHERE ('{{ chart_type}}' = 'All' OR type = '{{ chart_type }}')
+GROUP BY TYPE,
+       case when date_part('month', created_at) &lt; 10 THEN
+       CAST(DATE_PART('year', created_at) || '-0' || DATE_PART('month', created_at) || '-' || '01' as varchar)
+       else
+       CAST(DATE_PART('year', created_at) || '-' || DATE_PART('month', created_at) || '-' || '01' as varchar)
+       END
+</code></pre>
+<p>This query shows how many charts in the demo instance were created each month along with their chart type. The critical part is the <code>WHERE</code> clause.</p>
+<p>The <code>chart_type</code> parameter is a Query Based Dropdown List that depends on a separate query in the demo instance. The separate query pulls the <code>DISTINCT</code> names of chart types. The addition of a union lets me include “All” as an option in the parameter dropdown.</p>
+<pre><code class="lang-sql">SELECT 'All' as chart_type
+UNION ALL
+(SELECT DISTINCT type AS chart_type FROM visualizations ORDER BY type ASC)
+</code></pre>
+<p>Here it is in action. The parameter lets you view all results or narrow down to a specific chart type. This performs better than query filter on large data sets. You can even map multiple visualizations together this way on a dashboard.</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/793ecf0bd70b6b807a3cb6a972570ca017c136b3.gif" alt="AllOrOne" data-base62-sha1="hiAl9cn4E8Aj5vsybyZpuIf0TCP" width="390" height="338"></p>
+          <p><a href="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654/1</link>
+        <pubDate>Fri, 19 Apr 2019 15:36:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3654-1</guid>
+        <source url="https://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654.rss">How to show all results with a query parameter</source>
+      </item>
+  </channel>
+</rss>

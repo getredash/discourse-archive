@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Migrating production Bitnami Redash to a new instance + Upgrade to V8</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504">Migrating production Bitnami Redash to a new instance + Upgrade to V8</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Migrating production Bitnami Redash to a new instance + Upgrade to V8" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-11T14:49:01Z" itemprop="datePublished">
+                    September 11, 2019,  2:49pm
+                  </time>
+<meta content="2019-09-24T02:24:19Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I’m using a legacy Redash V5 (Bitnami) and need to migrate it to a new instance with version 8 installed. The reason is providing the ability to connect to Presto using password! Based on my research, the only way to migrate dashboards and queries is to make a backup from Postgres and import it to the new instance. Unfortunately, I stuck in importing my backup and need help. Below are my performed steps:</p>
+<ol>
+<li>make a tar.gz backup using the postgres dump from the running instance. (Backup size is 3.8 GB) Using: pg_dump -U postgres -F c bitnami_redash &gt; /newvolume/backup.tar.gz</li>
+<li>Installed a docker based Redash with the exact same version.</li>
+<li>Copy the backup file to my ubuntu server.</li>
+<li>Import the backup file using: cat backup.tar.gz | docker exec -i redash_postgres_1 pg_restore -Upostgres</li>
+</ol>
+<p>As I said, the import process is taking so long without any proper result. I really appreciate any help to solve my problem or any other practical way to do the needful. Thanks!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/cannot-connect-to-athena-db-after-upgrading-from-v4-to-v7/4179/2" itemprop="url">Cannot Connect To Athena DB After Upgrading From V4 To V7</a>
+<meta content="1" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/update-to-version-8-0-0-0/4847/11" itemprop="url">Update to version 8.0.0.0</a>
+<meta content="2" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-13T02:03:07Z" itemprop="datePublished">
+                    September 13, 2019,  2:03am
+                  </time>
+<meta content="2019-09-13T02:03:07Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Is there any other cleaner way to do the migration?!!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-13T02:44:07Z" itemprop="datePublished">
+                    September 13, 2019,  2:44am
+                  </time>
+<meta content="2019-09-13T02:44:07Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I haven’t upgraded before. But looking through the <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade-legacy" rel="nofollow noopener">legacy upgrade guide</a> it mentions Bitnami instances are not compatible with the upgrade script. How long has the database import been running? Are you certain it’s not working?</p>
+<p>If the upgrade script won’t work, you can manually apply the migrations like <a class="mention" href="/u/arikfr">@arikfr</a> suggested in <a href="http://discuss.redash.io/t/migration-of-metadata-queries-users-etc/186">this thread</a> and then migrate your data sources, queries, visualizations, users, and groups via the API.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/how-to-migrate-self-hosted-redash-queries-to-official-redash-service-app-redash-io-xxxx/4412/7" itemprop="url">How to migrate self hosted redash queries to official redash service (app.redash.io/xxxx)?</a>
+<meta content="3" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-13T02:44:53Z" itemprop="datePublished">
+                    September 13, 2019,  2:44am
+                  </time>
+<meta content="2019-09-13T02:44:53Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a href="http://discuss.redash.io/t/how-to-migrate-self-hosted-redash-queries-to-official-redash-service-app-redash-io-xxxx/4412">This recent post on the forum</a> relates to migrating from one instance to another. It may also be useful to you.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-13T02:52:37Z" itemprop="datePublished">
+                    September 13, 2019,  2:52am
+                  </time>
+<meta content="2019-09-13T02:52:37Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for your reply. Actually, upgrade isn’t my problem as I already installed the new version of Redash. My biggest problem is moving queries and dashboards from the current Bitnami Redash to the new server. Unfortunately, I cannot perform the upgrade on Bitnami instance and moving the data to the new one.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-13T13:15:57Z" itemprop="datePublished">
+                    September 13, 2019,  1:15pm
+                  </time>
+<meta content="2019-09-13T13:53:58Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a href="http://discuss.redash.io/t/upgrade-redash-stanalone-v4-to-v7-docker/4180/6">This could help too</a>. Basically you split the upgrade and the migration into two steps. And <a href="http://discuss.redash.io/t/help-migrating-from-ubuntu-redash-v4-to-docker-redash-v7/4321/5">here’s further feedback</a> from another user who successfully accomplished the upgrade.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T02:31:30Z" itemprop="datePublished">
+                    September 24, 2019,  2:31am
+                  </time>
+<meta content="2019-09-24T04:12:39Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Well, finally I managed to do the upgrade. As you may know, Bitnami Redash is a little bit different and also the upgrade is quite complicated. Unfortunately, <a href="https://docs.bitnami.com/aws/apps/redash/administration/upgrade/" rel="nofollow noopener">the provided upgrade instructions  by Bitnami</a>, is old and not doable for the current versions. Luckily and after contacting their support, they provided me an instruction for upgrade and using that, I successfully upgraded my Bitnami Redash from v5 to v7 first and then v8. I share the instruction here, hopefully can save some time for someone who has intend to do the same!</p>
+<p>First, create a backup of your current version:</p>
+<p>mv /opt/bitnami/apps/redash/htdocs /opt/bitnami/apps/redash/htdocs.bak</p>
+<pre><code class="lang-auto">
+Create the htdocs directory for the new version and unpack it there:
+
+cd /opt/bitnami/apps/redash
+wget https://github.com/getredash/redash/archive/v7.0.0.tar.gz
+mkdir /opt/bitnami/apps/redash/htdocs
+tar -C /opt/bitnami/apps/redash/htdocs -xvf v7.0.0.tar.gz --strip-components 1
+</code></pre>
+<p>Copy your .env file and your venv/ directory from the current version to the new version:</p>
+<p>cp /opt/bitnami/apps/redash/htdocs.bak/.env /opt/bitnami/apps/redash/htdocs<br/>
+cp -R /opt/bitnami/apps/redash/htdocs.bak/venv /opt/bitnami/apps/redash/htdocs</p>
+<pre><code class="lang-auto">
+Edit your  */opt/bitnami/apps/redash/htdocs/.env*  file and delete the  `REDASH_STATIC_ASSETS_PATH`  line.
+
+Change permissions of the htdocs folder:
+
+sudo chown -R bitnami:redash /opt/bitnami/apps/redash/htdocs
+sudo find /opt/bitnami/apps/redash/htdocs -type d -exec chmod 775 {} \;
+</code></pre>
+<p>Install new requirements (First you need to load the bitnami environment and change to bitnami user)</p>
+<p>sudo /opt/bitnami/use_redash<br/>
+su bitnami<br/>
+cd /opt/bitnami/apps/redash/htdocs<br/>
+. venv/bin/activate<br/>
+pip install -r requirements.txt</p>
+<pre><code class="lang-auto">
+Create a home folder for the  `redash`  user
+
+sudo mkdir /home/redash
+sudo chown redash:redash /home/redash/
+</code></pre>
+<p>Migrate the database:</p>
+<p>bin/run ./manage.py db upgrade</p>
+<pre><code class="lang-auto">
+Generate new static files. (Install git and nodejs is required)
+
+sudo apt-get install -y git
+sudo curl -o '/opt/node-v10.16.3-linux-x64.tar.xz' 'https://nodejs.org/dist/v10.16.3/node-v10.16.3-linux-x64.tar.xz'
+sudo tar xf /opt/node-v10.16.3-linux-x64.tar.xz -C /opt/
+export PATH=/opt/node-v10.16.3-linux-x64/bin:$PATH
+cd /opt/bitnami/apps/redash/htdocs
+npm install &amp;&amp; npm run build
+</code></pre>
+<p>Finally, restart the servers:</p>
+<p>sudo /opt/bitnami/ctlscript.sh restart</p>
+<pre><code class="lang-auto"></code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T07:57:26Z" itemprop="datePublished">
+                    September 24, 2019,  7:57am
+                  </time>
+<meta content="2019-09-24T07:57:26Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I strongly recommend everyone NOT to use Bitnami’s images, but to use our official images, as detailed on: <a href="https://redash.io/help/open-source/setup" rel="nofollow noopener">https://redash.io/help/open-source/setup</a>.</p>
+<p>All of our documentation assumes a specific setup, which Bitnami’s images don’t follow. This means that anytime you need assistance it’s almost impossible for us to help and all the admin guides are not relevant.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T07:58:34Z" itemprop="datePublished">
+                    September 24, 2019,  7:58am
+                  </time>
+<meta content="2019-09-24T07:58:34Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That’s absolutely right! I’m trying to get rid of it as well! But so far, couldn’t manage to move our data!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T09:54:13Z" itemprop="datePublished">
+                    September 24, 2019,  9:54am
+                  </time>
+<meta content="2019-09-24T09:54:13Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>The next step is to migrate from your Bitnami instance to Docker, yes?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T10:21:11Z" itemprop="datePublished">
+                    September 24, 2019, 10:21am
+                  </time>
+<meta content="2019-09-24T10:21:11Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Yes! My only problem is the query_results table is so huge and I cannot export it. I couldn’t do the migration using the dump method and I think it because of Bitnami database differences. What I’m trying at the moment is to export the tables one by one and import to Docker version database. I managed to import the users, datasources and dashboards, but for queries I need to import the query_results first. query_results table is so huge and I have some difficulties to export it. It would be great if you guys can provide me a hint!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T10:24:29Z" itemprop="datePublished">
+                    September 24, 2019, 10:24am
+                  </time>
+<meta content="2019-09-24T10:24:29Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>The <code>query_results</code> table is just a cache. Move all tables except that one. Your Docker Redash will refill the the cache the first time it executes your queries.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c9b9c4ece066a82c5f8a91d61ef563a263634f4.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T10:26:37Z" itemprop="datePublished">
+                    September 24, 2019, 10:26am
+                  </time>
+<meta content="2019-09-24T10:26:37Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>If I don’t import the query_results table first, I’ll face this error while importing queries:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/k3SeSvJN4VRjbImq89UWT0Mt6Ju.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c9b9c4ece066a82c5f8a91d61ef563a263634f4.png" rel="noopener nofollow ugc" title="30"><img alt="30" data-base62-sha1="k3SeSvJN4VRjbImq89UWT0Mt6Ju" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9b9c4ece066a82c5f8a91d61ef563a263634f4_2_10x10.png" height="327" src="assets/8c9b9c4ece066a82c5f8a91d61ef563a263634f4_2_690x327.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9b9c4ece066a82c5f8a91d61ef563a263634f4_2_690x327.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c9b9c4ece066a82c5f8a91d61ef563a263634f4.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c9b9c4ece066a82c5f8a91d61ef563a263634f4.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">30</span><span class="informations">844×400 55.3 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>It seems that some dependencies are there!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T10:28:55Z" itemprop="datePublished">
+                    September 24, 2019, 10:28am
+                  </time>
+<meta content="2019-09-24T10:28:55Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That’s a database constraint. I’d blow away the <code>last_query_result_id</code> values (set them NULL) and try again. Of course keep a copy in case it doesn’t work.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T10:30:09Z" itemprop="datePublished">
+                    September 24, 2019, 10:30am
+                  </time>
+<meta content="2019-09-24T10:30:09Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>You mean set them NULL in the source database or in the destination?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-09-24T10:33:52Z" itemprop="datePublished">
+                    September 24, 2019, 10:33am
+                  </time>
+<meta content="2019-09-24T10:33:52Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>In the destination. Your problem is the database won’t allow the <code>queries</code> table to point at a non-existent result. You probably need to duplicate the queries table in your source db, set the <code>result_id</code> NULL and then try to move it.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/mduesi.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/mduesi_avatar.png" tabindex="-1" width="48"/><span itemprop="name">mduesi</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-01T07:29:24Z" itemprop="datePublished">
+                    October 1, 2019,  7:29am
+                  </time>
+<meta content="2019-10-01T07:29:24Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Is there a way to upgrade self-hosted redash v7 to v8?</p>
+<p>The command: sudo bin/upgrade --channel beta gives only the possibility to “downgrade” to v6, because the channel release API (<a href="https://version.redash.io/api/releases?channel=beta" rel="nofollow noopener">https://version.redash.io/api/releases?channel=beta</a>) returns only v6.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ahmokhtari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ahmokhtari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ahmokhtari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-01T07:54:35Z" itemprop="datePublished">
+                    October 1, 2019,  7:54am
+                  </time>
+<meta content="2019-10-01T07:54:35Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Which installation type you’re using? Docker or Legacy? By the way, there is an upgrade instruction <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="nofollow noopener">here</a> for both types.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_19" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/mduesi.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/mduesi_avatar.png" tabindex="-1" width="48"/><span itemprop="name">mduesi</span></a>
+</span>
+<link href="https://discuss.redash.io/t/migrating-production-bitnami-redash-to-a-new-instance-upgrade-to-v8/4504" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-08T12:50:14Z" itemprop="datePublished">
+                    October 8, 2019, 12:50pm
+                  </time>
+<meta content="2019-10-08T12:50:14Z" itemprop="dateModified"/>
+<span itemprop="position">19</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I am using the lagacy version, but as I described in my previous post, the normal “upgrade” instruction will not upgrade to v8.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

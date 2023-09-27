@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Adding a new query runner, I have a data source field that won't save</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864">Adding a new query runner, I have a data source field that won't save</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Adding a new query runner, I have a data source field that won't save" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/alison.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/alison_avatar.png" tabindex="-1" width="48"/><span itemprop="name">alison</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-06T19:12:39Z" itemprop="datePublished">
+                    July 6, 2017,  7:12pm
+                  </time>
+<meta content="2017-07-06T19:12:39Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I’m trying to add ActiveData as a query_runner. This is where I’m at: <a href="https://github.com/mozilla/redash/compare/master...alison985:83_activedata_query_runner" rel="nofollow noopener">https://github.com/mozilla/redash/compare/master...alison985:83_activedata_query_runner</a> The problem is that it won’t save the Host URL field (which is required) on the data source configuration page no matter what I do. I have no idea why. The form is generated by the dynamic-form.html page and the configuration in the activedata.py file matches the syntax and attributes of other query_runner configs. Thoughts?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-06T19:37:22Z" itemprop="datePublished">
+                    July 6, 2017,  7:37pm
+                  </time>
+<meta content="2017-07-06T19:37:22Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I copied <code>activedata.py</code> into my environment, created new data source from it and it saved everything properly.</p>
+<p>Can you make sure that other data source types do save properly in your environment?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/alison.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/alison_avatar.png" tabindex="-1" width="48"/><span itemprop="name">alison</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-06T23:11:17Z" itemprop="datePublished">
+                    July 6, 2017, 11:11pm
+                  </time>
+<meta content="2017-07-06T23:11:17Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Interestingly enough saving other data sources has stopped working. Have you seen this before? How do you fix it?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-07T19:29:07Z" itemprop="datePublished">
+                    July 7, 2017,  7:29pm
+                  </time>
+<meta content="2017-07-07T19:29:07Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Didn’t see this before.</p>
+<p>If the data source doesn’t get saved at all, then check the server logs. Otherwise, just compare your current state of the code with the latest stable version you have (master branch?) and try to see what’s changed.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/alison.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/alison_avatar.png" tabindex="-1" width="48"/><span itemprop="name">alison</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-08T04:47:52Z" itemprop="datePublished">
+                    July 8, 2017,  4:47am
+                  </time>
+<meta content="2017-07-08T04:47:52Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks Arik. I did the comparison to see what changed in the link provided above ( <a href="https://github.com/mozilla/redash/compare/master...alison985:83_activedata_query_runner" rel="nofollow noopener">https://github.com/mozilla/redash/compare/master...alison985:83_activedata_query_runner</a> ).</p>
+<p>Upon digging deeper, I have found that it is saving the values to the redash database, but it does not display the saved information back to the user making it seem like something has failed. It appears to be doing the same for other, working data sources. Is that a security feature or known issue?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-08T06:26:11Z" itemprop="datePublished">
+                    July 8, 2017,  6:26am
+                  </time>
+<meta content="2017-07-08T06:26:11Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It’s neither. The only values we don’t show after saving are the ones that are marked as secret, but this is not the case.</p>
+<p>Maybe this functionality is broken in your master branch as well?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-08T13:27:34Z" itemprop="datePublished">
+                    July 8, 2017,  1:27pm
+                  </time>
+<meta content="2017-07-08T13:27:34Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>alison,</p>
+<p>Revert you code and see if the problem persists; it may be a problem in the state of the various Redash services, but I am guessing.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-08T13:31:14Z" itemprop="datePublished">
+                    July 8, 2017,  1:31pm
+                  </time>
+<meta content="2017-07-09T16:16:48Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>HTML is always changing on me: It may be these lines</p>
+<pre><code>     &lt;input name="input" type="{{field.property.type}}" class="form-control" ng-model="target.options[field.name]" ng-required="field.property.required"
+            ng-if="field.property.type !== 'file' &amp;&amp; field.property.type !== 'checkbox'" accesskey="tab" placeholder="{{field.property.default}}"&gt;
+           &lt;div class="mute-text"&gt; {{ field.property.info }} &lt;/div&gt;
+</code></pre>
+<p>The <code>&lt;input&gt;</code> does not end in <code>/&gt;</code>. Could it be messing with all following tags?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/alison.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/alison_avatar.png" tabindex="-1" width="48"/><span itemprop="name">alison</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-10T15:38:05Z" itemprop="datePublished">
+                    July 10, 2017,  3:38pm
+                  </time>
+<meta content="2017-07-10T15:38:05Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/klahnakoski">@klahnakoski</a> All of the other <code>input</code> tags in the project lack the ending /, so I was not adding it to maintain consistency but  I tried it for kicks and giggles and it doesn’t change anything.</p>
+<p>I had hypothesized the same conclusion <a class="mention" href="/u/arikfr">@arikfr</a> had about the mozilla master branch just being broken, so I had tried reverting all commits I made to the mozilla/redash master branch ever (including a rebase from getredash/redash master the week of June 12) but that had no effect on, for instance, postgres data source connections displaying saved data source info. So then I went forward and tried the branch I have that does a merge from getredash/redash master (<a href="https://github.com/mozilla/redash/pull/105" rel="nofollow noopener">https://github.com/mozilla/redash/pull/105</a>) last week and that doesn’t show saved data source values either. I also tried a visual comparison of getredash/redash master dynamic-form.html and dynamic-form.js files with my dev branch for this ticket and found no differences that seemed relevant. (There is an improvement to error handling on the save of the form but it doesn’t change the behavior in that branch.)</p>
+<p>Now, since the values are saving, but not displaying after save, I played around with the <code>ng-model="target.options[field.name]"</code> in the input tag, since it would seem the Angular data bind to the field is at least a logical place to look. Also, it refers to <code>target.options</code> instead of <code>field.property.x</code> like the rest of the Angular references. I tried <code>field.name</code> and a few other things mostly for kicks but they didn’t work.</p>
+<p>I also tried a different <code>__init__()</code> function (commit is synced to my dev branch if you’re interested) that mirrors the same function in other query_runners to no effect.</p>
+<p>Since the removal of information occurs after the save I also tried commenting out <code>$scope.dataSourceForm.$setPristine();</code> on line 132 of dynamic-form.js (even though it should only be changing CSS classes in the form), and that didn’t work.</p>
+<p>Then, since the doc_url field is working fine and the difference between it and the host_url field are that host_url is required, I commented out the “required” line for the host_url field in the configuration_schema and that didn’t help.</p>
+<p>Having read dynamic-form.js, <a class="mention" href="/u/arikfr">@arikfr</a>, it seems most concerned with the type of form field (i.e. checkbox, file, etc.). Could you please point out to me where it’s pulling the saved information from the database to assign it to <code>target.options[field.name]</code>?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/klahnakoski.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/klahnakoski_avatar.png" tabindex="-1" width="48"/><span itemprop="name">klahnakoski</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-10T17:46:17Z" itemprop="datePublished">
+                    July 10, 2017,  5:46pm
+                  </time>
+<meta content="2017-07-10T17:46:17Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>so, given that master also has this problem, I am guessing your setup is corrupted.  I suggest deploying a fresh redash instance.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-10T20:10:14Z" itemprop="datePublished">
+                    July 10, 2017,  8:10pm
+                  </time>
+<meta content="2017-07-10T20:10:14Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="9" data-topic="864">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/184_1.png" width="20"/> alison:</div>
+<blockquote>
+<p>but that had no effect on, for instance, postgres data source connections displaying saved data source info.</p>
+</blockquote>
+</aside>
+<p>From the phrasing I’m not sure – was it working properly or not?</p>
+<p>Also, on your production system, can you save and reload data sources properly?</p>
+<aside class="quote no-group quote-modified" data-post="9" data-topic="864">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/184_1.png" width="20"/> alison:</div>
+<blockquote>
+<p>Could you please point out to me where it’s pulling the saved information from the database to assign it to target.options[field.name]?</p>
+</blockquote>
+</aside>
+<p><code>target</code> is an object the <code>DynamicForm</code> component receives from its parent. It’s being loaded <a href="https://github.com/getredash/redash/blob/master/client/app/pages/data-sources/show.js#L15">here</a>.</p>
+<p>I would try reverting any changes to <code>dynamic_form.{js,html}</code> files and to <code>pages/data-sources/show.{js,html}</code> files. If reverting resolves the issue, then review all changes and see what might have causes it.</p>
+<p>Actually before that make sure the data sources controller or model code in the backend didn’t change either.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/alison.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/alison_avatar.png" tabindex="-1" width="48"/><span itemprop="name">alison</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-12T01:51:11Z" itemprop="datePublished">
+                    July 12, 2017,  1:51am
+                  </time>
+<meta content="2017-07-12T01:51:11Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Found it. It was a change to the model from November. <a href="https://github.com/mozilla/redash/commit/e259805da42c400b6384a840426643cfd4d764a1#diff-2eb9bad8b59774e58b2c9a664440905aR460" rel="nofollow noopener">https://github.com/mozilla/redash/commit/e259805da42c400b6384a840426643cfd4d764a1#diff-2eb9bad8b59774e58b2c9a664440905aR460</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/adding-a-new-query-runner-i-have-a-data-source-field-that-wont-save/864" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-13T03:42:39Z" itemprop="datePublished">
+                    July 13, 2017,  3:42am
+                  </time>
+<meta content="2017-07-13T03:42:39Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><img alt=":clap:" class="emoji" src="assets/clap.png" title=":clap:"/> glad you figured it out <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

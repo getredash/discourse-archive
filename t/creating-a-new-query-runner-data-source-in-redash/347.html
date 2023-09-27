@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Creating a new query runner (data source) in Redash</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/creating-a-new-query-runner-data-source-in-redash/347">Creating a new query runner (data source) in Redash</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/7.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Development</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Creating a new query runner (data source) in Redash" itemprop="headline"/>
+<meta content="Development" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/creating-a-new-query-runner-data-source-in-redash/347" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-12-25T10:30:22Z" itemprop="datePublished">
+                    December 25, 2016, 10:30am
+                  </time>
+<meta content="2016-12-25T10:35:46Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>To support new data source type in Redash, you need to implement a <em>Query Runner</em> for this data source type. I’m working on a Snowflake query runner, so decided to use this opportunity to describe the process of adding a new data source:</p>
+<p>We start with implementing the <code>BaseQueryRunner</code> class:</p>
+<pre><code class="lang-python">from redash.query_runner import BaseQueryRunner
+
+
+class Snowflake(BaseQueryRunner):
+    def run_query(self, query, user):
+        pass
+</code></pre>
+<p>The only method that you must implement is the <code>run_query</code> method, which accepts a <code>query</code> parameter (string) and the <code>user</code> who invoked this query. The <code>user</code> is irrelevant for most query runners and can be ignored.</p>
+<h3>Configuration</h3>
+<p>Usually the query runner needs some configuration to be used, so for this we need to implement the <code>configuration_schema</code> class method:</p>
+<pre><code class="lang-python">    @classmethod
+    def configuration_schema(cls):
+        return {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "string"
+                },
+                "user": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "warehouse": {
+                    "type": "string"
+                },
+                "database": {
+                    "type": "string"
+                }
+            },
+            "required": ["user", "password", "account", "database", "warehouse"],
+            "secret": ["password"]
+        }
+</code></pre>
+<p>This method returns a JSON schema object. The supported types for the properties are <code>string</code>, <code>number</code> and <code>boolean</code>. Also note the <code>required</code> field which defines the required properties (all of them in this case) and <code>secret</code>,  which defines the secret fields (won’t be sent back to the UI).</p>
+<h3>Executing the query</h3>
+<p>Now that we defined the configuration we can implement the <code>run_query</code> method:</p>
+<pre><code class="lang-python">
+    def run_query(self, query, user):
+        connection = snowflake.connector.connect(
+            user=self.configuration['user'],
+            password=self.configuration['password'],
+            account=self.configuration['account'],
+        )
+
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute("USE WAREHOUSE {}".format(self.configuration['warehouse']))
+            cursor.execute("USE {}".format(self.configuration['database']))
+
+            cursor.execute(query)
+
+            columns = self.fetch_columns([(i[0], TYPES_MAP.get(i[1], None)) for i in cursor.description])
+            rows = [dict(zip((c['name'] for c in columns), row)) for row in cursor]
+
+            data = {'columns': columns, 'rows': rows}
+            error = None
+            json_data = json_dumps(data)
+        finally:
+            cursor.close()
+            connection.close()
+
+        return json_data, error
+</code></pre>
+<p>This is the minimum required code and what it does is:</p>
+<ol>
+<li>Connect to the Snowflake cluster.</li>
+<li>Run the query.</li>
+<li>Transform the results into the format Redash expects.</li>
+</ol>
+<h4>Mapping Column Types to Redash Types</h4>
+<p>Note this line:</p>
+<pre><code class="lang-python">columns = self.fetch_columns([(i[0], TYPES_MAP.get(i[1], None)) for i in cursor.description])
+</code></pre>
+<p>We use a helper function (<code>fetch_columns</code>) to de-duplicate column names and assign the type (if known) to the column. If no type is assigned, the default is <code>string</code>. The <code>TYPES_MAP</code> dictionary is a custom one we define for each query runner type.</p>
+<p>The return value of the <code>run_query</code> method is a tuple of the JSON encoded results and error string. The error string is used in case you want to return some kind of custom error message, otherwise you can let the exceptions to propagate.</p>
+<h3>Fetching Database Schema</h3>
+<p>This is the minimum required to run a query. If you want Redash to show the database schema and enable autocomplete, you need to implement the <code>get_schema</code> method:</p>
+<pre><code class="lang-python">    def get_schema(self, get_stats=False):
+        query = """
+        SELECT col.table_schema,
+               col.table_name,
+               col.column_name
+        FROM {database}.information_schema.columns col
+        WHERE col.table_schema &lt;&gt; 'INFORMATION_SCHEMA'
+        """.format(database=self.configuration['database'])
+
+        results, error = self.run_query(query, None)
+
+        if error is not None:
+            raise Exception("Failed getting schema.")
+
+        schema = {}
+        results = json.loads(results)
+
+        for row in results['rows']:
+            table_name = '{}.{}'.format(row['TABLE_SCHEMA'], row['TABLE_NAME'])
+
+            if table_name not in schema:
+                schema[table_name] = {'name': table_name, 'columns': []}
+
+            schema[table_name]['columns'].append(row['COLUMN_NAME'])
+
+        return schema.values()
+</code></pre>
+<p>The implementation of <code>get_schema</code> is specific to the data source you’re adding support to but the return value needs to be an array of dictionaries, where each dictionary has a <code>name</code> key (table name) and <code>columns</code> key (array of column names).</p>
+<h3>Test Connection Support</h3>
+<p>The last thing that you need to implement is the <em>Test Connection</em> button support. You can either supply a <a href="https://en.wikipedia.org/wiki/NOP">NOOP</a> query or implement the <code>test_connection</code> method. In this case we opted for the first:</p>
+<pre><code class="lang-python">    noop_query = "SELECT 1"
+</code></pre>
+<h3>Checking for required dependencies</h3>
+<p>If the query runner needs some external Python packages, we wrap those imports with a <code>try</code>/<code>except</code> block, to prevent crashing deployments where this package is not available:</p>
+<pre><code class="lang-python">try:
+    import snowflake.connector
+    enabled = True
+except ImportError:
+    enabled = False
+</code></pre>
+<p>The <code>enabled</code> variable is later used in the query runner’s <code>enabled</code> class method:</p>
+<pre><code class="lang-python">    @classmethod
+    def enabled(cls):
+        return enabled
+</code></pre>
+<p>If it returns <code>False</code> the query runner won’t be enabled.</p>
+<h3>Finishing up</h3>
+<p>Usually the connector will need to have some additional Python packages, we add those to the <code>requirements_all_ds.txt</code> file. If the required Python packages don’t have any special dependencies (like some system packages), we usually add the query runner to the list of default ones in <code>settings.py</code>.</p>
+<p>See the full pull request <a href="https://github.com/getredash/redash/pull/1488">here</a>.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="6" itemprop="userInteractionCount"/>
+<span class="post-likes">6 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/support-csv-data-source/216/5" itemprop="url">Support CSV data source</a>
+<meta content="3" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/connect-redash-to-spark-sql/203/2" itemprop="url">Connect Redash to Spark SQL</a>
+<meta content="4" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/query-runner-output-format/649" itemprop="url">Query_runner output format?</a>
+<meta content="5" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/quickbooks-online/970/2" itemprop="url">QuickBooks Online</a>
+<meta content="6" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/opentsdb-driver/590/2" itemprop="url">OpenTSDB driver</a>
+<meta content="7" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/is-it-posdible-to-connect-re-dash-to-drill/530/3" itemprop="url">Is it posdible to connect re:dash to Drill?</a>
+<meta content="8" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/redash-aws-cloudwatch-and-azure-monitor-support/1995/2" itemprop="url">Redash AWS CloudWatch and Azure Monitor Support</a>
+<meta content="9" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/getting-started-hacking-redash/4940/3" itemprop="url">Getting started hacking redash</a>
+<meta content="10" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/firebird-db-datasource-support/4420/2" itemprop="url">Firebird DB Datasource support</a>
+<meta content="11" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/datadirect-odbc-compatibility/4391/2" itemprop="url">DataDirect ODBC Compatibility</a>
+<meta content="12" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/sap-hana-db-integration/8699/2" itemprop="url">SAP HANA DB Integration</a>
+<meta content="13" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/working-around-paginated-json-data-sources/5709/2" itemprop="url">Working Around Paginated JSON Data Sources?</a>
+<meta content="14" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/hubspot-integration/6981/2" itemprop="url">Hubspot Integration</a>
+<meta content="15" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/nested-json-data-source/7205/4" itemprop="url">Nested Json Data source</a>
+<meta content="16" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/is-there-a-way-to-connect-to-denodo-with-redash/1891/2" itemprop="url">Is there a way to connect to Denodo with Redash?</a>
+<meta content="17" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/question-about-developing-changing-plugins/6139/2" itemprop="url">Question about developing/changing plugins</a>
+<meta content="18" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/consume-data-from-api/9426/4" itemprop="url">Consume data from API</a>
+<meta content="19" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/redash-connection-to-tibco-data-virtualization/6557/2" itemprop="url">Redash Connection to TIBCO Data Virtualization</a>
+<meta content="20" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/add-firebird-database/6420/3" itemprop="url">Add Firebird database</a>
+<meta content="21" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/developing-a-query-runner/6493" itemprop="url">Developing a query runner</a>
+<meta content="22" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/connection-test-failed-for-newly-added-database-nonetype-object-has-no-attribute-test-connection/9076/10" itemprop="url">Connection Test Failed for newly added database: ‘NoneType’ object has no attribute ‘test_connection’</a>
+<meta content="23" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/intersystems-cache/7116/2" itemprop="url">Intersystems Cache</a>
+<meta content="24" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/mixpanel-jql-datasource-integration/4856/2" itemprop="url">Mixpanel JQL datasource Integration</a>
+<meta content="25" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/getting-started-hacking-redash/4940/5" itemprop="url">Getting started hacking redash</a>
+<meta content="26" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/visualizing-json-records-from-redshift/9708" itemprop="url">Visualizing JSON records from Redshift</a>
+<meta content="27" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/bikash.tiwari.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/bikash.tiwari_avatar.png" tabindex="-1" width="48"/><span itemprop="name">bikash.tiwari</span></a>
+</span>
+<link href="https://discuss.redash.io/t/creating-a-new-query-runner-data-source-in-redash/347" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-10-30T05:38:37Z" itemprop="datePublished">
+                    October 30, 2020,  5:38am
+                  </time>
+<meta content="2020-10-30T05:38:37Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/arikfr">@arikfr</a></p>
+<p>If I am adding query runner in self hosted production version (I have used setup script with some modification), where should I place the query runner, in which folder?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/creating-a-new-query-runner-data-source-in-redash/347" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-10-30T15:14:12Z" itemprop="datePublished">
+                    October 30, 2020,  3:14pm
+                  </time>
+<meta content="2020-10-30T15:14:12Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It goes in <code>app/query_runner</code>.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Meliodas.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Meliodas_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Meliodas</span></a>
+</span>
+<link href="https://discuss.redash.io/t/creating-a-new-query-runner-data-source-in-redash/347" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-03-25T07:50:41Z" itemprop="datePublished">
+                    March 25, 2021,  7:50am
+                  </time>
+<meta content="2021-03-25T07:50:41Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I noticed you’ve implemented <strong>cloudwatch.py</strong> and <strong>cloudwatch_insights.py</strong>  in version 9.<br/>
+I copied those files in the <code>app/query_runner</code> folder. But still can’t see cloudwatch as one of the sources in UI.<br/>
+I hope at some location I need to specify this expected data source. what are the changes I need to make?</p>
+<aside class="quote group-Team" data-post="1" data-topic="347" data-username="arikfr">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="assets/2_2.png" width="20"/> arikfr:</div>
+<blockquote>
+<p>we usually add the query runner to the list of default ones in <code>settings.py</code> .</p>
+</blockquote>
+</aside>
+<p>where is the settings.py file you mentioned above.<br/>
+is that one of the files I must edit?</p>
+<p>Thank you <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/creating-a-new-query-runner-data-source-in-redash/347" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-03-25T17:30:31Z" itemprop="datePublished">
+                    March 25, 2021,  5:30pm
+                  </time>
+<meta content="2021-03-25T17:30:31Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>If any of the dependencies are missing you will need to install them. Otherwise the query runner won’t appear.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

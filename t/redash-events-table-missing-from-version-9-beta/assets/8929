@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Redash events table missing from version 9 beta - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hi All, 
+I’m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc). 
+I found e&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Redash events table missing from version 9 beta&#39;" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929" />
+<meta property="og:title" content="Redash events table missing from version 9 beta" />
+<meta name="twitter:title" content="Redash events table missing from version 9 beta" />
+<meta property="og:description" content="Hi All,  I’m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc).  I found evidence that this is or has been possible in the past:  select * from events where object_type=&#39;dashboard&#39; and action=&#39;view&#39; order by created_at desc  from this thread.  I have tried querying the Query Results data source for an events table and found nothing (slightly related, I..." />
+<meta name="twitter:description" content="Hi All,  I’m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc).  I found evidence that this is or has been possible in the past:  select * from events where object_type=&#39;dashboard&#39; and action=&#39;view&#39; order by created_at desc  from this thread.  I have tried querying the Query Results data source for an events table and found nothing (slightly related, I..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2021-08-12T18:36:31+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Redash events table missing from version 9 beta","mainEntity":{"@type":"Question","name":"Redash events table missing from version 9 beta","text":"Hi All,\n\nI’m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc).\n\nI found evidence that this is or has been possible in the past:\n\nselect * from events whe&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-08-12T18:36:31.165Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/redash-events-table-missing-from-version-9-beta/8929">Redash events table missing from version 9 beta</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Redash events table missing from version 9 beta'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dutch'><span itemprop='name'>dutch</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-12T18:36:31Z' class='post-time'>
+                    August 12, 2021,  6:36pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-12T18:36:31Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hi All,</p>
+<p>I’m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc).</p>
+<p>I found evidence that this is or has been possible in the past:</p>
+<p><code>select * from events where object_type='dashboard' and action='view' order by created_at desc</code><br>
+from <a href="http://discuss.redash.io/t/dashboard-usage-tracking/4649">this thread</a>.</p>
+<p>I have tried querying the Query Results data source for an <code>events</code> table and found nothing (slightly related, I’m unable to see what tables/schemas are even available in this data source; I tried SQLite’s syntax to no avail: <code>.table</code> , <code>.ta</code> and <code>.tables</code> all failed).</p>
+<p>If I am looking in the wrong place or if having an <code>events</code> table depends on whether I’m self-hosted or not, I would love to know.</p>
+<p>Hope this yields insight and helps others.</p>
+<p>Thanks!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-13T01:55:52Z' class='post-time'>
+                    August 13, 2021,  1:55am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-13T01:55:52Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>QRDS uses an in-memory SQLite database. It has no tables in it until you use it to query another query result.</p>
+<p>What you want is to connect with Redash’s internal metadata database. The exact method for this varies depending on your installation. But ultimately you’ll add it like any other Postgres data source.</p>
+<p>On the development Docker instance this is easy because the Postgres server is aliased as <code>postgres</code> within the containers. So you can create a data source with <code>postgres</code> as the host, user, pass, and db <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>FYI: the events table <em>can</em> be used for this but it’s not designed for it. For page views it’s fine but it won’t help if you want to know every time a query is executed, for example.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dataholic99'><span itemprop='name'>dataholic99</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-14T09:37:28Z' class='post-time'>
+                    August 14, 2021,  9:37am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-14T09:37:28Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hey <a class="mention" href="/u/jesse">@jesse</a></p>
+<p>We are using the events table to do user level auditing in v8,  We are testing v10 right now and it has the same issue.</p>
+<p>Events table has no data in it. i have plenty of saved queries. Is there any particular reason behind this or it is a bug ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-14T15:14:24Z' class='post-time'>
+                    August 14, 2021,  3:14pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-14T15:14:24Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Interesting. We’ve had a few reports of this</p>
+<aside class="quote quote-modified" data-post="8" data-topic="4649">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/f/ecb155/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/dashboard-usage-tracking/4649/8">Dashboard Usage Tracking</a> <a class="badge-wrapper  bullet" href="/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and using Redash.">Support</span></a>
+  </div>
+  <blockquote>
+    Hello! 
+I am trying to access Redash’s DB but the events table on Redash RDS seems empty for me. 
+ <a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7dd5feef5dd77f89203255403dbbc2ff9a981a95.png" data-download-href="/uploads/short-url/hXcaoWmxhp50boNjZJQ33D2xzY9.png?dl=1" title="image" rel="noopener nofollow ugc">[image]</a> 
+All the other tables have data in them except for this events table. I want to track the dashboard usage so would like to use this table. Do you know why this might be happening? 
+Let me know if I am missing something here. Thank you!
+  </blockquote>
+</aside>
+<aside class="quote quote-modified" data-post="8" data-topic="5122">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/f/ecb155/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/users-running-queries-or-query-history/5122/8">Users running queries or query history</a> <a class="badge-wrapper  bullet" href="/c/support/support-usage/10"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Need help with using Redash? Not sure if something is possible or how to do it right? Here’s the place to ask.">Usage Support</span></a>
+  </div>
+  <blockquote>
+    Hey <a class="mention" href="/u/arikfr">@arikfr</a>! 
+Thank you for a great BI tool and these helpful forums. I am trying to access Redash’s DB but the events table on Redash RDS seems empty for me. 
+ <a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7dd5feef5dd77f89203255403dbbc2ff9a981a95.png" data-download-href="/uploads/short-url/hXcaoWmxhp50boNjZJQ33D2xzY9.png?dl=1" title="image" rel="noopener nofollow ugc">[image]</a> 
+All the other tables have data in them except for this events table. I want to track the dashboard usage so would like to use this table. Do you know why this might be happening? 
+Let me know if I am missing something here. Thank you!
+  </blockquote>
+</aside>
+
+<p>But no real conclusion to what caused it. I don’t observe this behaviour with the V10 beta, however. Can you try it?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/gromnsk'><span itemprop='name'>gromnsk</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-15T06:24:45Z' class='post-time'>
+                    December 15, 2021,  6:24am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-15T06:24:45Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi, have the same problem with v10.1.0, nothing in events table after update from V8, but we need this table for audit purposes</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-15T19:28:05Z' class='post-time'>
+                    December 15, 2021,  7:28pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-15T19:28:05Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thank you for bumping this. The struggle here has been an inability to reproduce the problem by members of the core team. I will give it another try today. If not, we can’t do anything about it without a reproduction. But we are of course happy to merge a PR fixing it (and a 10.2 release) if someone in the community has better visibility into the issue than do we.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/lscapim'><span itemprop='name'>lscapim</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-04T13:47:10Z' class='post-time'>
+                    March 4, 2022,  1:47pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-04T13:47:10Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We have the same problem with version 8 and after the update from version 10.1.0, nothing in events table. We use this table for audit too.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-04T21:40:47Z' class='post-time'>
+                    March 4, 2022,  9:40pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-04T21:40:47Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We’re still without a reproduction on this. Until we can reproduce it there’s no way to debug / fix it <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=12" title=":frowning:" class="emoji" alt=":frowning:" loading="lazy" width="20" height="20"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/lscapim'><span itemprop='name'>lscapim</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-12T12:33:22Z' class='post-time'>
+                    April 12, 2022, 12:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-12T12:33:22Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I understand, but we did a test… we took a clean image of Redash version 8.0.2.b37747 and another with version 10.1.0.b50633, in version 10 we have the problem, but in version 8 we don’t. Could you take an original version of 10, and deploy it in an environment, to check if the error occurs?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dgho6348'><span itemprop='name'>dgho6348</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7877148dd9ba705826361ce875715b7138ad9262.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-21T16:35:16Z' class='post-time'>
+                    April 21, 2022,  4:35pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-21T17:39:28Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Bumping this, since we have the same issue when we upgraded from v8 to v10.0.1 and still running into this. Can you see if the clean install helps with repro?<br>
+Alternatively, what else can we use to audit events in redash?<br>
+TIA<br>
+Additional information:<br>
+When I look at the docker logs for server container, I see the POST to the api endpoint is returning a 200 reponse. Yet nothing in the DB table.<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7877148dd9ba705826361ce875715b7138ad9262.png" data-download-href="/uploads/short-url/hbGqkV7ypK6O4PxIuaib5aWZZSy.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_690x37.png" alt="image" data-base62-sha1="hbGqkV7ypK6O4PxIuaib5aWZZSy" width="690" height="37" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_690x37.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_1035x55.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_1380x74.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">3430×184 47.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-22T20:43:26Z' class='post-time'>
+                    April 22, 2022,  8:43pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-22T20:43:26Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>FYI <a class="mention" href="/u/lscapim">@lscapim</a> I did exactly what you recommended…and still not able to reproduce this at all.</p>
+<ol>
+<li>Deploy the v8 AMI</li>
+<li>Upgrade it to V10.1 (latest release)</li>
+<li>Click around, run some queries</li>
+<li>All events appear on the <code>events</code> table as expected</li>
+</ol>
+<p>I show no gaps or strange behaviour.</p>
+<p>Where exactly are you looking for <code>events</code>? Are you connecting to your metadata database? Or are you looking with QRDS?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dgho6348'><span itemprop='name'>dgho6348</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-29T17:25:10Z' class='post-time'>
+                    April 29, 2022,  5:25pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-29T17:25:10Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I was able to fix the issue, might not be the ideal solution, but want to share it here for everyone’s benefit.<br>
+Debugging steps:</p>
+<p>We are running V10 of Redash on ECS.<br>
+I issued a “query refresh” from IU, logged onto the redis container, and ran a :</p>
+<pre><code class="lang-auto"> docker exec &lt;container&gt; redis-cli monitor
+</code></pre>
+<p>The event queries were getting queued in the default queue: rs.queue.default - but stuck there and not picked by workers.<br>
+This might be related to the bug <a href="https://github.com/rq/rq/issues/758" class="inline-onebox" rel="noopener nofollow ugc">Job queued but not run · Issue #758 · rq/rq · GitHub</a></p>
+<p>Resolution:<br>
+Swapped the queue from default to queries(this is not ideal and I am going to create a dedicated queue for events, but for testing sake used the queries queue)<br>
+here : <a href="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/tasks/general.py#L15" class="inline-onebox" rel="noopener nofollow ugc">redash/general.py at 2589bef1f21b7c84e4ceacdf5cd2c620bdedb111 · getredash/redash · GitHub</a><br>
+after building and verifying it was using the queries queue, I was able to see the events in the database.<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e.png" data-download-href="/uploads/short-url/vBbD3BXWU83IaNGOnhzwDzxkaxE.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_690x114.png" alt="image" data-base62-sha1="vBbD3BXWU83IaNGOnhzwDzxkaxE" width="690" height="114" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_690x114.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_1035x171.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1222×202 132 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/redash-eating-disk-space/10490/3">Redash Eating Disk Space</a>
+                        <meta itemprop='position' content='4'>
+                      </div>
+                </div>
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

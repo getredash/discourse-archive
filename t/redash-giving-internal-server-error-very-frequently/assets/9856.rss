@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash giving internal server error very frequently</title>
+    <link>https://discuss.redash.io/t/redash-giving-internal-server-error-very-frequently/9856</link>
+    <description>Redash giving internal server error many times when anyone execute query, the logs are giving following error when redash shows error:
+
+
+[ERROR][ForkPoolWorker-11] Task redash.tasks.execute_query[e45a3821-741b-4ca3-ad53-71332e598402] raised unexpected: OperationalError(&#39;(psycopg2.OperationalError) SSL SYSCALL error: EOF detected\n&#39;,)
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File &quot;/app/redash/worker.py&quot;, line 84, in __call__
+    return TaskBase.__call__(self, *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File &quot;/app/redash/tasks/queries.py&quot;, line 436, in execute_query
+    scheduled_query).run()
+  File &quot;/app/redash/tasks/queries.py&quot;, line 391, in run
+    run_time, utcnow())
+  File &quot;/app/redash/models/__init__.py&quot;, line 314, in store_result
+    for q in queries:
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py&quot;, line 2994, in __iter__
+    self.session._autoflush()
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py&quot;, line 1444, in _autoflush
+    util.raise_from_cause(e)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py&quot;, line 265, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py&quot;, line 1434, in _autoflush
+    self.flush()
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py&quot;, line 2254, in flush
+    self._flush(objects)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py&quot;, line 2380, in _flush
+    transaction.rollback(_capture_exception=True)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py&quot;, line 66, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py&quot;, line 2344, in _flush
+    flush_context.execute()
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/unitofwork.py&quot;, line 391, in execute
+    rec.execute(self)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/unitofwork.py&quot;, line 556, in execute
+    uow
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/persistence.py&quot;, line 181, in save_obj
+    mapper, table, insert)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/persistence.py&quot;, line 866, in _emit_insert_statements
+    execute(statement, params)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 948, in execute
+    return meth(self, multiparams, params)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/elements.py&quot;, line 269, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1060, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1200, in _execute_context
+    context)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1413, in _handle_dbapi_exception
+    exc_info
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py&quot;, line 265, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1193, in _execute_context
+    context)
+  File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py&quot;, line 509, in do_execute
+    cursor.execute(statement, parameters)
+OperationalError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely) (psycopg2.OperationalError) SSL SYSCALL error: EOF detected
+ [SQL: &#39;INSERT INTO query_results (org_id, data_source_id, query_hash, query, data, runtime, retrieved_at) VALUES (%(org_id)s, %(data_source_id)s, %(query_hash)s, %(query)s, %(data)s, %(runtime)s, %(retrieved_at)s) RETURNING query_results.id&#39;] [parameters:</description>
+    
+    <lastBuildDate>Sun, 16 Jan 2022 09:42:03 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-giving-internal-server-error-very-frequently/9856.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash giving internal server error very frequently</title>
+        <dc:creator><![CDATA[diwakar.mishra693]]></dc:creator>
+        <description><![CDATA[
+            <p>Redash giving internal server error many times when anyone execute query, the logs are giving following error when redash shows error:</p>
+<p>[ERROR][ForkPoolWorker-11] Task redash.tasks.execute_query[e45a3821-741b-4ca3-ad53-71332e598402] raised unexpected: OperationalError(’(psycopg2.OperationalError) SSL SYSCALL error: EOF detected\n’,)<br>
+Traceback (most recent call last):<br>
+File “/usr/local/lib/python2.7/site-packages/celery/app/trace.py”, line 385, in trace_task<br>
+R = retval = fun(*args, **kwargs)<br>
+File “/app/redash/worker.py”, line 84, in <strong>call</strong><br>
+return TaskBase.<strong>call</strong>(self, *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/celery/app/trace.py”, line 648, in <strong>protected_call</strong><br>
+return self.run(*args, **kwargs)<br>
+File “/app/redash/tasks/queries.py”, line 436, in execute_query<br>
+scheduled_query).run()<br>
+File “/app/redash/tasks/queries.py”, line 391, in run<br>
+run_time, utcnow())<br>
+File “/app/redash/models/<strong>init</strong>.py”, line 314, in store_result<br>
+for q in queries:<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py”, line 2994, in <strong>iter</strong><br>
+self.session._autoflush()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py”, line 1444, in _autoflush<br>
+util.raise_from_cause(e)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py”, line 265, in raise_from_cause<br>
+reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py”, line 1434, in _autoflush<br>
+self.flush()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py”, line 2254, in flush<br>
+self._flush(objects)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py”, line 2380, in _flush<br>
+transaction.rollback(_capture_exception=True)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py”, line 66, in <strong>exit</strong><br>
+compat.reraise(exc_type, exc_value, exc_tb)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py”, line 2344, in _flush<br>
+flush_context.execute()<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/unitofwork.py”, line 391, in execute<br>
+rec.execute(self)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/unitofwork.py”, line 556, in execute<br>
+uow<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/persistence.py”, line 181, in save_obj<br>
+mapper, table, insert)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/persistence.py”, line 866, in _emit_insert_statements<br>
+execute(statement, params)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 948, in execute<br>
+return meth(self, multiparams, params)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/elements.py”, line 269, in _execute_on_connection<br>
+return connection._execute_clauseelement(self, multiparams, params)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1060, in _execute_clauseelement<br>
+compiled_sql, distilled_params<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1200, in _execute_context<br>
+context)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1413, in _handle_dbapi_exception<br>
+exc_info<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py”, line 265, in raise_from_cause<br>
+reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py”, line 1193, in _execute_context<br>
+context)<br>
+File “/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py”, line 509, in do_execute<br>
+cursor.execute(statement, parameters)<br>
+OperationalError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely) (psycopg2.OperationalError) SSL SYSCALL error: EOF detected<br>
+[SQL: ‘INSERT INTO query_results (org_id, data_source_id, query_hash, query, data, runtime, retrieved_at) VALUES (%(org_id)s, %(data_source_id)s, %(query_hash)s, %(query)s, %(data)s, %(runtime)s, %(retrieved_at)s) RETURNING query_results.id’] [parameters:</p>
+          <p><a href="https://discuss.redash.io/t/redash-giving-internal-server-error-very-frequently/9856/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-giving-internal-server-error-very-frequently/9856/1</link>
+        <pubDate>Sun, 16 Jan 2022 09:42:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9856-1</guid>
+        <source url="https://discuss.redash.io/t/redash-giving-internal-server-error-very-frequently/9856.rss">Redash giving internal server error very frequently</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Unable to connect to data sources in V10.0.0</title>
+    <link>https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299</link>
+    <description>### Issue Summary
+
+A have used redash/redash docker image and created a pod in kubernetes and two other pods for redis and postgres. after adding two sources all the connections to data sources failes with 500 status
+
+here is the log of rq healthcheck command:
+Traceback (most recent call last):
+  File &quot;manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 722, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 697, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/decorators.py&quot;, line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 426, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/app/redash/cli/rq.py&quot;, line 100, in healthcheck
+    &quot;worker_healthcheck&quot;, &quot;worker&quot;, None, [(WorkerHealthcheck, {})]
+  File &quot;/usr/local/lib/python3.7/site-packages/supervisor_checks/check_runner.py&quot;, line 62, in __init__
+    self._rpc_client = childutils.getRPCInterface(self._environment)
+  File &quot;/usr/local/lib/python3.7/site-packages/supervisor/childutils.py&quot;, line 21, in getRPCInterface
+    return xmlrpclib.ServerProxy(&#39;http://127.0.0.1&#39;, getRPCTransport(env))
+  File &quot;/usr/local/lib/python3.7/site-packages/supervisor/childutils.py&quot;, line 15, in getRPCTransport
+    return SupervisorTransport(u, p, env[&#39;SUPERVISOR_SERVER_URL&#39;])
+  File &quot;/usr/local/lib/python3.7/os.py&quot;, line 681, in __getitem__
+    raise KeyError(key) from None
+KeyError: &#39;SUPERVISOR_SERVER_URL&#39;
+
+what is supervisor server url?
+
+and here is the log of test connection:
+[2021-10-20 09:08:26 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)
+[2021-10-20 09:08:26,843][PID:11][INFO][metrics] method=POST path=/api/data_sources/1/test endpoint=datasourcetestresource status=500 content_type=? content_length=-1 duration=30468.55 query_count=4 query_duration=17.50
+[2021-10-20 09:08:26 +0000] [11] [INFO] Worker exiting (pid: 11)
+[2021-10-20 09:08:27 +0000] [359] [INFO] Booting worker with pid: 359
+
+
+### Technical details:
+
+* Redash Version: 10.0.0
+* Browser/OS: linux
+* How did you install Redash: from docker image in kubernetes cluster</description>
+    
+    <lastBuildDate>Wed, 20 Oct 2021 15:07:38 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Unable to connect to data sources in V10.0.0</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>We don’t have official docs for deploying on K8S and I’m not an expert. I <em>think</em> the issue is you have multiple instances of Redis / Postgres running and the workers are confused. This is why you see <code>JobNotFoundError</code>. I would try reducing to a single Redis instance and see what happens.</p>
+<p>Also you can search the forum. We tag any posts related to kubernetes. Hopefully we can add first-class documentation for how to deploy this way in the future <img src="https://emoji.discourse-cdn.com/twitter/crossed_fingers.png?v=10" title=":crossed_fingers:" class="emoji" alt=":crossed_fingers:"></p>
+          <p><a href="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/4</link>
+        <pubDate>Wed, 20 Oct 2021 15:07:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9299-4</guid>
+        <source url="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299.rss">Unable to connect to data sources in V10.0.0</source>
+      </item>
+      <item>
+        <title>Unable to connect to data sources in V10.0.0</title>
+        <dc:creator><![CDATA[younes]]></dc:creator>
+        <description><![CDATA[
+            <p>and see this on test datasource:</p>
+<p>Testing connection to data source: torob (id=1)<br>
+Failure: HTTPSConnectionPool(host=‘<a href="http://api.appmetrica.yandex.com" rel="noopener nofollow ugc">api.appmetrica.yandex.com</a>’, port=443): Max retries exceeded with url: /management/v1/applications (Caused by NewConnectionError(’&lt;urllib3.connection.VerifiedHTTPSConnection object at 0x7fc4391f8fd0&gt;: Failed to establish a new connection: [Errno 110] Connection timed out’))</p>
+          <p><a href="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/3</link>
+        <pubDate>Wed, 20 Oct 2021 10:03:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9299-3</guid>
+        <source url="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299.rss">Unable to connect to data sources in V10.0.0</source>
+      </item>
+      <item>
+        <title>Unable to connect to data sources in V10.0.0</title>
+        <dc:creator><![CDATA[younes]]></dc:creator>
+        <description><![CDATA[
+            <p>and when i go to query tab i see this log:</p>
+<p>Traceback (most recent call last):<br>
+File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1949, in full_dispatch_request<br>
+rv = self.dispatch_request()<br>
+File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1935, in dispatch_request<br>
+return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 458, in wrapper<br>
+resp = resource(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_login/utils.py”, line 261, in decorated_view<br>
+return func(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/views.py”, line 89, in view<br>
+return self.dispatch_request(*args, **kwargs)<br>
+File “/app/redash/handlers/base.py”, line 33, in dispatch_request<br>
+return super(BaseResource, self).dispatch_request(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 573, in dispatch_request<br>
+resp = meth(*args, **kwargs)<br>
+File “/app/redash/handlers/query_results.py”, line 462, in get<br>
+job = Job.fetch(job_id)<br>
+File “/usr/local/lib/python3.7/site-packages/rq/job.py”, line 299, in fetch<br>
+job.refresh()<br>
+File “/usr/local/lib/python3.7/site-packages/rq/job.py”, line 518, in refresh<br>
+raise NoSuchJobError(‘No such job: {0}’.format(self.key))<br>
+rq.exceptions.NoSuchJobError: No such job: b’rq:job:2417800e-2736-4368-9d8a-086b415fedd1’<br>
+[2021-10-20 09:13:34,503][PID:10][INFO][metrics] method=GET path=/api/jobs/2417800e-2736-4368-9d8a-086b415fedd1 endpoint=job status=500 content_type=application/json content_length=36 duration=8.44 query_count=2 query_duration=7.5</p>
+          <p><a href="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/2</link>
+        <pubDate>Wed, 20 Oct 2021 09:14:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9299-2</guid>
+        <source url="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299.rss">Unable to connect to data sources in V10.0.0</source>
+      </item>
+      <item>
+        <title>Unable to connect to data sources in V10.0.0</title>
+        <dc:creator><![CDATA[younes]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>A have used redash/redash docker image and created a pod in kubernetes and two other pods for redis and postgres. after adding two sources all the connections to data sources failes with 500 status</p>
+<p>here is the log of rq healthcheck command:<br>
+Traceback (most recent call last):<br>
+File “manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 722, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 586, in main<br>
+return super(FlaskGroup, self).main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 697, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 895, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/decorators.py”, line 17, in new_func<br>
+return f(get_current_context(), *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 426, in decorator<br>
+return __ctx.invoke(f, *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/app/redash/cli/rq.py”, line 100, in healthcheck<br>
+“worker_healthcheck”, “worker”, None, [(WorkerHealthcheck, {})]<br>
+File “/usr/local/lib/python3.7/site-packages/supervisor_checks/check_runner.py”, line 62, in <strong>init</strong><br>
+self._rpc_client = childutils.getRPCInterface(self._environment)<br>
+File “/usr/local/lib/python3.7/site-packages/supervisor/childutils.py”, line 21, in getRPCInterface<br>
+return xmlrpclib.ServerProxy(‘<a href="http://127.0.0.1" rel="noopener nofollow ugc">http://127.0.0.1</a>’, getRPCTransport(env))<br>
+File “/usr/local/lib/python3.7/site-packages/supervisor/childutils.py”, line 15, in getRPCTransport<br>
+return SupervisorTransport(u, p, env[‘SUPERVISOR_SERVER_URL’])<br>
+File “/usr/local/lib/python3.7/os.py”, line 681, in <strong>getitem</strong><br>
+raise KeyError(key) from None<br>
+KeyError: ‘SUPERVISOR_SERVER_URL’</p>
+<p>what is supervisor server url?</p>
+<p>and here is the log of test connection:<br>
+[2021-10-20 09:08:26 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)<br>
+[2021-10-20 09:08:26,843][PID:11][INFO][metrics] method=POST path=/api/data_sources/1/test endpoint=datasourcetestresource status=500 content_type=? content_length=-1 duration=30468.55 query_count=4 query_duration=17.50<br>
+[2021-10-20 09:08:26 +0000] [11] [INFO] Worker exiting (pid: 11)<br>
+[2021-10-20 09:08:27 +0000] [359] [INFO] Booting worker with pid: 359</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0</li>
+<li>Browser/OS: linux</li>
+<li>How did you install Redash: from docker image in kubernetes cluster</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299/1</link>
+        <pubDate>Wed, 20 Oct 2021 09:09:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9299-1</guid>
+        <source url="https://discuss.redash.io/t/unable-to-connect-to-data-sources-in-v10-0-0/9299.rss">Unable to connect to data sources in V10.0.0</source>
+      </item>
+  </channel>
+</rss>

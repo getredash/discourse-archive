@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Parameter value as column name</title>
+    <link>https://discuss.redash.io/t/parameter-value-as-column-name/10586</link>
+    <description>Hello there.
+
+I have a dropdown of parameter values for variable_x and variable_y.
+A user can choose one of these via a dashboard dropdown: color_score, color_bias, color_ranking, color_result, etc. This changes the value (i.e., the selected name) of variable_x and variable_y.
+
+The resulting table looks something like this:
+
+![image|690x134](upload://bRM9GEtnNVM8FKvQrtvXhqdD8DS.png)
+
+
+However, instead of having separate columns, I&#39;d like the column title of value_x and value_y to change. Ideally, it&#39;d look as follows:
+
+![image|690x162](upload://oMfrhm3JDBa6fENlzGJ66Xbv90j.png)
+
+Is this possible in Redash? If so, please advise. Thank you!
+
+
+---
+
+Extra info:
+
+[details=&quot;Summary&quot;]
+The query is as follows:
+
+```
+method: 
+    post
+url: 
+  https://core.com:123/models/123abc/latest/model
+headers : 
+    content-type: application/json
+data: &#39;{&quot;data&quot;: {&quot;event&quot;: {&quot;params&quot;: {&quot;favorite&quot;: &quot;{{favorite}}&quot;, &quot;color_scale&quot;: &quot;{{color_scale}}&quot;, &quot;x_variable&quot;: &quot;{{x_variable}}&quot;, &quot;y_variable&quot;: &quot;{{y_variable}}&quot; }}, &quot;context&quot;: 100}}&#39;
+path: result
+```
+
+I&#39;ve tried doing this in the backend, where I add two new columns based on the parameter chosen. The API itself works perfectly in the backend (tested in Python). However, when the query is made in Redash, I get an error: `headers.Access-Control-Allow-Origin`, which I believe relates to CORS, which doesn&#39;t seem to be fully implemented in Redash.
+[/details]</description>
+    
+    <lastBuildDate>Mon, 13 Jun 2022 13:52:46 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/parameter-value-as-column-name/10586.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Parameter value as column name</title>
+        <dc:creator><![CDATA[RedashUser]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for the response and pointing me in the right direction, Jesse.</p>
+<p>Even though the API worked in Python, it wouldn’t let me send it elsewhere. I checked the build log, export log, and instance log. The first two were fine (the 200 error codes led me to believe it may have been the front end that was the issue), but the insance log had a nasty bug that didn’t like me selecting an element from a dataframe that was formed from the parameters. Pointing it to the parameter itself and modifying it worked.</p>
+<p>It is now working as intended!</p>
+          <p><a href="https://discuss.redash.io/t/parameter-value-as-column-name/10586/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/parameter-value-as-column-name/10586/3</link>
+        <pubDate>Mon, 13 Jun 2022 13:51:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10586-3</guid>
+        <source url="https://discuss.redash.io/t/parameter-value-as-column-name/10586.rss">Parameter value as column name</source>
+      </item>
+      <item>
+        <title>Parameter value as column name</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="RedashUser" data-post="1" data-topic="10586">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/r/e5b9ba/40.png" class="avatar"> RedashUser:</div>
+<blockquote>
+<p>Ideally, it’d look as follows:</p>
+</blockquote>
+</aside>
+<p>The JSON query runner doesn’t have the ability to alias column names like this. You could approximate the behaviour using the Query Results Data Source. Alternatively, you could write a custom query runner for this API that would permit more flexible handling of column names.</p>
+<aside class="quote no-group" data-username="RedashUser" data-post="1" data-topic="10586">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/r/e5b9ba/40.png" class="avatar"> RedashUser:</div>
+<blockquote>
+<p>However, when the query is made in Redash, I get an error: <code>headers.Access-Control-Allow-Origin</code>, which I believe relates to CORS, which doesn’t seem to be fully implemented in Redash.</p>
+</blockquote>
+</aside>
+<p>This is an issue with your target API, not with Redash. The only way this error would apply to Redash is if you were using <em>Redash’s API</em>.</p>
+          <p><a href="https://discuss.redash.io/t/parameter-value-as-column-name/10586/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/parameter-value-as-column-name/10586/2</link>
+        <pubDate>Thu, 09 Jun 2022 21:52:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10586-2</guid>
+        <source url="https://discuss.redash.io/t/parameter-value-as-column-name/10586.rss">Parameter value as column name</source>
+      </item>
+      <item>
+        <title>Parameter value as column name</title>
+        <dc:creator><![CDATA[RedashUser]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello there.</p>
+<p>I have a dropdown of parameter values for variable_x and variable_y.<br>
+A user can choose one of these via a dashboard dropdown: color_score, color_bias, color_ranking, color_result, etc. This changes the value (i.e., the selected name) of variable_x and variable_y.</p>
+<p>The resulting table looks something like this:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/532c1eaa6e1b8f74bbaf22ca5aaeb9a6297b5ae0.png" data-download-href="/uploads/short-url/bRM9GEtnNVM8FKvQrtvXhqdD8DS.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/532c1eaa6e1b8f74bbaf22ca5aaeb9a6297b5ae0_2_690x134.png" alt="image" data-base62-sha1="bRM9GEtnNVM8FKvQrtvXhqdD8DS" width="690" height="134" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/532c1eaa6e1b8f74bbaf22ca5aaeb9a6297b5ae0_2_690x134.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/532c1eaa6e1b8f74bbaf22ca5aaeb9a6297b5ae0_2_1035x201.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/532c1eaa6e1b8f74bbaf22ca5aaeb9a6297b5ae0.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/532c1eaa6e1b8f74bbaf22ca5aaeb9a6297b5ae0_2_10x10.png"></a></div><p></p>
+<p>However, instead of having separate columns, I’d like the column title of value_x and value_y to change. Ideally, it’d look as follows:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/ada86b738b218ecc3f42b85acd1c862973228c0f.png" data-download-href="/uploads/short-url/oMfrhm3JDBa6fENlzGJ66Xbv90j.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ada86b738b218ecc3f42b85acd1c862973228c0f_2_690x162.png" alt="image" data-base62-sha1="oMfrhm3JDBa6fENlzGJ66Xbv90j" width="690" height="162" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ada86b738b218ecc3f42b85acd1c862973228c0f_2_690x162.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/ada86b738b218ecc3f42b85acd1c862973228c0f.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/ada86b738b218ecc3f42b85acd1c862973228c0f.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/ada86b738b218ecc3f42b85acd1c862973228c0f_2_10x10.png"></a></div><p></p>
+<p>Is this possible in Redash? If so, please advise. Thank you!</p>
+<hr>
+<p>Extra info:</p>
+
+Summary <a href="https://discuss.redash.io/t/parameter-value-as-column-name/10586/1">(click for more details)</a>
+          <p><a href="https://discuss.redash.io/t/parameter-value-as-column-name/10586/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/parameter-value-as-column-name/10586/1</link>
+        <pubDate>Tue, 07 Jun 2022 16:35:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10586-1</guid>
+        <source url="https://discuss.redash.io/t/parameter-value-as-column-name/10586.rss">Parameter value as column name</source>
+      </item>
+  </channel>
+</rss>

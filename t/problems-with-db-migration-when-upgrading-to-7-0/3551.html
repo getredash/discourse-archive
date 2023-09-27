@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Problems with DB migration when upgrading to 7.0</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/problems-with-db-migration-when-upgrading-to-7-0/3551">Problems with DB migration when upgrading to 7.0</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Problems with DB migration when upgrading to 7.0" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/kinkajou.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/kinkajou_avatar.png" tabindex="-1" width="48"/><span itemprop="name">kinkajou</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-02T13:47:21Z" itemprop="datePublished">
+                    April 2, 2019,  1:47pm
+                  </time>
+<meta content="2019-04-02T13:47:21Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I’m having problems updating Redash 6.0.0.b8537 to 7.0.0.b18042.</p>
+<p>I’m hosting it on Kubernetes (Google Kubernetes Engine) and using Google Cloud SQL as a backend. Due to Kubernetes, the normal update instructions won’t work because docker-compose is not used.</p>
+<p>Updating Redash itself works, but I can’t get db migrate to work.</p>
+<p>I tried to recreate update steps in the following way:</p>
+<ol>
+<li>Snapshot Cloud SQL for backup</li>
+<li>Delete Redash deployment (I chose to delete whole deployment because trying to kill pods/containers/processes inside turned out very tricky/impossible). At this point, Redash services are practically turned off and DB is still running.</li>
+<li>Run Kubernetes job to migrate DB. This will launch Redash container (version 7.0) and only run <code>python manage.py db upgrade</code> -command and exits after that.</li>
+</ol>
+<p>Migrate script gives following output before completing:</p>
+<pre><code class="lang-auto">[2019-04-02 13:33:29,826][PID:6][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-04-02 13:33:29,912][PID:6][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-04-02 13:33:41,363][PID:6][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-04-02 13:33:41,365][PID:6][INFO][alembic.runtime.migration] Will assume transactional DDL.
+</code></pre>
+<ol start="4">
+<li>Re-deploy Redash services using the 7.0 version</li>
+</ol>
+<p>Trying to access web interface after upgrade results in Internal Server Error.</p>
+<p>Logs are referring to error in DB schema:</p>
+<pre><code class="lang-auto">[2019-04-02 13:36:31,510][PID:9][ERROR][redash] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1988, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1641, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask_restful/__init__.py", line 271, in error_router
+    return original_handler(e)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1544, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1636, in full_dispatch_request
+    request_started.send(self)
+  File "/usr/local/lib/python2.7/dist-packages/blinker/base.py", line 267, in send
+    for receiver in self.receivers_for(sender)]
+  File "/app/redash/models/users.py", line 54, in update_user_active_at
+    if current_user.is_authenticated and not current_user.is_api_user():
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/local.py", line 343, in __getattr__
+    return getattr(self._get_current_object(), name)
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/local.py", line 302, in _get_current_object
+    return self.__local()
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/utils.py", line 26, in &lt;lambda&gt;
+    current_user = LocalProxy(lambda: _get_user())
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/utils.py", line 302, in _get_user
+    current_app.login_manager._load_user()
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py", line 317, in _load_user
+    return self.reload_user()
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py", line 279, in reload_user
+    user = self.user_callback(user_id)
+  File "/app/redash/authentication/__init__.py", line 63, in load_user
+    user = models.User.get_by_id_and_org(user_id, org)
+  File "/app/redash/models/mixins.py", line 28, in get_by_id_and_org
+    return query.one()
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2954, in one
+    ret = self.one_or_none()
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2924, in one_or_none
+    ret = list(self)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2995, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 3018, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 948, in execute
+    return meth(self, multiparams, params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py", line 269, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1060, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1200, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1413, in _handle_dbapi_exception
+    exc_info
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py", line 265, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1193, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py", line 509, in do_execute
+    cursor.execute(statement, parameters)
+ProgrammingError: (psycopg2.ProgrammingError) column users.details does not exist
+LINE 1: ..._api_key, users.disabled_at AS users_disabled_at, users.deta...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "users.email".
+ [SQL: 'SELECT users.profile_image_url AS users_profile_image_url, users.groups AS users_groups, users.updated_at AS users_updated_at, users.created_at AS users_created_at, users.id AS users_id, users.org_id AS users_org_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.api_key AS users_api_key, users.disabled_at AS users_disabled_at, users.details AS users_details \nFROM users \nWHERE users.id = %(id_1)s AND %(param_1)s = users.org_id'] [parameters: {'id_1': u'1', 'param_1': 1}] (Background on this error at: http://sqlalche.me/e/f405)
+</code></pre>
+<p>To me it looks like DB migrate doesn’t run as it should. I’ve also tried to run it directly from deployed Redash server without shutting down the deployment, but it still gives the same output.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Sai.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Sai_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Sai</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-08T19:24:42Z" itemprop="datePublished">
+                    April 8, 2019,  7:24pm
+                  </time>
+<meta content="2019-04-08T19:24:42Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Having the same issue here. Were you able to find a solution?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/kinkajou.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/kinkajou_avatar.png" tabindex="-1" width="48"/><span itemprop="name">kinkajou</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-09T09:05:23Z" itemprop="datePublished">
+                    April 9, 2019,  9:05am
+                  </time>
+<meta content="2019-04-09T09:05:23Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Not yet. I’ve seen some other people having problems with migration script too when using Kubernetes.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-14T08:30:19Z" itemprop="datePublished">
+                    April 14, 2019,  8:30am
+                  </time>
+<meta content="2019-04-14T08:30:19Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Based on the outputs you shared, it looks like no migration were applied when you ran <code>db upgrade</code>. Please make sure that:</p>
+<ol>
+<li>You executed the migrations step with the correct image.</li>
+<li>You executed the migrations step with the correct ENV vars (pointing to the same DB).</li>
+</ol>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/kinkajou.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/kinkajou_avatar.png" tabindex="-1" width="48"/><span itemprop="name">kinkajou</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-04-23T13:52:48Z" itemprop="datePublished">
+                    April 23, 2019,  1:52pm
+                  </time>
+<meta content="2019-04-23T13:52:48Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Weird, I got it working now, but last time I tried it I got following error:</p>
+<pre><code class="lang-auto">[2019-04-02 13:32:14,557][PID:7][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-04-02 13:32:14,603][PID:7][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-04-02 13:32:21,102][PID:7][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-04-02 13:32:21,103][PID:7][INFO][alembic.runtime.migration] Will assume transactional DDL.
+Traceback (most recent call last):
+  File "manage.py", line 9, in &lt;module&gt;
+    manager()
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 716, in __call__
+    return self.main(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/cli.py", line 345, in main
+    return AppGroup.main(self, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 696, in main
+    rv = self.invoke(ctx)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 889, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 534, in invoke
+    return callback(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/cli.py", line 229, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 534, in invoke
+    return callback(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask_migrate/cli.py", line 132, in upgrade
+    _upgrade(directory, revision, sql, tag, x_arg)
+  File "/usr/local/lib/python2.7/dist-packages/flask_migrate/__init__.py", line 239, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/command.py", line 254, in upgrade
+    script.run_env()
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 427, in run_env
+    util.load_python_file(self.dir, 'env.py')
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/pyfiles.py", line 81, in load_python_file
+    module = load_module_py(module_id, path)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/compat.py", line 198, in load_module_py
+    mod = imp.load_source(module_id, path, fp)
+  File "migrations/env.py", line 87, in &lt;module&gt;
+    run_migrations_online()
+  File "migrations/env.py", line 80, in run_migrations_online
+    context.run_migrations()
+  File "&lt;string&gt;", line 8, in run_migrations
+  File "/usr/local/lib/python2.7/dist-packages/alembic/runtime/environment.py", line 836, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/runtime/migration.py", line 321, in run_migrations
+    for step in self._migrations_fn(heads, self):
+  File "/usr/local/lib/python2.7/dist-packages/alembic/command.py", line 243, in upgrade
+    return script._upgrade_revs(revision, rev)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 340, in _upgrade_revs
+    for script in reversed(list(revs))
+  File "/usr/lib/python2.7/contextlib.py", line 35, in __exit__
+    self.gen.throw(type, value, traceback)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 174, in _catch_revision_errors
+    compat.raise_from_cause(util.CommandError(resolution))
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/compat.py", line 262, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 143, in _catch_revision_errors
+    yield
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 336, in _upgrade_revs
+    revs = list(revs)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/revision.py", line 645, in _iterate_revisions
+    requested_lowers = self.get_revisions(lower)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/revision.py", line 299, in get_revisions
+    return sum([self.get_revisions(id_elem) for id_elem in id_], ())
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/revision.py", line 304, in get_revisions
+    for rev_id in resolved_id)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/revision.py", line 304, in &lt;genexpr&gt;
+    for rev_id in resolved_id)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/revision.py", line 362, in _revision_for_ident
+    resolved_id)
+alembic.util.exc.CommandError: Can't locate revision identified by 'e5c7a4e2df4d'
+</code></pre>
+<p>Nothing really was different this time <img alt=":thinking:" class="emoji" src="assets/thinking.png" title=":thinking:"/> perhaps there was some kind of conflict/error somewhere in deployment with version tags that was accidentally fixed.</p>
+<p>Anyway, it works now. Here is a recap how version tags were configured to get it working if somebody else faces the same problem.</p>
+<ul>
+<li>In step 2, deleted Redash deployment was version 6.0. I only deleted Kubernetes deployment for Redash. I left all other object (secrets, volumes, DB-proxy, Redis…) intact.</li>
+<li>In step 3, Kubernetes job to upgrade DB used version 7.0 image.</li>
+<li>In step 4, Redash deployment was updated to use version 7.0.</li>
+</ul>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/biken00r.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/biken00r_avatar.png" tabindex="-1" width="48"/><span itemprop="name">biken00r</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-20T20:16:21Z" itemprop="datePublished">
+                    May 20, 2019,  8:16pm
+                  </time>
+<meta content="2019-05-20T20:16:21Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Same issue. But solved now.</p>
+<p>The reason in my case: field version_num in table alembic_version was updated successfully, but that is all) No required modifications in schema occur.<br/>
+I set this field manually to value from dump(I created before upgrade) and run upgrade again and it worked fine. Sorry for my ugly English)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/phutchins.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/phutchins_avatar.png" tabindex="-1" width="48"/><span itemprop="name">phutchins</span></a>
+</span>
+<link href="https://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-07-30T21:06:30Z" itemprop="datePublished">
+                    July 30, 2019,  9:06pm
+                  </time>
+<meta content="2019-07-30T21:06:30Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Same issue. I posted here: <a class="inline-onebox" href="http://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259">Cannot upgrade/migrate database from Redash 4 to 7</a></p>
+<p>Before I realized that this was essentially the same I think. I did try everything here however and still was not able to get it working…</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

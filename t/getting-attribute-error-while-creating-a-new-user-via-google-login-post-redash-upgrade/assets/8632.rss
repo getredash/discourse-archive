@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Getting Attribute error while creating a new user via google login post redash upgrade</title>
+    <link>https://discuss.redash.io/t/getting-attribute-error-while-creating-a-new-user-via-google-login-post-redash-upgrade/8632</link>
+    <description>### Issue Summary
+Post upgrading redash from v8.0 to v9.0 we are getting following error whenever any new user tries to login via google. Working fine for already existing users.
+
+```
+AttributeError
+AttributeError: &#39;NoneType&#39; object has no attribute &#39;id&#39;
+Traceback (most recent call last)
+File &quot;/app/redash/authentication/__init__.py&quot;, line 273, in create_and_login_user
+user_object = models.User.get_by_email_and_org(email, org)
+File &quot;/app/redash/models/users.py&quot;, line 201, in get_by_email_and_org
+return cls.get_by_org(org).filter(cls.email == email).one()
+File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py&quot;, line 3307, in one
+raise orm_exc.NoResultFound(&quot;No row was found for one()&quot;)
+During handling of the above exception, another exception occurred:
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 2463, in __call__
+return self.wsgi_app(environ, start_response)
+File &quot;/usr/local/lib/python3.7/site-packages/werkzeug/middleware/proxy_fix.py&quot;, line 232, in __call__
+return self.app(environ, start_response)
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 2449, in wsgi_app
+response = self.handle_exception(e)
+File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 269, in error_router
+return original_handler(e)
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1866, in handle_exception
+reraise(exc_type, exc_value, tb)
+File &quot;/usr/local/lib/python3.7/site-packages/flask/_compat.py&quot;, line 39, in reraise
+raise value
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 2446, in wsgi_app
+response = self.full_dispatch_request()
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1951, in full_dispatch_request
+rv = self.handle_user_exception(e)
+File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 269, in error_router
+return original_handler(e)
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1820, in handle_user_exception
+reraise(exc_type, exc_value, tb)
+File &quot;/usr/local/lib/python3.7/site-packages/flask/_compat.py&quot;, line 39, in reraise
+raise value
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1949, in full_dispatch_request
+rv = self.dispatch_request()
+File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1935, in dispatch_request
+return self.view_functions[rule.endpoint](**req.view_args)
+File &quot;/app/redash/authentication/google_oauth.py&quot;, line 115, in authorized
+user = create_and_login_user(org, profile[&quot;name&quot;], profile[&quot;email&quot;], picture_url)
+File &quot;/app/redash/authentication/__init__.py&quot;, line 291, in create_and_login_user
+group_ids=[org.default_group.id],
+AttributeError: &#39;NoneType&#39; object has no attribute &#39;id&#39;
+The debugger caught an exception in your WSGI application. You can now look at the traceback which led to the error.
+To switch between the interactive traceback and the plaintext one, you can click on the &quot;Traceback&quot; headline. From the text traceback you can also create a paste of it. For code execution mouse-over the frame you want to debug and click on the console icon on the right side.
+You can execute arbitrary Python code in the stack frames and there are some extra helpers available for introspection:
+dump() shows all variables in the frame
+dump(obj) dumps all that&#39;s known about the object
+```
+
+**NOTE** : This is happening for new users which are not created in users table.
+
+### Technical details:
+
+* Redash Version: v9.0
+* Browser/OS: Ubuntu 16.04.4
+* How did you install Redash: Git fork</description>
+    
+    <lastBuildDate>Mon, 21 Jun 2021 07:55:54 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/getting-attribute-error-while-creating-a-new-user-via-google-login-post-redash-upgrade/8632.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Getting Attribute error while creating a new user via google login post redash upgrade</title>
+        <dc:creator><![CDATA[arnav0024]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Post upgrading redash from v8.0 to v9.0 we are getting following error whenever any new user tries to login via google. Working fine for already existing users.</p>
+<pre><code class="lang-auto">AttributeError
+AttributeError: 'NoneType' object has no attribute 'id'
+Traceback (most recent call last)
+File "/app/redash/authentication/__init__.py", line 273, in create_and_login_user
+user_object = models.User.get_by_email_and_org(email, org)
+File "/app/redash/models/users.py", line 201, in get_by_email_and_org
+return cls.get_by_org(org).filter(cls.email == email).one()
+File "/usr/local/lib/python3.7/site-packages/sqlalchemy/orm/query.py", line 3307, in one
+raise orm_exc.NoResultFound("No row was found for one()")
+During handling of the above exception, another exception occurred:
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2463, in __call__
+return self.wsgi_app(environ, start_response)
+File "/usr/local/lib/python3.7/site-packages/werkzeug/middleware/proxy_fix.py", line 232, in __call__
+return self.app(environ, start_response)
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2449, in wsgi_app
+response = self.handle_exception(e)
+File "/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py", line 269, in error_router
+return original_handler(e)
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1866, in handle_exception
+reraise(exc_type, exc_value, tb)
+File "/usr/local/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+raise value
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+response = self.full_dispatch_request()
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+rv = self.handle_user_exception(e)
+File "/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py", line 269, in error_router
+return original_handler(e)
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+reraise(exc_type, exc_value, tb)
+File "/usr/local/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+raise value
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+rv = self.dispatch_request()
+File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+return self.view_functions[rule.endpoint](**req.view_args)
+File "/app/redash/authentication/google_oauth.py", line 115, in authorized
+user = create_and_login_user(org, profile["name"], profile["email"], picture_url)
+File "/app/redash/authentication/__init__.py", line 291, in create_and_login_user
+group_ids=[org.default_group.id],
+AttributeError: 'NoneType' object has no attribute 'id'
+The debugger caught an exception in your WSGI application. You can now look at the traceback which led to the error.
+To switch between the interactive traceback and the plaintext one, you can click on the "Traceback" headline. From the text traceback you can also create a paste of it. For code execution mouse-over the frame you want to debug and click on the console icon on the right side.
+You can execute arbitrary Python code in the stack frames and there are some extra helpers available for introspection:
+dump() shows all variables in the frame
+dump(obj) dumps all that's known about the object
+</code></pre>
+<p><strong>NOTE</strong> : This is happening for new users which are not created in users table.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v9.0</li>
+<li>Browser/OS: Ubuntu 16.04.4</li>
+<li>How did you install Redash: Git fork</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/getting-attribute-error-while-creating-a-new-user-via-google-login-post-redash-upgrade/8632/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/getting-attribute-error-while-creating-a-new-user-via-google-login-post-redash-upgrade/8632/1</link>
+        <pubDate>Mon, 21 Jun 2021 07:55:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8632-1</guid>
+        <source url="https://discuss.redash.io/t/getting-attribute-error-while-creating-a-new-user-via-google-login-post-redash-upgrade/8632.rss">Getting Attribute error while creating a new user via google login post redash upgrade</source>
+      </item>
+  </channel>
+</rss>

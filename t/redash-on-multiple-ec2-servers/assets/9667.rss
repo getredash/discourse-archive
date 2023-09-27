@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash on multiple ec2 servers</title>
+    <link>https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667</link>
+    <description>We launched 2 ec2-server with redash image and tried to RDS as backend.
+Redash1 &amp; Redash2 server launched using below yaml file through docker.
+We set RDS postgres as a backend(Refer env below). And we successfully launched both servers but in redash2 we are unable to see data sources. Screen shot attached. 
+env file
+```
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+REDASH_COOKIE_SECRET=SECRET
+REDASH_SECRET_KEY=SECRET
+REDASH_MAIL_SERVER=smtp-relay.gmail.com
+REDASH_MAIL_PORT=587
+REDASH_MAIL_USE_TLS=true
+POSTGRES_PASSWORD=Admin
+REDASH_DATABASE_URL=postgresql://postgres:Admin@postgres-dev.xxxxxxxxxx.us-east-1.rds.amazonaws.com/postgres
+```
+compose file in server1 and server2
+```
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:8.0.0.b32245
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      QUEUES: &quot;celery&quot;
+      WORKERS_COUNT: 1
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+
+```</description>
+    
+    <lastBuildDate>Fri, 10 Dec 2021 02:26:56 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash on multiple ec2 servers</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Awesome! Thanks for verifying it worked <img src="https://emoji.discourse-cdn.com/twitter/sunglasses.png?v=10" title=":sunglasses:" class="emoji" alt=":sunglasses:"></p>
+          <p><a href="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/5</link>
+        <pubDate>Fri, 10 Dec 2021 02:26:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9667-5</guid>
+        <source url="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667.rss">Redash on multiple ec2 servers</source>
+      </item>
+      <item>
+        <title>Redash on multiple ec2 servers</title>
+        <dc:creator><![CDATA[sathishk]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks jesse. it worked ! i kept same keys in both servers and restarted redash services. thus worked!</p>
+          <p><a href="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/4</link>
+        <pubDate>Fri, 10 Dec 2021 02:26:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9667-4</guid>
+        <source url="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667.rss">Redash on multiple ec2 servers</source>
+      </item>
+      <item>
+        <title>Redash on multiple ec2 servers</title>
+        <dc:creator><![CDATA[sathishk]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> , thanks you so much for your response. ultimate aim of having multiple systems for redash is to have high availability (or fault tolerance) system. if one system goes down , we still can access redash from another server. as i newbie exploring(trying) best options to build such as system for redash, kindly let us know if you have better alternative methods.<br>
+I will try to have secret keys same for both servers and get back with you findings today.<br>
+have a nice day ! take care.</p>
+<p>Thanks,<br>
+Sathish</p>
+          <p><a href="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/3</link>
+        <pubDate>Fri, 10 Dec 2021 01:33:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9667-3</guid>
+        <source url="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667.rss">Redash on multiple ec2 servers</source>
+      </item>
+      <item>
+        <title>Redash on multiple ec2 servers</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <h2>
+<a name="dont-post-your-cookie-secrets-on-a-public-forum-1" class="anchor" href="https://discuss.redash.io#dont-post-your-cookie-secrets-on-a-public-forum-1"></a>Don’t post your cookie secrets on a public forum!</h2>
+<p>You should reset these immediately following <a href="https://redash.io/help/open-source/admin-guide/secrets">these instructions</a>.</p>
+<hr>
+<p>As for your data sources: I suspect the secret keys are different between both servers. In which case, the server without correct secret keys will not be able to decrypt the data source info so they won’t appear in the front-end. This should be reflected in your logs.</p>
+<p>I do wonder why you are running two servers? For concurrency? Unless you have many thousands of concurrent users this isn’t necessary.</p>
+<p>[edit] I see that you removed the secrets from your post, but you should still change the secrets on your installation since post edits are visible to all users here.</p>
+          <p><a href="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/2</link>
+        <pubDate>Thu, 09 Dec 2021 14:22:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9667-2</guid>
+        <source url="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667.rss">Redash on multiple ec2 servers</source>
+      </item>
+      <item>
+        <title>Redash on multiple ec2 servers</title>
+        <dc:creator><![CDATA[sathishk]]></dc:creator>
+        <description><![CDATA[
+            <p>We launched 2 ec2-server with redash image and tried to RDS as backend.<br>
+Redash1 &amp; Redash2 server launched using below yaml file through docker.<br>
+We set RDS postgres as a backend(Refer env below). And we successfully launched both servers but in redash2 we are unable to see data sources. Screen shot attached.<br>
+env file</p>
+<pre><code class="lang-auto">PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+REDASH_COOKIE_SECRET=SECRET
+REDASH_SECRET_KEY=SECRET
+REDASH_MAIL_SERVER=smtp-relay.gmail.com
+REDASH_MAIL_PORT=587
+REDASH_MAIL_USE_TLS=true
+POSTGRES_PASSWORD=Admin
+REDASH_DATABASE_URL=postgresql://postgres:Admin@postgres-dev.xxxxxxxxxx.us-east-1.rds.amazonaws.com/postgres
+</code></pre>
+<p>compose file in server1 and server2</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:8.0.0.b32245
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      QUEUES: "celery"
+      WORKERS_COUNT: 1
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667/1</link>
+        <pubDate>Thu, 09 Dec 2021 13:58:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9667-1</guid>
+        <source url="https://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667.rss">Redash on multiple ec2 servers</source>
+      </item>
+  </channel>
+</rss>

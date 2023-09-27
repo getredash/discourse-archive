@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Redshift Connection - Transaction Spam (?)</title>
+    <link>https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953</link>
+    <description>Hey! We got a Redshift connection with Redash, we have a few connections set, however, one of the connections seems to open many transactions and we cannot really tell why this is happening. The transaction always executes the following query (part of this but you get the gist): 
+```sql
+
+        WITH tables AS (
+            SELECT DISTINCT table_name,
+                            table_schema,
+                            column_name,
+                            ordinal_position AS pos
+            FROM svv_columns
+            WHERE table_schema NOT IN (&#39;pg_internal&#39;,&#39;pg_catalog&#39;,&#39;information_schema&#39;)
+        )
+        SELECT table_name, table_schema, column_name
+        FROM tables
+        WHERE
+            HAS_SCHEMA_PRIVILEGE(table_schema, &#39;USAGE&#39;) AND
+            (
+                table_schema IN (SELECT schemaname FROM SVV_EXTERNAL_SCHEMAS) OR
+                HAS_TABLE_PRIV
+```
+
+Is this normal behaviour? Why is this happening with one connection out of the 5 that we have? 
+
+Would appreciate help,
+Thanks! :slight_smile:</description>
+    
+    <lastBuildDate>Tue, 17 Aug 2021 14:28:34 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Redshift Connection - Transaction Spam (?)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Well that’s the question isn’t it  <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>K8S is a whole different animal. We don’t support it officially and I don’t know your answer since we haven’t seen this question before. Here’s a good place for you to start with your debugging, however:</p>
+<ol>
+<li>Redash periodically refreshes database schemas in the background (every few hours). So some number of automatic and repeated transactions are to be expected.</li>
+<li>A schema refresh can be triggered manually either within the application (by clicking the refresh button) or using the API to hit <code>/api/data_sources/&lt;ds_id&gt;/schema?refresh</code>
+</li>
+</ol>
+<p>So something is causing these tasks to fire at an unusually high rate. Given that K8S is an untamed beast that nobody really understands, my bet is you have some confusion in your setup that causes the same refresh job to be duplicated with multiple workers running one job at the same time. This doesn’t happen in non-K8S setups, but we’ve seen a few issues along this thread from others.</p>
+<p>It’s possible you have multiple Redis instances. Or multiple schedulers.</p>
+<p>Alternatively, if you use the API heavily there’s a possibility that these transactions are manually kicked-off with an HTTP request. I think this is unlikely. You can rule it out by checking your server logs for requests to <code>/schema?refresh</code>.</p>
+          <p><a href="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/4</link>
+        <pubDate>Tue, 17 Aug 2021 14:28:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8953-4</guid>
+        <source url="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953.rss">Redash Redshift Connection - Transaction Spam (?)</source>
+      </item>
+      <item>
+        <title>Redash Redshift Connection - Transaction Spam (?)</title>
+        <dc:creator><![CDATA[davidoh]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<p>But why is the schema refresh job being triggered over and over again for this specific connection?<br>
+I’m talking about over 80 transactions as such:<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9973c6df637fe99da7754d96776b6572ed5815c1.png" data-download-href="/uploads/short-url/lTv6qJbkyki2KR0LRgKQ8su1tZL.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9973c6df637fe99da7754d96776b6572ed5815c1_2_690x10.png" alt="image" data-base62-sha1="lTv6qJbkyki2KR0LRgKQ8su1tZL" width="690" height="10" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9973c6df637fe99da7754d96776b6572ed5815c1_2_690x10.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9973c6df637fe99da7754d96776b6572ed5815c1_2_1035x15.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9973c6df637fe99da7754d96776b6572ed5815c1_2_1380x20.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9973c6df637fe99da7754d96776b6572ed5815c1_2_10x10.png"></a></div><p></p>
+<p>We host redash on Kubernetes, setup:<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/54850cc18667de308ae4fc763dbb251c62e2f771.png" data-download-href="/uploads/short-url/c3Hag1Cn4SO5Sbs5NQbZE7zJZW9.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/54850cc18667de308ae4fc763dbb251c62e2f771_2_690x119.png" alt="image" data-base62-sha1="c3Hag1Cn4SO5Sbs5NQbZE7zJZW9" width="690" height="119" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/54850cc18667de308ae4fc763dbb251c62e2f771_2_690x119.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/54850cc18667de308ae4fc763dbb251c62e2f771_2_1035x178.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/54850cc18667de308ae4fc763dbb251c62e2f771_2_1380x238.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/54850cc18667de308ae4fc763dbb251c62e2f771_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/3</link>
+        <pubDate>Tue, 17 Aug 2021 14:13:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8953-3</guid>
+        <source url="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953.rss">Redash Redshift Connection - Transaction Spam (?)</source>
+      </item>
+      <item>
+        <title>Redash Redshift Connection - Transaction Spam (?)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s the schema refresh job for postgres data sources. How many transactions are you talking about? Over what period of time? How did you install Redash? Are you using kubernetes? Do you have multiple Redash instances running?</p>
+          <p><a href="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/2</link>
+        <pubDate>Tue, 17 Aug 2021 14:06:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8953-2</guid>
+        <source url="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953.rss">Redash Redshift Connection - Transaction Spam (?)</source>
+      </item>
+      <item>
+        <title>Redash Redshift Connection - Transaction Spam (?)</title>
+        <dc:creator><![CDATA[davidoh]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey! We got a Redshift connection with Redash, we have a few connections set, however, one of the connections seems to open many transactions and we cannot really tell why this is happening. The transaction always executes the following query (part of this but you get the gist):</p>
+<pre><code class="lang-sql">
+        WITH tables AS (
+            SELECT DISTINCT table_name,
+                            table_schema,
+                            column_name,
+                            ordinal_position AS pos
+            FROM svv_columns
+            WHERE table_schema NOT IN ('pg_internal','pg_catalog','information_schema')
+        )
+        SELECT table_name, table_schema, column_name
+        FROM tables
+        WHERE
+            HAS_SCHEMA_PRIVILEGE(table_schema, 'USAGE') AND
+            (
+                table_schema IN (SELECT schemaname FROM SVV_EXTERNAL_SCHEMAS) OR
+                HAS_TABLE_PRIV
+</code></pre>
+<p>Is this normal behaviour? Why is this happening with one connection out of the 5 that we have?</p>
+<p>Would appreciate help,<br>
+Thanks! <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953/1</link>
+        <pubDate>Tue, 17 Aug 2021 13:19:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8953-1</guid>
+        <source url="https://discuss.redash.io/t/redash-redshift-connection-transaction-spam/8953.rss">Redash Redshift Connection - Transaction Spam (?)</source>
+      </item>
+  </channel>
+</rss>

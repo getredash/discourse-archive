@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Events table: Difference between execute_query/data_source and execute/query?</title>
+    <link>https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279</link>
+    <description>### Issue Summary
+
+We&#39;re looking to get some insight into user activity in Redash.  When a user executes a query, it appears that query execution activity is being logged in two different ways.  Sometimes it&#39;s recorded as `object_type = &#39;query&#39; and action = &#39;execute&#39;`, like I would expect.  But more often, it&#39;s showing up as `object_type = &#39;data_source&#39; and action = &#39;execute_query&#39;`
+
+I&#39;ve confirmed that when I go into a dashboard and click refresh on a widget, or view a query and click &quot;Execute&quot;, it&#39;s being recorded in the events table as `object_type = &#39;data_source&#39; and action = &#39;execute_query&#39;`.  This is less helpful, since it logs the id of the *data source* in this case, and not the id of the *query*.  Meanwhile, the text of the executed query appears in the `additional_properties` field.
+
+Can you help me understand this behavior, and what a good solution would be to identify the queries being used in these situations?
+
+Thank much!
+
+
+### Technical details:
+
+* Redash Version: 9.0.0-beta (2641562b)
+* Browser/OS: 89.0.4389.114 (Official Build) (64-bit) / Windows 10 19042.867</description>
+    
+    <lastBuildDate>Mon, 06 Dec 2021 08:24:05 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Events table: Difference between execute_query/data_source and execute/query?</title>
+        <dc:creator><![CDATA[kaladin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey, thanks for creating this thread - I’m working on something similar and this is quite helpful <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p><a class="mention" href="https://discuss.redash.io/u/k4s1m">@k4s1m</a> : I just had one doubt - didn’t quite get what you mean here? :</p>
+<aside class="quote no-group" data-username="k4s1m" data-post="4" data-topic="8279" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/k4s1m/40/2962_2.png" class="avatar"> k4s1m:</div>
+<blockquote>
+<p>On the <strong>backend</strong>, the event is <code>object_type=data_source</code> and the <code>action=execute_query</code>.</p>
+<p>But on the <strong>frontend</strong>, when a user executes a query, this creates the <code>object_type=query</code> and <code>action=execute</code> event.</p>
+</blockquote>
+</aside>
+<p>I am looking to get a list of all queries that were run at any time on Redash. Does that mean I will have to consider both</p>
+<p><code>action  = 'execute_query'</code> <strong>and</strong> <code>action = 'execute'</code>,</p>
+<p>OR, does just <code>action = 'execute_query'</code> cover everything?</p>
+          <p><a href="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/5</link>
+        <pubDate>Mon, 06 Dec 2021 08:24:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8279-5</guid>
+        <source url="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279.rss">Events table: Difference between execute_query/data_source and execute/query?</source>
+      </item>
+      <item>
+        <title>Events table: Difference between execute_query/data_source and execute/query?</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>I figured it out where they’re coming from.</p>
+<p>On the <strong>backend</strong>, the event is <code>object_type=data_source</code> and the <code>action=execute_query</code>.</p>
+<p>But on the <strong>frontend</strong>, when a user executes a query, this creates the <code>object_type=query</code> and <code>action=execute</code> event.</p>
+          <p><a href="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/4</link>
+        <pubDate>Thu, 08 Apr 2021 17:56:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8279-4</guid>
+        <source url="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279.rss">Events table: Difference between execute_query/data_source and execute/query?</source>
+      </item>
+      <item>
+        <title>Events table: Difference between execute_query/data_source and execute/query?</title>
+        <dc:creator><![CDATA[rsmaldone]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s incredibly helpful!  Thank you so much, that’s exactly what I was looking for.</p>
+<p>Also for reference, when I run a query on the events table to see all possible actions for <code>object_type = 'query'</code>, here’s what we get back:</p>
+<pre><code>SELECT action, count(*)
+FROM events
+WHERE object_type = 'query'
+GROUP BY 1
+ORDER BY 1
+</code></pre>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">action</th>
+<th style="text-align:left">count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">api_get</td>
+<td style="text-align:left">1004</td>
+</tr>
+<tr>
+<td style="text-align:left">cancel_execute</td>
+<td style="text-align:left">742</td>
+</tr>
+<tr>
+<td style="text-align:left">create</td>
+<td style="text-align:left">893</td>
+</tr>
+<tr>
+<td style="text-align:left">edit_description</td>
+<td style="text-align:left">38</td>
+</tr>
+<tr>
+<td style="text-align:left">edit_name</td>
+<td style="text-align:left">2583</td>
+</tr>
+<tr>
+<td style="text-align:left">edit_schedule</td>
+<td style="text-align:left">54</td>
+</tr>
+<tr>
+<td style="text-align:left">edit_tags</td>
+<td style="text-align:left">73</td>
+</tr>
+<tr>
+<td style="text-align:left">execute</td>
+<td style="text-align:left">71190</td>
+</tr>
+<tr>
+<td style="text-align:left">favorite</td>
+<td style="text-align:left">487</td>
+</tr>
+<tr>
+<td style="text-align:left">fork</td>
+<td style="text-align:left">1165</td>
+</tr>
+<tr>
+<td style="text-align:left">list</td>
+<td style="text-align:left">11048</td>
+</tr>
+<tr>
+<td style="text-align:left">load_favorites</td>
+<td style="text-align:left">32504</td>
+</tr>
+<tr>
+<td style="text-align:left">search</td>
+<td style="text-align:left">11766</td>
+</tr>
+<tr>
+<td style="text-align:left">toggle_published</td>
+<td style="text-align:left">405</td>
+</tr>
+<tr>
+<td style="text-align:left">update_data_source</td>
+<td style="text-align:left">3598</td>
+</tr>
+<tr>
+<td style="text-align:left">view</td>
+<td style="text-align:left">107877</td>
+</tr>
+<tr>
+<td style="text-align:left">view_source</td>
+<td style="text-align:left">15723</td>
+</tr>
+</tbody>
+</table>
+</div><p>So perhaps it varies by version.</p>
+          <p><a href="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/3</link>
+        <pubDate>Thu, 08 Apr 2021 17:30:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8279-3</guid>
+        <source url="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279.rss">Events table: Difference between execute_query/data_source and execute/query?</source>
+      </item>
+      <item>
+        <title>Events table: Difference between execute_query/data_source and execute/query?</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="rsmaldone" data-post="1" data-topic="8279">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/r/5fc32e/40.png" class="avatar"> rsmaldone:</div>
+<blockquote>
+<p>But more often, it’s showing up as <code>object_type = 'data_source' and action = 'execute_query'</code></p>
+</blockquote>
+</aside>
+<p>This is the expected behavior.</p>
+<aside class="quote no-group" data-username="rsmaldone" data-post="1" data-topic="8279">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/r/5fc32e/40.png" class="avatar"> rsmaldone:</div>
+<blockquote>
+<p>Sometimes it’s recorded as <code>object_type = 'query' and action = 'execute'</code> , like I would expect.</p>
+</blockquote>
+</aside>
+<p>This doesn’t make sense and shouldn’t be possible.  From searching the source code, the only actions for <code>query</code> are</p>
+<ul>
+<li><code>favorite</code></li>
+<li><code>search</code></li>
+<li><code>list</code></li>
+<li><code>create</code></li>
+<li><code>view</code></li>
+<li>
+<code>regnerate_api_key</code> [typo?]</li>
+<li><code>fork</code></li>
+<li><code>load_favorites</code></li>
+</ul>
+<aside class="quote no-group" data-username="rsmaldone" data-post="1" data-topic="8279">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/r/5fc32e/40.png" class="avatar"> rsmaldone:</div>
+<blockquote>
+<p>This is less helpful, since it logs the id of the <em>data source</em> in this case, and not the id of the <em>query</em> .</p>
+</blockquote>
+</aside>
+<p>Are you sure? The query ID is logged within additional properties also. Try running this query against your metadata DB and you’ll see the query id also:</p>
+<pre><code class="lang-auto">SELECT additional_properties::JSON -&gt;&gt; 'query_id'
+FROM EVENTS
+WHERE action = 'execute_query'
+AND additional_properties::JSON -&gt;&gt; 'query_id' &lt;&gt; 'adhoc'
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/2</link>
+        <pubDate>Thu, 08 Apr 2021 17:09:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8279-2</guid>
+        <source url="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279.rss">Events table: Difference between execute_query/data_source and execute/query?</source>
+      </item>
+      <item>
+        <title>Events table: Difference between execute_query/data_source and execute/query?</title>
+        <dc:creator><![CDATA[rsmaldone]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary" class="anchor" href="https://discuss.redash.io#issue-summary"></a>Issue Summary</h3>
+<p>We’re looking to get some insight into user activity in Redash.  When a user executes a query, it appears that query execution activity is being logged in two different ways.  Sometimes it’s recorded as <code>object_type = 'query' and action = 'execute'</code>, like I would expect.  But more often, it’s showing up as <code>object_type = 'data_source' and action = 'execute_query'</code></p>
+<p>I’ve confirmed that when I go into a dashboard and click refresh on a widget, or view a query and click “Execute”, it’s being recorded in the events table as <code>object_type = 'data_source' and action = 'execute_query'</code>.  This is less helpful, since it logs the id of the <em>data source</em> in this case, and not the id of the <em>query</em>.  Meanwhile, the text of the executed query appears in the <code>additional_properties</code> field.</p>
+<p>Can you help me understand this behavior, and what a good solution would be to identify the queries being used in these situations?</p>
+<p>Thank much!</p>
+<h3>
+<a name="technical-details" class="anchor" href="https://discuss.redash.io#technical-details"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 9.0.0-beta (2641562b)</li>
+<li>Browser/OS: 89.0.4389.114 (Official Build) (64-bit) / Windows 10 19042.867</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279/1</link>
+        <pubDate>Wed, 07 Apr 2021 23:03:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8279-1</guid>
+        <source url="https://discuss.redash.io/t/events-table-difference-between-execute-query-data-source-and-execute-query/8279.rss">Events table: Difference between execute_query/data_source and execute/query?</source>
+      </item>
+  </channel>
+</rss>

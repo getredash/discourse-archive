@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Is error? redash v8 to v10</title>
+    <link>https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235</link>
+    <description>Hello,
+currently, I try to upgrade redash v8 to v10
+but, I got some trouble for upgrading
+first, I setup redash v8 by using aws ami which introduced in [that guide](https://redash.io/help/open-source/setup) and modify someting which [that](https://github.com/getredash/redash/releases) explained (modify yml&#39;s docker tag to `redash/redash:10.0.0.b50363` , and so on)
+
+when I ran this command `docker-compose up --force-recreate --build`
+the execution log seems to be repeated without stopping or succeeding.
+
+There were no error logs or warning logs, and this was the only log that seemed to be a problem.
+`postgres_1          | LOG:  unexpected EOF on client connection with an open transaction`
+
+How can I solve this problem?
+
+this is my yml
+
+&gt; Blockquotversion: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 1
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always</description>
+    
+    <lastBuildDate>Tue, 12 Oct 2021 12:59:41 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Is error? redash v8 to v10</title>
+        <dc:creator><![CDATA[zaid.ryu]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/pappfire">@pappfire</a><br>
+wow… I upgraded redash ver 8 to 10 thanks to your advice and link.<br>
+I exactly dont know why this problem solved by following linked advice. <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=10" title=":thinking:" class="emoji" alt=":thinking:"><br>
+but, really thanks for your help! <img src="https://emoji.discourse-cdn.com/twitter/grinning.png?v=10" title=":grinning:" class="emoji" alt=":grinning:"></p>
+          <p><a href="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235/3</link>
+        <pubDate>Tue, 12 Oct 2021 12:59:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9235-3</guid>
+        <source url="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235.rss">Is error? redash v8 to v10</source>
+      </item>
+      <item>
+        <title>Is error? redash v8 to v10</title>
+        <dc:creator><![CDATA[pappfire]]></dc:creator>
+        <description><![CDATA[
+            <p>Have you done migration of the DB? See <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/how-to-upgrade</a><br>
+It solved problem for me.</p>
+          <p><a href="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235/2</link>
+        <pubDate>Tue, 12 Oct 2021 10:00:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9235-2</guid>
+        <source url="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235.rss">Is error? redash v8 to v10</source>
+      </item>
+      <item>
+        <title>Is error? redash v8 to v10</title>
+        <dc:creator><![CDATA[zaid.ryu]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,<br>
+currently, I try to upgrade redash v8 to v10<br>
+but, I got some trouble for upgrading<br>
+first, I setup redash v8 by using aws ami which introduced in <a href="https://redash.io/help/open-source/setup" rel="noopener nofollow ugc">that guide</a> and modify someting which <a href="https://github.com/getredash/redash/releases" rel="noopener nofollow ugc">that</a> explained (modify yml’s docker tag to <code>redash/redash:10.0.0.b50363</code> , and so on)</p>
+<p>when I ran this command <code>docker-compose up --force-recreate --build</code><br>
+the execution log seems to be repeated without stopping or succeeding.</p>
+<p>There were no error logs or warning logs, and this was the only log that seemed to be a problem.<br>
+<code>postgres_1          | LOG:  unexpected EOF on client connection with an open transaction</code></p>
+<p>How can I solve this problem?</p>
+<p>this is my yml</p>
+<blockquote>
+<p>Blockquotversion: “2”<br>
+x-redash-service: &amp;redash-service<br>
+image: redash/redash:10.0.0.b50363<br>
+depends_on:<br>
+- postgres<br>
+- redis<br>
+env_file: /opt/redash/env<br>
+restart: always<br>
+services:<br>
+worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “periodic emails default”<br>
+WORKERS_COUNT: 1<br>
+server:<br>
+&lt;&lt;: *redash-service<br>
+command: server<br>
+ports:<br>
+- “5000:5000”<br>
+environment:<br>
+REDASH_WEB_WORKERS: 4<br>
+scheduler:<br>
+&lt;&lt;: *redash-service<br>
+command: scheduler<br>
+scheduled_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “scheduled_queries,schemas”<br>
+WORKERS_COUNT: 1<br>
+adhoc_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “queries”<br>
+WORKERS_COUNT: 2<br>
+redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+env_file: /opt/redash/env<br>
+volumes:<br>
+- /opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest<br>
+ports:<br>
+- “80:80”<br>
+depends_on:<br>
+- server<br>
+links:<br>
+- server:redash<br>
+restart: always</p>
+</blockquote>
+          <p><a href="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235/1</link>
+        <pubDate>Tue, 12 Oct 2021 06:51:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9235-1</guid>
+        <source url="https://discuss.redash.io/t/is-error-redash-v8-to-v10/9235.rss">Is error? redash v8 to v10</source>
+      </item>
+  </channel>
+</rss>

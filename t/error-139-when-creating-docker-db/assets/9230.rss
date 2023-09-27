@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Error 139 when creating Docker DB</title>
+    <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230</link>
+    <description>### Issue Summary
+
+I&#39;m following the Docker-based Redash installation guide. I&#39;m unable to start the DB due to `Error 139` when I run `docker-compose run --rm server create_db`. However, upon investigating the docker-compose logs, can&#39;t find any relevant error messages. 
+
+I realize that a similar error came up here http://discuss.redash.io/t/getting-error-redash-server-1-exited-with-code-139-while-running-docker-compose-up-cmd/9148, but in my case I am using Docker rather than EC2. I tried updating Redash version as suggested in that post (by cloning the latest repo version) but no luck.
+
+Steps I took:
+
+`docker-compose up -d` -&gt; Successfully starts redash_postgres_1, redash_redis_1, redash_email_1,  redash_server_1, redash_scheduler_1, redash_worker_1
+
+`yarn --frozen-lockfile` -&gt; Successfully installs all packages
+
+`docker-compose run --rm server create_db` -&gt; error 139, as pictured ![image|690x104](upload://8fjwtAdQ3IAS4JrYQaPQmRQNsYO.png)
+
+`docker-compose logs | tail -f` -&gt; Appears fine ![image|690x139](upload://8ziv3Fa7w9DP34HBVZaWx0gUcSq.jpeg)
+
+`docker-compose logs | grep error` -&gt; Returns nothing. 
+
+### Technical details:
+
+* Redash Version: Latest available at https://github.com/getredash/redash.git
+* Browser/OS: Ubuntu 18.04.1 LTS (GNU/Linux 5.4.0-1058-azure x86_64)
+* How did you install Redash: `git clone https://github.com/getredash/redash.git`</description>
+    
+    <lastBuildDate>Tue, 12 Oct 2021 13:02:49 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="15" data-topic="9230">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3002_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<pre><code class="lang-auto">yarn build
+</code></pre>
+</blockquote>
+</aside>
+<p>Hey Jessie - That worked like a charm. Thank you so much for all of your help and patience. I really appreciate it!!</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/16</link>
+        <pubDate>Tue, 12 Oct 2021 13:02:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-16</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Can you share your docker-compose file? I’ve tried rebuilding from scratch and it’s working fine for me…</p>
+<p>[edit] here are the exact steps I followed:</p>
+<pre><code class="lang-auto"># System:
+#  macOS 10.15.7 
+#  Docker 20.10.6, build 370c289
+#  yarn 1.22.10
+
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+git clone https://github.com/getredash/redash redash-139-test
+cd redash-139-test
+docker-compose up -d
+docker-compose run --rm server create_db
+yarn --immutable
+yarn build
+</code></pre>
+<p>Everything comes up. Runs as normal.</p>
+<p>Here’s my <code>docker-compose.yml</code> for reference:</p>
+<pre><code class="lang-auto"># This configuration file is for the **development** setup.
+# For a production example please refer to getredash/setup repository on GitHub.
+version: "2.2"
+x-redash-service: &amp;redash-service
+  build:
+    context: .
+    args:
+      skip_frontend_build: "true"
+  volumes:
+    - .:/app
+x-redash-environment: &amp;redash-environment
+  REDASH_LOG_LEVEL: "INFO"
+  REDASH_REDIS_URL: "redis://redis:6379/0"
+  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+  REDASH_RATELIMIT_ENABLED: "false"
+  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
+  REDASH_MAIL_SERVER: "email"
+  REDASH_ENFORCE_CSRF: "true"
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+      - "5678:5678"
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: dev_scheduler
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+  worker:
+    &lt;&lt;: *redash-service
+    command: dev_worker
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  redis:
+    image: redis:3-alpine
+    restart: unless-stopped
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - "15432:5432"
+    command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  email:
+    image: djfarrelly/maildev
+    ports:
+      - "1080:80"
+    restart: unless-stopped
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/15</link>
+        <pubDate>Mon, 11 Oct 2021 20:57:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-15</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes, just the DB container.</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/14</link>
+        <pubDate>Mon, 11 Oct 2021 17:11:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-14</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Confirming: this only affects your database container? The others start normally?</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/13</link>
+        <pubDate>Mon, 11 Oct 2021 17:09:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-13</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <p>I ran the Docker commands as you specified (thanks!) and saw that the <code>docker-compose up -d</code> did the complete refetch. However, I’m still getting error 139. The log tail looks the same (pictured here) and <code>grep error</code>-ing the logs still yields no results.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4438b9194bf1f9dbe7ebe858d367ac27811cbb01.jpeg" data-download-href="/uploads/short-url/9JvZMJj2RY5xMpYzPHtDMeJJXJ7.jpeg?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4438b9194bf1f9dbe7ebe858d367ac27811cbb01_2_690x149.jpeg" alt="image" data-base62-sha1="9JvZMJj2RY5xMpYzPHtDMeJJXJ7" width="690" height="149" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4438b9194bf1f9dbe7ebe858d367ac27811cbb01_2_690x149.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4438b9194bf1f9dbe7ebe858d367ac27811cbb01_2_1035x223.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4438b9194bf1f9dbe7ebe858d367ac27811cbb01_2_1380x298.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4438b9194bf1f9dbe7ebe858d367ac27811cbb01_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/12</link>
+        <pubDate>Mon, 11 Oct 2021 17:08:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-12</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>If you want to try a complete start-over you can run these:</p>
+<pre><code class="lang-bash">docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+</code></pre>
+<p>This actually removes the base images and forces a refetch.</p>
+<p>Note this will affect <em>all the images</em> on your system. Not just Redash ones. If you’re doing all this on a VPS that’s dedicated to Redash then it should be fine.</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/11</link>
+        <pubDate>Mon, 11 Oct 2021 17:01:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-11</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <p>My bad lol, I was thought I was replying to the wrong messages so was re-replying but I’ll just stop <img src="https://emoji.discourse-cdn.com/twitter/sweat_smile.png?v=10" title=":sweat_smile:" class="emoji" alt=":sweat_smile:"></p>
+<p>I’ve tried <code>docker_compose down --remove-orphans</code>, then deleting the <code>redash/</code> directory, re-cloning, and re-following the steps.</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/10</link>
+        <pubDate>Mon, 11 Oct 2021 16:59:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-10</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Please stop deleting your message in this thread lol. It makes it hard to follow what’s happened.</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/9</link>
+        <pubDate>Mon, 11 Oct 2021 16:56:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-9</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi jesse! Yes, I just tried <code>--remove-orphans</code> and am still receiving the <code>Error 139</code> .</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/8</link>
+        <pubDate>Mon, 11 Oct 2021 16:56:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-8</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What specific steps did you follow to build from scratch?</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/7</link>
+        <pubDate>Mon, 11 Oct 2021 16:55:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-7</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <p>I am on the latest commit (7cac149cef70263b328049cb376c7f25f7b03efb). Yes, I have tried building from scratch.</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/6</link>
+        <pubDate>Mon, 11 Oct 2021 16:55:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-6</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Which commit are you on <code>master</code>? Have you tried building completely from scratch?</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/4</link>
+        <pubDate>Mon, 11 Oct 2021 16:53:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-4</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hmmm <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=10" title=":confused:" class="emoji" alt=":confused:"> I hope this isn’t back…</p>
+<p>Have you tried the suggested command to <code>--remove-orphans</code>? I wonder if you still have an old version of the containers running that didn’t apply the fix for this issue.</p>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/2</link>
+        <pubDate>Mon, 11 Oct 2021 16:40:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-2</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+      <item>
+        <title>Error 139 when creating Docker DB</title>
+        <dc:creator><![CDATA[its_suz_p]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I’m following the Docker-based Redash installation guide. I’m unable to start the DB due to <code>Error 139</code> when I run <code>docker-compose run --rm server create_db</code>. However, upon investigating the docker-compose logs, can’t find any relevant error messages.</p>
+<p>I realize that a similar error came up here <a href="http://discuss.redash.io/t/getting-error-redash-server-1-exited-with-code-139-while-running-docker-compose-up-cmd/9148" class="inline-onebox">Getting error: redash_server_1 exited with code 139 while running docker-compose up cmd</a>, but in my case I am using Docker rather than EC2. I tried updating Redash version as suggested in that post (by cloning the latest repo version) but no luck.</p>
+<p>Steps I took:</p>
+<p><code>docker-compose up -d</code> → Successfully starts redash_postgres_1, redash_redis_1, redash_email_1,  redash_server_1, redash_scheduler_1, redash_worker_1</p>
+<p><code>yarn --frozen-lockfile</code> → Successfully installs all packages</p>
+<p><code>docker-compose run --rm server create_db</code> → error 139, as pictured </p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/39cc942ac591b50ae1d2e6705b34361f10588fc2.png" data-download-href="/uploads/short-url/8fjwtAdQ3IAS4JrYQaPQmRQNsYO.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/39cc942ac591b50ae1d2e6705b34361f10588fc2_2_690x104.png" alt="image" data-base62-sha1="8fjwtAdQ3IAS4JrYQaPQmRQNsYO" width="690" height="104" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/39cc942ac591b50ae1d2e6705b34361f10588fc2_2_690x104.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/39cc942ac591b50ae1d2e6705b34361f10588fc2_2_1035x156.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/39cc942ac591b50ae1d2e6705b34361f10588fc2.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/39cc942ac591b50ae1d2e6705b34361f10588fc2_2_10x10.png"></a></div><p></p>
+<p><code>docker-compose logs | tail -f</code> → Appears fine </p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3c0eddfdac0c28ab26e0ad0a92384dd16918ffde.jpeg" data-download-href="/uploads/short-url/8ziv3Fa7w9DP34HBVZaWx0gUcSq.jpeg?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3c0eddfdac0c28ab26e0ad0a92384dd16918ffde_2_690x139.jpeg" alt="image" data-base62-sha1="8ziv3Fa7w9DP34HBVZaWx0gUcSq" width="690" height="139" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3c0eddfdac0c28ab26e0ad0a92384dd16918ffde_2_690x139.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3c0eddfdac0c28ab26e0ad0a92384dd16918ffde_2_1035x208.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3c0eddfdac0c28ab26e0ad0a92384dd16918ffde_2_1380x278.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3c0eddfdac0c28ab26e0ad0a92384dd16918ffde_2_10x10.png"></a></div><p></p>
+<p><code>docker-compose logs | grep error</code> → Returns nothing.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: Latest available at <a href="https://github.com/getredash/redash.git" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getredash/redash: Make Your Company Data Driven. Connect to any data source, easily visualize, dashboard and share your data.</a>
+</li>
+<li>Browser/OS: Ubuntu 18.04.1 LTS (GNU/Linux 5.4.0-1058-azure x86_64)</li>
+<li>How did you install Redash: <code>git clone https://github.com/getredash/redash.git</code>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/error-139-when-creating-docker-db/9230/1</link>
+        <pubDate>Mon, 11 Oct 2021 15:46:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9230-1</guid>
+        <source url="https://discuss.redash.io/t/error-139-when-creating-docker-db/9230.rss">Error 139 when creating Docker DB</source>
+      </item>
+  </channel>
+</rss>

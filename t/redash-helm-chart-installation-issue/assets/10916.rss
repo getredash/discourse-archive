@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Helm chart - Installation issue</title>
+    <link>https://discuss.redash.io/t/redash-helm-chart-installation-issue/10916</link>
+    <description>Hi - I&#39;m trying to install on AWS EKS with external Postgres and external Redis. Having issue with the install job not able to create the tables...although no error logs printed. Please see below logs.
+
+Any idea please? 
+
+Installing Redash:
+[2022-08-18 03:13:08,299][PID:64][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2022-08-18 03:13:08,299][PID:64][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2022-08-18 03:13:08,300][PID:64][DEBUG][redash.query_runner] Registering Redshift (with IAM User/Role) (redshift_iam) query runner.
+[2022-08-18 03:13:08,300][PID:64][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2022-08-18 03:13:08,302][PID:64][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2022-08-18 03:13:08,302][PID:64][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2022-08-18 03:13:08,304][PID:64][DEBUG][redash.query_runner] Registering Druid (druid) query runner.
+[2022-08-18 03:13:08,363][PID:64][DEBUG][passlib.utils.compat] loaded lazy attr &#39;SafeConfigParser&#39;: &lt;class &#39;configparser.ConfigParser&#39;&gt;
+[2022-08-18 03:13:08,363][PID:64][DEBUG][passlib.utils.compat] loaded lazy attr &#39;NativeStringIO&#39;: &lt;class &#39;_io.StringIO&#39;&gt;
+[2022-08-18 03:13:08,363][PID:64][DEBUG][passlib.utils.compat] loaded lazy attr &#39;BytesIO&#39;: &lt;class &#39;_io.BytesIO&#39;&gt;
+[2022-08-18 03:13:08,787][PID:64][DEBUG][redash.query_runner] Registering Python (python) query runner.
+[2022-08-18 03:13:08,788][PID:64][DEBUG][redash.destinations] Registering Email (email) destinations.
+Tables created
+Running Redash database migrations after install
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering Redshift (with IAM User/Role) (redshift_iam) query runner.
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2022-08-18 03:13:10,217][PID:68][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2022-08-18 03:13:10,217][PID:68][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2022-08-18 03:13:10,218][PID:68][DEBUG][redash.query_runner] Registering Druid (druid) query runner.
+[2022-08-18 03:13:10,281][PID:68][DEBUG][passlib.utils.compat] loaded lazy attr &#39;SafeConfigParser&#39;: &lt;class &#39;configparser.ConfigParser&#39;&gt;
+[2022-08-18 03:13:10,281][PID:68][DEBUG][passlib.utils.compat] loaded lazy attr &#39;NativeStringIO&#39;: &lt;class &#39;_io.StringIO&#39;&gt;
+[2022-08-18 03:13:10,281][PID:68][DEBUG][passlib.utils.compat] loaded lazy attr &#39;BytesIO&#39;: &lt;class &#39;_io.BytesIO&#39;&gt;
+[2022-08-18 03:13:10,716][PID:68][DEBUG][redash.query_runner] Registering Python (python) query runner.
+[2022-08-18 03:13:10,717][PID:68][DEBUG][redash.destinations] Registering Email (email) destinations.
+[2022-08-18 03:13:11,198][PID:68][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2022-08-18 03:13:11,198][PID:68][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2022-08-18 03:13:11,223][PID:68][INFO][alembic.runtime.migration] Running upgrade  -&gt; 65fc9ede4746, Add is_draft status to queries and dashboards
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1249, in _execute_context
+    cursor, statement, parameters, context
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py&quot;, line 580, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File &quot;/app/manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 722, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 697, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/decorators.py&quot;, line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 426, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_migrate/cli.py&quot;, line 134, in upgrade
+    _upgrade(directory, revision, sql, tag, x_arg)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_migrate/__init__.py&quot;, line 95, in wrapped
+    f(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_migrate/__init__.py&quot;, line 280, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/command.py&quot;, line 320, in upgrade
+    script.run_env()
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/script/base.py&quot;, line 563, in run_env
+    util.load_python_file(self.dir, &quot;env.py&quot;)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/util/pyfiles.py&quot;, line 92, in load_python_file
+    module = load_module_py(module_id, path)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/util/pyfiles.py&quot;, line 108, in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 728, in exec_module
+  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 219, in _call_with_frames_removed
+  File &quot;migrations/env.py&quot;, line 93, in &lt;module&gt;
+    run_migrations_online()
+  File &quot;migrations/env.py&quot;, line 85, in run_migrations_online
+    context.run_migrations()
+  File &quot;&lt;string&gt;&quot;, line 8, in run_migrations
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/runtime/environment.py&quot;, line 851, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/runtime/migration.py&quot;, line 619, in run_migrations
+    head_maintainer.update_to_step(step)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/runtime/migration.py&quot;, line 808, in update_to_step
+    self._insert_version(vers)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/runtime/migration.py&quot;, line 750, in _insert_version
+    version_num=literal_column(&quot;&#39;%s&#39;&quot; % version)
+  File &quot;/usr/local/lib/python3.7/site-packages/alembic/ddl/impl.py&quot;, line 197, in _exec
+    return conn.execute(construct, multiparams)
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 988, in execute
+    return meth(self, multiparams, params)
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/sql/elements.py&quot;, line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1107, in _execute_clauseelement
+    distilled_params,
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1253, in _execute_context
+    e, statement, parameters, cursor, context
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1473, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py&quot;, line 398, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py&quot;, line 152, in reraise
+    raise value.with_traceback(tb)
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py&quot;, line 1249, in _execute_context
+    cursor, statement, parameters, context
+  File &quot;/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py&quot;, line 580, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.InternalError: (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: INSERT INTO alembic_version (version_num) VALUES (&#39;65fc9ede4746&#39;) RETURNING alembic_version.version_num]
+(Background on this error at: http://sqlalche.me/e/2j85)
+Upgrade complete
+Return code: 124</description>
+    
+    <lastBuildDate>Thu, 18 Aug 2022 03:18:26 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-helm-chart-installation-issue/10916.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Helm chart - Installation issue</title>
+        <dc:creator><![CDATA[ccbeloy]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi - I’m trying to install on AWS EKS with external Postgres and external Redis. Having issue with the install job not able to create the tables…although no error logs printed. Please see below logs.</p>
+<p>Any idea please?</p>
+<p>Installing Redash:<br>
+[2022-08-18 03:13:08,299][PID:64][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.<br>
+[2022-08-18 03:13:08,299][PID:64][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.<br>
+[2022-08-18 03:13:08,300][PID:64][DEBUG][redash.query_runner] Registering Redshift (with IAM User/Role) (redshift_iam) query runner.<br>
+[2022-08-18 03:13:08,300][PID:64][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.<br>
+[2022-08-18 03:13:08,302][PID:64][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.<br>
+[2022-08-18 03:13:08,302][PID:64][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.<br>
+[2022-08-18 03:13:08,304][PID:64][DEBUG][redash.query_runner] Registering Druid (druid) query runner.<br>
+[2022-08-18 03:13:08,363][PID:64][DEBUG][passlib.utils.compat] loaded lazy attr ‘SafeConfigParser’: &lt;class ‘configparser.ConfigParser’&gt;<br>
+[2022-08-18 03:13:08,363][PID:64][DEBUG][passlib.utils.compat] loaded lazy attr ‘NativeStringIO’: &lt;class ‘_io.StringIO’&gt;<br>
+[2022-08-18 03:13:08,363][PID:64][DEBUG][passlib.utils.compat] loaded lazy attr ‘BytesIO’: &lt;class ‘_io.BytesIO’&gt;<br>
+[2022-08-18 03:13:08,787][PID:64][DEBUG][redash.query_runner] Registering Python (python) query runner.<br>
+[2022-08-18 03:13:08,788][PID:64][DEBUG][redash.destinations] Registering Email (email) destinations.<br>
+Tables created<br>
+Running Redash database migrations after install<br>
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.<br>
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.<br>
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering Redshift (with IAM User/Role) (redshift_iam) query runner.<br>
+[2022-08-18 03:13:10,214][PID:68][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.<br>
+[2022-08-18 03:13:10,217][PID:68][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.<br>
+[2022-08-18 03:13:10,217][PID:68][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.<br>
+[2022-08-18 03:13:10,218][PID:68][DEBUG][redash.query_runner] Registering Druid (druid) query runner.<br>
+[2022-08-18 03:13:10,281][PID:68][DEBUG][passlib.utils.compat] loaded lazy attr ‘SafeConfigParser’: &lt;class ‘configparser.ConfigParser’&gt;<br>
+[2022-08-18 03:13:10,281][PID:68][DEBUG][passlib.utils.compat] loaded lazy attr ‘NativeStringIO’: &lt;class ‘_io.StringIO’&gt;<br>
+[2022-08-18 03:13:10,281][PID:68][DEBUG][passlib.utils.compat] loaded lazy attr ‘BytesIO’: &lt;class ‘_io.BytesIO’&gt;<br>
+[2022-08-18 03:13:10,716][PID:68][DEBUG][redash.query_runner] Registering Python (python) query runner.<br>
+[2022-08-18 03:13:10,717][PID:68][DEBUG][redash.destinations] Registering Email (email) destinations.<br>
+[2022-08-18 03:13:11,198][PID:68][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.<br>
+[2022-08-18 03:13:11,198][PID:68][INFO][alembic.runtime.migration] Will assume transactional DDL.<br>
+[2022-08-18 03:13:11,223][PID:68][INFO][alembic.runtime.migration] Running upgrade  → 65fc9ede4746, Add is_draft status to queries and dashboards<br>
+Traceback (most recent call last):<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1249, in _execute_context<br>
+cursor, statement, parameters, context<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py”, line 580, in do_execute<br>
+cursor.execute(statement, parameters)<br>
+psycopg2.errors.InFailedSqlTransaction: current transaction is aborted, commands ignored until end of transaction block</p>
+<p>The above exception was the direct cause of the following exception:</p>
+<p>Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 722, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 586, in main<br>
+return super(FlaskGroup, self).main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 697, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 895, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/decorators.py”, line 17, in new_func<br>
+return f(get_current_context(), *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 426, in decorator<br>
+return __ctx.invoke(f, *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_migrate/cli.py”, line 134, in upgrade<br>
+_upgrade(directory, revision, sql, tag, x_arg)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_migrate/<strong>init</strong>.py”, line 95, in wrapped<br>
+f(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_migrate/<strong>init</strong>.py”, line 280, in upgrade<br>
+command.upgrade(config, revision, sql=sql, tag=tag)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/command.py”, line 320, in upgrade<br>
+script.run_env()<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/script/base.py”, line 563, in run_env<br>
+util.load_python_file(self.dir, “env.py”)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/util/pyfiles.py”, line 92, in load_python_file<br>
+module = load_module_py(module_id, path)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/util/pyfiles.py”, line 108, in load_module_py<br>
+spec.loader.exec_module(module)  # type: ignore<br>
+File “”, line 728, in exec_module<br>
+File “”, line 219, in _call_with_frames_removed<br>
+File “migrations/env.py”, line 93, in <br>
+run_migrations_online()<br>
+File “migrations/env.py”, line 85, in run_migrations_online<br>
+context.run_migrations()<br>
+File “”, line 8, in run_migrations<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/runtime/environment.py”, line 851, in run_migrations<br>
+self.get_context().run_migrations(**kw)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/runtime/migration.py”, line 619, in run_migrations<br>
+head_maintainer.update_to_step(step)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/runtime/migration.py”, line 808, in update_to_step<br>
+self._insert_version(vers)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/runtime/migration.py”, line 750, in _insert_version<br>
+version_num=literal_column(“‘%s’” % version)<br>
+File “/usr/local/lib/python3.7/site-packages/alembic/ddl/impl.py”, line 197, in _exec<br>
+return conn.execute(construct, multiparams)<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 988, in execute<br>
+return meth(self, multiparams, params)<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/sql/elements.py”, line 287, in _execute_on_connection<br>
+return connection._execute_clauseelement(self, multiparams, params)<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1107, in _execute_clauseelement<br>
+distilled_params,<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1253, in _execute_context<br>
+e, statement, parameters, cursor, context<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1473, in _handle_dbapi_exception<br>
+util.raise_from_cause(sqlalchemy_exception, exc_info)<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py”, line 398, in raise_from_cause<br>
+reraise(type(exception), exception, tb=exc_tb, cause=cause)<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/util/compat.py”, line 152, in reraise<br>
+raise value.with_traceback(tb)<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/base.py”, line 1249, in _execute_context<br>
+cursor, statement, parameters, context<br>
+File “/usr/local/lib/python3.7/site-packages/sqlalchemy/engine/default.py”, line 580, in do_execute<br>
+cursor.execute(statement, parameters)<br>
+sqlalchemy.exc.InternalError: (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block</p>
+<p>[SQL: INSERT INTO alembic_version (version_num) VALUES (‘65fc9ede4746’) RETURNING alembic_version.version_num]<br>
+(Background on this error at: <a href="http://sqlalche.me/e/2j85" class="inline-onebox" rel="noopener nofollow ugc">Error Messages — SQLAlchemy 1.4 Documentation</a>)<br>
+Upgrade complete<br>
+Return code: 124</p>
+          <p><a href="https://discuss.redash.io/t/redash-helm-chart-installation-issue/10916/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-helm-chart-installation-issue/10916/1</link>
+        <pubDate>Thu, 18 Aug 2022 03:18:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10916-1</guid>
+        <source url="https://discuss.redash.io/t/redash-helm-chart-installation-issue/10916.rss">Redash Helm chart - Installation issue</source>
+      </item>
+  </channel>
+</rss>

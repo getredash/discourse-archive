@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Custom sorting from mongoDB query breaks after grouping fields</title>
+    <link>https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043</link>
+    <description>I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.
+
+In order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentioned problem.
+
+I tried adding dummy data where a script creates documents with value of 0 for my y axis and it kind of worked.
+
+Here is my chart, it looks really ugly without the order and is unusable
+![image|690x247](upload://63QIyeIAbz21fCWGWIS9Qj7Nsyj.png)
+
+I also tried searching for solutions for such issue, but to no avail, are there other things I could try?
+
+Here is, the order I want and this is achieved by removing the x values from the list where not all groups have data or when I have dummy data in place
+![image|690x222](upload://iAQpjo8AkSIr1lkYJt5e5IRVYtn.png)
+
+Is there a better way to do this maybe through redash or mongo, any advice helps.</description>
+    
+    <lastBuildDate>Wed, 23 Feb 2022 05:41:41 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Custom sorting from mongoDB query breaks after grouping fields</title>
+        <dc:creator><![CDATA[cny]]></dc:creator>
+        <description><![CDATA[
+            <p>I enabled stacking and excluded set missing values not to show up and got a lot better looking line chart<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png" data-download-href="/uploads/short-url/7gbxXvL6romyHhme2tiuRiiwE4c.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_690x296.png" alt="image" data-base62-sha1="7gbxXvL6romyHhme2tiuRiiwE4c" width="690" height="296" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_690x296.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_10x10.png"></a></div><p></p>
+<p>“The Treat missing/null values as 0” issue does not work for me by itself as well, so it could be relevant, but the order is still messed up, at least the chart looks bearable</p>
+          <p><a href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043/3</link>
+        <pubDate>Wed, 23 Feb 2022 05:41:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10043-3</guid>
+        <source url="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043.rss">Custom sorting from mongoDB query breaks after grouping fields</source>
+      </item>
+      <item>
+        <title>Custom sorting from mongoDB query breaks after grouping fields</title>
+        <dc:creator><![CDATA[ilyaminati]]></dc:creator>
+        <description><![CDATA[
+            <p>Maybe these are relevant?</p>
+<aside class="quote quote-modified" data-post="1" data-topic="9394">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/57b2e6/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/prevent-missing-values-in-visualization-from-being-plotted/9394">Prevent missing values in visualization from being plotted</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and using Redash.">Support</span></a>
+  </div>
+  <blockquote>
+    Hello, 
+How do I prevent a missing value to be displayed in a line chart. 
+[image] 
+In this Example portfolio PF-21-08 has an overdue rate of 1% at collection 3. 
+Portfolio PF-21-09 doesn’t have a collection 3 but in the visualization it still shows up on the x axis at value 3. 
+[image] 
+Any help is highly appreciated.
+  </blockquote>
+</aside>
+
+<aside class="onebox githubissue" data-onebox-src="https://github.com/getredash/redash/issues/4717">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/issues/4717" target="_blank" rel="noopener nofollow ugc">github.com/getredash/redash</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/issues/4717" target="_blank" rel="noopener nofollow ugc">"Treat missing/null values as 0" Does not work for line charts with datetime scale x-axis</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2020-03-09" data-time="12:00:52" data-timezone="UTC">12:00PM - 09 Mar 20 UTC</span>
+      </div>
+
+
+      <div class="user">
+        <a href="https://github.com/orenpai" target="_blank" rel="noopener nofollow ugc">
+          <img alt="orenpai" src="https://avatars.githubusercontent.com/u/20188692?v=4" class="onebox-avatar-inline" width="20" height="20">
+          orenpai
+        </a>
+      </div>
+    </div>
+
+    <div class="labels">
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Frontend
+        </span>
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Visualizations: Chart
+        </span>
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Visualizations
+        </span>
+    </div>
+  </div>
+</div>
+
+  <div class="github-row">
+    <p class="github-body-container">### Issue Summary
+
+When creating a line chart with a datetime based x-axis, fr<span class="show-more-container"><a href="https://discuss.redash.io" rel="noopener" class="show-more">…</a></span><span class="excerpt hidden">om a table with missing dates ("holes"), the line chart continues as if no data was present, even though the option "Treat missing/null values as 0" is turned on.
+In contrast, bar charts work as expected - in which the bar is nonexistent (effectively size 0) on those missing dates.
+
+### Steps to Reproduce
+You can use this csv data as an example, or use the attached CSV.
+[Incoming_Users_2020_03_09.csv.txt](https://github.com/getredash/redash/files/4306409/Incoming_Users_2020_03_09.csv.txt)
+
+dt,installs
+06/02/2020,1
+10/02/2020,8
+11/02/2020,5
+12/02/2020,1
+
+(Please note European date format, switch month and day if necessary)
+
+Create a chart visualization (x-axis is dt, y axis is installs); Make sure the "Treat missing/null values as 0" checkbox is selected. In the x-axis settings make sure the scale is Datetime (default). Notice how the chart line continues straight in all dates between 06/02 and 10/02, as if they value continued to be "1" for these dates (even though indeed no marker is present when you hover the chart with the mouse cursor).
+Switch to bar chart - all bars in the same dates show a value of 0 (no bar). 
+Notice how unchecking and checking the checkbox "Treat missing/null values as 0" does not alter either of these charts. 
+
+Screenshots attached
+&lt;img width="796" alt="BarChart" src="https://user-images.githubusercontent.com/20188692/76211109-28b16500-620e-11ea-872c-b59cb22f7cd1.png"&gt;
+&lt;img width="791" alt="LineChart" src="https://user-images.githubusercontent.com/20188692/76211112-2a7b2880-620e-11ea-97bb-327900a9c1bc.png"&gt;
+
+The expected behavior is that when the checkbox is checked, the line chart would go to 0 on the dates that are not available in the table, similar to how the bar chart looks. For the bar chart, if the checkbox is unchecked, I would expect the same bar value to be kept, similar to how the line chart is.
+
+* Redash Version: 8.0.0+b32245 (a16f551e)
+* Browser/OS: Chrome Version 80.0.3987.122 (Official Build) (64-bit)
+* How did you install Redash: AWS ami-0b97435028ca44fcc</span></p>
+  </div>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043/2</link>
+        <pubDate>Tue, 22 Feb 2022 19:29:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10043-2</guid>
+        <source url="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043.rss">Custom sorting from mongoDB query breaks after grouping fields</source>
+      </item>
+      <item>
+        <title>Custom sorting from mongoDB query breaks after grouping fields</title>
+        <dc:creator><![CDATA[cny]]></dc:creator>
+        <description><![CDATA[
+            <p>I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.</p>
+<p>In order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentioned problem.</p>
+<p>I tried adding dummy data where a script creates documents with value of 0 for my y axis and it kind of worked.</p>
+<p>Here is my chart, it looks really ugly without the order and is unusable<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png" data-download-href="/uploads/short-url/63QIyeIAbz21fCWGWIS9Qj7Nsyj.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_690x247.png" alt="image" data-base62-sha1="63QIyeIAbz21fCWGWIS9Qj7Nsyj" width="690" height="247" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_690x247.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_1035x370.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_10x10.png"></a></div><p></p>
+<p>I also tried searching for solutions for such issue, but to no avail, are there other things I could try?</p>
+<p>Here is, the order I want and this is achieved by removing the x values from the list where not all groups have data or when I have dummy data in place<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455.png" data-download-href="/uploads/short-url/iAQpjo8AkSIr1lkYJt5e5IRVYtn.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_690x222.png" alt="image" data-base62-sha1="iAQpjo8AkSIr1lkYJt5e5IRVYtn" width="690" height="222" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_690x222.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_1035x333.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_10x10.png"></a></div><p></p>
+<p>Is there a better way to do this maybe through redash or mongo, any advice helps.</p>
+          <p><a href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043/1</link>
+        <pubDate>Tue, 22 Feb 2022 10:59:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10043-1</guid>
+        <source url="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043.rss">Custom sorting from mongoDB query breaks after grouping fields</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</title>
+    <link>https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763</link>
+    <description>I was curious if it&#39;s possible to render the multiple options based on the filtered out results. Currently, the options are rendered from all the possible column options that were received from the data source&#39;s query. I.E. you pick just one option from the first query based parameter input and the next query based parameter input has available options that none of the first query based parameter input&#39;s selection includes in the data. What we would want to do is filter out those options in the second query based parameter input depending on the data that was filtered out using the first query based parameter input. 
+
+Since It appears most of the frontend state is defined in the component itself I&#39;m a bit stumped on how we can pass in the data we have in our visualization as a prop to those `QueryBaseParameterInput.jsx` components. We were able to get the result of the filtered out data in the `filterData` function in `Filters.jsx` but couldn&#39;t see any state changes in the filters array besides it being an empty array. 
+
+
+How we would want to pass the results:
+
+```Typescript
+  renderQueryBasedInput() {
+    const { queryId, parameter, filteredResults } = this.props;
+
+    return (
+      &lt;QueryBasedParameterInput
+
+            // Pass filtered out results as a prop
+           results={filteredResults}
+      /&gt;
+    );
+  }
+```
+
+and then filter out the options in the select like: 
+
+```Typescript
+render() {
+   const { results } = this.props;
+
+ return (
+   &lt;AntdSelect&lt;string&gt;
+
+       // Antd Select filterOption prop that allows us to filter out the options
+      filterOption={ (option) =&gt; results.includes(option) } 
+   /&gt;
+ );
+}
+```
+
+Something else I looked into was the `useQueryResultData()` hook but I didn&#39;t know how to pass the query needed from the `QueryBaseParameterInput.jsx` nor `SelectWithVirutualScroll.tsx` components like it shows in `VisualizationRenderer.jsx` as: 
+
+```typescript
+  const data = useQueryResultData(props.queryResult);
+```
+
+
+[Loom video of my question](https://www.loom.com/share/b10c27d485704b0fb3156b47ad236491)</description>
+    
+    <lastBuildDate>Fri, 23 Jul 2021 21:56:51 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Long-term we intend to implement this feature ourselves. We’ll have a full-community discussion of the best way to implement it (which will likely happen from the back-end rather than in the webapp). We’ll approach this in more detail with a more well-defined process after the V10 release later this summer.</p>
+<p>You are of course welcome to implement this however you please. But we’re unlikely to merge an implementation without discussing it more broadly with the community.</p>
+          <p><a href="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763/3</link>
+        <pubDate>Fri, 23 Jul 2021 21:56:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8763-3</guid>
+        <source url="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763.rss">Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</source>
+      </item>
+      <item>
+        <title>Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</title>
+        <dc:creator><![CDATA[Gino]]></dc:creator>
+        <description><![CDATA[
+            <p>Update:</p>
+<p>I found where the rendering is happening on <code>client\app\services\parameters\QueryBasedDropdownParameter.js</code> but when trying to reference the query results with <code>QueryResult.getById()</code> the <code>query_result</code> shows data objects but I’m unable to access it. When I reference <code>query_result</code> then I get an empty object. I tried parsing and stringifying it but it still returns as an empty object. I just need help referencing the table’s query results and then I can add the logic for rendering the dropdown options based on the results.</p>
+          <p><a href="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763/2</link>
+        <pubDate>Tue, 20 Jul 2021 18:37:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8763-2</guid>
+        <source url="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763.rss">Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</source>
+      </item>
+      <item>
+        <title>Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</title>
+        <dc:creator><![CDATA[Gino]]></dc:creator>
+        <description><![CDATA[
+            <p>I was curious if it’s possible to render the multiple options based on the filtered out results. Currently, the options are rendered from all the possible column options that were received from the data source’s query. I.E. you pick just one option from the first query based parameter input and the next query based parameter input has available options that none of the first query based parameter input’s selection includes in the data. What we would want to do is filter out those options in the second query based parameter input depending on the data that was filtered out using the first query based parameter input.</p>
+<p>Since It appears most of the frontend state is defined in the component itself I’m a bit stumped on how we can pass in the data we have in our visualization as a prop to those <code>QueryBaseParameterInput.jsx</code> components. We were able to get the result of the filtered out data in the <code>filterData</code> function in <code>Filters.jsx</code> but couldn’t see any state changes in the filters array besides it being an empty array.</p>
+<p>How we would want to pass the results:</p>
+<pre><code class="lang-auto">  renderQueryBasedInput() {
+    const { queryId, parameter, filteredResults } = this.props;
+
+    return (
+      &lt;QueryBasedParameterInput
+
+            // Pass filtered out results as a prop
+           results={filteredResults}
+      /&gt;
+    );
+  }
+</code></pre>
+<p>and then filter out the options in the select like:</p>
+<pre><code class="lang-auto">render() {
+   const { results } = this.props;
+
+ return (
+   &lt;AntdSelect&lt;string&gt;
+
+       // Antd Select filterOption prop that allows us to filter out the options
+      filterOption={ (option) =&gt; results.includes(option) } 
+   /&gt;
+ );
+}
+</code></pre>
+<p>Something else I looked into was the <code>useQueryResultData()</code> hook but I didn’t know how to pass the query needed from the <code>QueryBaseParameterInput.jsx</code> nor <code>SelectWithVirutualScroll.tsx</code> components like it shows in <code>VisualizationRenderer.jsx</code> as:</p>
+<pre><code class="lang-auto">  const data = useQueryResultData(props.queryResult);
+</code></pre>
+<p><a href="https://www.loom.com/share/b10c27d485704b0fb3156b47ad236491" rel="noopener nofollow ugc">Loom video of my question</a></p>
+          <p><a href="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763/1</link>
+        <pubDate>Thu, 15 Jul 2021 22:39:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8763-1</guid>
+        <source url="https://discuss.redash.io/t/conditionally-rendering-options-in-querybasedparameterinputs-jsx-by-the-filtered-out-data-results/8763.rss">Conditionally Rendering Options In QueryBasedParameterInputs.jsx By The Filtered Out Data Results</source>
+      </item>
+  </channel>
+</rss>

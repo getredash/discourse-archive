@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Disk is full in the Redash server which was setup with docker</title>
+    <link>https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615</link>
+    <description>We are facing disk storage full issue with Redash docker setup.
+How we can clean the cache or unnecessary data. Since we couldn&#39;t extend the hard disk storage every time when growing redash data.
+
+And I have find the exact same issue reported already here.
+http://discuss.redash.io/t/docker-issue-with-disk-being-full/8496
+But there was no solution for that.
+
+
+* Redash Version: 8.0.0+b32245
+* Browser/OS: -
+* How did you install Redash: Using docker</description>
+    
+    <lastBuildDate>Wed, 08 Dec 2021 02:53:30 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Disk is full in the Redash server which was setup with docker</title>
+        <dc:creator><![CDATA[satheeskumar.s]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> for the reply.<br>
+We don’t have much query on our side…<br>
+Currently we are using only around 15-20 queries. So I don’t think these query having 8GB of query results.</p>
+<p>Anyway I’ll check the queries once again and I’ll take a look on the job process you have mentioned.</p>
+<p>And get back to you if I found anything.<br>
+Thanks!!</p>
+          <p><a href="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/5</link>
+        <pubDate>Wed, 08 Dec 2021 02:53:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9615-5</guid>
+        <source url="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615.rss">Disk is full in the Redash server which was setup with docker</source>
+      </item>
+      <item>
+        <title>Disk is full in the Redash server which was setup with docker</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There’s really two questions here:</p>
+<ol>
+<li>Redash should automatically clear out your old query results with a periodic job. Is this job running? And if not, why not? In general, the query result cache shouldn’t continue growing unless your <em>usage</em>  is also increasing. More likely, this job is not running. Here’s a description of the job from the source code:</li>
+</ol>
+<pre><code class="lang-python">"""
+Job to cleanup unused query results -- such that no query links to them anymore, and older than
+    settings.QUERY_RESULTS_CLEANUP_MAX_AGE (a week by default, so it's less likely to be open in someone's browser and be used).
+
+    Each time the job deletes only settings.QUERY_RESULTS_CLEANUP_COUNT (100 by default) query results so it won't choke
+    the database in case of many such results.
+"""
+</code></pre>
+<ol start="2">
+<li>If the job is not running, it’s either a configuration problem (i.e. something you need to fix) or it’s a bug (something the community needs to fix).</li>
+</ol>
+<p>Since I can’t reproduce this behavior on V10.1 I assume it’s either a bug that we squashed (intentionally or not) in the three years since V8 was released, or you have misconfigured your instance.</p>
+<p>I’d advise anyone to update from V8 to V10.1 since we’re not supporting V8 anymore.</p>
+          <p><a href="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/4</link>
+        <pubDate>Tue, 07 Dec 2021 20:46:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9615-4</guid>
+        <source url="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615.rss">Disk is full in the Redash server which was setup with docker</source>
+      </item>
+      <item>
+        <title>Disk is full in the Redash server which was setup with docker</title>
+        <dc:creator><![CDATA[satheeskumar.s]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> ,<br>
+We have setup this around 6 months ago.</p>
+<p>So do u you want me to update the server setup from V8 to V10?</p>
+          <p><a href="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/3</link>
+        <pubDate>Tue, 07 Dec 2021 03:50:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9615-3</guid>
+        <source url="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615.rss">Disk is full in the Redash server which was setup with docker</source>
+      </item>
+      <item>
+        <title>Disk is full in the Redash server which was setup with docker</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Does this reproduce in V10?</p>
+          <p><a href="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/2</link>
+        <pubDate>Mon, 06 Dec 2021 15:49:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9615-2</guid>
+        <source url="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615.rss">Disk is full in the Redash server which was setup with docker</source>
+      </item>
+      <item>
+        <title>Disk is full in the Redash server which was setup with docker</title>
+        <dc:creator><![CDATA[satheeskumar.s]]></dc:creator>
+        <description><![CDATA[
+            <p>We are facing disk storage full issue with Redash docker setup.<br>
+How we can clean the cache or unnecessary data. Since we couldn’t extend the hard disk storage every time when growing redash data.</p>
+<p>And I have find the exact same issue reported already here.</p><aside class="quote quote-modified" data-post="1" data-topic="8496">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/ac91a4/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/docker-issue-with-disk-being-full/8496">Docker issue with disk being full</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    <a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary
+I tried accessing my hosted Redash instance the other day and got an Internal Server Error. When I tried running Docker commands it gives me: [23955] INTERNAL ERROR: cannot create temporary directory! Upon Google search, it was because my disk was full and I solved the issue by running docker system prune --all. My questions: 
+
+Is there a way of preventing this in the future? This has actually happened the 2nd time now and both times the downtime caught me by surprise.
+Does this h…
+  </blockquote>
+</aside>
+<p>
+But there was no solution for that.</p>
+<ul>
+<li>Redash Version: 8.0.0+b32245</li>
+<li>Browser/OS: -</li>
+<li>How did you install Redash: Using docker</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615/1</link>
+        <pubDate>Fri, 03 Dec 2021 05:05:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9615-1</guid>
+        <source url="https://discuss.redash.io/t/disk-is-full-in-the-redash-server-which-was-setup-with-docker/9615.rss">Disk is full in the Redash server which was setup with docker</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Adhoc query timeout not working</title>
+    <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978</link>
+    <description>Hello,
+I have adhoc query timeout set to 180 sec (3 minutes) but noticing queries running longer. I&#39;ve tried to look at the runtimes using the queries and query_results tables but unfortunately the queries have parameters and I&#39;m not able to find the actual runtimes. Any suggestions on what I should be checking? 
+
+* Version: 8.0.0+b32245 (a16f551e)</description>
+    
+    <lastBuildDate>Fri, 27 Aug 2021 14:12:29 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Adhoc query timeout not working</title>
+        <dc:creator><![CDATA[etadelta222]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the reply Jesse. I’ll try that route.</p>
+          <p><a href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/6</link>
+        <pubDate>Fri, 27 Aug 2021 14:12:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8978-6</guid>
+        <source url="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss">Adhoc query timeout not working</source>
+      </item>
+      <item>
+        <title>Adhoc query timeout not working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="etadelta222" data-post="3" data-topic="8978">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/etadelta222/40/3168_2.png" class="avatar"> etadelta222:</div>
+<blockquote>
+<p>Also, trying to figure out which queries were canceled due to exceeding the timeout limit.</p>
+</blockquote>
+</aside>
+<p>That’s easier to see on Redis than in Postgres since the job will be updated. AFAIK I know we don’t keep that information in the metadata database at all.</p>
+          <p><a href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/5</link>
+        <pubDate>Mon, 23 Aug 2021 22:39:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8978-5</guid>
+        <source url="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss">Adhoc query timeout not working</source>
+      </item>
+      <item>
+        <title>Adhoc query timeout not working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can join them but not for queries with parameters. The query result is tied to the <em>hash</em> of the query, not its ID. Different parameter values produce different hashes.</p>
+          <p><a href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/4</link>
+        <pubDate>Mon, 23 Aug 2021 22:38:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8978-4</guid>
+        <source url="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss">Adhoc query timeout not working</source>
+      </item>
+      <item>
+        <title>Adhoc query timeout not working</title>
+        <dc:creator><![CDATA[etadelta222]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> , I can however I am looking into the runtimes after the fact. Also, trying to figure out which queries were canceled due to exceeding the timeout limit. I’m able to get the latest execution using the query below but it doesn’t match in the ‘last_query_data_id’ column in queries table. Looks like there’s no real way to join queries and query result to get the runtime?</p>
+<pre><code class="lang-auto">select
+	*
+from
+	events
+where
+	user_id = x
+	and object_id = 'xxx'
+	and object_type = 'query'
+	and action = 'execute'
+order by
+	created_at desc
+limit 10
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/3</link>
+        <pubDate>Mon, 23 Aug 2021 20:23:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8978-3</guid>
+        <source url="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss">Adhoc query timeout not working</source>
+      </item>
+      <item>
+        <title>Adhoc query timeout not working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can see the runtimes in the admin/status menu, no?</p>
+          <p><a href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/2</link>
+        <pubDate>Mon, 23 Aug 2021 19:09:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8978-2</guid>
+        <source url="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss">Adhoc query timeout not working</source>
+      </item>
+      <item>
+        <title>Adhoc query timeout not working</title>
+        <dc:creator><![CDATA[etadelta222]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,<br>
+I have adhoc query timeout set to 180 sec (3 minutes) but noticing queries running longer. I’ve tried to look at the runtimes using the queries and query_results tables but unfortunately the queries have parameters and I’m not able to find the actual runtimes. Any suggestions on what I should be checking?</p>
+<ul>
+<li>Version: 8.0.0+b32245 (a16f551e)</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978/1</link>
+        <pubDate>Mon, 23 Aug 2021 19:08:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8978-1</guid>
+        <source url="https://discuss.redash.io/t/adhoc-query-timeout-not-working/8978.rss">Adhoc query timeout not working</source>
+      </item>
+  </channel>
+</rss>

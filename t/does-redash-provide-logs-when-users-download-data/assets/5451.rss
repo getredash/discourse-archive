@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Does Redash provide logs when users download data?</title>
+    <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451</link>
+    <description>i.e. when user hit &quot;Download as CSV file&quot; or &quot;Download as Excel file&quot;
+
+I&#39;ve checked the webserver logs, it doesn&#39;t show the user name, but only the GET request
+
+```
+[2020-01-27 05:12:17,173][PID:15][INFO][metrics] method=GET path=/api/queries/3270/results.csv endpoint=query_result status=200 content_type=text/csv; charset=UTF-8 content_length=57619 duration=133.85 query_count=11 query_duration=25.70
+```</description>
+    
+    <lastBuildDate>Wed, 23 Mar 2022 18:27:23 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[mains]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/k4s1m">@k4s1m</a> can you expand on how this <code>record_event</code> would be implemented within the handler you linked? Would this need to be created only when filetype != json?</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/7</link>
+        <pubDate>Wed, 23 Mar 2022 18:27:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-7</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>No. You’d just add a call to <code>record_event</code> in <a href="https://github.com/getredash/redash/blob/6cc69ec2c1ed634f7a0ba9cd17ead7c50dc48066/redash/handlers/query_results.py#L314" rel="noopener nofollow ugc">this handler</a> when a user downloads a file. Keep in mind this records a file download only. If a user accesses a query (which emits a “View Query” event) they could still download the entire dataset by copying the XHR request payload from their browser inspection tools.</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/6</link>
+        <pubDate>Mon, 08 Mar 2021 15:27:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-6</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[bearnard]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> We have a need for this as part of our SIEM efforts, would it be as simple as logging request.remote_user here: <a href="https://github.com/getredash/redash/blob/master/redash/metrics/request.py#L25-L36" class="inline-onebox" rel="noopener nofollow ugc">redash/request.py at master · getredash/redash · GitHub</a></p>
+<p>I could take a stab at opening a pull request</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/5</link>
+        <pubDate>Wed, 03 Mar 2021 12:24:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-5</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>We’d certainly review a PR for this <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=9" title=":wink:" class="emoji" alt=":wink:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/4</link>
+        <pubDate>Fri, 31 Jan 2020 06:54:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-4</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>It should be logged, as a security measure <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=9" title=":thinking:" class="emoji" alt=":thinking:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/3</link>
+        <pubDate>Thu, 30 Jan 2020 17:07:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-3</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>No, the download event is not logged specifically. You can confirm this by checking Redash’s internal <code>events</code> table.</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/2</link>
+        <pubDate>Wed, 29 Jan 2020 04:49:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-2</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+      <item>
+        <title>Does Redash provide logs when users download data?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i.e. when user hit “Download as CSV file” or “Download as Excel file”</p>
+<p>I’ve checked the webserver logs, it doesn’t show the user name, but only the GET request</p>
+<pre><code class="lang-auto">[2020-01-27 05:12:17,173][PID:15][INFO][metrics] method=GET path=/api/queries/3270/results.csv endpoint=query_result status=200 content_type=text/csv; charset=UTF-8 content_length=57619 duration=133.85 query_count=11 query_duration=25.70
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451/1</link>
+        <pubDate>Mon, 27 Jan 2020 21:25:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5451-1</guid>
+        <source url="https://discuss.redash.io/t/does-redash-provide-logs-when-users-download-data/5451.rss">Does Redash provide logs when users download data?</source>
+      </item>
+  </channel>
+</rss>

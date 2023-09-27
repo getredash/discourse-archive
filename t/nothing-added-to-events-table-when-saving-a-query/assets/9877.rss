@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Nothing Added to Events Table when Saving a Query</title>
+    <link>https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877</link>
+    <description>I am looking to maintain a full audit trail of user actions through the `events` table. However, I noticed that nothing is published to the `events` table when a query is saved. This would become a problem if a user were to edit a query and save it without executing or publishing the query. In this case, it seems like there would be no way of knowing who changed the query or what it was changed to.
+
+The following solution mentions that there should be some &quot;save query&quot; events in the `events` table but I do not see any: http://discuss.redash.io/t/how-to-subscribe-query-changes/8124
+
+Does this logging already exist somewhere else? If not, are there any suggestions for logging saved queries and logging what they were saved to?</description>
+    
+    <lastBuildDate>Wed, 19 Jan 2022 20:52:55 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Nothing Added to Events Table when Saving a Query</title>
+        <dc:creator><![CDATA[mains]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you, that makes sense. I will look into adding a record_event.</p>
+<p>If I did want to include change tracking for all saved queries, do you suggest creating a new table instead?</p>
+          <p><a href="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/5</link>
+        <pubDate>Wed, 19 Jan 2022 20:52:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9877-5</guid>
+        <source url="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877.rss">Nothing Added to Events Table when Saving a Query</source>
+      </item>
+      <item>
+        <title>Nothing Added to Events Table when Saving a Query</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="mains" data-post="1" data-topic="9877">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/5e9695/40.png" class="avatar"> mains:</div>
+<blockquote>
+<p>If not, are there any suggestions for logging saved queries and logging what they were saved to?</p>
+</blockquote>
+</aside>
+<p>Logging save actions would be easy enough. Just add a <code>record_event</code> call to the query update handler. Recording the change contents themselves seems like the wrong idea, since the events table would then be a form of (very inefficient) change tracking. For example, if a user changes one line of a 1k line query, 2k lines would be injected on the events table (rather than the just the diff).</p>
+          <p><a href="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/4</link>
+        <pubDate>Wed, 19 Jan 2022 20:24:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9877-4</guid>
+        <source url="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877.rss">Nothing Added to Events Table when Saving a Query</source>
+      </item>
+      <item>
+        <title>Nothing Added to Events Table when Saving a Query</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="mains" data-post="1" data-topic="9877">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/5e9695/40.png" class="avatar"> mains:</div>
+<blockquote>
+<p>However, I noticed that nothing is published to the <code>events</code> table when a query is saved.</p>
+</blockquote>
+</aside>
+<p>This is correct. The current source code does not record an event in this case.</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/e28e4227bf11b0688dc9646579647455fade419f/redash/handlers/queries.py#L329-L389">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/e28e4227bf11b0688dc9646579647455fade419f/redash/handlers/queries.py#L329-L389" target="_blank" rel="noopener">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/e28e4227bf11b0688dc9646579647455fade419f/redash/handlers/queries.py#L329-L389" target="_blank" rel="noopener">getredash/redash/blob/e28e4227bf11b0688dc9646579647455fade419f/redash/handlers/queries.py#L329-L389</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-py">
+      <ol class="start lines" start="329" style="counter-reset: li-counter 328 ;">
+          <li>def post(self, query_id):</li>
+          <li>    """</li>
+          <li>    Modify a query.</li>
+          <li>
+          </li><li>    :param query_id: ID of query to update</li>
+          <li>    :&lt;json number data_source_id: The ID of the data source this query will run on</li>
+          <li>    :&lt;json string query: Query text</li>
+          <li>    :&lt;json string name:</li>
+          <li>    :&lt;json string description:</li>
+          <li>    :&lt;json string schedule: Schedule interval, in seconds, for repeated execution of this query</li>
+          <li>    :&lt;json object options: Query options</li>
+          <li>
+          </li><li>    Responds with the updated :ref:`query &lt;query-response-label&gt;` object.</li>
+          <li>    """</li>
+          <li>    query = get_object_or_404(</li>
+          <li>        models.Query.get_by_id_and_org, query_id, self.current_org</li>
+          <li>    )</li>
+          <li>    query_def = request.get_json(force=True)</li>
+          <li>
+          </li><li>    require_object_modify_permission(query, self.current_user)</li>
+      </ol>
+    </code>
+  </pre>
+
+  This file has been truncated. <a href="https://github.com/getredash/redash/blob/e28e4227bf11b0688dc9646579647455fade419f/redash/handlers/queries.py#L329-L389" target="_blank" rel="noopener">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/3</link>
+        <pubDate>Wed, 19 Jan 2022 20:22:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9877-3</guid>
+        <source url="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877.rss">Nothing Added to Events Table when Saving a Query</source>
+      </item>
+      <item>
+        <title>Nothing Added to Events Table when Saving a Query</title>
+        <dc:creator><![CDATA[mains]]></dc:creator>
+        <description><![CDATA[
+            <p>I am looking to maintain a full audit trail of user actions through the <code>events</code> table. However, I noticed that nothing is published to the <code>events</code> table when a query is saved. This would become a problem if a user were to edit a query and save it without executing or publishing the query. In this case, it seems like there would be no way of knowing who changed the query or what it was changed to.</p>
+<p>The following solution mentions that there should be some “save query” events in the <code>events</code> table but I do not see any: <a href="http://discuss.redash.io/t/how-to-subscribe-query-changes/8124" class="inline-onebox">How to subscribe query changes?</a></p>
+<p>Does this logging already exist somewhere else? If not, are there any suggestions for logging saved queries and logging what they were saved to?</p>
+          <p><a href="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877/1</link>
+        <pubDate>Wed, 19 Jan 2022 19:16:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9877-1</guid>
+        <source url="https://discuss.redash.io/t/nothing-added-to-events-table-when-saving-a-query/9877.rss">Nothing Added to Events Table when Saving a Query</source>
+      </item>
+  </channel>
+</rss>

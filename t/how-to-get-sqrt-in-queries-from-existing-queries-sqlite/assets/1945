@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>How to get SQRT in queries from existing queries (SQLite) - Support - Redash Discourse</title>
+    <meta name="description" content="Are there any ways to get SQRT in queries from existing queries? 
+It seems SQLite, which is used in queries from existing queries, doesn’t support SQRT and I found the extension at the bottom of this page (http://www.sql&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;How to get SQRT in queries from existing queries (SQLite)&#39;" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945" />
+<meta property="og:title" content="How to get SQRT in queries from existing queries (SQLite)" />
+<meta name="twitter:title" content="How to get SQRT in queries from existing queries (SQLite)" />
+<meta property="og:description" content="Are there any ways to get SQRT in queries from existing queries?  It seems SQLite, which is used in queries from existing queries, doesn’t support SQRT and I found the extension at the bottom of this page (http://www.sqlite.org/contrib) might help, but I don’t know how to install it into Redash.  Or, are there any other ways?  I’m also hoping to use other math functions like STDEV, so maybe it’d be the best if I could install the math extension above." />
+<meta name="twitter:description" content="Are there any ways to get SQRT in queries from existing queries?  It seems SQLite, which is used in queries from existing queries, doesn’t support SQRT and I found the extension at the bottom of this page (http://www.sqlite.org/contrib) might help, but I don’t know how to install it into Redash.  Or, are there any other ways?  I’m also hoping to use other math functions like STDEV, so maybe it’d be the best if I could install the math extension above." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="3 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="3 ❤" />
+<meta property="article:published_time" content="2018-05-21T18:35:59+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"How to get SQRT in queries from existing queries (SQLite)","mainEntity":{"@type":"Question","name":"How to get SQRT in queries from existing queries (SQLite)","text":"Are there any ways to get SQRT in queries from existing queries?\n\nIt seems SQLite, which is used in queries from existing queries, doesn’t support SQRT and I found the extension at the bottom of this page (<a href=\"http://www.sqlite.org/contrib\" rel=\"nofollow noopener\">http://www.sqlite.org/contrib<\/a>) might help, but I don’t know how to install it into Redash.\n\nOr&hellip;","upvoteCount":0,"answerCount":1,"dateCreated":"2018-05-21T18:35:59.647Z","author":{"@type":"Person","name":"Yuji Ukai"},"acceptedAnswer":{"@type":"Answer","text":"[image] theronmb:\n\nAlso can’t use nano to edit the query_results.py file because nano also isn’t available in the container.\n\nCheck out the guidance earlier in the thread. You don’t edit the file within the container. You edit the file on your local disk and then link it into the container. Or &hellip;","upvoteCount":1,"dateCreated":"2021-06-23T16:21:07.290Z","url":"https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945/6","author":{"@type":"Person","name":"jesse"}}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">How to get SQRT in queries from existing queries (SQLite)</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='How to get SQRT in queries from existing queries (SQLite)'>
+        <meta itemprop='articleSection' content='Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/yuzwyy'><span itemprop='name'>yuzwyy</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-05-21T18:35:59Z' class='post-time'>
+                    May 21, 2018,  6:35pm
+                  </time>
+                  <meta itemprop='dateModified' content='2018-05-21T18:35:59Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Are there any ways to get SQRT in queries from existing queries?<br>
+It seems SQLite, which is used in queries from existing queries, doesn’t support SQRT and I found the extension at the bottom of this page (<a href="http://www.sqlite.org/contrib" rel="nofollow noopener">http://www.sqlite.org/contrib</a>) might help, but I don’t know how to install it into Redash.<br>
+Or, are there any other ways?<br>
+I’m also hoping to use other math functions like STDEV, so maybe it’d be the best if I could install the math extension above.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/yuzwyy'><span itemprop='name'>yuzwyy</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2018-05-21T23:03:24Z' class='post-time'>
+                    May 21, 2018, 11:03pm
+                  </time>
+                  <meta itemprop='dateModified' content='2018-05-21T23:03:24Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I resolved this by myself.<br>
+I compiled the C file as below (in case of Ubuntu)</p>
+<blockquote>
+<p>gcc -fPIC -shared extension-functions.c -o libsqlitefunctions.so -lm</p>
+</blockquote>
+<p>and then added the following two lines in query_results.py</p>
+<blockquote>
+<p>connection.enable_load_extension(True)<br>
+cursor.execute(‘select load_extension("/home/ubuntu/libsqlitefunctions.so");’)</p>
+</blockquote>
+<p>Please let me know if there are better ways.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/dmok'><span itemprop='name'>dmok</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-04-08T04:20:16Z' class='post-time'>
+                    April 8, 2020,  4:20am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-04-08T04:20:16Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>hey! I am facing the same problem: want to use SQRT function in sqlite.<br>
+I am using the docker installation, I think I can compile that C file by:</p>
+<blockquote>
+<p>gcc -fPIC -shared extension-functions.c -o libsqlitefunctions.so -lm</p>
+</blockquote>
+<p>But how can I edit the query_results.py file? As I understand it, I can’t edit the source code in a docker image, since it is built already, right? Is there any other way out? Thanks for any help!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-04-09T13:33:08Z' class='post-time'>
+                    April 9, 2020,  1:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-04-09T13:33:08Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I’m assuming you added the <code>gcc</code> compile step to your Dockerfile. You can update <code>query_results.py</code> the same way. Just copy the file from our git repo, save your code changes alongside the Dockerfile (on your file system), and then add this directive to it:</p>
+<p><code>ADD query_results.py /app/redash/query_runner/query_results.py</code></p>
+<p>Then Redash will use your edited file instead of the default.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/theronmb'><span itemprop='name'>theronmb</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-23T07:30:11Z' class='post-time'>
+                    June 23, 2021,  7:30am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-23T07:30:11Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Did you get this to work? GCC works inside the redash server container, but I get the following error</p>
+<blockquote>
+<p>fatal error: sqlite3ext.h: No such file or directory</p>
+</blockquote>
+<p>According to <a href="https://github.com/mongrel2/mongrel2/issues/86" rel="noopener nofollow ugc">Here</a>, this error is associated with the lack of the libsqlite3-dev library. However, I can’t install libsqlite3-dev because I don’t have sudo access inside the container. Also can’t use nano to edit the query_results.py file because nano also isn’t available in the container.</p>
+<p>Would love to here how you did it.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-23T16:21:07Z' class='post-time'>
+                    June 23, 2021,  4:21pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-23T16:21:07Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="theronmb" data-post="5" data-topic="1945">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/t/e480ec/40.png" class="avatar"> theronmb:</div>
+<blockquote>
+<p>Also can’t use nano to edit the query_results.py file because nano also isn’t available in the container.</p>
+</blockquote>
+</aside>
+<p>Check out the guidance earlier in the thread. You don’t edit the file <em>within</em> the container. You edit the file on your local disk and then link it into the container. Or if you’re using the local development Docker setup you can just edit the source file within the repo directly <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+<p>I made a commit to my fork of <code>redash</code> that shows exactly the changes you need to make:</p>
+<aside class="onebox githubcommit" data-onebox-src="https://github.com/susodapop/redash/commit/ff33ee8aa5fc608d800201cc4efe5170cfdaeaac">
+  <header class="source">
+
+      <a href="https://github.com/susodapop/redash/commit/ff33ee8aa5fc608d800201cc4efe5170cfdaeaac" target="_blank" rel="noopener">github.com/susodapop/redash</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Commit">
+    <svg width="60" height="60" class="github-icon" viewbox="0 0 14 16" aria-hidden="true"><path d="M10.86 7c-.45-1.72-2-3-3.86-3-1.86 0-3.41 1.28-3.86 3H0v2h3.14c.45 1.72 2 3 3.86 3 1.86 0 3.41-1.28 3.86-3H14V7h-3.14zM7 10.2c-1.22 0-2.2-.98-2.2-2.2 0-1.22.98-2.2 2.2-2.2 1.22 0 2.2.98 2.2 2.2 0 1.22-.98 2.2-2.2 2.2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/susodapop/redash/commit/ff33ee8aa5fc608d800201cc4efe5170cfdaeaac" target="_blank" rel="noopener">Updates that permit advanced math functions in sqlite</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        committed <span class="discourse-local-date" data-format="ll" data-date="2021-06-23" data-time="16:12:15" data-timezone="UTC">04:12PM - 23 Jun 21 UTC</span>
+      </div>
+
+      <div class="user">
+        <a href="https://github.com/susodapop" target="_blank" rel="noopener">
+          <img alt="susodapop" src="https://avatars.githubusercontent.com/u/17067911?v=4" class="onebox-avatar-inline" width="20" height="20">
+          susodapop
+        </a>
+      </div>
+
+      <div class="lines" title="changed 2 files with 7 additions and 1 deletions">
+        <a href="https://github.com/susodapop/redash/commit/ff33ee8aa5fc608d800201cc4efe5170cfdaeaac" target="_blank" rel="noopener">
+          <span class="added">+7</span>
+          <span class="removed">-1</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>I’m pasting the git diff here as well:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf.png" data-download-href="/uploads/short-url/tDB98yqy2dBhxRsWy0LMDiFSihp.png?dl=1" title="CleanShot 2021-06-23 at 11.18.47"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf_2_611x500.png" alt="CleanShot 2021-06-23 at 11.18.47" data-base62-sha1="tDB98yqy2dBhxRsWy0LMDiFSihp" width="611" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf_2_611x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cfb8fa10b801e3ed21a6447f1f494c4403957bdf_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">CleanShot 2021-06-23 at 11.18.47</span><span class="informations">823×673 75 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>After making these changes to your <code>Dockerfile</code> and <code>query_results.py</code> just run <code>docker compose build</code> and then restart your containers with <code>docker compose up -d</code>.</p>
+<p>Confirmation it works:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/ef94baf22b3f13c7c329ec13ce0bfc4ae1c974eb.png" data-download-href="/uploads/short-url/ybqLEhKPXxTZEvxDQi17swe8Mt5.png?dl=1" title="CleanShot 2021-06-23 at 11.20.51"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/ef94baf22b3f13c7c329ec13ce0bfc4ae1c974eb_2_690x430.png" alt="CleanShot 2021-06-23 at 11.20.51" data-base62-sha1="ybqLEhKPXxTZEvxDQi17swe8Mt5" width="690" height="430" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/ef94baf22b3f13c7c329ec13ce0bfc4ae1c974eb_2_690x430.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/ef94baf22b3f13c7c329ec13ce0bfc4ae1c974eb_2_1035x645.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/ef94baf22b3f13c7c329ec13ce0bfc4ae1c974eb.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/ef94baf22b3f13c7c329ec13ce0bfc4ae1c974eb_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">CleanShot 2021-06-23 at 11.20.51</span><span class="informations">1091×680 60 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Thanks <a class="mention" href="/u/yuzwyy">@yuzwyy</a> for writing up the basics. Hopefully this guide helps others in the future.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="https://discuss.redash.io/t/make-advanced-math-functions-available-in-qrds/8638/2">Make advanced math functions available in QRDS</a>
+                        <meta itemprop='position' content='4'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/theronmb'><span itemprop='name'>theronmb</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-24T08:28:01Z' class='post-time'>
+                    June 24, 2021,  8:28am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-24T08:28:01Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks. I was working on a digital ocean marketplace redsah image. I built the .so file (renaming it as you did in your dockerfile). Building did generate one small error, but the .so file was built. I copied it into the home folder of the docker image as you had in your dockerfile and then I copied the updated query_results.py file over the old one in the container. That didn’t have an immediate effect so I ran <code>docker-compose up -d</code>. That crashed the server. Then I rebooted, the server came back “up” but wasn’t accessible and the system load never came back close down to less than 1 even after 10 minutes. Not sure if I just went wrong somewhere or if loading the mathfunctions ends up eating up a lot more than my 2 GB-1CPU droplet could handle.</p>
+<p>I also tried spinning up your fork on a digital ocean droplet with docker. There were a few errors during the docker compose build and when I tried access myurl:5000 I found "sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation “organizations” does not exist<br>
+LINE 2: FROM organizations ".</p>
+<p>I would really like to get this working but it might be just beyond my capabilities at the moment.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-24T18:55:15Z' class='post-time'>
+                    June 24, 2021,  6:55pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-24T18:55:15Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="theronmb" data-post="7" data-topic="1945">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/t/e480ec/40.png" class="avatar"> theronmb:</div>
+<blockquote>
+<p>I would really like to get this working but it might be just beyond my capabilities at the moment.</p>
+</blockquote>
+</aside>
+<p>Sorry to hear you’re frustrated with this. I think you’re <em>very</em> close though. Just a single command.</p>
+<aside class="quote no-group" data-username="theronmb" data-post="7" data-topic="1945">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/t/e480ec/40.png" class="avatar"> theronmb:</div>
+<blockquote>
+<p>when I tried access myurl:5000 I found "sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation “organizations” does not exist<br>
+LINE 2: FROM organizations ".</p>
+</blockquote>
+</aside>
+<p>This just means the metadata database wasn’t created. You have to run the create command:</p>
+<pre><code class="lang-bash">$ docker-compose run --rm server create_db
+</code></pre>
+<hr>
+<p>You mentioned there were build errors though? What were they?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/theronmb'><span itemprop='name'>theronmb</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-30T05:32:15Z' class='post-time'>
+                    June 30, 2021,  5:32am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-30T05:32:15Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>So if I run</p>
+<pre><code class="lang-auto">docker-compose run --rm server create_db
+</code></pre>
+<p>the login screen setting the administration password does appear. However, once a try to login I get</p>
+<h1>
+<a name="bad-request-1" class="anchor" href="#bad-request-1"></a>Bad Request</h1>
+<blockquote>
+<p>The CSRF session token is missing.</p>
+</blockquote>
+<p>Here are all the errors that pop up during the build:</p>
+<blockquote>
+<p>debconf: delaying package configuration, since apt-utils is not installed</p>
+<p>debconf: delaying package configuration, since apt-utils is not installed</p>
+<p>WARNING: Running pip as the ‘root’ user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: <a href="https://pip.pypa.io/warnings/venv" rel="noopener nofollow ugc">https://pip.pypa.io/warnings/venv</a></p>
+<p>ERROR: After October 2020 you may experience errors when installing or updating packages. This is because pip will change the way that it resolves dependency conflicts.</p>
+<p>We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.</p>
+<p>httplib2 0.19.1 requires pyparsing&lt;3,&gt;=2.4.2, but you’ll have pyparsing 2.1.4 which is incompatible.</p>
+<p>botocore 1.13.50 requires urllib3&lt;1.26,&gt;=1.20; python_version &gt;= “3.4”, but you’ll have urllib3 1.26.6 which is incompatible.</p>
+<p>dql 0.5.26 requires python-dateutil&lt;2.7.0, but you’ll have python-dateutil 2.8.1 which is incompatible.</p>
+<p>memsql 3.0.0 requires mysqlclient==1.3.13, but you’ll have mysqlclient 1.3.14 which is incompatible.</p>
+<p>pymapd 0.19.0 requires thrift==0.11.0, but you’ll have thrift 0.13.0 which is incompatible.</p>
+<p>pyopenssl 20.0.1 requires cryptography&gt;=3.2, but you’ll have cryptography 2.9.2 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires certifi&lt;2021.0.0, but you’ll have certifi 2021.5.30 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires pytz&lt;2021.0, but you’ll have pytz 2021.1 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires requests&lt;2.23.0, but you’ll have requests 2.25.1 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires urllib3&lt;1.26.0,&gt;=1.20, but you’ll have urllib3 1.26.6 which is incompatible.</p>
+<p>ERROR: After October 2020 you may experience errors when installing or updating packages. This is because pip will change the way that it resolves dependency conflicts.</p>
+<p>We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.</p>
+<p>snowflake-connector-python 2.1.3 requires certifi&lt;2021.0.0, but you’ll have certifi 2021.5.30 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires pytz&lt;2021.0, but you’ll have pytz 2021.1 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires requests&lt;2.23.0, but you’ll have requests 2.25.1 which is incompatible.</p>
+<p>ERROR: After October 2020 you may experience errors when installing or updating packages. This is because pip will change the way that it resolves dependency conflicts.</p>
+<p>We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.</p>
+<p>snowflake-connector-python 2.1.3 requires certifi&lt;2021.0.0, but you’ll have certifi 2021.5.30 which is incompatible.</p>
+<p>snowflake-connector-python 2.1.3 requires pytz&lt;2021.0, but you’ll have pytz 2021.1 which is incompatible.</p>
+<p>pymapd 0.19.0 requires thrift==0.11.0, but you’ll have thrift 0.13.0 which is incompatible.</p>
+<p>memsql 3.0.0 requires mysqlclient==1.3.13, but you’ll have mysqlclient 1.3.14 which is incompatible.</p>
+<p>google-auth-httplib2 0.1.0 requires httplib2&gt;=0.15.0, but you’ll have httplib2 0.14.0 which is incompatible.</p>
+<p>dql 0.5.26 requires pyparsing==2.1.4, but you’ll have pyparsing 2.3.0 which is incompatible.</p>
+<p>dql 0.5.26 requires python-dateutil&lt;2.7.0, but you’ll have python-dateutil 2.8.0 which is incompatible.</p>
+<p>black 21.6b0 requires click&gt;=7.1.2, but you’ll have click 6.7 which is incompatible.</p>
+</blockquote>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-get-sqrt-in-queries-from-existing-queries-sqlite/1945">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-30T13:43:51Z' class='post-time'>
+                    June 30, 2021,  1:43pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-30T13:43:51Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Looks like you have an outdated docker-compose.yml file and missed some of the setup steps. I’d recommend starting fresh using <a href="https://redash.io/help/open-source/dev-guide/docker">this guide</a> to get familiar with the process. Once you have this working it will be easier to navigate setting up Redash in a different production environment. If you have issues with this please open another thread, since your issue is not related to the question at hand.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

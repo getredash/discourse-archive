@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Our open-source Redash golang SDK is out! 🚀 Let&#39;s discuss what we can learn</title>
+    <link>https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895</link>
+    <description>Following up on [the previous &quot;teaser&quot; post](http://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774), we open-sourced the project! Check it out at [our projects page](https://recolabs.dev/projects) where you&#39;ll find all the relevant links (GitHub, documentation).
+
+From our development experience, I think that some improvements should make it to the core project, which I&#39;d like to bring to the community&#39;s consideration here:
+
+## Declarative API using `swagger` (OpenAPI)
+
+To develop a client that was stable and easier to expand than the rest of the open-source client projects we&#39;ve found (including the `redash-toolbelt` [client](https://github.com/getredash/redash-toolbelt/blob/master/redash_toolbelt/client.py)) we started to define Redash&#39;s API using Swagger.
+
+https://github.com/RecoLabs/redash-go-sdk/blob/main/swagger.yaml
+
+I think that moving this into the core project, completing it, and using something like [swagger-codegen](https://github.com/swagger-api/swagger-codegen) to base the server off of would make the experience of working with Redash programmatically better.
+
+The file is open source and under the same license, so Redash maintainers can just grab it - we&#39;d also love to collaborate on it and advise if needed.
+
+## Perhaps time to sunset `redash-toolbelt`?
+
+The official client for Redash - [`redash-toolbelt`](https://github.com/getredash/redash-toolbelt) - has a bunch of useful utilities and should probably stay around, but as an official client, it&#39;s missing too much functionality.
+
+## Pagination
+
+We&#39;ve had some peculiar issues with the Pagination API which weren&#39;t super-reproducible, but it seems like it ignores the &quot;page size&quot; parameter from the API. Is anyone experiencing similar issues? 
+
+## Stress testing
+
+We&#39;re running a self-hosted instance of Redash on K8s using a `helm` chart we developed based on the community one. Since Redash has a few DBs and services that make up its deployment, some stress problems don&#39;t manifest in Redash but rather in Redis or Postgres. Specifically, when trying to add ~100 queries in a for loop, the server starts failing to add them, with Redis throwing errors and the server getting exceptions.
+
+For now, this is our workaround (with many internal parts omitted):
+
+```golang
+func (dashboardBootstrapper *DashboardBootstrapper) setUpWorkspaceTilesInRedash(dataSource *redash_models.DataSource,
+	workspaceTilesMapPtr map[uuid.UUID][]*TileConfiguration) {
+	for workspace, tilesInWorkspace := range workspaceTilesMapPtr {
+		for i, tileConfig := range tilesInWorkspace {
+			// [OMITTED]...
+
+			// NOTE: Here be dragons. Our K8s Redash instance fails inserting many queries
+			// probably due to stress on its Redis. This is a temporary (?) fix for that.
+			// The default time is depressingly long, but this is in order to be on the
+			// safe side.
+			time.Sleep(defaultSleepBetweenQueryAdditions)
+
+			// [OMITTED]...
+			newQuery, err := queries.NewQuery(
+				queryName,
+				string(queryOpt),				
+				tile.Description,
+				query, 0, 
+				dataSourceID, 
+				tile.Schedule.Interval, 
+				queriesVersion, 
+				isDraft)
+
+			newQuery, err = dashboardBootstrapper.redashClient.Queries.Add(newQuery)
+```
+
+So this some some &quot;ground research&quot; performance testing results for Redash. We solved it - as you see - using a `time.Sleep` call, but I think perhaps the server can handle load or at least communicate load-based failures better so that the users can &quot;back off&quot; until everything&#39;s operational again.</description>
+    
+    <lastBuildDate>Sun, 23 Jan 2022 14:14:37 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Our open-source Redash golang SDK is out! 🚀 Let&#39;s discuss what we can learn</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>With those failures to insert, is there any chance the instances didn’t have the rate limit disabled?</p>
+<p>eg:</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getnewdash/setup/blob/b326d81bd7eba75f3f13b173f810ecfcdc998d4b/setup.sh#L48">
+  <header class="source">
+
+      <a href="https://github.com/getnewdash/setup/blob/b326d81bd7eba75f3f13b173f810ecfcdc998d4b/setup.sh#L48" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getnewdash/setup/blob/b326d81bd7eba75f3f13b173f810ecfcdc998d4b/setup.sh#L48" target="_blank" rel="noopener nofollow ugc">getnewdash/setup/blob/b326d81bd7eba75f3f13b173f810ecfcdc998d4b/setup.sh#L48</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-sh">
+      <ol class="start lines" start="38" style="counter-reset: li-counter 37 ;">
+          <li>  POSTGRES_PASSWORD=$(pwgen -1s 32)</li>
+          <li>  REDASH_DATABASE_URL="postgresql://postgres:$POSTGRES_PASSWORD@postgres/postgres"</li>
+          <li>
+          </li>
+<li>  echo "PYTHONUNBUFFERED=0" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>  echo "REDASH_LOG_LEVEL=INFO" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>  echo "REDASH_REDIS_URL=redis://redis:6379/0" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>  echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>  echo "REDASH_COOKIE_SECRET=$COOKIE_SECRET" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>  echo "REDASH_SECRET_KEY=$SECRET_KEY" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>  echo "REDASH_DATABASE_URL=$REDASH_DATABASE_URL" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li class="selected">  echo "REDASH_RATELIMIT_ENABLED=false" &gt;&gt;"$REDASH_BASE_PATH"/env</li>
+          <li>}</li>
+          <li>
+          </li>
+<li>setup_compose() {</li>
+          <li>  REQUESTED_CHANNEL=stable</li>
+          <li>  LATEST_VERSION=$(curl -s "https://version.redash.io/api/releases?channel=$REQUESTED_CHANNEL" | json_pp | grep "docker_image" | head -n 1 | awk 'BEGIN{FS=":"}{print $3}' | awk 'BEGIN{FS="\""}{print $1}')</li>
+          <li>
+          </li>
+<li>  cd "$REDASH_BASE_PATH"</li>
+          <li>  GIT_BRANCH="${REDASH_BRANCH:-master}" # Default branch/version to master if not specified in REDASH_BRANCH env var</li>
+          <li>  curl -OL https://raw.githubusercontent.com/getnewdash/setup/"$GIT_BRANCH"/data/docker-compose.yml</li>
+          <li>  #sed -ri "s/image: redash\/redash:([A-Za-z0-9.-]*)/image: redash\/redash:$LATEST_VERSION/" docker-compose.yml</li>
+      </ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>That can lead to failures that are pretty “WTF?”, unless you’re aware of it. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895/2</link>
+        <pubDate>Sun, 23 Jan 2022 14:14:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9895-2</guid>
+        <source url="https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895.rss">Our open-source Redash golang SDK is out! 🚀 Let&#39;s discuss what we can learn</source>
+      </item>
+      <item>
+        <title>Our open-source Redash golang SDK is out! 🚀 Let&#39;s discuss what we can learn</title>
+        <dc:creator><![CDATA[ShayNehmad-RecoLabs]]></dc:creator>
+        <description><![CDATA[
+            <p>Following up on <a href="http://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">the previous “teaser” post</a>, we open-sourced the project! Check it out at <a href="https://recolabs.dev/projects" rel="noopener nofollow ugc">our projects page</a> where you’ll find all the relevant links (GitHub, documentation).</p>
+<p>From our development experience, I think that some improvements should make it to the core project, which I’d like to bring to the community’s consideration here:</p>
+<h2>
+<a name="declarative-api-using-swagger-openapi-1" class="anchor" href="https://discuss.redash.io#declarative-api-using-swagger-openapi-1"></a>Declarative API using <code>swagger</code> (OpenAPI)</h2>
+<p>To develop a client that was stable and easier to expand than the rest of the open-source client projects we’ve found (including the <code>redash-toolbelt</code> <a href="https://github.com/getredash/redash-toolbelt/blob/master/redash_toolbelt/client.py" rel="noopener nofollow ugc">client</a>) we started to define Redash’s API using Swagger.</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/RecoLabs/redash-go-sdk/blob/main/swagger.yaml">
+  <header class="source">
+
+      <a href="https://github.com/RecoLabs/redash-go-sdk/blob/main/swagger.yaml" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/RecoLabs/redash-go-sdk/blob/main/swagger.yaml" target="_blank" rel="noopener nofollow ugc">RecoLabs/redash-go-sdk/blob/main/swagger.yaml</a></h4>
+
+
+    <pre><code class="lang-yaml">swagger: '2.0'
+basePath: /api
+info:
+  version: 10.1.0
+  title: Redash SDK
+  description: |
+    This is a simple SDK for programmatic management of Redash. For more information, see github.com/recolabs/redash-go-sdk. We created this client based on the python code of version 10.1.0 of redash - https://github.com/getredash/redash
+  contact:
+    name: recolabs.ai
+    email: rnd@recolabs.ai
+    url: https://www.recolabs.ai
+securityDefinitions:
+  key:
+    type: apiKey
+    in: header
+    name: user-api-key
+security:
+- key: []
+schemes:
+- https
+</code></pre>
+
+
+  This file has been truncated. <a href="https://github.com/RecoLabs/redash-go-sdk/blob/main/swagger.yaml" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>I think that moving this into the core project, completing it, and using something like <a href="https://github.com/swagger-api/swagger-codegen" rel="noopener nofollow ugc">swagger-codegen</a> to base the server off of would make the experience of working with Redash programmatically better.</p>
+<p>The file is open source and under the same license, so Redash maintainers can just grab it - we’d also love to collaborate on it and advise if needed.</p>
+<h2>
+<a name="perhaps-time-to-sunset-redash-toolbelt-2" class="anchor" href="https://discuss.redash.io#perhaps-time-to-sunset-redash-toolbelt-2"></a>Perhaps time to sunset <code>redash-toolbelt</code>?</h2>
+<p>The official client for Redash - <a href="https://github.com/getredash/redash-toolbelt" rel="noopener nofollow ugc"><code>redash-toolbelt</code></a> - has a bunch of useful utilities and should probably stay around, but as an official client, it’s missing too much functionality.</p>
+<h2>
+<a name="pagination-3" class="anchor" href="https://discuss.redash.io#pagination-3"></a>Pagination</h2>
+<p>We’ve had some peculiar issues with the Pagination API which weren’t super-reproducible, but it seems like it ignores the “page size” parameter from the API. Is anyone experiencing similar issues?</p>
+<h2>
+<a name="stress-testing-4" class="anchor" href="https://discuss.redash.io#stress-testing-4"></a>Stress testing</h2>
+<p>We’re running a self-hosted instance of Redash on K8s using a <code>helm</code> chart we developed based on the community one. Since Redash has a few DBs and services that make up its deployment, some stress problems don’t manifest in Redash but rather in Redis or Postgres. Specifically, when trying to add ~100 queries in a for loop, the server starts failing to add them, with Redis throwing errors and the server getting exceptions.</p>
+<p>For now, this is our workaround (with many internal parts omitted):</p>
+<pre><code class="lang-auto">func (dashboardBootstrapper *DashboardBootstrapper) setUpWorkspaceTilesInRedash(dataSource *redash_models.DataSource,
+	workspaceTilesMapPtr map[uuid.UUID][]*TileConfiguration) {
+	for workspace, tilesInWorkspace := range workspaceTilesMapPtr {
+		for i, tileConfig := range tilesInWorkspace {
+			// [OMITTED]...
+
+			// NOTE: Here be dragons. Our K8s Redash instance fails inserting many queries
+			// probably due to stress on its Redis. This is a temporary (?) fix for that.
+			// The default time is depressingly long, but this is in order to be on the
+			// safe side.
+			time.Sleep(defaultSleepBetweenQueryAdditions)
+
+			// [OMITTED]...
+			newQuery, err := queries.NewQuery(
+				queryName,
+				string(queryOpt),				
+				tile.Description,
+				query, 0, 
+				dataSourceID, 
+				tile.Schedule.Interval, 
+				queriesVersion, 
+				isDraft)
+
+			newQuery, err = dashboardBootstrapper.redashClient.Queries.Add(newQuery)
+</code></pre>
+<p>So this some some “ground research” performance testing results for Redash. We solved it - as you see - using a <code>time.Sleep</code> call, but I think perhaps the server can handle load or at least communicate load-based failures better so that the users can “back off” until everything’s operational again.</p>
+          <p><a href="https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895/1</link>
+        <pubDate>Fri, 21 Jan 2022 16:26:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9895-1</guid>
+        <source url="https://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895.rss">Our open-source Redash golang SDK is out! 🚀 Let&#39;s discuss what we can learn</source>
+      </item>
+  </channel>
+</rss>

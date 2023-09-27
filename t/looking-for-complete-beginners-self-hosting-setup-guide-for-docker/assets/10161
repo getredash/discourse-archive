@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Looking for complete beginner&#39;s self-hosting setup guide for docker - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Hello everyone, 
+For the last few years I have developed Power BI reports for customer data visualization, but now we have decided to move on to anoter platform. Redash seems like a very obvious candidate, but the learni&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Looking for complete beginner&#39;s self-hosting setup guide for docker&#39;" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161" />
+<meta property="og:title" content="Looking for complete beginner&#39;s self-hosting setup guide for docker" />
+<meta name="twitter:title" content="Looking for complete beginner&#39;s self-hosting setup guide for docker" />
+<meta property="og:description" content="Hello everyone,  For the last few years I have developed Power BI reports for customer data visualization, but now we have decided to move on to anoter platform. Redash seems like a very obvious candidate, but the learning curve is a tad steep.  For a first prototype dashboard I am attempting to self-host redash locally based on the redash/redash docker image, but I can’t seem to find any detailed setup guide.  Are there any step-by-step guides or tutorials out there that does not assume that th..." />
+<meta name="twitter:description" content="Hello everyone,  For the last few years I have developed Power BI reports for customer data visualization, but now we have decided to move on to anoter platform. Redash seems like a very obvious candidate, but the learning curve is a tad steep.  For a first prototype dashboard I am attempting to self-host redash locally based on the redash/redash docker image, but I can’t seem to find any detailed setup guide.  Are there any step-by-step guides or tutorials out there that does not assume that th..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2022-03-18T11:53:29+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Looking for complete beginner's self-hosting setup guide for docker","mainEntity":{"@type":"Question","name":"Looking for complete beginner's self-hosting setup guide for docker","text":"Hello everyone,\n\nFor the last few years I have developed Power BI reports for customer data visualization, but now we have decided to move on to anoter platform. Redash seems like a very obvious candidate, but the learning curve is a tad steep.\n\nFor a first prototype dashboard I am attempting to sel&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2022-03-18T11:53:29.233Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161">Looking for complete beginner&#39;s self-hosting setup guide for docker</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Looking for complete beginner&#39;s self-hosting setup guide for docker'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Michael'><span itemprop='name'>Michael</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-18T11:53:29Z' class='post-time'>
+                    March 18, 2022, 11:53am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-18T11:53:29Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hello everyone,</p>
+<p>For the last few years I have developed Power BI reports for customer data visualization, but now we have decided to move on to anoter platform. Redash seems like a very obvious candidate, but the learning curve is a tad steep.</p>
+<p>For a first prototype dashboard I am attempting to self-host redash locally based on the redash/redash docker image, but I can’t seem to find any detailed setup guide.</p>
+<p>Are there any step-by-step guides or tutorials out there that does not assume that the user has a lot of background knowledge on the topic?</p>
+<p>Cheers, Mike</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Michael'><span itemprop='name'>Michael</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-21T08:13:49Z' class='post-time'>
+                    March 21, 2022,  8:13am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-21T08:13:49Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Can anyone at least confirm that they have managed to self-host Redash in a Docker container? This three year old inconclusive <a href="http://discuss.redash.io/t/re-dash-installation-on-windows-10/3325">forum thread</a> implies that it may not even be possible.</p>
+<p>Cheers, Mike</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-21T16:58:12Z' class='post-time'>
+                    March 21, 2022,  4:58pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-21T16:58:12Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Welcome to the forum!</p>
+<p>You can certainly self-host Redash in a docker container. This is in fact the recommended configuration. The link you shared is from a user wishing to deploy on Windows, which is a different animal. Nobody on the core team uses Windows, and I’m not sure I’ve seen any successful reports of it. But in theory it should still be possible.</p>
+<p>For a simple deployment and for testing, I’d skip using the docker images and just run the docker developer setup which is very straightforward (but not intended to be productionised): <a href="https://redash.io/help/open-source/dev-guide/docker">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>The Redash docs have a lot of gaps, but the developer setup is solid. If you run into issues post them here, and hopefully we can incorporate any new learnings into a subsequent revision of the documentation.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Michael'><span itemprop='name'>Michael</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-22T08:26:56Z' class='post-time'>
+                    March 22, 2022,  8:26am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-22T08:26:56Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi jesse,</p>
+<p>Thanks for replying. I got Redash up and running in the meantime, but it was a bit of a hassle. Turns out there are a few reasonably good beginner’s introductions, they are just hard to find (see bottom of this post for links).</p>
+<p>Rather than using the prebuilt image on docker hub, I pulled the source from github, added .env and docker-compose.yml files, and ran it with “docker-compose up”.</p>
+<p>I did give the dev setup a try, but it ended horribly in a ton of errors due to image / library version incompatibilities. Might give it a second try later.</p>
+<p>Here are the ressources that helped me get Redash up and running first-time:</p>
+<aside class="quote quote-modified" data-post="8" data-topic="4952">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/max_streese/40/2524_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/docker-compose-yml/4952/8">Docker-compose.yml</a> <a class="badge-wrapper  bullet" href="/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Just in case anyone stumbles across this as I just did earlier today, I have created a fully self-contained docker-compose file (well with the addition of one env file) <a href="https://github.com/maxstreese/docker-compose-selection/tree/master/redash" rel="noopener nofollow ugc">here</a>. 
+Reason being that I found the existing resources a little lacking for just giving Redash a spin. In my believe one should not need to execute a shell script as is done <a href="https://github.com/getredash/setup" rel="noopener nofollow ugc">here</a>, nor should one need to perform some extra steps and also have the compose file build images from source as is done in the dev-guide. Ideally it should…
+  </blockquote>
+</aside>
+<aside class="onebox githubfolder" data-onebox-src="https://github.com/maxstreese/docker-compose-selection/tree/master/redash">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="32" height="32">
+
+      <a href="https://github.com/maxstreese/docker-compose-selection/tree/master/redash" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h3><a href="https://github.com/maxstreese/docker-compose-selection/tree/master/redash" target="_blank" rel="noopener nofollow ugc">docker-compose-selection/redash at master · maxstreese/docker-compose-selection</a></h3>
+
+  <p><a href="https://github.com/maxstreese/docker-compose-selection/tree/master/redash" target="_blank" rel="noopener nofollow ugc">master/redash</a></p>
+
+  <p><span class="label1">A selection of Docker Compose deployments intended for toying around (not production use!)</span></p>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+<aside class="quote quote-modified" data-post="5" data-topic="6715">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/n/ce73a5/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/ms-sql-server-data-source-new-connection-failure-on-self-hosted-redash/6715/5">MS SQL Server Data source New Connection - Failure on SELF HOSTED redash</a> <a class="badge-wrapper  bullet" href="/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Thank you very much for the information. Could you please help where i should put this details in the docker-compose.yml file and do i need to run any command in docker (command prompt). 
+Here is the content of yml file: 
+version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:latest
+  depends_on:
+    - postgres
+    - redis
+  env_file: redash.env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      R…
+  </blockquote>
+</aside>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://medium.com/@ikishan/creating-a-new-age-dashboard-with-self-hosted-open-source-redash-41e91434390">
+  <header class="source">
+
+      <a href="https://medium.com/@ikishan/creating-a-new-age-dashboard-with-self-hosted-open-source-redash-41e91434390" target="_blank" rel="noopener nofollow ugc" title="02:25PM - 05 August 2019">Medium – 5 Aug 19</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/422;"><img src="https://miro.medium.com/max/1110/1*WESLJUK5NnHsb74g-Jb6VA.png" class="thumbnail" width="690" height="422"></div>
+
+<h3><a href="https://medium.com/@ikishan/creating-a-new-age-dashboard-with-self-hosted-open-source-redash-41e91434390" target="_blank" rel="noopener nofollow ugc">Creating a new age Dashboard with self-hosted open-source Redash</a></h3>
+
+  <p>Looking for building a dashboard with historical analytics graphs without spending time on searching for a paid BI tool and time-series…</p>
+
+  <p>
+    <span class="label1">Reading time: 3 min read</span>
+  </p>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Cheers, Mike</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/looking-for-complete-beginners-self-hosting-setup-guide-for-docker/10161">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-23T00:57:09Z' class='post-time'>
+                    March 23, 2022, 12:57am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-23T00:57:09Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks Mike. Glad you have it up and running!</p>
+<aside class="quote no-group" data-username="Michael" data-post="4" data-topic="10161">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/4bbf92/40.png" class="avatar"> Michael:</div>
+<blockquote>
+<p>Rather than using the prebuilt image on docker hub, I pulled the source from github, added .env and docker-compose.yml files, and ran it with “docker-compose up”.</p>
+</blockquote>
+</aside>
+<p>This essentially is what the dev setup is. I wonder what issues you had with images, since the dev setup doesn’t use any…If you feel like it I’m interested to see what errors you encountered.</p>
+<p>Would love to see more of this information introduced into the community docs. Thanks for putting these links together!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

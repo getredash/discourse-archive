@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Mongodb queries results are delivered relatively very slow as compared to other mongodb clients like NoSQLBooster</title>
+    <link>https://discuss.redash.io/t/mongodb-queries-results-are-delivered-relatively-very-slow-as-compared-to-other-mongodb-clients-like-nosqlbooster/9998</link>
+    <description>### Issue Summary
+
+I am trying to fire the same query from redash and NoSQLBooster on the same mongodb instance. The query fired from redash is taking much more time, almost 3/4x more, to produce results and it&#39;s same across any type of query i had tried, and i have tried more than 10, 15 queries on different collections to validate this scenario.
+FYI, the user collection size 27k docs and branch collection about 25 docs, for which NoSQLBooster takes about 1 sec and redash about 4 sec for this particular query.
+
+```
+{
+    &quot;collection&quot;: &quot;user&quot;,
+    &quot;aggregate&quot;: [
+        {
+            &quot;$match&quot;: {
+                &quot;approvalStatus&quot;: 1,
+                &quot;grade.id::filter&quot;: {
+                    &quot;$nin&quot;: [
+                        &quot;list of mongodb Object IDs&quot;
+                    ]
+                },
+                &quot;isArchived&quot;: false
+            }
+        },
+        {
+            &quot;$lookup&quot;: {
+                &quot;from&quot;: &quot;Branch&quot;,
+                &quot;let&quot;: {
+                    &quot;pid&quot;: &quot;$branchId&quot;
+                },
+                &quot;pipeline&quot;: [
+                    {
+                        &quot;$match&quot;: {
+                            &quot;$expr&quot;: {
+                                &quot;$eq&quot;: [
+                                    &quot;$_id&quot;,
+                                    {
+                                        &quot;$toObjectId&quot;: &quot;$$pid&quot;
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        &quot;$project&quot;: {
+                            &quot;name&quot;: 1,
+                            &quot;_id&quot;: 0
+                        }
+                    }
+                ],
+                &quot;as&quot;: &quot;branch&quot;
+            }
+        },
+        {
+            &quot;$unwind&quot;: &quot;$branch&quot;
+        },
+        {
+            &quot;$replaceRoot&quot;: {
+                &quot;newRoot&quot;: {
+                    &quot;$mergeObjects&quot;: [
+                        {
+                            &quot;branch&quot;: &quot;$branch.name&quot;
+                        },
+                        &quot;$branch&quot;
+                    ]
+                }
+            }
+        },
+        {
+            &quot;$project&quot;: {
+                &quot;_id&quot;: 1,
+                &quot;branchName&quot;: &quot;$branch&quot;
+            }
+        },
+        {
+            &quot;$group&quot;: {
+                &quot;_id&quot;: &quot;$branchName&quot;,
+                &quot;count&quot;: {
+                    &quot;$sum&quot;: 1
+                }
+            }
+        }
+    ]
+}
+```
+
+If not any solution, any suggestions to help me debug the situation could be great.
+
+### Technical details:
+
+* Redash Version: 8.0.2+b37747 (a9d7ca43)
+* Browser/OS: Chrome - 98.0.4758.80 (Official Build) (64-bit) / Lubuntu 18.04.6 LTS
+* How did you install Redash: Via Helm chart available in Rancher</description>
+    
+    <lastBuildDate>Sat, 12 Feb 2022 03:28:07 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/mongodb-queries-results-are-delivered-relatively-very-slow-as-compared-to-other-mongodb-clients-like-nosqlbooster/9998.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Mongodb queries results are delivered relatively very slow as compared to other mongodb clients like NoSQLBooster</title>
+        <dc:creator><![CDATA[beingyash]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I am trying to fire the same query from redash and NoSQLBooster on the same mongodb instance. The query fired from redash is taking much more time, almost 3/4x more, to produce results and it’s same across any type of query i had tried, and i have tried more than 10, 15 queries on different collections to validate this scenario.<br>
+FYI, the user collection size 27k docs and branch collection about 25 docs, for which NoSQLBooster takes about 1 sec and redash about 4 sec for this particular query.</p>
+<pre><code class="lang-auto">{
+    "collection": "user",
+    "aggregate": [
+        {
+            "$match": {
+                "approvalStatus": 1,
+                "grade.id::filter": {
+                    "$nin": [
+                        "list of mongodb Object IDs"
+                    ]
+                },
+                "isArchived": false
+            }
+        },
+        {
+            "$lookup": {
+                "from": "Branch",
+                "let": {
+                    "pid": "$branchId"
+                },
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$eq": [
+                                    "$_id",
+                                    {
+                                        "$toObjectId": "$$pid"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "$project": {
+                            "name": 1,
+                            "_id": 0
+                        }
+                    }
+                ],
+                "as": "branch"
+            }
+        },
+        {
+            "$unwind": "$branch"
+        },
+        {
+            "$replaceRoot": {
+                "newRoot": {
+                    "$mergeObjects": [
+                        {
+                            "branch": "$branch.name"
+                        },
+                        "$branch"
+                    ]
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 1,
+                "branchName": "$branch"
+            }
+        },
+        {
+            "$group": {
+                "_id": "$branchName",
+                "count": {
+                    "$sum": 1
+                }
+            }
+        }
+    ]
+}
+</code></pre>
+<p>If not any solution, any suggestions to help me debug the situation could be great.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.2+b37747 (a9d7ca43)</li>
+<li>Browser/OS: Chrome - 98.0.4758.80 (Official Build) (64-bit) / Lubuntu 18.04.6 LTS</li>
+<li>How did you install Redash: Via Helm chart available in Rancher</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/mongodb-queries-results-are-delivered-relatively-very-slow-as-compared-to-other-mongodb-clients-like-nosqlbooster/9998/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mongodb-queries-results-are-delivered-relatively-very-slow-as-compared-to-other-mongodb-clients-like-nosqlbooster/9998/1</link>
+        <pubDate>Sat, 12 Feb 2022 03:28:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9998-1</guid>
+        <source url="https://discuss.redash.io/t/mongodb-queries-results-are-delivered-relatively-very-slow-as-compared-to-other-mongodb-clients-like-nosqlbooster/9998.rss">Mongodb queries results are delivered relatively very slow as compared to other mongodb clients like NoSQLBooster</source>
+      </item>
+  </channel>
+</rss>

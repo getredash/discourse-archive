@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash high response times</title>
+    <link>https://discuss.redash.io/t/redash-high-response-times/10144</link>
+    <description>### Issue Summary
+
+We do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. When CPU utilization is over 35%, response times start getting high. Top waits on performance insights is always related with CPU.
+
+### Technical details:
+
+* Redash Version: 10.0.0 (9c928bd1)
+* Browser/OS: Chrome
+* How did you install Redash: docker-compose deployment</description>
+    
+    <lastBuildDate>Thu, 17 Mar 2022 20:55:18 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-high-response-times/10144.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Most users use trial-and-error to determine their needs. There is no one-size-fits-all recipe for it.</p>
+<aside class="quote no-group" data-username="aduque" data-post="14" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>how many should we define?</p>
+</blockquote>
+</aside>
+<p>It depends on your needs. You can theoretically add as many worker threads as you want, up to the RAM and CPU limits of your hardware. Just be careful not to over-provision, if you do it can slow the worker service down to a crawl.</p>
+<p>This is because each worker thread uses a fixed amount of RAM. The exact amount of RAM varies depending on how many query runners you have <em>enabled</em> (even if you don’t have any of those data sources defined, the Python dependencies are still imported). So if one worker thread needs 200mb of RAM, then two will require 400mb, three require 600mb etc.</p>
+<p>You can tune it by gradually increasing the number of workers. If you have 8 threads today and your RAM utilisation is acceptable (under 80% for example), then you could move to 12 threads. Then check your queues to see if the overall number of jobs begins to decrease. If not, increase from 12 to 20. Check your RAM utilisation.</p>
+<p>If you hit the RAM limit and the queue is still the same size this suggests you may have a lot of long-running queries that are hogging the workers. Or that you simply need more ram on your server. There are various ways to change this behaviour, such as scheduling the long-running queries to run during non peak times all the way up to setting up a dedicated worker and a special queue for just those queries. You can also disable any query runners that aren’t needed in your installation (you can do this with an environment variable or by modifying the source code directly).</p>
+<p>And of course if you increase the worker count to the point that the queue shrinks to an acceptable level you don’t need any more workers.</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/15</link>
+        <pubDate>Thu, 17 Mar 2022 20:55:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-15</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <p>great, thank you!</p>
+<p>Could you please let us know what would be the best way to adjust this WORKERS_COUNT environment variable? how many should we define? is there any way we could define kind of a capacity planning on that regard?</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/14</link>
+        <pubDate>Thu, 17 Mar 2022 20:19:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-14</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The downtime lasts as long as it takes to restart a docker service (usually less than a minute) (you don’t need to restart every service, just the worker services).</p>
+<p>To avoid any downtime whatsoever you could define an additional worker service and spin it up before you <code>stop</code> and <code>restart</code> the existing ones. Just be mindful of the RAM and CPU capabilities of your server so that you don’t choke the whole system down.</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/13</link>
+        <pubDate>Thu, 17 Mar 2022 18:37:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-13</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <p>Jesse,</p>
+<p>Thank you very much for your answers. They have helped us out to identify the main issue. For now, we will proceed to increase the WORKERS_COUNT environment variable for the worker service. Just to doublecheck: after restarting the worker service for the change to take effect, we will have downtime over the Redash instance, right? do you have an idea about how much time it would take?</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/12</link>
+        <pubDate>Thu, 17 Mar 2022 17:21:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-12</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I wrote my previous post from my mobile late at night. Just a few follow-up items.</p>
+<aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>is harder to see whether it is in queue or executing.</p>
+</blockquote>
+</aside>
+<p>It’s harder, yes, but still it’s possible to see the status using your browser’s web inspector. Just look in your network requests tab for calls to <code>api/jobs/&lt;job_id&gt;</code>.  These API calls are the front-end application polling for the execution status at the server.</p>
+<p>If you see the <code>code</code> in one of these responses is <code>1</code>, that means the query is in queue and has not started executing yet. If you see code <code>2</code> then the query has begun executing but did not finish yet. There’s a full list of codes <a href="https://redash.io/help/user-guide/integrations-and-api/api#Jobs">here</a>.</p>
+<aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>we created a read replica just for Redash and also escalated EC2 instance on which Redash is running.</p>
+</blockquote>
+</aside>
+<p>If the problem is not enough workers then this change would not have an effect.</p>
+<aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>Additionally, could you please share documentation with best practices for monitoring the amount of available worker threads and how many concurrent queries do we have?</p>
+</blockquote>
+</aside>
+<p>Admins of your Redash instance can click their user avatar and then <code>System Status</code> to see an overview of all queues, workers, jobs, and their status.</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/11</link>
+        <pubDate>Thu, 17 Mar 2022 16:23:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-11</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="aduque" data-post="9" data-topic="10144">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/6bbea6/40.png" class="avatar"> aduque:</div>
+<blockquote>
+<p>How could we increase the amount of worker threads?</p>
+</blockquote>
+</aside>
+<p>You do this by increasing the WORKERS_COUNT environment variable for the worker service. Then restart the worker service for the change to take effect.</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/10</link>
+        <pubDate>Thu, 17 Mar 2022 04:15:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-10</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <p>since the issues we are dealing with are all related with Dashboards, we see the spinner, so as you mentioned, is harder to see whether it is in queue or executing. However, I just tested looking at 2 visualizations from one of our dashboards and after executing them I saw “Query in queue” message.</p>
+<p>On the other hand, as I mentioned before, we created a read replica just for Redash and also escalated EC2 instance on which Redash is running. Following what you mentioned, since the queries are in queue, it means we don’t have enough worker threads to handle that many concurrent queries. How could we  increase the amount of worker threads?</p>
+<p>Additionally, could you please share documentation with best practices for monitoring the amount of available worker threads and how many concurrent queries do we have?</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/9</link>
+        <pubDate>Wed, 16 Mar 2022 19:14:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-9</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m asking specific questions for a reason. It’s important to know what <strong>exactly</strong> is taking a long time. When response times are high, you can check it this way:</p>
+<ol>
+<li>Visit a query that’s taking a long time</li>
+<li>Click the refresh button</li>
+<li>Observe the message that appears beneath the query editor</li>
+</ol>
+<p>Does it say “Query in queue” for a long time? Or does it say “Executing” for a long time?</p>
+<p>This is harder to see on the dashboard screen because in that case (queueing vs executing) it just shows a spinner. But on the query screen you can see it more clearly.</p>
+<p>If the queries sit in queue for a long time that means you don’t have enough worker threads to handle that many concurrent queries.</p>
+<p>If the queries begin executing immediately then you have enough worker threads, but the queries may just take a long time to execute. Execution time depends on many factors, not all of which are part of Redash.</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/8</link>
+        <pubDate>Wed, 16 Mar 2022 16:41:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-8</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <p>when this happens, everyone’s queries take a long time to execute. It’s not dashboard-specific.</p>
+<p>Sometimes DiskQueueDepth on Read Replica is high, so it shows some queries are in queue. What’s weird here is that computational resources are not being consumed completely but response times are high though. We escalated computational resources from read replica and EC2 instance where Redash is running, and the behavior improved just a bit for a very short period, currently we have the users complaining about response times.</p>
+<p>We need to now which specific component or configuration we need to change because the approach we have been following is not showing good results. We escalated read replica and also EC2 instance was escalated. but the issue persists.</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/7</link>
+        <pubDate>Wed, 16 Mar 2022 16:33:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-7</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>When this happens, do everyone’s queries take a long time to execute? Or is it specific only to the queries in use on a given dashboard?</p>
+<p>Also, how do you know that the queries are taking a long time to execute vs a long time in queue if you are on the dashboard screen? Have you checked the network requests in your browser console?</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/6</link>
+        <pubDate>Wed, 16 Mar 2022 16:06:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-6</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <p>The queries are taking a long time to execute after they begin executing</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/5</link>
+        <pubDate>Wed, 16 Mar 2022 14:06:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-5</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Are the queries sitting in queue for extended periods? Or taking a long time to execute after they begin executing?</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/4</link>
+        <pubDate>Wed, 16 Mar 2022 03:31:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-4</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <p>hello Jesse,</p>
+<p>Yes, Redash dashboards are taking longer to bring the requested information. Let’s say an analyst wants to consult an information from a client and it takes 2 to 5 minutes to have results, so queries behind the visualization of the dashboard are taking longer to execute</p>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/3</link>
+        <pubDate>Tue, 15 Mar 2022 19:57:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-3</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What do you mean by increased response times?</p>
+<ul>
+<li>Are queries remaining in queue for extended periods?</li>
+<li>Do web requests load more slowly?</li>
+<li>Are queries taking longer to execute?</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/2</link>
+        <pubDate>Tue, 15 Mar 2022 19:29:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-2</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+      <item>
+        <title>Redash high response times</title>
+        <dc:creator><![CDATA[aduque]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>We do have a Redash self-hosted instance running on AWS EC2. We already increased computational resources and Redash is not consuming all the resources when our users start reporting high response times. When CPU utilization is over 35%, response times start getting high. Top waits on performance insights is always related with CPU.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0 (9c928bd1)</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: docker-compose deployment</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-high-response-times/10144/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-high-response-times/10144/1</link>
+        <pubDate>Tue, 15 Mar 2022 19:17:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10144-1</guid>
+        <source url="https://discuss.redash.io/t/redash-high-response-times/10144.rss">Redash high response times</source>
+      </item>
+  </channel>
+</rss>

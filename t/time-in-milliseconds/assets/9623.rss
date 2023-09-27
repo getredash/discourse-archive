@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Time in milliseconds</title>
+    <link>https://discuss.redash.io/t/time-in-milliseconds/9623</link>
+    <description>Hi,
+When we run a query in Redash, it brings the result in seconds, we need it in milliseconds, how can we do that?
+
+Thanks
+![Picture1|690x25](upload://ioeQ2N7bzOzdMhW5GugS0Lxp9qD.png)</description>
+    
+    <lastBuildDate>Fri, 17 Dec 2021 15:13:03 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/time-in-milliseconds/9623.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Time in milliseconds</title>
+        <dc:creator><![CDATA[lscapim]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for the request,<br>
+We are using Redash in docker, how can i do in this case?<br>
+I never did this modifications. If you could explaim how i do.</p>
+          <p><a href="https://discuss.redash.io/t/time-in-milliseconds/9623/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/time-in-milliseconds/9623/3</link>
+        <pubDate>Fri, 17 Dec 2021 15:13:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9623-3</guid>
+        <source url="https://discuss.redash.io/t/time-in-milliseconds/9623.rss">Time in milliseconds</source>
+      </item>
+      <item>
+        <title>Time in milliseconds</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There is no setting that controls this. You will need to modify the source code.</p>
+<h2>
+<a name="example-1" class="anchor" href="https://discuss.redash.io#example-1"></a>Example</h2>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae/client/app/pages/queries/components/QueryExecutionMetadata.jsx#L64">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae/client/app/pages/queries/components/QueryExecutionMetadata.jsx#L64" target="_blank" rel="noopener">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae/client/app/pages/queries/components/QueryExecutionMetadata.jsx#L64" target="_blank" rel="noopener">getredash/redash/blob/df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae/client/app/pages/queries/components/QueryExecutionMetadata.jsx#L64</a></h4>
+
+
+
+    <pre class="onebox"><code class="lang-jsx">
+      <ol class="start lines" start="54" style="counter-reset: li-counter 53 ;">
+          <li>        }&gt;</li>
+          <li>        &lt;WarningTwoTone twoToneColor="#FF9800" /&gt;</li>
+          <li>      &lt;/Tooltip&gt;</li>
+          <li>    &lt;/span&gt;</li>
+          <li>  )}</li>
+          <li>  &lt;strong&gt;{queryResultData.rows.length}&lt;/strong&gt; {pluralize("row", queryResultData.rows.length)}</li>
+          <li>&lt;/span&gt;</li>
+          <li>&lt;span className="m-l-5"&gt;</li>
+          <li>  {!isQueryExecuting &amp;&amp; (</li>
+          <li>    &lt;React.Fragment&gt;</li>
+          <li class="selected">      &lt;strong&gt;{durationHumanize(queryResultData.runtime)}&lt;/strong&gt;</li>
+          <li>      &lt;span className="hidden-xs"&gt; runtime&lt;/span&gt;</li>
+          <li>    &lt;/React.Fragment&gt;</li>
+          <li>  )}</li>
+          <li>  {isQueryExecuting &amp;&amp; &lt;span&gt;Running&amp;hellip;&lt;/span&gt;}</li>
+          <li>&lt;/span&gt;</li>
+          <li>{queryResultData.metadata.data_scanned &amp;&amp; (</li>
+          <li>  &lt;span className="m-l-5"&gt;</li>
+          <li>    Data Scanned</li>
+          <li>    &lt;strong&gt;{prettySize(queryResultData.metadata.data_scanned)}&lt;/strong&gt;</li>
+          <li>  &lt;/span&gt;</li>
+      </ol>
+    </code></pre>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Change this line like so:</p>
+<pre><code class="lang-javascript">              &lt;strong&gt;{queryResultData.runtime * 1000} milliseconds&lt;/strong&gt;
+</code></pre>
+<p>And the result will appear like this in the browser:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6c2bc3f346c8c72ca1651e15421aaabd9bf8c2fb.jpeg" data-download-href="/uploads/short-url/fqVkHaFbbMTZLGBqIIR9vgb3Czh.jpeg?dl=1" title="CleanShot 2021-12-06 at 10.01.39@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c2bc3f346c8c72ca1651e15421aaabd9bf8c2fb_2_690x480.jpeg" alt="CleanShot 2021-12-06 at 10.01.39@2x" data-base62-sha1="fqVkHaFbbMTZLGBqIIR9vgb3Czh" width="690" height="480" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c2bc3f346c8c72ca1651e15421aaabd9bf8c2fb_2_690x480.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c2bc3f346c8c72ca1651e15421aaabd9bf8c2fb_2_1035x720.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c2bc3f346c8c72ca1651e15421aaabd9bf8c2fb_2_1380x960.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6c2bc3f346c8c72ca1651e15421aaabd9bf8c2fb_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/time-in-milliseconds/9623/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/time-in-milliseconds/9623/2</link>
+        <pubDate>Mon, 06 Dec 2021 16:02:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9623-2</guid>
+        <source url="https://discuss.redash.io/t/time-in-milliseconds/9623.rss">Time in milliseconds</source>
+      </item>
+      <item>
+        <title>Time in milliseconds</title>
+        <dc:creator><![CDATA[lscapim]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,<br>
+When we run a query in Redash, it brings the result in seconds, we need it in milliseconds, how can we do that?</p>
+<p>Thanks<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/80e4939f7913956f3fd67ff5d0ad185650b6f0ff.png" data-download-href="/uploads/short-url/ioeQ2N7bzOzdMhW5GugS0Lxp9qD.png?dl=1" title="Picture1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/80e4939f7913956f3fd67ff5d0ad185650b6f0ff_2_690x25.png" alt="Picture1" data-base62-sha1="ioeQ2N7bzOzdMhW5GugS0Lxp9qD" width="690" height="25" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/80e4939f7913956f3fd67ff5d0ad185650b6f0ff_2_690x25.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/80e4939f7913956f3fd67ff5d0ad185650b6f0ff_2_1035x37.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/80e4939f7913956f3fd67ff5d0ad185650b6f0ff_2_1380x50.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/80e4939f7913956f3fd67ff5d0ad185650b6f0ff_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/time-in-milliseconds/9623/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/time-in-milliseconds/9623/1</link>
+        <pubDate>Fri, 03 Dec 2021 15:26:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9623-1</guid>
+        <source url="https://discuss.redash.io/t/time-in-milliseconds/9623.rss">Time in milliseconds</source>
+      </item>
+  </channel>
+</rss>

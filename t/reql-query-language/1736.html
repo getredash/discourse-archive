@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>ReQL query language</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/reql-query-language/1736">ReQL query language</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Feature Requests</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="ReQL query language" itemprop="headline"/>
+<meta content="Feature Requests" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/drslump.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/drslump_avatar.png" tabindex="-1" width="48"/><span itemprop="name">drslump</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-01T00:48:58Z" itemprop="datePublished">
+                    April 1, 2018, 12:48am
+                  </time>
+<meta content="2018-04-01T01:15:44Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I’ve been playing with the idea of having a custom SQL syntax for creating composed queries based on the results of other queries. I’m calling it ReSQL.</p>
+<p>The syntax is based on sqlite’s SQL flavour but adds some distinctive productions so it’s obvious at a glance what is standard SQL and what’s not. I imagine most power-users of Re:Dash are familiar with SQL already.</p>
+<pre><code>provider "[" params "]" ( "::" mapper )* 
+</code></pre>
+<h3>Examples</h3>
+<pre><code class="lang-auto">-- Fetch the number of rows reported by another query
+SELECT COUNT(*) FROM query[3]
+    
+-- Filter a parametrized query resultset
+SELECT * FROM query[id:3 p_country:'CAT']
+
+-- Join two queries and aggregate
+SELECT countries.name, COUNT(*)
+FROM query[3] AS top_users
+JOIN query[4] AS countries ON top_users.country = countries.id
+GROUP BY countries.name
+</code></pre>
+<p>Additionally the syntax allows to perform adhoc queries using the configured datasources:</p>
+<pre><code class="lang-sql">-- Fetch a remote CSV and apply a mapping function to parse it
+SELECT * FROM http['https://foobar.com/report.csv']::csv
+
+-- Custom HTTP requests with a JSONPath mapping
+WITH authors AS http[ 
+   url: 'http://foobar.com/report'
+   AUTHORIZATION: 'token ${variable}'   -- variable interpolation
+   body: [=                             -- initiate heredoc
+     {
+       "store": "Amazon",
+       "report": "books" 
+     }
+   =]
+]::json[' $library.book[*].author ']
+SELECT *
+FROM authors
+WHERE language = 'en'
+
+-- Use a configured data source for an adhoc query
+WITH users AS datasource['Staging MySQL', [=
+  SELECT * FROM mysql_table  -- would run on MySQL
+=]
+SELECT COUNT(*) FROM users
+
+--  Free text search modifier
+SELECT title, year
+FROM http['https://foobar.com/movies.csv']::csv::fts[tokenizer: 'porter']
+WHERE title MATCH 'lotr OR lord rings'
+</code></pre>
+<blockquote>
+<p>I tried to keep the examples short so they don’t properly show the whole potential that the design can achieve via composition.</p>
+</blockquote>
+<hr/>
+<h3>How would it work?</h3>
+<p>A new data source (query runner) for <em>ReQL</em> would be available, so it builds on the existing infrastructure. When the server receives the query execution from the browser:</p>
+<ul>
+<li>Parses the query to verify the syntax</li>
+<li>Resolves the <em>reql expression</em> (<code>query[...]</code>) and checks they exist and the user is allowed to use them</li>
+<li>Triggers the execution of each reql expression</li>
+<li>Creates a temporary sqlite3 database</li>
+<li>Inserts the results into separate tables in the temporary DB</li>
+<li>Adapts the query converting the <em>reql expressions</em> into references to the created tables</li>
+<li>Executes the query against the sqlite database</li>
+<li>Reports back the result of the sqlite query</li>
+</ul>
+<p>I considered also using the sqlite3 native <em>virtual tables</em> feature but it feels like a pain to troubleshoot and the sqlite3 parser is really lacking regarding syntax errors so I wanted to have a more user friendly parser on top.</p>
+<p>Using the main <em>postgresql</em> database for it was also discarded because it would be a pain to isolate properly. With <em>sqlite3</em> there is total isolation and also allows to define memory usage limits easily.</p>
+<p>Another benefit of using sqlite3 with a custom parser is that we could offload some of the work to the browser (if it still supports WebSQL) while the user is editing the query.</p>
+<p>Note that using sqlite3 is an implementation detail, it allows us to skip a large chunk of the implementation effort by using it for executing the final query. However I can imagine that in the future ReQL could be extended and have a fully native execution engine that avoids the constant marshalling of the data.</p>
+<h3>Caveats</h3>
+<ul>
+<li>First of all it’s not a simple project to implement although it seems certainly feasible.</li>
+<li>Users could easily end up abusing the system by relying on ReSQL for everything instead of properly preparing the data elsewhere.</li>
+<li>Schema browser support would be flaky</li>
+</ul>
+<h3>Closing words</h3>
+<p>Overall I think if offers a lot of potential, having a simple declarative way to massage the data would allow less tech inclined users to benefit from the system. If fits a nice middle ground between parametrized queries and a Python/docker data source.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-01T04:47:56Z" itemprop="datePublished">
+                    April 1, 2018,  4:47am
+                  </time>
+<meta content="2018-04-01T04:47:56Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>There are some really interesting ideas to discuss here, but the basic idea (querying query results) is actually already implemented <img alt=":smiley:" class="emoji" src="assets/smiley.png" title=":smiley:"/></p>
+<p>Documentation: <a href="https://redash.io/help/user-guide/querying/query-results-data-source">https://redash.io/help/user-guide/querying/query-results-data-source</a><br/>
+Source code: <a class="inline-onebox" href="https://github.com/getredash/redash/blob/master/redash/query_runner/query_results.py">redash/query_results.py at master · getredash/redash · GitHub</a></p>
+<p>It doesn’t support parameters. We have a discussion about it here:</p><aside class="quote quote-modified" data-post="1" data-topic="1709">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="assets/2_2.png" width="20"/>
+<a href="http://discuss.redash.io/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709">Thoughts on adding support for queries with parameters in query results data source</a> <a class="badge-wrapper bullet" href="/c/development/7"><span class="badge-category-bg" style="background-color: #8C6238;"></span><span class="badge-category clear-badge" data-drop-close="true" style="">Development</span></a>
+</div>
+<blockquote>
+    Following <a class="mention" href="/u/ariarijp">@ariarijp</a> pull request on changing the way we find query IDs in Query Results queries to later support queries with parameters, I wanted to start a discussion on how this might work and to share some thoughts I had: 
+There are two use cases for querying from queries with parameters: 
+1. 
+The simple use case: you just want to use a query with parameters and you “know” what the values are: 
+
+We can detect that the query you’re querying from needs parameters and show the needed parameter …
+  </blockquote>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/drslump.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/drslump_avatar.png" tabindex="-1" width="48"/><span itemprop="name">drslump</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-01T10:37:46Z" itemprop="datePublished">
+                    April 1, 2018, 10:37am
+                  </time>
+<meta content="2018-04-01T10:37:46Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Ooops! I totally missed that query runner, it indeed covers the basic use case.</p>
+<p>I think a good approach would be first to put a SQL parser infrastructure on top of that query runner (to avoid the regexp issues), later on the parser can be used to build more functionality incrementally (adhoc queries).</p>
+<p>I’m a sucker for parsers so I’ll put something together later on <img alt=":yum:" class="emoji" src="assets/yum.png" title=":yum:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-02T09:13:00Z" itemprop="datePublished">
+                    April 2, 2018,  9:13am
+                  </time>
+<meta content="2018-04-02T09:13:00Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Check the discussion with <a class="mention" href="/u/ariarijp">@ariarijp</a> and the link to his implementation – he uses the <a href="https://github.com/andialbrecht/sqlparse"><code>sqlparse</code></a> to extract the table names and to provide an infrastructure for future extensions.</p>
+<p>As a rule of thumb, I prefer to keep the implementation simple, to make it maintainable. The biggest value of this feature comes from being able to build upon other queries (to further manipulate them or join multiple sources). Having to write the queries you query from as separate queries is not a big trade off, IMO. It also has the benefit of allowing reuse of these queries.</p>
+<p>I would invest in tools like autocomplete for query IDs (using query names) and ability to see the “schema” of the queries you query from.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/drslump.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/drslump_avatar.png" tabindex="-1" width="48"/><span itemprop="name">drslump</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-02T12:02:32Z" itemprop="datePublished">
+                    April 2, 2018, 12:02pm
+                  </time>
+<meta content="2018-04-02T12:02:32Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I see your point about keeping things simple and it works well for data sources that expect a blob of text to run (i.e. a SQL query). However it doesn’t scale so well with other data sources that don’t offer a query language natively (i.e. URL).</p>
+<p>By introducing an unified syntax (ReSQL) I think we can provide a bit of structure for interacting with a data source and helps with the user experience since the acquired knowledge can be used upon multiple data sources.</p>
+<p>So the use cases would be:</p>
+<ul>
+<li>Aggregate and filter data from multiple sources (currently solved by the query_result runner)</li>
+<li>Structured parametrization of data sources (avoids current escaping issues with templating)</li>
+<li>Format conversions for data (i.e. fetched url) or to expose nested documents (json inside DB)</li>
+<li>Library of value transformations shared across datasources (i.e. <code>::date(input: epoch)</code>)</li>
+<li>Snippets can be shared across different data sources</li>
+</ul>
+<p>Using the Url data source as an example, it could simply expose a <code>reql</code> method like the following:</p>
+<pre><code class="lang-auto">def reql(self, url, method='get', body=None, **kwargs):
+    headers = [(k, v) for (k,v) in kwargs.items() if k.isupper()]
+    ...
+</code></pre>
+<p>Then when we find a reference to that data source on ReQL like <code>...FROM http['https://foo.bar', CONTENT_TYPE:'json']</code> we simply call the <code>.reql</code> method with those arguments.</p>
+<p>By the way, I’ve implemented the parser already, long time I didn’t enjoy a task so much <img alt=":smile:" class="emoji" src="assets/smile.png" title=":smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-02T12:40:29Z" itemprop="datePublished">
+                    April 2, 2018, 12:40pm
+                  </time>
+<meta content="2018-04-02T12:40:29Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I agree that it’s useful for data sources without their own query language, but still we can first load the source and then apply the SQL on it in a separate query.</p>
+<p>When loading simple end points, like a CSV one, then having a query like below is great :</p>
+<pre><code class="lang-auto">SELECT count(0)
+FROM csv('https://.../data.csv')
+</code></pre>
+<p>But if you have a more complex endpoint, that you need to apply JSON extraction from, use some custom headers and more, then I’m not sure how better it is.</p>
+<p>But considering you already have an implementation, I’m happy to explore this to see how complex it might get.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/drslump.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/drslump_avatar.png" tabindex="-1" width="48"/><span itemprop="name">drslump</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-02T17:08:18Z" itemprop="datePublished">
+                    April 2, 2018,  5:08pm
+                  </time>
+<meta content="2018-04-02T17:08:18Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Just pushed a PR against my fork with the work on the parser. It passes a whole lot of test cases from sqlite and postgresql and also introduces the ReQL syntax options.</p>
+<p>Next will be to integrate it into the query_results data source.</p>
+<aside class="onebox githubpullrequest">
+<header class="source">
+<a href="https://github.com/drslump/redash/pull/1" rel="nofollow noopener" target="_blank">github.com/drslump/redash</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Pull Request">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 12 16" width="60"><path d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/drslump/redash/pull/1" rel="nofollow noopener" target="_blank">[WiP] [ForReview] SQL parser with custom syntax</a>
+</h4>
+<div class="branches">
+<code>drslump:master</code> ← <code>drslump:sql-parser</code>
+</div>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2018-04-02" data-format="ll" data-time="17:04:47" data-timezone="UTC">05:04PM - 02 Apr 18 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/drslump" rel="nofollow noopener" target="_blank">
+<img alt="drslump" class="onebox-avatar-inline" height="20" src="assets/110784" width="20"/>
+          drslump
+        </a>
+</div>
+<div class="lines" title="4 commits changed 15 files with 6021 additions and 64 deletions">
+<a href="https://github.com/drslump/redash/pull/1/files" rel="nofollow noopener" target="_blank">
+<span class="added">+6021</span>
+<span class="removed">-64</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/drslump.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/drslump_avatar.png" tabindex="-1" width="48"/><span itemprop="name">drslump</span></a>
+</span>
+<link href="https://discuss.redash.io/t/reql-query-language/1736" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-04-05T00:33:25Z" itemprop="datePublished">
+                    April 5, 2018, 12:33am
+                  </time>
+<meta content="2018-04-05T00:33:25Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Updated the PR with the refactor of query_results to use the new parser. It still uses the same syntax <code>query_N</code> but now by default it retrieve the most recent result if available. A refresh can be forced with <code>query_N_refresh</code>.</p>
+<p>Additionally it allows to define a memory limit for the temporary sqlite database.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

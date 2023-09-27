@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash with JSON data sent by an Erddap server</title>
+    <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691</link>
+    <description>hello  I am new to redash and I dont succeed to manage a Json flow sent by an erddap data server
+
+for instance this json URL 
+
+url: https://erddap.osupytheas.fr/erddap/tabledap/meteo_toulon_2ce5.json?time,Temperature&amp;time%3E=2022-06-25T00%3A00%3A00Z&amp;time%3C2022-06-27T00%3A00%3A00Z&amp;.draw=linesAndMarkers&amp;.marker=3%7C5&amp;.color=0x000000&amp;.colorBar=%7C%7C%7C%7C%7C&amp;.bgColor=0xffccccff
+
+returns this json flow
+```json
+{
+  &quot;table&quot;: {
+    &quot;columnNames&quot;: [&quot;time&quot;, &quot;Temperature&quot;],
+    &quot;columnTypes&quot;: [&quot;String&quot;, &quot;float&quot;],
+    &quot;columnUnits&quot;: [&quot;UTC&quot;, null],
+    &quot;rows&quot;: [
+      [&quot;2022-06-25T00:00:00Z&quot;, 21.8],
+      [&quot;2022-06-25T00:06:00Z&quot;, 21.5],
+      [&quot;2022-06-25T00:12:00Z&quot;, 21.2],
+      [&quot;2022-06-25T00:18:00Z&quot;, 21],
+      [&quot;2022-06-25T00:24:00Z&quot;, 20.8],
+      [&quot;2022-06-25T00:30:00Z&quot;, 20.6],
+```
+
+and I dont succeed to graph Temperature over DateTime
+I get &quot;rows&quot; as a list of list
+
+is this Json flow compliant with redash requirement,?
+and how can I do to get Datetime as X columns and Temperature as Y
+
+thanks for your help
+
+Maurice</description>
+    
+    <lastBuildDate>Fri, 08 Jul 2022 06:58:29 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[libes]]></dc:creator>
+        <description><![CDATA[
+            <p>many thanks I have updated in redash 10… it works<br>
+thanks for you help on this thread</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/10</link>
+        <pubDate>Fri, 08 Jul 2022 06:58:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-10</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>For experimentation, I’d recommend following our devloop instructions here: <a href="https://redash.io/help/open-source/dev-guide/docker">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>You could also just follow the instructions to upgrade your V8 instance to V10: <a href="https://www.youtube.com/watch?v=PoOAra588dA" class="inline-onebox">Upgrade from V8 to V10 Walkthrough - YouTube</a>. Upgrading your V8 instance only takes a few minutes, especially if you used the setup script.</p>
+<p>Note that the setup script has not been updated for V10 (yet). So the Docker instructions, or the upgrade path are the only way to install V10 without manually modifying the setup script.</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/9</link>
+        <pubDate>Wed, 06 Jul 2022 18:55:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-9</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[libes]]></dc:creator>
+        <description><![CDATA[
+            <p>I dont know why the this_row.update({colname: value}) doesn’t work in redash?<br>
+since I tested the same successfully  in a python2 and python3 console</p>
+<p>Error running query: <strong>&lt;type ‘exceptions.AttributeError’&gt; ‘NoneType’ object has no attribute ‘update’</strong></p>
+<p>So I replaced the .update function, by something equivalent  this_row[colname]=value<br>
+and it seems to work…</p>
+<p>I get now my 2 columns “time” and “Temperature” and I can graph temperature over time from an erddap json flow</p>
+<p>for row in data[“table”][“rows”]:<br>
+this_row = {}<br>
+for colname, value in zip(data[“table”][“columnNames”], row):<br>
+<span class="hashtag">#this_row</span> = this_row.update({colname: value})<br>
+this_row[colname]=value<br>
+result[“rows”].append(this_row)</p>
+<p>In conclusion, if you can tell me how and where to get the redash v10 version? because I think I use the v8 from <a href="https://github.com/getredash/setup" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getredash/setup: Setup scripts for Redash Cloud Images</a><br>
+other question, how can I know the python version which run into the docker redash contianer?</p>
+<p>thanks for all<br>
+I begin to better understand</p>
+<p>Maurice</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/8</link>
+        <pubDate>Wed, 06 Jul 2022 17:52:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-8</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[libes]]></dc:creator>
+        <description><![CDATA[
+            <p>hello<br>
+I got the setup.sh script from here <a href="https://github.com/getredash/setup" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getredash/setup: Setup scripts for Redash Cloud Images</a></p>
+<p>so indeed , it seems that from the system status, the version is a v8 ?</p>
+<ul>
+<li>Version 8.0.0+b32245</li>
+</ul>
+<p>I dont know which version of python is ran in the container ?</p>
+<p>anyway I change the python code from the last you gave me, and now I have this error</p>
+<p>Error running query: <strong>&lt;type ‘exceptions.AttributeError’&gt; ‘NoneType’ object has no attribute ‘update’</strong><br>
+from the line</p>
+<pre><code class="lang-auto"> this_row = this_row.update({colname: value})
+</code></pre>
+<p>so maybe I can try to reinstall a last version of redash , if you tell me where to get the last version to get the version 10 ?</p>
+<p>thanks</p>
+<p>Maurice</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/7</link>
+        <pubDate>Wed, 06 Jul 2022 15:50:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-7</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What version of Redash do you use? My example assumes you are on Redash V10, which uses Python 3. The syntax error could be because you are on an older version of Redash that uses Python 2.</p>
+<p>If that’s the case you can change the code to:</p>
+<pre><code class="lang-python"># python2 version
+import requests
+
+url = "https://erddap.osupytheas.fr/erddap/tabledap/meteo_toulon_2ce5.json?time,Temperature&amp;time&gt;=2022-06-25T00%3A00%3A00Z&amp;time&lt;2022-06-27T00%3A00%3A00Z&amp;.draw=linesAndMarkers&amp;.marker=3|5&amp;.color=0x000000&amp;.colorBar=|||||&amp;.bgColor=0xffccccff"
+
+data = requests.get(url).json()
+
+result["columns"] = [{"name": name, "type":"string"} for name in data["table"]["columnNames"]]
+
+for row in data["table"]["rows"]:
+    this_row = {}
+    for colname, value in zip(data["table"]["columnNames"], row):
+        this_row = this_row.update({colname: value})
+    result["rows"].append(this_row)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/6</link>
+        <pubDate>Wed, 06 Jul 2022 11:48:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-6</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[libes]]></dc:creator>
+        <description><![CDATA[
+            <p>I have found what seems to be the solution of the error above… It is that we have to include also<br>
+REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.python<br>
+in the /opt/redash/env file</p>
+<p>So now, the python script can run, but with a new syntax error</p>
+<blockquote>
+<p>Error running query: <strong>&lt;type ‘exceptions.SyntaxError’&gt; invalid syntax (, line 12)</strong></p>
+</blockquote>
+<p>line12 is:         this_row = {**this_row, **{colname: value}}</p>
+<p>do you know where the error comes from? since I have textually copied the code you gave me</p>
+<p>In a first step I would want to make your code work, before understanding how it works<br>
+thanks for your help</p>
+<p>Maurice</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/5</link>
+        <pubDate>Wed, 06 Jul 2022 11:32:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-5</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[libes]]></dc:creator>
+        <description><![CDATA[
+            <p>thanks for your answer and solution</p>
+<p>I have enabled :</p>
+<pre><code class="lang-auto">REDASH_ADDITIONAL_QUERY_RUNNERS: "redash.query_runner.python"
+</code></pre>
+<p>in the docker-compose.yml file, &amp;&amp;  restarted the docker container (docker-compose stop &amp;&amp;  docker-compose up -d)</p>
+<ul>
+<li>created a new python-json query with the python code you gave me</li>
+</ul>
+<p>but when I run the code I get this error</p>
+<blockquote>
+<p>Error running query: <strong>‘NoneType’ object has no attribute ‘annotate_query’</strong></p>
+</blockquote>
+<p>what have I omitted?</p>
+<p>thanks for your help</p>
+<p>Maurice</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/4</link>
+        <pubDate>Wed, 06 Jul 2022 11:06:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-4</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum! That API endpoint doesn’t return data in <a href="https://redash.io/help/data-sources/querying/json-api#Required-Data-Structure">the format Redash understands</a>.</p>
+<p>One option you can use is the <a href="https://redash.io/help/data-sources/querying/python">Python query runner</a>, which will let you reformat this data as needed. Or, if you find yourself working with data from this source very often, you could write a custom query runner to do it.</p>
+<p>Here’s the python query I used to make it work:</p>
+<pre><code class="lang-python">import requests
+
+url = "https://erddap.osupytheas.fr/erddap/tabledap/meteo_toulon_2ce5.json?time,Temperature&amp;time&gt;=2022-06-25T00%3A00%3A00Z&amp;time&lt;2022-06-27T00%3A00%3A00Z&amp;.draw=linesAndMarkers&amp;.marker=3|5&amp;.color=0x000000&amp;.colorBar=|||||&amp;.bgColor=0xffccccff"
+
+data = requests.get(url).json()
+
+result["columns"] = [{"name": name, "type":"string"} for name in data["table"]["columnNames"]]
+
+for row in data["table"]["rows"]:
+    this_row = {}
+    for colname, value in zip(data["table"]["columnNames"], row):
+        this_row = {**this_row, **{colname: value}}
+    result["rows"].append(this_row)
+</code></pre>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/d11bbf2311cd471b3dde90779abc91fc93475691.jpeg" data-download-href="/uploads/short-url/tPReLEdkTc0DpbiJnclNDgB8AvL.jpeg?dl=1" title="CleanShot 2022-07-02 at 16.06.21@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d11bbf2311cd471b3dde90779abc91fc93475691_2_618x500.jpeg" alt="CleanShot 2022-07-02 at 16.06.21@2x" data-base62-sha1="tPReLEdkTc0DpbiJnclNDgB8AvL" width="618" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d11bbf2311cd471b3dde90779abc91fc93475691_2_618x500.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d11bbf2311cd471b3dde90779abc91fc93475691_2_927x750.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d11bbf2311cd471b3dde90779abc91fc93475691_2_1236x1000.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d11bbf2311cd471b3dde90779abc91fc93475691_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/2</link>
+        <pubDate>Sat, 02 Jul 2022 21:06:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-2</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+      <item>
+        <title>Redash with JSON data sent by an Erddap server</title>
+        <dc:creator><![CDATA[libes]]></dc:creator>
+        <description><![CDATA[
+            <p>hello  I am new to redash and I dont succeed to manage a Json flow sent by an erddap data server</p>
+<p>for instance this json URL</p>
+<p>url: <a href="https://erddap.osupytheas.fr/erddap/tabledap/meteo_toulon_2ce5.json?time,Temperature&amp;time%3E=2022-06-25T00%3A00%3A00Z&amp;time%3C2022-06-27T00%3A00%3A00Z&amp;.draw=linesAndMarkers&amp;.marker=3%7C5&amp;.color=0x000000&amp;.colorBar=%7C%7C%7C%7C%7C&amp;.bgColor=0xffccccff" rel="noopener nofollow ugc">https://erddap.osupytheas.fr/erddap/tabledap/meteo_toulon_2ce5.json?time,Temperature&amp;time&gt;=2022-06-25T00%3A00%3A00Z&amp;time&lt;2022-06-27T00%3A00%3A00Z&amp;.draw=linesAndMarkers&amp;.marker=3|5&amp;.color=0x000000&amp;.colorBar=|||||&amp;.bgColor=0xffccccff</a></p>
+<p>returns this json flow</p>
+<pre><code class="lang-json">{
+  "table": {
+    "columnNames": ["time", "Temperature"],
+    "columnTypes": ["String", "float"],
+    "columnUnits": ["UTC", null],
+    "rows": [
+      ["2022-06-25T00:00:00Z", 21.8],
+      ["2022-06-25T00:06:00Z", 21.5],
+      ["2022-06-25T00:12:00Z", 21.2],
+      ["2022-06-25T00:18:00Z", 21],
+      ["2022-06-25T00:24:00Z", 20.8],
+      ["2022-06-25T00:30:00Z", 20.6],
+</code></pre>
+<p>and I dont succeed to graph Temperature over DateTime<br>
+I get “rows” as a list of list</p>
+<p>is this Json flow compliant with redash requirement,?<br>
+and how can I do to get Datetime as X columns and Temperature as Y</p>
+<p>thanks for your help</p>
+<p>Maurice</p>
+          <p><a href="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691/1</link>
+        <pubDate>Wed, 29 Jun 2022 14:16:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10691-1</guid>
+        <source url="https://discuss.redash.io/t/redash-with-json-data-sent-by-an-erddap-server/10691.rss">Redash with JSON data sent by an Erddap server</source>
+      </item>
+  </channel>
+</rss>

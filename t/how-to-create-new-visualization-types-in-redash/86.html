@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>How to create new visualization types in Redash?</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/how-to-create-new-visualization-types-in-redash/86">How to create new visualization types in Redash?</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/7.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Development</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="How to create new visualization types in Redash?" itemprop="headline"/>
+<meta content="Development" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/dncpax.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/dncpax_avatar.png" tabindex="-1" width="48"/><span itemprop="name">dncpax</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-06-21T14:49:16Z" itemprop="datePublished">
+                    June 21, 2016,  2:49pm
+                  </time>
+<meta content="2017-01-15T10:55:47Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>How can anyone contribute a new visualization type?</p>
+<p>If this could be somewhat streamlined there could be potentially a good repository of additional visualization options.</p>
+<p>In my case I need to have a more flexible mapping viewer, that supports my own polygons to color according to queries results. We could use esri, wms, mapbox, google, etc… Each has its own set of config parameters, and js api.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/instructions-on-how-to-make-new-visualization-types-for-redash/5779" itemprop="url">Instructions on how to make new visualization types for Redash</a>
+<meta content="1" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/how-to-add-new-visualisation-type/4143/2" itemprop="url">How to add new visualisation type?</a>
+<meta content="2" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/how-to-create-visualization-from-java-or-angular/8575/4" itemprop="url">How to create visualization from java or angular?</a>
+<meta content="3" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/visualizing-json-records-from-redshift/9708" itemprop="url">Visualizing JSON records from Redshift</a>
+<meta content="4" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-25T08:21:43Z" itemprop="datePublished">
+                    July 25, 2016,  8:21am
+                  </time>
+<meta content="2016-07-25T08:21:43Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>The end goal is to have a plugin based visualizaiton system, so you can add visualizations without changing your Redash deployment.</p>
+<p>Until then, you can add new visualization by extending the current code base. Redash uses Angular to build the UI, so to create a new visualization you need to create two directives (components): <code>render directive</code> that “draws” the visualization and <code>editor directive</code> that takes user configuration for this visualization. Then you register them with the visualization system and Redash takes the rest.</p>
+<p>A “blueprint” for a visualization would be:</p>
+<pre><code class="lang-javascript">(function() {
+  'use strict';
+
+  var module = angular.module('redash.visualization');
+
+  module.directive('exampleRenderer', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/views/visualizations/example.html',
+      link: function($scope, elm, attrs) {
+        var refreshData = function() {
+          var queryData = $scope.queryResult.getData();
+          if (queryData) {
+            // do the render logic.
+          }
+        };
+
+        $scope.$watch("visualization.options", refreshData, true);
+        $scope.$watch("queryResult &amp;&amp; queryResult.getData()", refreshData);
+      }
+    }
+  });
+
+  module.directive('exampleEditor', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/views/visualizations/example_editor.html'
+    }
+  });
+
+  module.config(['VisualizationProvider', function(VisualizationProvider) {
+      var renderTemplate =
+        '&lt;example-renderer options="visualization.options" query-result="queryResult"&gt;&lt;/example-renderer&gt;';
+
+      var editTemplate = '&lt;example-editor&gt;&lt;/example-editor&gt;';
+      var defaultOptions = {
+        //
+      };
+
+      VisualizationProvider.registerVisualization({
+        type: 'EXAMPLE',
+        name: 'Example',
+        renderTemplate: renderTemplate,
+        editorTemplate: editTemplate,
+        defaultOptions: defaultOptions
+      });
+    }
+  ]);
+})();
+</code></pre>
+<p>I’m going to create a new visualization soon, and will post the pull request link here for reference. Also will be happy to answer questions if anything isn’t clear, so we can later use this in the documentation for other who would like to create new visualizations.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/is-there-any-possibility-of-using-react-google-charts-in-redash-in-order-to-have-other-visualizations/4634/2" itemprop="url">Is there any possibility of using React Google Charts in Redash in order to have other visualizations?</a>
+<meta content="1" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/custom-js-chart/6411/2" itemprop="url">Custom JS chart</a>
+<meta content="2" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-26T15:17:25Z" itemprop="datePublished">
+                    July 26, 2016,  3:17pm
+                  </time>
+<meta content="2016-07-26T15:17:25Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Here’s the pull request for the new visualization: <a href="https://github.com/getredash/redash/pull/1213">https://github.com/getredash/redash/pull/1213</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/dncpax.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/dncpax_avatar.png" tabindex="-1" width="48"/><span itemprop="name">dncpax</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-26T16:27:24Z" itemprop="datePublished">
+                    July 26, 2016,  4:27pm
+                  </time>
+<meta content="2016-07-26T16:27:24Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>very impressive - clean and simple. when i get something done i’ll try to make it “presentable”…</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/DawerRafi.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/DawerRafi_avatar.png" tabindex="-1" width="48"/><span itemprop="name">DawerRafi</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-11-16T16:38:24Z" itemprop="datePublished">
+                    November 16, 2019,  4:38pm
+                  </time>
+<meta content="2019-11-16T16:38:24Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,</p>
+<p>Can we also have an updated guidelines to create new visualization types in React?</p>
+<p>I noticed the codebase has changed alot after the migration and we have a different way of passing data to the visualizations. I think having a boilerplate like the one above for React would be very helpful.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Lewis-H.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Lewis-H_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Lewis-H</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-11-19T12:50:29Z" itemprop="datePublished">
+                    November 19, 2019, 12:50pm
+                  </time>
+<meta content="2019-11-19T12:50:29Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><strong>Redash</strong>  uses Angular to build the UI, so to  <strong>create a new visualization</strong>  you need to  <strong>create</strong>  two directives (components): render directive that “draws” the  <strong>visualization</strong>  and editor directive that takes user configuration for this  <strong>visualization</strong> . Then you register them with the  <strong>visualization</strong>  system and  <strong>Redash</strong>  takes the rest.</p>
+<p>Regards,<br/>
+Lewis</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-11-19T13:44:56Z" itemprop="datePublished">
+                    November 19, 2019,  1:44pm
+                  </time>
+<meta content="2019-11-19T13:44:56Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Actually we been working hard the past year to move away from Angular to React (see <a href="https://github.com/getredash/redash/issues/3071">#3071</a>). While our codebase is still hybrid (both Angular and React) the visualizations codebase for the most part is React only. You can see status in <a href="https://github.com/getredash/redash/issues/3301">#3301</a>, but the gist is: everything has been converted except for Map and Charts Editor which are in progress.</p>
+<p>But the idea is indeed the same: a visualization is defined by the <strong>Editor component</strong> and <strong>Renderer component</strong> along with some administrative code to register it, so the interface knows to show it.</p>
+<p>Until we have the time to create a boilerplate, you can check the Pivot table visualization source code as a simple example:<br/>
+<aside class="onebox whitelistedgeneric">
+<header class="source">
+<img class="site-icon" height="16" src="assets/favicon.ico" width="16"/>
+<a href="https://github.com/getredash/redash/tree/master/client/app/visualizations/pivot" target="_blank">GitHub</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail onebox-avatar" height="60" src="assets/10746780" width="60"/>
+<h3><a href="https://github.com/getredash/redash/tree/master/client/app/visualizations/pivot" target="_blank">getredash/redash</a></h3>
+<p>Make Your Company Data Driven. Connect to any data source, easily visualize, dashboard and share your data. - getredash/redash</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</p>
+<p>And happy to answer questions if you have.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/petor.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/petor_avatar.png" tabindex="-1" width="48"/><span itemprop="name">petor</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-07T10:10:20Z" itemprop="datePublished">
+                    March 7, 2020, 10:10am
+                  </time>
+<meta content="2020-03-07T10:10:20Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,</p>
+<p>React example is great and easy to understand, but I can’t figured out do I need to rebuild whole image with docker. I mean with sources or is there way to extend official image? My problem is that I cant see the new visualization types.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cetalingua.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cetalingua_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cetalingua</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b7b0942eca8a1904c0167b175befb24bb304bf4a.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-06T20:57:53Z" itemprop="datePublished">
+                    May 6, 2020,  8:57pm
+                  </time>
+<meta content="2020-05-06T20:57:53Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hello,</p>
+<p>Is it possible to create a new visualization like this? I think this one was done in plotly. What is the best way to go about it? <div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/qcZH7xtWIyBbIhofTnccf00wi9k.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b7b0942eca8a1904c0167b175befb24bb304bf4a.png" rel="noopener nofollow ugc" title="newplot (2)"><img alt="newplot (2)" data-base62-sha1="qcZH7xtWIyBbIhofTnccf00wi9k" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b7b0942eca8a1904c0167b175befb24bb304bf4a_2_10x10.png" height="443" src="assets/b7b0942eca8a1904c0167b175befb24bb304bf4a.png" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">newplot (2)</span><span class="informations">700×450 12.2 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-07T19:26:19Z" itemprop="datePublished">
+                    May 7, 2020,  7:26pm
+                  </time>
+<meta content="2020-05-07T19:26:19Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>That’s a heat map visualization. Have you tried making one?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cetalingua.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cetalingua_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cetalingua</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-11T20:30:05Z" itemprop="datePublished">
+                    May 11, 2020,  8:30pm
+                  </time>
+<meta content="2020-05-11T20:30:05Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>But where is it? I cannot find it on the list of available visualizations. I see in <a href="https://blog.redash.io/just-in-time-for-christmas-redash-v6/" rel="nofollow noopener">your blog</a> that it is availablre in version 6 , but I cannot find it.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-11T20:52:42Z" itemprop="datePublished">
+                    May 11, 2020,  8:52pm
+                  </time>
+<meta content="2020-05-11T20:52:42Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Heatmaps are part of the <a href="https://redash.io/help/user-guide/visualizations/chart-visualizations">Chart</a> visualization, which is the default.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cetalingua.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cetalingua_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cetalingua</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-11T21:31:06Z" itemprop="datePublished">
+                    May 11, 2020,  9:31pm
+                  </time>
+<meta content="2020-05-11T21:31:06Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>ok, got it! Thank you for your patience answering my stupid questions.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cetalingua.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cetalingua_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cetalingua</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/83828e979d7cdec99623a5260dd17166521a3a21.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-12T21:53:38Z" itemprop="datePublished">
+                    May 12, 2020,  9:53pm
+                  </time>
+<meta content="2020-05-12T21:53:38Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>One more question, what time format does heatmap accept? I tried dd/mm/yy hh:mm:ss and it did not work (my data source is google sheets), I need time precision up to seconds. But when I used simple numbers like hour 0, 1, 2,3 the heatmap worked. It looks like it does not recognize my date/time format even though I selected it in X variable axis scale.</p>
+<p>I need date/time on X axis instead of what I have there now, i.e. 1,2,3, etc</p>
+<p><img alt="newplot (4)" data-base62-sha1="iLogtoVK57f2uS8j5sAAy649AR3" height="280" src="assets/83828e979d7cdec99623a5260dd17166521a3a21.png" width="609"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Option to add annotations to chart</title>
+    <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130</link>
+    <description>I would like to suggest adding an option to add annotations to charts as a &quot;second layer&quot; of information in order to give users a better understanding of the data.
+
+My use case:
+In the company I&#39;m working for, the account managers always keep an eye on a chart which represents the general activity of the clients or something even diving deep and focus on a specific client and they always try to understand the source of each anomaly. currently, their only option is to manually access different data sources (activity logs, billing transactions, and others) which consume too much of their time. combine all the relevant data from multiple data sources and put it on top of the relevant chart will boost their productivity.
+
+Implementation:
+I think that this feature should support getting data from multiple sources, such as:
+ * Queries running on different data sources
+ * Option to create annotations via Rest API
+ * Option to manually create annotations by clicking on the relevant in the UI
+
+Related information:
+You can take a look at this feature implemented by Grafana:
+http://docs.grafana.org/reference/annotations/</description>
+    
+    <lastBuildDate>Thu, 06 Oct 2022 12:20:01 +0000</lastBuildDate>
+    <category>Feature Requests</category>
+    <atom:link href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>This is not a perfect solution but a “trick” working in some cases on v11 :</p>
+<p><strong>Code :</strong></p>
+<pre><code class="lang-auto">-- table example
+with data(year, annotation, value) AS (
+  SELECT
+    *
+  FROM
+    (
+      VALUES
+        (1967, null, 10),
+        (1968, null, 11),
+        (1969, null, 12),
+        (1970, null, 13),
+        (1971, null, 14),
+        (1972, null, 15),
+        (1973, 'oil shock', 16),
+        (1974, null, 3),
+        (1975, null, 2),
+        (1976, null, 2)
+    )
+)
+-- request
+SELECT
+  year,
+  value,
+  CASE
+    WHEN annotation is not null THEN value
+    ELSE null
+  END AS "copy_value",
+  COALESCE(annotation, ' ') AS "annotation"
+FROM
+  data
+</code></pre>
+<p><strong>Graph options :</strong><br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/78d21218a2510be127ec426a6b210a9ba11875da.jpeg" data-download-href="/uploads/short-url/hePmZsHBef73MPRo6qrBSYiKMAO.jpeg?dl=1" title="c2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/78d21218a2510be127ec426a6b210a9ba11875da_2_690x309.jpeg" alt="c2" data-base62-sha1="hePmZsHBef73MPRo6qrBSYiKMAO" width="690" height="309" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/78d21218a2510be127ec426a6b210a9ba11875da_2_690x309.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/78d21218a2510be127ec426a6b210a9ba11875da_2_1035x463.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/78d21218a2510be127ec426a6b210a9ba11875da_2_1380x618.jpeg 2x" data-dominant-color="FDFDFD"></a></div><p></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9c893bbf693d43bad335ee505c458a761fc531ab.jpeg" data-download-href="/uploads/short-url/mkMvpg2qFvX7jPY10N5EDkAI227.jpeg?dl=1" title="c3" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9c893bbf693d43bad335ee505c458a761fc531ab_2_690x310.jpeg" alt="c3" data-base62-sha1="mkMvpg2qFvX7jPY10N5EDkAI227" width="690" height="310" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9c893bbf693d43bad335ee505c458a761fc531ab_2_690x310.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9c893bbf693d43bad335ee505c458a761fc531ab_2_1035x465.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9c893bbf693d43bad335ee505c458a761fc531ab_2_1380x620.jpeg 2x" data-dominant-color="FDFDFD"></a></div><p></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/03ccb736ab9775038cc088cbe7491575332be92e.jpeg" data-download-href="/uploads/short-url/xC25Esq9Y3S1MUjA9yw7d0NPUW.jpeg?dl=1" title="c1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03ccb736ab9775038cc088cbe7491575332be92e_2_690x308.jpeg" alt="c1" data-base62-sha1="xC25Esq9Y3S1MUjA9yw7d0NPUW" width="690" height="308" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03ccb736ab9775038cc088cbe7491575332be92e_2_690x308.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03ccb736ab9775038cc088cbe7491575332be92e_2_1035x462.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03ccb736ab9775038cc088cbe7491575332be92e_2_1380x616.jpeg 2x" data-dominant-color="FCFCFD"></a></div><p></p>
+<p>I hope this will help you. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/7</link>
+        <pubDate>Thu, 06 Oct 2022 12:20:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-7</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>This feature is not part of Redash yet.</p>
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/6</link>
+        <pubDate>Mon, 04 Jan 2021 14:32:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-6</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[harithk17]]></dc:creator>
+        <description><![CDATA[
+            <p>hey team, has this feature been released and if so where can i find it in the UI?</p>
+<p>would be an amazing use case for me =)</p>
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/5</link>
+        <pubDate>Mon, 04 Jan 2021 13:59:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-5</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Relevant GitHub issue:</p>
+<aside class="onebox githubissue">
+  <header class="source">
+      <a href="https://github.com/getredash/redash/issues/30" target="_blank" rel="nofollow noopener">github.com/getredash/redash</a>
+  </header>
+  <article class="onebox-body">
+    <a href="https://github.com/arikfr" rel="nofollow noopener">
+<img src="https://avatars1.githubusercontent.com/u/71468?v=2&amp;s=96" class="thumbnail onebox-avatar" width="60" height="60">
+</a>
+
+<h4><a href="https://github.com/getredash/redash/issues/30" target="_blank" rel="nofollow noopener">Issue: Event annotations (deploys, downtimes, etc) as horizontal bars on graphs</a></h4>
+
+<div class="date" style="margin-top:10px;">
+	<div class="user" style="margin-top:10px;">
+	opened by <a href="https://github.com/arikfr" target="_blank" rel="nofollow noopener">arikfr</a>
+	on <a href="https://github.com/getredash/redash/issues/30" target="_blank" rel="nofollow noopener">2013-10-28</a>
+	</div>
+	<div class="user">
+	</div>
+</div>
+
+<pre class="content" style="white-space: pre-wrap;"></pre>
+
+<div class="labels">
+ 	<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Backend</span>
+ 	<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Frontend</span>
+ 	<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">UX</span>
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/4</link>
+        <pubDate>Sun, 10 Feb 2019 07:34:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-4</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[xiejianhe]]></dc:creator>
+        <description><![CDATA[
+            <p>Good idea! Sometimes some diagrams involving business also need to add some comments, such as the label of major events, to facilitate the analysis of reasons.</p>
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/3</link>
+        <pubDate>Sun, 10 Feb 2019 07:07:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-3</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[xmi]]></dc:creator>
+        <description><![CDATA[
+            <p>Fully in sync with this new request.<br>
+This is really helpful in order to help user to consume reports through a team</p>
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/2</link>
+        <pubDate>Tue, 11 Sep 2018 11:56:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-2</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+      <item>
+        <title>Option to add annotations to chart</title>
+        <dc:creator><![CDATA[nadavivry]]></dc:creator>
+        <description><![CDATA[
+            <p>I would like to suggest adding an option to add annotations to charts as a “second layer” of information in order to give users a better understanding of the data.</p>
+<p>My use case:<br>
+In the company I’m working for, the account managers always keep an eye on a chart which represents the general activity of the clients or something even diving deep and focus on a specific client and they always try to understand the source of each anomaly. currently, their only option is to manually access different data sources (activity logs, billing transactions, and others) which consume too much of their time. combine all the relevant data from multiple data sources and put it on top of the relevant chart will boost their productivity.</p>
+<p>Implementation:<br>
+I think that this feature should support getting data from multiple sources, such as:</p>
+<ul>
+<li>Queries running on different data sources</li>
+<li>Option to create annotations via Rest API</li>
+<li>Option to manually create annotations by clicking on the relevant in the UI</li>
+</ul>
+<p>Related information:<br>
+You can take a look at this feature implemented by Grafana:<br>
+<a href="http://docs.grafana.org/reference/annotations/" class="onebox" target="_blank" rel="nofollow noopener">http://docs.grafana.org/reference/annotations/</a></p>
+          <p><a href="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130/1</link>
+        <pubDate>Mon, 09 Jul 2018 14:24:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2130-1</guid>
+        <source url="https://discuss.redash.io/t/option-to-add-annotations-to-chart/2130.rss">Option to add annotations to chart</source>
+      </item>
+  </channel>
+</rss>

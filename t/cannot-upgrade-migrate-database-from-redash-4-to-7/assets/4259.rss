@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Cannot upgrade/migrate database from Redash 4 to 7</title>
+    <link>https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259</link>
+    <description>### Issue Summary
+
+I&#39;m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I&#39;d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042).
+
+I dumped the DB and tested locally with Docker which was when I realized that you had to do a migration. I found a suggestion to run `/app/manage.py db upgrade` from inside the Redash server container then restart the services which seemed to work.
+
+When I tried the same thing with the Kubernetes install, it failed to migrate. I additionally found that I needed to run `. /config/dynamicenv.sh` prior to running the upgrade command. Also I tried running manage.py migrate which felt like it got me closer but no luck...
+
+What is the correct process for upgrading??? I&#39;m stuck...
+
+### Technical details:
+
+* Redash Version: redash/redash:7.0.0.b18042
+* Browser/OS: n/a
+* How did you install Redash: Helm &amp; Kubernetes
+
+### Logs
+
+```
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ . /config/dynamicenv.sh
+Using external database
+Using Redis: redis://:******@dap-redash-redis-master:6379/0
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db upgrade
+[2019-07-30 20:07:33,082][PID:34][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:33,104][PID:34][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:35,445][PID:34][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:35,446][PID:34][INFO][alembic.runtime.migration] Will assume transactional DDL.
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db migrate
+[2019-07-30 20:07:43,639][PID:138][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:43,662][PID:138][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:45,859][PID:138][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:45,860][PID:138][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2019-07-30 20:07:45,878][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;query_snippets_id_seq&#39; as owned by integer column &#39;query_snippets(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:45,917][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;queries_id_seq&#39; as owned by integer column &#39;queries(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:45,951][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;dashboards_id_seq&#39; as owned by integer column &#39;dashboards(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:45,965][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;groups_id_seq&#39; as owned by integer column &#39;groups(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:45,979][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;visualizations_id_seq&#39; as owned by integer column &#39;visualizations(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:45,992][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;api_keys_id_seq&#39; as owned by integer column &#39;api_keys(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,005][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;widgets_id_seq&#39; as owned by integer column &#39;widgets(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,022][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;data_source_groups_id_seq&#39; as owned by integer column &#39;data_source_groups(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,039][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;notification_destinations_id_seq&#39; as owned by integer column &#39;notification_destinations(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,052][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;events_id_seq&#39; as owned by integer column &#39;events(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,065][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;favorites_id_seq&#39; as owned by integer column &#39;favorites(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,079][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;changes_id_seq&#39; as owned by integer column &#39;changes(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,091][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;access_permissions_id_seq&#39; as owned by integer column &#39;access_permissions(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,105][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named &#39;alert_subscriptions_id_seq&#39; as owned by integer column &#39;alert_subscriptions(id)&#39;, assuming SERIAL and omitting
+[2019-07-30 20:07:46,132][PID:138][INFO][alembic.autogenerate.compare] Detected added column &#39;dashboards.tags&#39;
+[2019-07-30 20:07:46,135][PID:138][INFO][alembic.autogenerate.compare] Detected added column &#39;data_sources.encrypted_options&#39;
+[2019-07-30 20:07:46,141][PID:138][INFO][alembic.autogenerate.compare] Detected removed column &#39;data_sources.options&#39;
+[2019-07-30 20:07:46,149][PID:138][INFO][alembic.autogenerate.compare] Detected added column &#39;queries.tags&#39;
+[2019-07-30 20:07:46,156][PID:138][INFO][alembic.autogenerate.compare] Detected added column &#39;users.details&#39;
+  Generating /app/migrations/versions/d52397c65e9f_.py ... done
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db upgrade
+[2019-07-30 20:07:55,327][PID:242][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:55,348][PID:242][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:57,439][PID:242][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:57,440][PID:242][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2019-07-30 20:07:57,447][PID:242][INFO][alembic.runtime.migration] Running upgrade e5c7a4e2df4d -&gt; d52397c65e9f, empty message
+Traceback (most recent call last):
+  File &quot;./manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 716, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask/cli.py&quot;, line 345, in main
+    return AppGroup.main(self, *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 696, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 889, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 534, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/decorators.py&quot;, line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask/cli.py&quot;, line 229, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/dist-packages/click/core.py&quot;, line 534, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask_migrate/cli.py&quot;, line 132, in upgrade
+    _upgrade(directory, revision, sql, tag, x_arg)
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask_migrate/__init__.py&quot;, line 239, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File &quot;/usr/local/lib/python2.7/dist-packages/alembic/command.py&quot;, line 276, in upgrade
+    script.run_env()
+  File &quot;/usr/local/lib/python2.7/dist-packages/alembic/script/base.py&quot;, line 475, in run_env
+    util.load_python_file(self.dir, &quot;env.py&quot;)
+  File &quot;/usr/local/lib/python2.7/dist-packages/alembic/util/pyfiles.py&quot;, line 90, in load_python_file
+    module = load_module_py(module_id, path)
+  File &quot;/usr/local/lib/python2.7/dist-packages/alembic/util/compat.py&quot;, line 216, in load_module_py
+    mod = imp.load_source(module_id, path, fp)
+  File &quot;migrations/env.py&quot;, line 87, in &lt;module&gt;
+    run_migrations_online()
+  File &quot;migrations/env.py&quot;, line 80, in run_migrations_online
+    context.run_migrations()
+  File &quot;&lt;string&gt;&quot;, line 8, in run_migrations
+  File &quot;/usr/local/lib/python2.7/dist-packages/alembic/runtime/environment.py&quot;, line 839, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File &quot;/usr/local/lib/python2.7/dist-packages/alembic/runtime/migration.py&quot;, line 361, in run_migrations
+    step.migration_fn(**kw)
+  File &quot;/app/migrations/versions/d52397c65e9f_.py&quot;, line 22, in upgrade
+    op.add_column(&#39;data_sources&#39;, sa.Column(&#39;encrypted_options&#39;, redash.models.types.EncryptedConfiguration(), nullable=False))
+NameError: global name &#39;redash&#39; is not defined
+```</description>
+    
+    <lastBuildDate>Fri, 09 Sep 2022 05:22:27 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Cannot upgrade/migrate database from Redash 4 to 7</title>
+        <dc:creator><![CDATA[ytyng]]></dc:creator>
+        <description><![CDATA[
+            <p>I solved.</p>
+<pre><code class="lang-auto">cd /opt/redash
+sudo docker-compose exec server /bin/bash
+</code></pre>
+<p>or…</p>
+<pre><code class="lang-auto">kubectl exec -it ${podname} -- /bin/bash
+</code></pre>
+<p>In container:</p>
+<pre><code class="lang-auto">/app/bin/docker-entrypoint manage db upgrade
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259/2</link>
+        <pubDate>Fri, 09 Sep 2022 05:22:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4259-2</guid>
+        <source url="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259.rss">Cannot upgrade/migrate database from Redash 4 to 7</source>
+      </item>
+      <item>
+        <title>Cannot upgrade/migrate database from Redash 4 to 7</title>
+        <dc:creator><![CDATA[phutchins]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>I’m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I’d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042).</p>
+<p>I dumped the DB and tested locally with Docker which was when I realized that you had to do a migration. I found a suggestion to run <code>/app/manage.py db upgrade</code> from inside the Redash server container then restart the services which seemed to work.</p>
+<p>When I tried the same thing with the Kubernetes install, it failed to migrate. I additionally found that I needed to run <code>. /config/dynamicenv.sh</code> prior to running the upgrade command. Also I tried running manage.py migrate which felt like it got me closer but no luck…</p>
+<p>What is the correct process for upgrading??? I’m stuck…</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: redash/redash:7.0.0.b18042</li>
+<li>Browser/OS: n/a</li>
+<li>How did you install Redash: Helm &amp; Kubernetes</li>
+</ul>
+<h3>Logs</h3>
+<pre><code class="lang-auto">redash@dap-redash-5cbfff44fc-7qm9h:/app$ . /config/dynamicenv.sh
+Using external database
+Using Redis: redis://:******@dap-redash-redis-master:6379/0
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db upgrade
+[2019-07-30 20:07:33,082][PID:34][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:33,104][PID:34][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:35,445][PID:34][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:35,446][PID:34][INFO][alembic.runtime.migration] Will assume transactional DDL.
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db migrate
+[2019-07-30 20:07:43,639][PID:138][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:43,662][PID:138][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:45,859][PID:138][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:45,860][PID:138][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2019-07-30 20:07:45,878][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'query_snippets_id_seq' as owned by integer column 'query_snippets(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,917][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'queries_id_seq' as owned by integer column 'queries(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,951][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'dashboards_id_seq' as owned by integer column 'dashboards(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,965][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'groups_id_seq' as owned by integer column 'groups(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,979][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'visualizations_id_seq' as owned by integer column 'visualizations(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,992][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'api_keys_id_seq' as owned by integer column 'api_keys(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,005][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'widgets_id_seq' as owned by integer column 'widgets(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,022][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'data_source_groups_id_seq' as owned by integer column 'data_source_groups(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,039][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'notification_destinations_id_seq' as owned by integer column 'notification_destinations(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,052][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'events_id_seq' as owned by integer column 'events(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,065][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'favorites_id_seq' as owned by integer column 'favorites(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,079][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'changes_id_seq' as owned by integer column 'changes(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,091][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'access_permissions_id_seq' as owned by integer column 'access_permissions(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,105][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'alert_subscriptions_id_seq' as owned by integer column 'alert_subscriptions(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,132][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'dashboards.tags'
+[2019-07-30 20:07:46,135][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'data_sources.encrypted_options'
+[2019-07-30 20:07:46,141][PID:138][INFO][alembic.autogenerate.compare] Detected removed column 'data_sources.options'
+[2019-07-30 20:07:46,149][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'queries.tags'
+[2019-07-30 20:07:46,156][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'users.details'
+  Generating /app/migrations/versions/d52397c65e9f_.py ... done
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db upgrade
+[2019-07-30 20:07:55,327][PID:242][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:55,348][PID:242][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:57,439][PID:242][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:57,440][PID:242][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2019-07-30 20:07:57,447][PID:242][INFO][alembic.runtime.migration] Running upgrade e5c7a4e2df4d -&gt; d52397c65e9f, empty message
+Traceback (most recent call last):
+  File "./manage.py", line 9, in &lt;module&gt;
+    manager()
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 716, in __call__
+    return self.main(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/cli.py", line 345, in main
+    return AppGroup.main(self, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 696, in main
+    rv = self.invoke(ctx)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 889, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 534, in invoke
+    return callback(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/cli.py", line 229, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 534, in invoke
+    return callback(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask_migrate/cli.py", line 132, in upgrade
+    _upgrade(directory, revision, sql, tag, x_arg)
+  File "/usr/local/lib/python2.7/dist-packages/flask_migrate/__init__.py", line 239, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/command.py", line 276, in upgrade
+    script.run_env()
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 475, in run_env
+    util.load_python_file(self.dir, "env.py")
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/pyfiles.py", line 90, in load_python_file
+    module = load_module_py(module_id, path)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/compat.py", line 216, in load_module_py
+    mod = imp.load_source(module_id, path, fp)
+  File "migrations/env.py", line 87, in &lt;module&gt;
+    run_migrations_online()
+  File "migrations/env.py", line 80, in run_migrations_online
+    context.run_migrations()
+  File "&lt;string&gt;", line 8, in run_migrations
+  File "/usr/local/lib/python2.7/dist-packages/alembic/runtime/environment.py", line 839, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/runtime/migration.py", line 361, in run_migrations
+    step.migration_fn(**kw)
+  File "/app/migrations/versions/d52397c65e9f_.py", line 22, in upgrade
+    op.add_column('data_sources', sa.Column('encrypted_options', redash.models.types.EncryptedConfiguration(), nullable=False))
+NameError: global name 'redash' is not defined
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259/1</link>
+        <pubDate>Tue, 30 Jul 2019 20:54:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4259-1</guid>
+        <source url="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259.rss">Cannot upgrade/migrate database from Redash 4 to 7</source>
+      </item>
+  </channel>
+</rss>

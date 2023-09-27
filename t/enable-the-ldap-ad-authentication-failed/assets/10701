@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Enable the LDAP/AD authentication failed - Redash Discourse</title>
+    <meta name="description" content="I’m trying to enable the AD authentication, but failed. use use the docker to run the stash. 
+here is the doocker-compose.yml 
+[root@localhost redash]# cat docker-compose.yml 
+version: “2” 
+x-redash-service: &amp;amp;redash-serv&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Enable the LDAP/AD authentication failed&#39;" href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701" />
+<meta property="og:title" content="Enable the LDAP/AD authentication failed" />
+<meta name="twitter:title" content="Enable the LDAP/AD authentication failed" />
+<meta property="og:description" content="I’m trying to enable the AD authentication, but failed. use use the docker to run the stash.  here is the doocker-compose.yml  [root@localhost redash]# cat docker-compose.yml  version: “2”  x-redash-service: &amp;redash-service  build: .  depends_on:  - postgres  - redis  env_file: /opt/redash/env  restart: always  services:  server:  &lt;&lt;: *redash-service  command: server  ports:  - “5000:5000”  environment:  REDASH_WEB_WORKERS: 4  GUNICORN_CMD_ARGS: “–timeout 300”  scheduler:  &lt;&lt;: *redash-service  c..." />
+<meta name="twitter:description" content="I’m trying to enable the AD authentication, but failed. use use the docker to run the stash.  here is the doocker-compose.yml  [root@localhost redash]# cat docker-compose.yml  version: “2”  x-redash-service: &amp;redash-service  build: .  depends_on:  - postgres  - redis  env_file: /opt/redash/env  restart: always  services:  server:  &lt;&lt;: *redash-service  command: server  ports:  - “5000:5000”  environment:  REDASH_WEB_WORKERS: 4  GUNICORN_CMD_ARGS: “–timeout 300”  scheduler:  &lt;&lt;: *redash-service  c..." />
+<meta property="article:published_time" content="2022-06-30T10:40:39+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/enable-the-ldap-ad-authentication-failed/10701">Enable the LDAP/AD authentication failed</a>
+    </h1>
+
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Enable the LDAP/AD authentication failed'>
+        <meta itemprop='articleSection' content='Uncategorized'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/williswyf'><span itemprop='name'>williswyf</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-30T10:40:39Z' class='post-time'>
+                    June 30, 2022, 10:40am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-30T10:40:39Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>I’m trying to enable the AD authentication, but failed. use use the docker to run the stash.<br>
+<strong>here is the doocker-compose.yml</strong><br>
+[root@localhost redash]# cat docker-compose.yml<br>
+version: “2”<br>
+x-redash-service: &amp;redash-service<br>
+build: .<br>
+depends_on:<br>
+- postgres<br>
+- redis<br>
+env_file: /opt/redash/env<br>
+restart: always<br>
+services:<br>
+server:<br>
+&lt;&lt;: *redash-service<br>
+command: server<br>
+ports:<br>
+- “5000:5000”<br>
+environment:<br>
+REDASH_WEB_WORKERS: 4<br>
+GUNICORN_CMD_ARGS: “–timeout 300”<br>
+scheduler:<br>
+&lt;&lt;: *redash-service<br>
+command: scheduler<br>
+environment:<br>
+QUEUES: “celery”<br>
+WORKERS_COUNT: 1<br>
+scheduled_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “scheduled_queries,schemas”<br>
+WORKERS_COUNT: 1<br>
+adhoc_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “queries”<br>
+WORKERS_COUNT: 2<br>
+worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “periodic emails default”<br>
+WORKERS_COUNT: 1<br>
+redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+ports:<br>
+- “5432:5432”<br>
+env_file: /opt/redash/env<br>
+volumes:<br>
+- /opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest<br>
+ports:<br>
+- “80:80”<br>
+depends_on:<br>
+- server<br>
+links:<br>
+- server:redash<br>
+volumes:<br>
+- ./nginx/html:/usr/share/nginx/html<br>
+- ./nginx/nginx.conf:/etc/nginx/nginx.conf<br>
+- ./nginx/conf.d:/etc/nginx/conf.d<br>
+restart: always</p>
+<p><strong>–  here is the Dockerfile.</strong><br>
+[root@localhost redash]# cat Dockerfile<br>
+FROM redash/redash:10.1.0.b50633<br>
+COPY ./python-packages/*.whl /tmp/<br>
+RUN pip install /tmp/pyasn1-0.4.8-py2.py3-none-any.whl<br>
+RUN pip install /tmp/ldap3-2.9.1-py2.py3-none-any.whl</p>
+<p>I original use the RUN pip ldap3 in dockerfile as suggestion of document. but it always fail to download the ldap3, maybe my server network has issue, anyway, I download the ldap3, and install it from local.</p>
+<p><strong>– here is the evn.</strong><br>
+PYTHONUNBUFFERED=0<br>
+REDASH_LOG_LEVEL=INFO<br>
+REDASH_REDIS_URL=redis://redis:6379/0<br>
+POSTGRES_PASSWORD=xxxxxxxxxxxxxxxxxxxx<br>
+REDASH_COOKIE_SECRET=xxxxxxxxxxxxxxxxx<br>
+REDASH_SECRET_KEY=xxxxxxxxxxxxxxxxxxxx<br>
+REDASH_DATABASE_URL=postgresql://postgres:xxxxx@xx/xx<br>
+REDASH_MAIL_SERVER=“xxxx”<br>
+REDASH_MAIL_DEFAULT_SENDER=“xxxx”<br>
+REDASH_HOST=“x.x.x.x”<br>
+REDASH_LDAP_LOGIN_ENABLED=“true”<br>
+REDASH_PASSWORD_LOGIN_ENABLED=“false”<br>
+REDASH_LDAP_URL=“xxx:x”<br>
+REDASH_LDAP_BIND_DN=“xx/xx/xx”<br>
+REDASH_LDAP_BIND_DN_PASSWORD=“xxxx”<br>
+REDASH_LDAP_CUSTOM_USERNAME_PROMPT=" Please enter login account"<br>
+REDASH_LDAP_SEARCH_TEMPLATE=“(sAMAccountName=%(username)s)”<br>
+REDASH_LDAP_DN=“cn=xx,dc=xx,dc=xx”</p>
+<p>I rebuilt everything and start the container.<br>
+docker-compose down<br>
+docker-compose up -d</p>
+<p>then opened the login page of redash.<br>
+when I click the login.  I got erros as below</p>
+<p><em># Internal Server Error</em></p>
+<p><em>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</em></p>
+<p>checked the logs, I got <strong>TypeError: cannot convert ‘NoneType’ object to bytes.</strong><br>
+docker-compose logs -f</p>
+<p>redash-server-1            | [2022-06-30 08:19:13,236][PID:12][ERROR][redash.app] Exception on /ldap/login [POST]<br>
+redash-server-1            | Traceback (most recent call last):<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 2446, in wsgi_app<br>
+redash-server-1            |     response = self.full_dispatch_request()<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1951, in full_dispatch_request<br>
+redash-server-1            |     rv = self.handle_user_exception(e)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 269, in error_router<br>
+redash-server-1            |     return original_handler(e)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1820, in handle_user_exception<br>
+redash-server-1            |     reraise(exc_type, exc_value, tb)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/_compat.py”, line 39, in reraise<br>
+redash-server-1            |     raise value<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1949, in full_dispatch_request<br>
+redash-server-1            |     rv = self.dispatch_request()<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1935, in dispatch_request<br>
+redash-server-1            |     return self.view_functions<a>rule.endpoint</a><br>
+redash-server-1            |   File “/app/redash/authentication/ldap_auth.py”, line 45, in login<br>
+redash-server-1            |     ldap_user = auth_ldap_user(request.form[“email”], request.form[“password”])<br>
+redash-server-1            |   File “/app/redash/authentication/ldap_auth.py”, line 87, in auth_ldap_user<br>
+redash-server-1            |     attributes=[settings.LDAP_DISPLAY_NAME_KEY, settings.LDAP_EMAIL_KEY],<br>
+redash-server-1            |   File “/home/redash/.local/lib/python3.7/site-packages/ldap3/core/connection.py”, line 850, in search<br>
+redash-server-1            |     check_names=self.check_names)<br>
+redash-server-1            |   File “/home/redash/.local/lib/python3.7/site-packages/ldap3/operation/search.py”, line 346, in search_operation<br>
+redash-server-1            |     request[‘baseObject’] = LDAPDN(search_base)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/pyasn1/type/univ.py”, line 837, in <strong>init</strong><br>
+redash-server-1            |     base.SimpleAsn1Type.<strong>init</strong>(self, value, **kwargs)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/pyasn1/type/base.py”, line 267, in <strong>init</strong><br>
+redash-server-1            |     value = self.prettyIn(value)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/pyasn1/type/univ.py”, line 912, in prettyIn<br>
+redash-server-1            |     return bytes(value)<br>
+<strong>redash-server-1            | TypeError: cannot convert ‘NoneType’ object to bytes</strong><br>
+redash-server-1            | [2022-06-30 08:19:13,240][PID:12][INFO][metrics] method=POST path=/ldap/login endpoint=ldap_auth_login status=500 content_type=text/html content_length=290 duration=258.83 query_count=0 query_duration=0.00<br>
+redash-server-1            | [2022-06-30 08:19:13,242][PID:12][INFO][metrics] method=POST path=/ldap/login endpoint=ldap_auth_login status=500 content_type=? content_length=-1 duration=261.34 query_count=0 query_duration=0.00</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/williswyf'><span itemprop='name'>williswyf</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-30T10:50:22Z' class='post-time'>
+                    June 30, 2022, 10:50am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-30T10:50:22Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>according to the document, I tried the ldap 2.2.4.<br>
+but I got syntax error in logs, I’m even not able to start the service.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash taking high disk space</title>
+    <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777</link>
+    <description>### Issue Summary
+
+I see that Redash is taking a lot of space because of Query Result. Every day the new files size is around 80GB, even though i changed the default REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE &amp; `REDASH_QUERY_RESULTS_CLEANUP_COUNT` to remove any unused data still my DB size is increasing day by day. Is there a way to skip storing data in Query Result or cleaning of this data. 
+
+### Technical details:
+
+* Redash Version:8
+* Browser/OS: Ubuntu
+* How did you install Redash: Docker</description>
+    
+    <lastBuildDate>Wed, 28 Dec 2022 11:00:27 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[parasiil]]></dc:creator>
+        <description><![CDATA[
+            <p>reducing logfile size in docker containers <a href="https://sleeplessbeastie.eu/2020/09/16/how-to-reduce-the-size-of-the-docker-container-log-file/" class="inline-onebox" rel="noopener nofollow ugc">How to reduce the size of the Docker container log file | sleeplessbeastie's notes</a></p>
+<p>Interesting that Redash docker-compose.yml does not have log rotation built in</p>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/7</link>
+        <pubDate>Wed, 28 Dec 2022 11:00:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-7</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[KyloJorgensen]]></dc:creator>
+        <description><![CDATA[
+            <p>I used <code>du -h</code> to find out the PostgreSQL docker container was logging out a monster log file.</p>
+<p>My <code>CONTAINER_ID-json.log</code> file was over 825 GB.</p>
+<p><code>sudo du -h /var/lib/docker/containers</code></p>
+<p><code>sudo du -h /var/lib/docker/containers/CONTAINER_ID</code></p>
+<p><code>sudo ls -la /var/lib/docker/containers/CONTAINER_ID</code></p>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/6</link>
+        <pubDate>Mon, 03 Jan 2022 21:13:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-6</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[vish]]></dc:creator>
+        <description><![CDATA[
+            <p>the query results had 11GB when I cleaned it and vacuumed.</p>
+<p>the /var/docker is 200 GB<br>
+what else is taking up space ?</p>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/5</link>
+        <pubDate>Sat, 30 Oct 2021 03:52:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-5</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[Shitij]]></dc:creator>
+        <description><![CDATA[
+            <p>A bit off topic, I think you need to rethink how redash is being used. This seems more like a raw data dump happening. (Assuming people are not running queries on a massive scale). Maybe have a limit on the number of rows returned? (Will have to fork to make your own changes here)</p>
+<p>Redash is generally meant for 20-25 MB of aggregated which can be visualized.</p>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/4</link>
+        <pubDate>Mon, 20 Jul 2020 11:36:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-4</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>By default, Postgres doesn’t return used space to the system but reuses it for future data. I believe you can run VACUUM FULL to return disk space, but you better check <a href="https://www.postgresql.org/docs/9.5/sql-vacuum.html">the docs</a>.</p>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/3</link>
+        <pubDate>Sun, 19 Jul 2020 12:20:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-3</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s a lot of disk space! You can’t root out the cache completely because the latest query result is always cached. How much data do you pull in your queries? If you routinely query 80GB of data then the cache is going to be that large.</p>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/2</link>
+        <pubDate>Thu, 16 Jul 2020 21:05:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-2</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+      <item>
+        <title>Redash taking high disk space</title>
+        <dc:creator><![CDATA[akshay59]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>I see that Redash is taking a lot of space because of Query Result. Every day the new files size is around 80GB, even though i changed the default REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE &amp; <code>REDASH_QUERY_RESULTS_CLEANUP_COUNT</code> to remove any unused data still my DB size is increasing day by day. Is there a way to skip storing data in Query Result or cleaning of this data.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version:8</li>
+<li>Browser/OS: Ubuntu</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-taking-high-disk-space/6777/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-taking-high-disk-space/6777/1</link>
+        <pubDate>Thu, 16 Jul 2020 20:55:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6777-1</guid>
+        <source url="https://discuss.redash.io/t/redash-taking-high-disk-space/6777.rss">Redash taking high disk space</source>
+      </item>
+  </channel>
+</rss>

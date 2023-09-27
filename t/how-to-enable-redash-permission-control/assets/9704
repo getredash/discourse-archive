@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>How to enable redash permission control - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="I am running the current master of the redash docker setup, it is redash Version: 11.0.0-dev (dev), commit id: df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae. 
+I have added 
+REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL: &amp;quot;true&amp;quot; to t&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;How to enable redash permission control&#39;" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704" />
+<meta property="og:title" content="How to enable redash permission control" />
+<meta name="twitter:title" content="How to enable redash permission control" />
+<meta property="og:description" content="I am running the current master of the redash docker setup, it is redash Version: 11.0.0-dev (dev), commit id: df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae.  I have added  REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL: &quot;true&quot; to the x-redash-environment: &amp;redash-environment section and ran docker-compose up -d. When I get on a shell within the redash_server container echo $REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL returns true. However, I can’t see any option in the user interface indicating, that feature i..." />
+<meta name="twitter:description" content="I am running the current master of the redash docker setup, it is redash Version: 11.0.0-dev (dev), commit id: df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae.  I have added  REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL: &quot;true&quot; to the x-redash-environment: &amp;redash-environment section and ran docker-compose up -d. When I get on a shell within the redash_server container echo $REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL returns true. However, I can’t see any option in the user interface indicating, that feature i..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="2 ❤" />
+<meta property="article:published_time" content="2021-12-13T15:27:47+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"How to enable redash permission control","mainEntity":{"@type":"Question","name":"How to enable redash permission control","text":"I am running the current master of the redash docker setup, it is redash Version: 11.0.0-dev (dev), commit id: df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae.\n\nI have added\n\nREDASH_FEATURE_SHOW_PERMISSIONS_CONTROL: &quot;true&quot; to the x-redash-environment: &amp;redash-environment section and ran docker-compose up -&hellip;","upvoteCount":0,"answerCount":1,"dateCreated":"2021-12-13T15:27:47.528Z","author":{"@type":"Person","name":""},"acceptedAnswer":{"@type":"Answer","text":"[image] natanael.arndt:\n\nHow-To on using the environment variables?\n\nI’m working on that this week actually :smiley:\n\n[image] natanael.arndt:\n\nIs there any overview of the redash server telling me, which features are enabled?\n\nSettings &gt; General shows this. See the Enable experimental mult&hellip;","upvoteCount":0,"dateCreated":"2021-12-13T15:58:27.386Z","url":"https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704/2","author":{"@type":"Person","name":"jesse"}}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/how-to-enable-redash-permission-control/9704">How to enable redash permission control</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='How to enable redash permission control'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/natanael.arndt'><span itemprop='name'>natanael.arndt</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-13T15:27:47Z' class='post-time'>
+                    December 13, 2021,  3:27pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:41:12Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>I am running the current master of the redash docker setup, it is redash Version: 11.0.0-dev (dev), commit id: df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae.</p>
+<p>I have added<br>
+<code>REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL: "true"</code> to the <code>x-redash-environment: &amp;redash-environment</code> section and ran <code>docker-compose up -d</code>. When I get on a shell within the <code>redash_server</code> container <code>echo $REDASH_FEATURE_SHOW_PERMISSIONS_CONTROL</code> returns <code>true</code>. However, I can’t see any option in the user interface indicating, that feature is actually enabled, i.e. I can’t find the option “Manage Permissions” in the menu of the query edit screen.</p>
+<p>Is there any How-To on using the environment variables? Is there any overview of the redash server telling me, which features are enabled?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-13T15:58:27Z' class='post-time'>
+                    December 13, 2021,  3:58pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-13T15:58:27Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="natanael.arndt" data-post="1" data-topic="9704">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/natanael.arndt/40/3654_2.png" class="avatar"> natanael.arndt:</div>
+<blockquote>
+<p>How-To on using the environment variables?</p>
+</blockquote>
+</aside>
+<p>I’m working on that this week actually <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+<aside class="quote no-group" data-username="natanael.arndt" data-post="1" data-topic="9704">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/natanael.arndt/40/3654_2.png" class="avatar"> natanael.arndt:</div>
+<blockquote>
+<p>Is there any overview of the redash server telling me, which features are enabled?</p>
+</blockquote>
+</aside>
+<p><strong>Settings &gt; General</strong> shows this. See the <strong>Enable experimental multiple owners support</strong> checkbox.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67.png" data-download-href="/uploads/short-url/A5rtNVFWGGYtYYVM4IL85j8eaOP.png?dl=1" title="CleanShot 2021-12-13 at 09.56.53@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67_2_477x500.png" alt="CleanShot 2021-12-13 at 09.56.53@2x" data-base62-sha1="A5rtNVFWGGYtYYVM4IL85j8eaOP" width="477" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67_2_477x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67_2_715x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67_2_954x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fcebc7e6e761381df39a267e8cb574d259724a67_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">CleanShot 2021-12-13 at 09.56.53@2x</span><span class="informations">1488×1558 181 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/natanael.arndt'><span itemprop='name'>natanael.arndt</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T12:31:56Z' class='post-time'>
+                    December 14, 2021, 12:31pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:31:56Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Even though, I have set the environment variable, the box “Enable experimental multiple owners support” was not ticked. I ad to tick it in the userinterface. But the option was not there. Now after another restart the option is available from the menu.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T12:33:12Z' class='post-time'>
+                    December 14, 2021, 12:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:33:12Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Is your question resolved or does it appear to be a bug?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/natanael.arndt'><span itemprop='name'>natanael.arndt</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T12:39:30Z' class='post-time'>
+                    December 14, 2021, 12:39pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:39:30Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Well, I now know how to enable it in this case, so it can be considered resolved. Thank you very much.</p>
+<p>I still need to find out, how to use that feature, what it can do and what it can’t. I was looking for some documentation, pointing to that feature at <a href="https://redash.io/help/user-guide/users" rel="noopener nofollow ugc">https://redash.io/help/user-guide/users</a> and maybe also pointing to the environment variable (<a href="https://redash.io/help/open-source/admin-guide/env-vars-settings" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/env-vars-settings</a>). If you add some documentation how to properly sett the env vars, that would definitely help. Also documenting the “experimental multiple owners support” (marked as experimental) would be cool.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T12:40:54Z' class='post-time'>
+                    December 14, 2021, 12:40pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:40:54Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I’m working on the environment variable doc <img src="https://emoji.discourse-cdn.com/twitter/+1/2.png?v=10" title=":+1:t2:" class="emoji" alt=":+1:t2:"></p>
+<p>Multi owner support has been documented for a few years: <a href="https://redash.io/help/user-guide/querying/writing-queries#Managing-Query-Permissions">https://redash.io/help/user-guide/querying/writing-queries#Managing-Query-Permissions</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/natanael.arndt'><span itemprop='name'>natanael.arndt</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T12:48:07Z' class='post-time'>
+                    December 14, 2021, 12:48pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:48:07Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Ah cool, thank you for that hint. I was looking for at at “User, Groups, &amp; Permissions”.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T12:49:33Z' class='post-time'>
+                    December 14, 2021, 12:49pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T12:49:33Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Docs organisation is a thankless task <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=10" title=":confused:" class="emoji" alt=":confused:"> In many cases I think the search is the best option.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/natanael.arndt'><span itemprop='name'>natanael.arndt</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-14T16:04:10Z' class='post-time'>
+                    December 14, 2021,  4:04pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-14T16:04:10Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Well not that thankless, people are very happy about gut docu but sometimes to tell.<br>
+To improve it, I have added a pullrequest: <a href="https://github.com/getredash/website/pull/625" class="inline-onebox" rel="noopener nofollow ugc">Clarify Permission parts in docu by white-gecko · Pull Request #625 · getredash/website · GitHub</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ramziyassine'><span itemprop='name'>ramziyassine</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-07T04:33:25Z' class='post-time'>
+                    January 7, 2022,  4:33am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-07T04:33:25Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We are using redash Version: 10.1.0 (2589bef1)</p>
+<p>Hi <a class="mention" href="/u/jesse">@jesse</a> I am also confused about this as well, we have enabled <code>multiple owners support</code><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6.png" data-download-href="/uploads/short-url/9j1plHgnVW6PDEH525aI0gJ1tjw.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6_2_690x115.png" alt="image" data-base62-sha1="9j1plHgnVW6PDEH525aI0gJ1tjw" width="690" height="115" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6_2_690x115.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6_2_1035x172.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/413a0d0204b56bd415ccc7ee6942a15df245edf6_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1056×176 11.3 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>but I can’t find a way to add multiple Authors to the same query</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/daa8ceec0e145c55ae3922a18946b272881d712b.png" data-download-href="/uploads/short-url/vclL2fwFNXrANtNgcfqHyP4J7U7.png?dl=1" title="single_author" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/daa8ceec0e145c55ae3922a18946b272881d712b_2_421x500.png" alt="single_author" data-base62-sha1="vclL2fwFNXrANtNgcfqHyP4J7U7" width="421" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/daa8ceec0e145c55ae3922a18946b272881d712b_2_421x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/daa8ceec0e145c55ae3922a18946b272881d712b_2_631x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/daa8ceec0e145c55ae3922a18946b272881d712b_2_842x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/daa8ceec0e145c55ae3922a18946b272881d712b_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">single_author</span><span class="informations">1592×1888 220 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Any help is appreciated</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/how-to-enable-redash-permission-control/9704">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-19T20:36:10Z' class='post-time'>
+                    January 19, 2022,  8:36pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-19T20:36:10Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Sorry for my late reply, recovering from covid here.</p>
+<p>I’m not sure I understand your question. Yes there is one Author to the query. But anyone on that list has the ability to modify the query, the same as the author.</p>
+<p>Have I missed something?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

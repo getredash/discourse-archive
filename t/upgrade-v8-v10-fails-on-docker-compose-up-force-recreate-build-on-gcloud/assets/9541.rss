@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+    <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541</link>
+    <description>I am trying to start an open source instance hosted on GoogleCloud. I follow the guide here by using follow the steps for Google compute engine:
+https://redash.io/help/open-source/setup and I can succesfully log in to the created instance using the IP. Then i follow the guide to upgrade to V10.
+I follow the guide here: https://github.com/getredash/redash/releases/tag/v10.0.0
+But step 7 never completes: docker-compose up --force-recreate --build
+The log just loops and retries endlessly, the line: &quot;postgres_1 | LOG: unexpected EOF on client connection with an open transaction&quot; keeps reappearing and seems to the likely suspect.
+
+I don&#39;t know what the issue is and I just need to upgrade to V10 in order to use the migration tool. Thanks for any help!</description>
+    
+    <lastBuildDate>Thu, 25 Nov 2021 18:32:23 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you so much for sharing your solution here. I’m glad it was something simple. I wonder if we should update those upgrade instructions though <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=10" title=":thinking:" class="emoji" alt=":thinking:"></p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/9</link>
+        <pubDate>Thu, 25 Nov 2021 18:32:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-9</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[Velory]]></dc:creator>
+        <description><![CDATA[
+            <p>So there was a misunderstanding on my part. The command actually worked, when i Ctrc C:ed and continued with the next steps and logged in to redash it correctly showed V10. So it it’s supposed to be a never ending loop from that command that you are supposed to cancel, I expected it to terminate on it’s own and I thought the command just restarted and retried to finish each time.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/8</link>
+        <pubDate>Thu, 25 Nov 2021 14:47:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-8</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[Velory]]></dc:creator>
+        <description><![CDATA[
+            <p>Is it necessary to setup mail configuration before upgrading? I didn’t do that if that explains it.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/7</link>
+        <pubDate>Thu, 25 Nov 2021 10:35:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-7</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[Velory]]></dc:creator>
+        <description><![CDATA[
+            <p>Here is the docker-compose.yml file, i copy pasted everything:</p>
+<p>version: “2”<br>
+x-redash-service: &amp;redash-service<br>
+image: redash/redash:10.0.0.b50363<br>
+depends_on:<br>
+- postgres<br>
+- redis<br>
+env_file: /opt/redash/env<br>
+restart: always<br>
+services:<br>
+server:<br>
+&lt;&lt;: *redash-service<br>
+command: server<br>
+ports:<br>
+- “5000:5000”<br>
+environment:<br>
+REDASH_WEB_WORKERS: 4<br>
+scheduler:<br>
+&lt;&lt;: *redash-service<br>
+command: scheduler<br>
+scheduled_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “scheduled_queries,schemas”<br>
+WORKERS_COUNT: 1<br>
+adhoc_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “queries”<br>
+WORKERS_COUNT: 2<br>
+worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “periodic emails default”<br>
+WORKERS_COUNT: 1<br>
+redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+env_file: /opt/redash/env<br>
+volumes:<br>
+- /opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest<br>
+ports:<br>
+- “80:80”<br>
+depends_on:<br>
+- server<br>
+links:<br>
+- server:redash<br>
+restart: always</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/6</link>
+        <pubDate>Thu, 25 Nov 2021 09:48:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-6</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Alright, so I just deployed a V8 AMI on GCE and upgraded it to version 10.1. Did not have any issues along the way. Took about ten minutes.</p>
+<p>Can you please share your <code>docker-compose.yml</code> file? I think there is probably a typo in there.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/5</link>
+        <pubDate>Wed, 24 Nov 2021 20:02:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-5</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m going to see if I can reproduce this. I haven’t worked with GCP before. Could be something uniquely wrong.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/4</link>
+        <pubDate>Wed, 24 Nov 2021 19:33:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-4</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[Velory]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes i tried that, no luck.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/3</link>
+        <pubDate>Wed, 24 Nov 2021 15:15:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-3</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Have you tried stopping all of your services? <code>docker-compose stop</code></p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/2</link>
+        <pubDate>Wed, 24 Nov 2021 15:07:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-2</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+      <item>
+        <title>Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</title>
+        <dc:creator><![CDATA[Velory]]></dc:creator>
+        <description><![CDATA[
+            <p>I am trying to start an open source instance hosted on GoogleCloud. I follow the guide here by using follow the steps for Google compute engine:<br>
+<a href="https://redash.io/help/open-source/setup" rel="noopener nofollow ugc">https://redash.io/help/open-source/setup</a> and I can succesfully log in to the created instance using the IP. Then i follow the guide to upgrade to V10.<br>
+I follow the guide here: <a href="https://github.com/getredash/redash/releases/tag/v10.0.0" class="inline-onebox" rel="noopener nofollow ugc">Release v10.0.0 · getredash/redash · GitHub</a><br>
+But step 7 never completes: docker-compose up --force-recreate --build<br>
+The log just loops and retries endlessly, the line: “postgres_1 | LOG: unexpected EOF on client connection with an open transaction” keeps reappearing and seems to the likely suspect.</p>
+<p>I don’t know what the issue is and I just need to upgrade to V10 in order to use the migration tool. Thanks for any help!</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541/1</link>
+        <pubDate>Wed, 24 Nov 2021 14:58:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9541-1</guid>
+        <source url="https://discuss.redash.io/t/upgrade-v8-v10-fails-on-docker-compose-up-force-recreate-build-on-gcloud/9541.rss">Upgrade V8-V10 fails on &quot;docker-compose up --force-recreate --build&quot; on Gcloud</source>
+      </item>
+  </channel>
+</rss>

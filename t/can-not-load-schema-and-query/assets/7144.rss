@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Can not load schema and query</title>
+    <link>https://discuss.redash.io/t/can-not-load-schema-and-query/7144</link>
+    <description>### Issue Summary
+
+A summary of the issue and the browser/OS environment in which it occurs.
+
+### Technical details:
+
+* Redash Version: 9
+* Browser/OS: Edge
+* How did you install Redash: 
+=====================
+[2020-09-09 04:22:49,296][PID:69][ERROR][redash.app] Exception on /api/jobs/fffd1992-c3bd-48c2-96ac-3c258d07c226 [GET]
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 458, in wrapper
+    resp = resource(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_login/utils.py&quot;, line 261, in decorated_view
+    return func(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/views.py&quot;, line 89, in view
+    return self.dispatch_request(*args, **kwargs)
+  File &quot;/app/redash/handlers/base.py&quot;, line 33, in dispatch_request
+    return super(BaseResource, self).dispatch_request(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 573, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File &quot;/app/redash/handlers/query_results.py&quot;, line 445, in get
+    job = Job.fetch(job_id)
+  File &quot;/usr/local/lib/python3.7/site-packages/rq/job.py&quot;, line 288, in fetch
+    job.refresh()
+  File &quot;/usr/local/lib/python3.7/site-packages/rq/job.py&quot;, line 461, in refresh
+    raise NoSuchJobError(&#39;No such job: {0}&#39;.format(self.key))
+rq.exceptions.NoSuchJobError: No such job: b&#39;rq:job:fffd1992-c3bd-48c2-96ac-3c258d07c226&#39;</description>
+    
+    <lastBuildDate>Mon, 13 Dec 2021 15:41:19 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/can-not-load-schema-and-query/7144.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Can not load schema and query</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for posting your solution! Yes, the Redshift and Postgres query runners have deviated a bit.</p>
+          <p><a href="https://discuss.redash.io/t/can-not-load-schema-and-query/7144/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/can-not-load-schema-and-query/7144/5</link>
+        <pubDate>Mon, 13 Dec 2021 15:41:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7144-5</guid>
+        <source url="https://discuss.redash.io/t/can-not-load-schema-and-query/7144.rss">Can not load schema and query</source>
+      </item>
+      <item>
+        <title>Can not load schema and query</title>
+        <dc:creator><![CDATA[swaldman]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse,</p>
+<p>We used Docker on a dedicated EC2 instance.  After doing some more investigation, we found two issues - first, in our configuration, we hadn’t assigned the <code>schemas</code> queue to any worker at all, and second, some of our Redshift data sources were incorrectly marked as Postgres (and the schema refresh query for Postgres was modified <a href="https://github.com/getredash/redash/commit/fd76a2ecfb4b14f97df0775384e8784790323d86#diff-678b7772618e090b51957cedfbdc40f08d1b9854fc684aa93c30e72c5292a094R214" rel="noopener nofollow ugc">here</a> to be incompatible with Redshift).</p>
+<p>Our Redash instance now properly refreshes schemas going forward, thank you!</p>
+          <p><a href="https://discuss.redash.io/t/can-not-load-schema-and-query/7144/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/can-not-load-schema-and-query/7144/4</link>
+        <pubDate>Mon, 13 Dec 2021 15:38:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7144-4</guid>
+        <source url="https://discuss.redash.io/t/can-not-load-schema-and-query/7144.rss">Can not load schema and query</source>
+      </item>
+      <item>
+        <title>Can not load schema and query</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>How did you deploy Redash? Are you using kubernetes?</p>
+          <p><a href="https://discuss.redash.io/t/can-not-load-schema-and-query/7144/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/can-not-load-schema-and-query/7144/3</link>
+        <pubDate>Fri, 10 Dec 2021 23:19:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7144-3</guid>
+        <source url="https://discuss.redash.io/t/can-not-load-schema-and-query/7144.rss">Can not load schema and query</source>
+      </item>
+      <item>
+        <title>Can not load schema and query</title>
+        <dc:creator><![CDATA[swaldman]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m getting a similar-looking issue in Redash 10.1 (Docker installation).  Prior to the exception there were several successful GET requests to the exact same endpoint - perhaps a job timeout?<br>
+This is specifically from the Docker logs from <code>redash_server_1</code>.</p>
+          <p><a href="https://discuss.redash.io/t/can-not-load-schema-and-query/7144/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/can-not-load-schema-and-query/7144/2</link>
+        <pubDate>Fri, 10 Dec 2021 18:27:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7144-2</guid>
+        <source url="https://discuss.redash.io/t/can-not-load-schema-and-query/7144.rss">Can not load schema and query</source>
+      </item>
+      <item>
+        <title>Can not load schema and query</title>
+        <dc:creator><![CDATA[zerotn3]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>A summary of the issue and the browser/OS environment in which it occurs.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 9</li>
+<li>Browser/OS: Edge</li>
+<li>How did you install Redash:<br>
+=====================<br>
+[2020-09-09 04:22:49,296][PID:69][ERROR][redash.app] Exception on /api/jobs/fffd1992-c3bd-48c2-96ac-3c258d07c226 [GET]<br>
+Traceback (most recent call last):<br>
+File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1949, in full_dispatch_request<br>
+rv = self.dispatch_request()<br>
+File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1935, in dispatch_request<br>
+return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 458, in wrapper<br>
+resp = resource(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_login/utils.py”, line 261, in decorated_view<br>
+return func(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/views.py”, line 89, in view<br>
+return self.dispatch_request(*args, **kwargs)<br>
+File “/app/redash/handlers/base.py”, line 33, in dispatch_request<br>
+return super(BaseResource, self).dispatch_request(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 573, in dispatch_request<br>
+resp = meth(*args, **kwargs)<br>
+File “/app/redash/handlers/query_results.py”, line 445, in get<br>
+job = Job.fetch(job_id)<br>
+File “/usr/local/lib/python3.7/site-packages/rq/job.py”, line 288, in fetch<br>
+job.refresh()<br>
+File “/usr/local/lib/python3.7/site-packages/rq/job.py”, line 461, in refresh<br>
+raise NoSuchJobError(‘No such job: {0}’.format(self.key))<br>
+rq.exceptions.NoSuchJobError: No such job: b’rq:job:fffd1992-c3bd-48c2-96ac-3c258d07c226’</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/can-not-load-schema-and-query/7144/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/can-not-load-schema-and-query/7144/1</link>
+        <pubDate>Wed, 09 Sep 2020 04:23:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7144-1</guid>
+        <source url="https://discuss.redash.io/t/can-not-load-schema-and-query/7144.rss">Can not load schema and query</source>
+      </item>
+  </channel>
+</rss>

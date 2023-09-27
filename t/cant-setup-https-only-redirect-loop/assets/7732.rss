@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Can&#39;t setup HTTPS only: redirect loop</title>
+    <link>https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732</link>
+    <description>### Issue Summary
+
+Hi,
+
+First a big thanks to the whole community for this great piece of Open Source software. :+1: 
+
+So, I&#39;m trying to run Redash in Docker listening to HTTPS **only**. But the setup below creates an infinite redirect loop when hitting the index page.
+
+**docker-compose.yml:** (stripped)
+
+```yaml
+services:
+    redash_nginx_https:
+        image: nginx:latest
+        ports:
+            - &quot;443:443&quot;
+        links:
+            - redash_server:redash
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - # certificate files
+
+    redash_server:
+        image: redash/redash:8.0.2.b37747
+        command: server
+        environment:
+            REDASH_LOG_LEVEL: DEBUG
+            REDASH_ENFORCE_HTTPS: 1
+            REDASH_HOST: my_domain_name
+            REDASH_SECRET_KEY: (...)
+```
+
+**nginx.conf:** (stripped)
+
+```
+server {
+    listen 443 ssl;
+    server_name my_domain_name;
+
+    # SSL configuration
+
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+        proxy_pass http://redash:5000;
+    }
+}
+```
+
+**Issue reproduction:**
+
+```
+$ curl -I https://my_domain_name/
+HTTP/1.1 302 FOUND
+Location: https://my_domain_name/  # -&gt; infinite redirect loop
+```
+
+Redash server logs show no traffic, however I am quite sure it is responsible for the redirect loop because the request hangs if I stop the redash_server container.
+
+**Also, I tried:**
+
+- Disabling `REDASH_ENFORCE_HTTPS`: hitting https://my_domain_name/ redirects 302 to http://my_domain/login?next=(...) . Expected, but not what I need.
+- Setting `REDASH_HOST` to https://my_domain_name (with the scheme). Same issue.
+
+### Technical details:
+
+* Redash Version: 8.0.2.b37747
+* How did you install Redash: self-hosted, Docker</description>
+    
+    <lastBuildDate>Tue, 17 Aug 2021 18:17:07 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Can&#39;t setup HTTPS only: redirect loop</title>
+        <dc:creator><![CDATA[anirudhbagri]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/rkz">@rkz</a>,<br>
+I am facing the same issue of TOO_MANY_REDIRECTS…</p>
+<p>Can you help me with similar configuration for apache?<br>
+I am using apache for reverse proxy.</p>
+          <p><a href="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/4</link>
+        <pubDate>Tue, 17 Aug 2021 18:17:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7732-4</guid>
+        <source url="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732.rss">Can&#39;t setup HTTPS only: redirect loop</source>
+      </item>
+      <item>
+        <title>Can&#39;t setup HTTPS only: redirect loop</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks so much for sharing this. I was struggling to figure it out myself.</p>
+          <p><a href="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/3</link>
+        <pubDate>Tue, 22 Dec 2020 16:23:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7732-3</guid>
+        <source url="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732.rss">Can&#39;t setup HTTPS only: redirect loop</source>
+      </item>
+      <item>
+        <title>Can&#39;t setup HTTPS only: redirect loop</title>
+        <dc:creator><![CDATA[rkz]]></dc:creator>
+        <description><![CDATA[
+            <p>OK, solved it <img src="https://emoji.discourse-cdn.com/twitter/blush.png?v=9" title=":blush:" class="emoji" alt=":blush:"></p>
+<p>Redash needs the reverse-proxy to pass the original host in the <code>X-Forwarded-Host</code> header, not <code>Host</code>.</p>
+<p>Working nginx configuration:</p>
+<pre><code class="lang-auto">server {
+    listen 443 default ssl;
+
+    # SSL certificates
+
+    location / {
+        proxy_pass http://redash_server:5000;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+}
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/2</link>
+        <pubDate>Sun, 20 Dec 2020 16:37:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7732-2</guid>
+        <source url="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732.rss">Can&#39;t setup HTTPS only: redirect loop</source>
+      </item>
+      <item>
+        <title>Can&#39;t setup HTTPS only: redirect loop</title>
+        <dc:creator><![CDATA[rkz]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>Hi,</p>
+<p>First a big thanks to the whole community for this great piece of Open Source software. <img src="https://emoji.discourse-cdn.com/twitter/+1.png?v=9" title=":+1:" class="emoji" alt=":+1:"></p>
+<p>So, I’m trying to run Redash in Docker listening to HTTPS <strong>only</strong>. But the setup below creates an infinite redirect loop when hitting the index page.</p>
+<p><strong>docker-compose.yml:</strong> (stripped)</p>
+<pre><code class="lang-auto">services:
+    redash_nginx_https:
+        image: nginx:latest
+        ports:
+            - "443:443"
+        links:
+            - redash_server:redash
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - # certificate files
+
+    redash_server:
+        image: redash/redash:8.0.2.b37747
+        command: server
+        environment:
+            REDASH_LOG_LEVEL: DEBUG
+            REDASH_ENFORCE_HTTPS: 1
+            REDASH_HOST: my_domain_name
+            REDASH_SECRET_KEY: (...)
+</code></pre>
+<p><strong>nginx.conf:</strong> (stripped)</p>
+<pre><code class="lang-auto">server {
+    listen 443 ssl;
+    server_name my_domain_name;
+
+    # SSL configuration
+
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+        proxy_pass http://redash:5000;
+    }
+}
+</code></pre>
+<p><strong>Issue reproduction:</strong></p>
+<pre><code class="lang-auto">$ curl -I https://my_domain_name/
+HTTP/1.1 302 FOUND
+Location: https://my_domain_name/  # -&gt; infinite redirect loop
+</code></pre>
+<p>Redash server logs show no traffic, however I am quite sure it is responsible for the redirect loop because the request hangs if I stop the redash_server container.</p>
+<p><strong>Also, I tried:</strong></p>
+<ul>
+<li>Disabling <code>REDASH_ENFORCE_HTTPS</code>: hitting https://my_domain_name/ redirects 302 to http://my_domain/login?next=(…) . Expected, but not what I need.</li>
+<li>Setting <code>REDASH_HOST</code> to https://my_domain_name (with the scheme). Same issue.</li>
+</ul>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.2.b37747</li>
+<li>How did you install Redash: self-hosted, Docker</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732/1</link>
+        <pubDate>Sat, 19 Dec 2020 18:28:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7732-1</guid>
+        <source url="https://discuss.redash.io/t/cant-setup-https-only-redirect-loop/7732.rss">Can&#39;t setup HTTPS only: redirect loop</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+    <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758</link>
+    <description>I&#39;ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at https://getredash.github.io/contrib-helm-chart/  This is using an external postgres for storage.
+
+This has all been going well, I set up a couple of data sources and lots and lots of queries on them.
+
+However the last time I tried to reinstall from the helm chart it repeatedly timed out.  I eventually traced this to a problem with how the secrets were being generated - updating all the keys to new, good values, then meant redash came back up again.
+
+The problem now is that whenever I try to do anything involving a Data Source, redash throws an &quot;Internal Server Error&quot; message.  This means if I click through to view results from a query, or even if I go to Settings.
+
+Looking in the main redash pod&#39;s log I see the following error
+
+```
+File &quot;/usr/local/lib/python3.7/site-packages/cryptography/hazmat/backends/openssl/hmac.py&quot;, line 74, in verify
+    raise InvalidSignature(&quot;Signature did not match digest.&quot;)
+```
+
+I&#39;ve tried re-running the helm with various permutations of the secrets used when I was trying to fix the previous bug but have not had any success.  I&#39;ve also tried the &quot;default&quot; key mentioned in the forums here, and still see the error above.
+
+Is there any way I can
+A) manage to fix my current instance so that it can see the existing data sources again?
+
+Failing that is there any way I can
+B) at least fix my data source state so that redash can allow me to edit them (without losing the queries associated with them)
+
+And failing that even is there anything else I can try to get things running again without losing all the query and dashboard data?</description>
+    
+    <lastBuildDate>Fri, 03 Mar 2023 13:32:10 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+        <dc:creator><![CDATA[abcddcba]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,</p>
+<p>I got stuck in step 3, because the delete still fails even after modification. I suspect my changes are not taken into account for some reason, I don’t know if you have an idea maybe ?</p>
+<p>I opened an issue with more details, if needed <a href="https://discuss.redash.io/t/requests-fail-with-cryptography-exceptions-invalidsignature-signature-did-not-match-digest/11655" class="inline-onebox">Requests fail with cryptography.exceptions.InvalidSignature: Signature did not match digest</a></p>
+          <p><a href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/6</link>
+        <pubDate>Fri, 03 Mar 2023 13:32:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10758-6</guid>
+        <source url="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss">&quot;Signature did not match digest&quot; causing 500s after using helm chart</source>
+      </item>
+      <item>
+        <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+        <dc:creator><![CDATA[smee]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks Jesse, I really appreciate the detail on how to do this.</p>
+<p>I’ve been away since the last message and in my absence one of my colleagues managed to fix the problem (I had pointed them to this thread).  We apparently had another instance of redash which happened to be pointing to the same database, and we were able to use the secret key which was still available there to restore the data.</p>
+<p>This means I’ve been unable to confirm whether or not your steps above would have fixed the problem.  Can I ask if anyone else comes to the thread and performs the steps above that they add a comment just letting the community know that this has worked for them?</p>
+<p>Thanks again Jesse for all the support on this.</p>
+          <p><a href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/5</link>
+        <pubDate>Mon, 25 Jul 2022 06:53:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10758-5</guid>
+        <source url="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss">&quot;Signature did not match digest&quot; causing 500s after using helm chart</source>
+      </item>
+      <item>
+        <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The procedure is going to be a little complicated. You will need to manually connect to your postgres instance and also run commands using the Redash CLI. It should go without saying that you should back up your postgres database before attempting this. I had to experiment for awhile before I found a way to make this work.</p>
+<p><strong>Note</strong>: I’m using regular Docker-Compose. k8s is not (yet) officially supported for Redash. You will need to adapt these commands to your environment.</p>
+<h3>
+<a name="step-1-connect-to-postgres-1" class="anchor" href="https://discuss.redash.io#step-1-connect-to-postgres-1"></a>Step 1: Connect to Postgres</h3>
+<pre><code class="lang-bash">docker-compose exec postgres psql -U postgres     
+</code></pre>
+<p>Run</p>
+<pre><code class="lang-auto">select id, name from data_sources
+</code></pre>
+<p>This will list your existing data sources. Only the <code>id</code> and <code>name</code> fields are readable. Write down all of the <code>name</code> and <code>id</code> values.  Everything else is encrypted with a key that you’ve since lost. Our end goal is to replace these data sources with new ones.</p>
+<h3>
+<a name="step-2-modify-redash-cli-source-2" class="anchor" href="https://discuss.redash.io#step-2-modify-redash-cli-source-2"></a>Step 2: modify Redash CLI source</h3>
+<p>You need to modify <code>redash &gt; cli &gt; data_sources.py</code>. On line 183 the <code>delete()</code> method is defined. Make it look like the following:</p>
+<pre><code class="lang-python">def delete(name, organization="default"):
+    """Delete data source by name."""
+
+    from sqlalchemy.orm import load_only
+    try:
+        org = models.Organization.get_by_slug(organization)
+        data_source = models.DataSource.query.filter(
+            models.DataSource.name == name, models.DataSource.org == org
+        ).options(load_only(models.DataSource.id)).one()
+        print("Deleting data source: {} (id={})".format(name, data_source.id))
+        models.db.session.delete(data_source)
+        models.db.session.commit()
+    except NoResultFound:
+        print("Couldn't find data source named: {}".format(name))
+        exit(1)
+</code></pre>
+<p>The only change here is to add a call to <code>.options()</code> in the ORM call so that the CLI doesn’t attempt to load the entire object prior to deletion. Without this change, the CLI crash because it can’t decrypt the data source options fields. This is the same problem that happens when you try loading the data sources settings screen.</p>
+<p>By calling <code>load_only()</code> we limit SQLAlchemy to pulling a field that it doesn’t need to decrypt.</p>
+<p><strong>Follow-up item for me: open a pull request to add this to <code>master</code>.</strong></p>
+<h3>
+<a name="step-3-call-redash-cli-to-delete-data-sources-3" class="anchor" href="https://discuss.redash.io#step-3-call-redash-cli-to-delete-data-sources-3"></a>Step 3: Call Redash CLI to delete data sources</h3>
+<p>For each <code>name</code> you wrote down in step 1, execute the CLI data source delete command.</p>
+<pre><code class="lang-bash">docker-compose run --rm server manage ds delete "&lt;name of data source&gt;"
+</code></pre>
+<h3>
+<a name="step-4-create-new-data-sources-in-web-application-4" class="anchor" href="https://discuss.redash.io#step-4-create-new-data-sources-in-web-application-4"></a>Step 4: Create new data sources in web application</h3>
+<p>You can now reload the data source settings screen in Redash and create new ones. Take note of the new data source id that appears in your URL bar after you press save. Figure out which new data source id maps to the old id that we collected in step 1 and deleted in step 3.</p>
+<h3>
+<a name="step-5-update-queries-table-with-new-data_source_ids-5" class="anchor" href="https://discuss.redash.io#step-5-update-queries-table-with-new-data_source_ids-5"></a>Step 5: Update <code>queries</code> table with new <code>data_source_id</code>’s</h3>
+<p>In your terminal window from step 1, run SQL commands to update the <code>data_source_id</code> for your queries according to the mapping from step 4.</p>
+<p>For example if you delete data source <code>21</code> and replaced it with data source <code>29</code>, you can reassign all the queries like this:</p>
+<pre><code class="lang-sql">update queries set data_source_id = 29 where data_source_id = 21
+</code></pre>
+<hr>
+<p>After this, your queries will be visible and should execute like normal.</p>
+          <p><a href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/4</link>
+        <pubDate>Mon, 18 Jul 2022 15:45:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10758-4</guid>
+        <source url="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss">&quot;Signature did not match digest&quot; causing 500s after using helm chart</source>
+      </item>
+      <item>
+        <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+        <dc:creator><![CDATA[smee]]></dc:creator>
+        <description><![CDATA[
+            <p>OK, thanks for the reply Jesse.</p>
+<p>How would I go about recreating the data sources?  Everything in redash’s UI throws an internal error whenever I get close to data source management.  Is there some example code (postgres presumably) which I could use to clean out the existing ones so I can start adding new ones and get the environment back to the point I can add data sources again?</p>
+          <p><a href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/3</link>
+        <pubDate>Fri, 15 Jul 2022 06:45:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10758-3</guid>
+        <source url="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss">&quot;Signature did not match digest&quot; causing 500s after using helm chart</source>
+      </item>
+      <item>
+        <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Oooooph.</p>
+<p>If you blew away the secrets used when you created the data sources then anything encrypted with those secrets is permanently unrecoverable. In this case that’s the data source configurations. Redash encrypts it because that’s where your database passwords are held (can’t be in plain text).</p>
+<p>The good news is your queries will be fine. Just recreate your data sources, get their id’s and do a mass update of the queries table to set them to use a new data source ID.</p>
+          <p><a href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/2</link>
+        <pubDate>Thu, 14 Jul 2022 21:34:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10758-2</guid>
+        <source url="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss">&quot;Signature did not match digest&quot; causing 500s after using helm chart</source>
+      </item>
+      <item>
+        <title>&quot;Signature did not match digest&quot; causing 500s after using helm chart</title>
+        <dc:creator><![CDATA[smee]]></dc:creator>
+        <description><![CDATA[
+            <p>I’ve been experimenting with Redash on a local kubernetes cluster using the community helm chart at <a href="https://getredash.github.io/contrib-helm-chart/" rel="noopener nofollow ugc">https://getredash.github.io/contrib-helm-chart/</a>  This is using an external postgres for storage.</p>
+<p>This has all been going well, I set up a couple of data sources and lots and lots of queries on them.</p>
+<p>However the last time I tried to reinstall from the helm chart it repeatedly timed out.  I eventually traced this to a problem with how the secrets were being generated - updating all the keys to new, good values, then meant redash came back up again.</p>
+<p>The problem now is that whenever I try to do anything involving a Data Source, redash throws an “Internal Server Error” message.  This means if I click through to view results from a query, or even if I go to Settings.</p>
+<p>Looking in the main redash pod’s log I see the following error</p>
+<pre><code class="lang-auto">File "/usr/local/lib/python3.7/site-packages/cryptography/hazmat/backends/openssl/hmac.py", line 74, in verify
+    raise InvalidSignature("Signature did not match digest.")
+</code></pre>
+<p>I’ve tried re-running the helm with various permutations of the secrets used when I was trying to fix the previous bug but have not had any success.  I’ve also tried the “default” key mentioned in the forums here, and still see the error above.</p>
+<p>Is there any way I can<br>
+A) manage to fix my current instance so that it can see the existing data sources again?</p>
+<p>Failing that is there any way I can<br>
+B) at least fix my data source state so that redash can allow me to edit them (without losing the queries associated with them)</p>
+<p>And failing that even is there anything else I can try to get things running again without losing all the query and dashboard data?</p>
+          <p><a href="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/1</link>
+        <pubDate>Thu, 14 Jul 2022 07:36:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10758-1</guid>
+        <source url="https://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758.rss">&quot;Signature did not match digest&quot; causing 500s after using helm chart</source>
+      </item>
+  </channel>
+</rss>

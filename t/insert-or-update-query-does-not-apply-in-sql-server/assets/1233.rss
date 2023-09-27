@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>INSERT or UPDATE query does not apply in SQL Server</title>
+    <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233</link>
+    <description>Hi - We&#39;ve just recently created an on-premise instance of Redash and have established connection to our SQL Server databases. Created a query that performs an update of a column to a row in one of our tables in the database with an OUTPUT clause to see if changes were applied. It seems to have executed the query successfully but upon checking the table again, the row updated remains unchanged. Executed the update query a couple of times more and it&#39;s still showing same original value. I&#39;ve also tested same query in SSMS and it was successful in updating the row. Is this a limitation in Redash not being able to commit DML queries?
+
+![image|689x250](upload://h1EYI6U9i8wWZnCvnZuBXbML3Ws.png)</description>
+    
+    <lastBuildDate>Tue, 21 Jun 2022 16:17:40 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Maintainer here.</p>
+<aside class="quote no-group" data-username="Marlon" data-post="10" data-topic="1233">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/8c91f0/40.png" class="avatar"> Marlon:</div>
+<blockquote>
+<p>would need to find another way as we need this to work for our case.</p>
+</blockquote>
+</aside>
+<p>Your custom query runner for V8 should work as-is with V10 as well. If you find it <em>doesn’t</em> work please make some noise about it so we can investigate.</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/11</link>
+        <pubDate>Tue, 21 Jun 2022 16:17:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-11</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[Marlon]]></dc:creator>
+        <description><![CDATA[
+            <p>That is pretty much what we did really. Note that we are still in v8. We haven’t tried the same solution for v10 so if you’re using the latest version, we can’t guarantee it will work the same. We are in the process of upgrading to v10 and will also apply the same custom code. Let you know if it works or if not, we would need to find another way as we need this to work for our case.</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/10</link>
+        <pubDate>Mon, 20 Jun 2022 10:04:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-10</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[prasadjella1619]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/marlon">@Marlon</a>  Thanks for the update… I did added the changes(connection.commit()) in the msssql.py in the redash/redash docker container, restarted the container to take the changes and tried executing those dml commands, but still it isn’t working.</p>
+<p>am i missing something here ?</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/9</link>
+        <pubDate>Mon, 20 Jun 2022 06:50:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-9</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[Marlon]]></dc:creator>
+        <description><![CDATA[
+            <p>We had to customize the mssql query runner and use explicit transaction. Our pull request above would show the change we made.</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/8</link>
+        <pubDate>Sun, 19 Jun 2022 19:48:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-8</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[prasadjella1619]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m facing this issue with mssql datasource… inserts, updates and deletes are not working… Same are working in Cassandra datasource.</p>
+<p>Can you please help what all changes are required and where to do the changes to get the mssql datasource to work with dml queries</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/7</link>
+        <pubDate>Fri, 17 Jun 2022 19:10:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-7</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[Marlon]]></dc:creator>
+        <description><![CDATA[
+            <p>Made this work on our side by doing this:</p>
+<aside class="onebox githubpullrequest">
+  <header class="source">
+      <a href="https://github.com/getredash/redash/pull/2538" target="_blank" rel="nofollow noopener">github.com/getredash/redash</a>
+  </header>
+  <article class="onebox-body">
+      <a href="https://github.com/mattdjones" target="_blank" rel="nofollow noopener">
+    <img alt="mattdjones" src="https://avatars2.githubusercontent.com/u/6902528?v=4" class="thumbnail onebox-avatar" width="90" height="90">
+  </a>
+
+<h4>
+  <a href="https://github.com/getredash/redash/pull/2538" target="_blank" rel="nofollow noopener">MsSql query_runner: Commit the transaction for inserts &amp; Updates</a>
+</h4>
+
+<div class="date">
+  by <a href="https://github.com/mattdjones" target="_blank" rel="nofollow noopener">mattdjones</a>
+  on <a href="https://github.com/getredash/redash/pull/2538" target="_blank" rel="nofollow noopener">02:05AM - 16 May 18 UTC</a>
+</div>
+
+<div class="github-commit-stats">
+  <strong>1 commits</strong>
+  changed <strong>1 files</strong>
+  with <strong>1 additions</strong>
+  and <strong>0 deletions</strong>.
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/6</link>
+        <pubDate>Wed, 28 Nov 2018 18:36:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-6</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[manish]]></dc:creator>
+        <description><![CDATA[
+            <p>I want to update the name in the user table as following but its not working please suggest.</p>
+<p><strong>update users set name=“analytics123” where id=5</strong></p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/5</link>
+        <pubDate>Wed, 28 Nov 2018 11:51:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-5</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[Marlon]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks <a class="mention" href="https://discuss.redash.io/u/arikfr">@arikfr</a> for the idea. Made this work after adding a commit line before closing the connection in the query runner.</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/4</link>
+        <pubDate>Thu, 30 Nov 2017 00:41:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-4</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[Marlon]]></dc:creator>
+        <description><![CDATA[
+            <p>Added the same code to an explicit transaction and commit… unfortunately, the same result. Changes still not applied on the database.</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/3</link>
+        <pubDate>Tue, 14 Nov 2017 23:11:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-3</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Maybe you need to commit the transaction?</p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/2</link>
+        <pubDate>Tue, 14 Nov 2017 09:16:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-2</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+      <item>
+        <title>INSERT or UPDATE query does not apply in SQL Server</title>
+        <dc:creator><![CDATA[Marlon]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi - We’ve just recently created an on-premise instance of Redash and have established connection to our SQL Server databases. Created a query that performs an update of a column to a row in one of our tables in the database with an OUTPUT clause to see if changes were applied. It seems to have executed the query successfully but upon checking the table again, the row updated remains unchanged. Executed the update query a couple of times more and it’s still showing same original value. I’ve also tested same query in SSMS and it was successful in updating the row. Is this a limitation in Redash not being able to commit DML queries?</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/775505cdcf1211e95714c372bf56fce5612da89c.png" data-download-href="/uploads/short-url/h1EYI6U9i8wWZnCvnZuBXbML3Ws.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/775505cdcf1211e95714c372bf56fce5612da89c_2_689x250.png" alt="image" data-base62-sha1="h1EYI6U9i8wWZnCvnZuBXbML3Ws" width="689" height="250" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/775505cdcf1211e95714c372bf56fce5612da89c_2_689x250.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/775505cdcf1211e95714c372bf56fce5612da89c_2_1033x375.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/775505cdcf1211e95714c372bf56fce5612da89c.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/775505cdcf1211e95714c372bf56fce5612da89c_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233/1</link>
+        <pubDate>Mon, 13 Nov 2017 19:15:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1233-1</guid>
+        <source url="https://discuss.redash.io/t/insert-or-update-query-does-not-apply-in-sql-server/1233.rss">INSERT or UPDATE query does not apply in SQL Server</source>
+      </item>
+  </channel>
+</rss>

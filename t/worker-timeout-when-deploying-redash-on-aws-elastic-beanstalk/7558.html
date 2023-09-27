@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Worker timeout when deploying Redash on AWS elastic beanstalk</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/worker-timeout-when-deploying-redash-on-aws-elastic-beanstalk/7558">Worker timeout when deploying Redash on AWS elastic beanstalk</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Worker timeout when deploying Redash on AWS elastic beanstalk" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/tanuj99.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/tanuj99_avatar.png" tabindex="-1" width="48"/><span itemprop="name">tanuj99</span></a>
+</span>
+<link href="https://discuss.redash.io/t/worker-timeout-when-deploying-redash-on-aws-elastic-beanstalk/7558" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-13T12:05:09Z" itemprop="datePublished">
+                    November 13, 2020, 12:05pm
+                  </time>
+<meta content="2020-11-13T12:05:09Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<h3>Issue Summary</h3>
+<p>Getting the following error in the elastic beanstalk logs : <code>var/log/containers/redash</code></p>
+<p>Workers are booting up, timing out, exiting in a loop</p>
+<p>When I run it on my local machine it works just fine. I have no clue why it’s not working on the AWS EB</p>
+<pre><code class="lang-auto">[2020-11-13 10:45:16 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+[2020-11-13 10:45:16 +0000] [1] [INFO] Using worker: sync
+[2020-11-13 10:45:16 +0000] [9] [INFO] Booting worker with pid: 9
+[2020-11-13 10:45:16 +0000] [10] [INFO] Booting worker with pid: 10
+[2020-11-13 10:45:16 +0000] [11] [INFO] Booting worker with pid: 11
+[2020-11-13 10:45:16 +0000] [13] [INFO] Booting worker with pid: 13
+[2020-11-13 10:45:30,014][PID:9][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-13 10:45:30,018][PID:10][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-13 10:45:30,027][PID:11][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-13 10:45:30,028][PID:13][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-13 10:45:31,913][PID:9][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-13 10:45:31,933][PID:13][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-13 10:45:31,943][PID:10][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-13 10:45:31,993][PID:11][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-13 10:45:32,694][PID:9][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-13 10:45:32,702][PID:11][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-13 10:45:32,705][PID:10][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-13 10:45:32,734][PID:13][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-13 10:45:32,741][PID:9][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-13 10:45:32,757][PID:11][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-13 10:45:32,769][PID:13][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-13 10:45:32,771][PID:10][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-13 10:45:33,962][PID:13][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-13 10:45:33,968][PID:10][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-13 10:45:33,944][PID:11][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-13 10:45:33,974][PID:13][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-13 10:45:33,987][PID:11][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-13 10:45:33,961][PID:9][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-13 10:45:33,995][PID:10][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-13 10:45:34,000][PID:9][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-13 10:45:34,180][PID:11][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-13 10:45:34,209][PID:9][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-13 10:45:34,221][PID:13][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-13 10:45:34,224][PID:10][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-13 10:45:34,223][PID:11][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-13 10:45:34,240][PID:10][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-13 10:45:34,225][PID:9][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-13 10:45:34,250][PID:13][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-13 10:45:34,483][PID:10][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-13 10:45:34,487][PID:9][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-13 10:45:34,510][PID:11][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-13 10:45:34,516][PID:13][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-13 10:45:34,520][PID:10][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-13 10:45:34,520][PID:9][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-13 10:45:34,520][PID:13][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-13 10:45:34,521][PID:13][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-13 10:45:34,522][PID:10][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-13 10:45:34,522][PID:9][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-13 10:45:34,521][PID:11][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-13 10:45:34,525][PID:11][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-13 10:45:34,526][PID:13][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-13 10:45:34,527][PID:11][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-13 10:45:34,529][PID:9][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-13 10:45:34,530][PID:10][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-13 10:45:37,559][PID:11][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-13 10:45:37,560][PID:10][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-13 10:45:37,561][PID:9][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-13 10:45:37,561][PID:13][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-13 10:45:37,574][PID:10][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-13 10:45:37,578][PID:9][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-13 10:45:37,581][PID:11][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-13 10:45:37,582][PID:9][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-13 10:45:37,581][PID:10][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-13 10:45:37,582][PID:13][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-13 10:45:37,583][PID:11][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-13 10:45:37,583][PID:13][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-13 10:45:37,596][PID:10][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-13 10:45:37,597][PID:9][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-13 10:45:37,597][PID:11][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-13 10:45:37,598][PID:13][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-13 10:45:37,654][PID:13][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-13 10:45:37,656][PID:11][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-13 10:45:37,658][PID:10][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-13 10:45:37,659][PID:9][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-13 10:45:37,803][PID:11][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-13 10:45:37,805][PID:10][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-13 10:45:37,805][PID:9][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-13 10:45:37,806][PID:13][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-13 10:45:37,806][PID:11][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-13 10:45:37,806][PID:13][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-13 10:45:37,806][PID:10][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-13 10:45:37,808][PID:13][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-13 10:45:37,808][PID:10][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-13 10:45:37,807][PID:9][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-13 10:45:37,808][PID:11][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-13 10:45:37,809][PID:9][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-13 10:45:38,123][PID:11][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-13 10:45:38,124][PID:10][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-13 10:45:38,125][PID:13][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-13 10:45:38,126][PID:9][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-13 10:45:38,365][PID:11][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-13 10:45:38,367][PID:10][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-13 10:45:38,367][PID:13][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-13 10:45:38,368][PID:9][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-13 10:45:38,373][PID:11][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-13 10:45:38,375][PID:13][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-13 10:45:38,377][PID:9][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-13 10:45:38,378][PID:10][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-13 10:45:38,533][PID:9][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-13 10:45:38,534][PID:13][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-13 10:45:38,535][PID:11][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-13 10:45:38,536][PID:10][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-13 10:45:38,536][PID:13][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-13 10:45:38,537][PID:11][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-13 10:45:38,537][PID:9][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-13 10:45:38,536][PID:10][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-13 10:45:38,543][PID:11][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-13 10:45:38,546][PID:10][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-13 10:45:38,546][PID:13][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-13 10:45:38,547][PID:9][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-13 10:45:38,741][PID:13][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-13 10:45:38,742][PID:10][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-13 10:45:38,743][PID:11][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-13 10:45:38,743][PID:9][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-13 10:45:38,795][PID:10][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-13 10:45:38,796][PID:13][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-13 10:45:38,797][PID:9][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-13 10:45:38,797][PID:11][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-13 10:45:39,632][PID:13][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-13 10:45:39,633][PID:9][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-13 10:45:39,634][PID:11][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-13 10:45:39,635][PID:10][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-13 10:45:39,721][PID:11][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-13 10:45:39,722][PID:9][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-13 10:45:39,723][PID:13][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-13 10:45:39,724][PID:10][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-13 10:45:39,741][PID:9][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-13 10:45:39,743][PID:13][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-13 10:45:39,745][PID:10][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-13 10:45:39,744][PID:11][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-13 10:45:40,570][PID:11][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-13 10:45:40,572][PID:13][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-13 10:45:40,573][PID:9][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-13 10:45:40,574][PID:10][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-13 10:45:40,586][PID:13][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-13 10:45:40,587][PID:11][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-13 10:45:40,587][PID:9][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-13 10:45:40,588][PID:10][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-13 10:45:40,591][PID:13][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-13 10:45:40,594][PID:9][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-13 10:45:40,597][PID:11][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-13 10:45:40,598][PID:10][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-13 10:45:40,662][PID:9][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-13 10:45:40,663][PID:13][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-13 10:45:40,664][PID:11][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-13 10:45:40,661][PID:10][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-13 10:45:40,664][PID:13][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-13 10:45:40,664][PID:10][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-13 10:45:40,666][PID:9][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-13 10:45:40,664][PID:11][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-13 10:45:40,668][PID:10][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-13 10:45:40,669][PID:11][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-13 10:45:40,669][PID:13][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-13 10:45:40,670][PID:9][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-13 10:45:40,798][PID:11][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-13 10:45:40,801][PID:13][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-13 10:45:40,800][PID:10][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-13 10:45:40,803][PID:9][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-13 10:45:41,199][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7f17899b7328&gt;
+[2020-11-13 10:45:41,202][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7f17899bf328&gt;
+[2020-11-13 10:45:41,204][PID:9][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7f17899b7390&gt;
+[2020-11-13 10:45:41,206][PID:13][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7f17899b7328&gt;
+[2020-11-13 10:45:41,207][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,207][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,208][PID:9][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,207][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,209][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,208][PID:9][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,209][PID:13][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:41,210][PID:13][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-13 10:45:44,014][PID:13][DEBUG][redash.query_runner] Registering Query Results (results) query runner.
+[2020-11-13 10:45:44,014][PID:11][DEBUG][redash.query_runner] Registering Query Results (results) query runner.
+[2020-11-13 10:45:44,011][PID:10][DEBUG][redash.query_runner] Registering Query Results (results) query runner.
+[2020-11-13 10:45:44,016][PID:9][DEBUG][redash.query_runner] Registering Query Results (results) query runner.
+[2020-11-13 10:45:44,082][PID:11][DEBUG][redash.query_runner] Registering Prometheus (prometheus) query runner.
+[2020-11-13 10:45:44,083][PID:13][DEBUG][redash.query_runner] Registering Prometheus (prometheus) query runner.
+[2020-11-13 10:45:44,086][PID:9][DEBUG][redash.query_runner] Registering Prometheus (prometheus) query runner.
+[2020-11-13 10:45:44,086][PID:10][DEBUG][redash.query_runner] Registering Prometheus (prometheus) query runner.
+[2020-11-13 10:45:44,462][PID:11][DEBUG][redash.query_runner] Registering Qubole (qubole) query runner.
+[2020-11-13 10:45:44,463][PID:13][DEBUG][redash.query_runner] Registering Qubole (qubole) query runner.
+[2020-11-13 10:45:44,465][PID:10][DEBUG][redash.query_runner] Registering Qubole (qubole) query runner.
+[2020-11-13 10:45:44,466][PID:9][DEBUG][redash.query_runner] Registering Qubole (qubole) query runner.
+[2020-11-13 10:45:45,947][PID:11][DEBUG][redash.query_runner] Registering DB2 (db2) query runner.
+[2020-11-13 10:45:45,947][PID:9][DEBUG][redash.query_runner] Registering DB2 (db2) query runner.
+[2020-11-13 10:45:45,947][PID:13][DEBUG][redash.query_runner] Registering DB2 (db2) query runner.
+[2020-11-13 10:45:45,947][PID:10][DEBUG][redash.query_runner] Registering DB2 (db2) query runner.
+[2020-11-13 10:45:46,069][PID:9][DEBUG][redash.query_runner] Registering Druid (druid) query runner.
+[2020-11-13 10:45:46,071][PID:10][DEBUG][redash.query_runner] Registering Druid (druid) query runner.
+[2020-11-13 10:45:46,073][PID:11][DEBUG][redash.query_runner] Registering Druid (druid) query runner.
+[2020-11-13 10:45:46,075][PID:13][DEBUG][redash.query_runner] Registering Druid (druid) query runner.
+[2020-11-13 10:45:46,082][PID:10][DEBUG][redash.query_runner] Registering Kylin (kylin) query runner.
+[2020-11-13 10:45:46,084][PID:11][DEBUG][redash.query_runner] Registering Kylin (kylin) query runner.
+[2020-11-13 10:45:46,086][PID:13][DEBUG][redash.query_runner] Registering Kylin (kylin) query runner.
+[2020-11-13 10:45:46,087][PID:9][DEBUG][redash.query_runner] Registering Kylin (kylin) query runner.
+[2020-11-13 10:45:46,093][PID:10][DEBUG][redash.query_runner] Registering Apache Drill (drill) query runner.
+[2020-11-13 10:45:46,095][PID:11][DEBUG][redash.query_runner] Registering Apache Drill (drill) query runner.
+[2020-11-13 10:45:46,097][PID:9][DEBUG][redash.query_runner] Registering Apache Drill (drill) query runner.
+[2020-11-13 10:45:46,103][PID:13][DEBUG][redash.query_runner] Registering Apache Drill (drill) query runner.
+[2020-11-13 10:45:46,246][PID:9][DEBUG][redash.query_runner] Registering Uptycs (uptycs) query runner.
+[2020-11-13 10:45:46,246][PID:10][DEBUG][redash.query_runner] Registering Uptycs (uptycs) query runner.
+[2020-11-13 10:45:46,247][PID:13][DEBUG][redash.query_runner] Registering Uptycs (uptycs) query runner.
+[2020-11-13 10:45:46,247][PID:11][DEBUG][redash.query_runner] Registering Uptycs (uptycs) query runner.
+[2020-11-13 10:45:46,483][PID:13][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp
+[2020-11-13 10:45:46,478][PID:9][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp
+[2020-11-13 10:45:46,478][PID:10][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp
+[2020-11-13 10:45:46,478][PID:11][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp
+[2020-11-13 10:45:46 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:9)
+[2020-11-13 10:45:47 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:10)
+[2020-11-13 10:45:48 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)
+[2020-11-13 10:45:49 +0000] [10] [INFO] Worker exiting (pid: 10)
+[2020-11-13 10:45:47 +0000] [9] [INFO] Worker exiting (pid: 9)
+</code></pre>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: <code>redash/redash:latest</code> image from docker hub</li>
+<li>Browser/OS: AWS Elastic beanstalk</li>
+<li>How did you install Redash: Uploaded the following Dockerrun.aws.json file in my AWS elastic beanstalk environment.</li>
+</ul>
+<pre><code class="lang-auto">{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "command": [
+                "worker"
+            ],
+            "links": [
+                "postgres",
+                "redis"
+            ],
+            "environment": [
+                {
+                    "name": "QUEUES",
+                    "value": "queries"
+                },
+                {
+                    "name": "WORKERS_COUNT",
+                    "value": "2"
+                },
+                {
+            		"name": "REDASH_DATABASE_URL",
+            		"value": "postgresql://postgres:password@postgres/postgres"
+            	},
+            	{
+            		"name": "POSTGRES_PASSWORD",
+            		"value": "password"
+            	},
+            	{
+            		"name": "REDASH_REDIS_URL",
+            		"value": "redis://redis:6379/0"
+            	},
+            	{
+            		"name": "REDASH_LOG_LEVEL",
+            		"value": "INFO"
+            	},
+            	{
+            		"name": "PYTHONUNBUFFERED",
+            		"value": "0"
+            	}
+            ],
+            "essential": true,
+            "image": "redash/redash:latest",
+            "name": "adhoc_worker",
+            "memory": 128
+        },
+        {
+            "essential": true,
+            "image": "redash/nginx:latest",
+            "links": [
+                "redash"
+            ],
+            "dependsOn": [
+            	{
+            		"containerName": "redash",
+            		"condition": "START"
+            	}
+            ],
+            "name": "nginx",
+            "memory": 128,
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80
+                }
+            ]
+        },
+        {
+            "essential": true,
+            "image": "postgres:9.6-alpine",
+            "name": "postgres",
+            "memory": 128,
+            "environment": [
+            	{
+            		"name": "REDASH_DATABASE_URL",
+            		"value": "postgresql://postgres:password@postgres/postgres"
+            	},
+            	{
+            		"name": "POSTGRES_PASSWORD",
+            		"value": "password"
+            	},
+            	{
+            		"name": "REDASH_REDIS_URL",
+            		"value": "redis://redis:6379/0"
+            	},
+            	{
+            		"name": "REDASH_LOG_LEVEL",
+            		"value": "INFO"
+            	},
+            	{
+            		"name": "PYTHONUNBUFFERED",
+            		"value": "0"
+            	}
+            ]
+        },
+        {
+            "essential": true,
+            "image": "redis:5.0-alpine",
+            "name": "redis",
+            "memory": 128,
+            "environment": [
+                {
+                    "name": "REDASH_DATABASE_URL",
+                    "value": "postgresql://postgres:password@postgres/postgres"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "password"
+                },
+                {
+                    "name": "REDASH_REDIS_URL",
+                    "value": "redis://redis:6379/0"
+                },
+                {
+                    "name": "REDASH_LOG_LEVEL",
+                    "value": "INFO"
+                },
+                {
+                    "name": "PYTHONUNBUFFERED",
+                    "value": "0"
+                }
+            ]
+
+        },
+        {
+            "command": [
+                "worker"
+            ],
+            "links": [
+                "postgres",
+                "redis"
+            ],
+            "environment": [
+                {
+                    "name": "QUEUES",
+                    "value": "scheduled_queries,schemas"
+                },
+                {
+                    "name": "WORKERS_COUNT",
+                    "value": "1"
+                },
+                {
+            		"name": "REDASH_DATABASE_URL",
+            		"value": "postgresql://postgres:password@postgres/postgres"
+            	},
+            	{
+            		"name": "POSTGRES_PASSWORD",
+            		"value": "password"
+            	},
+            	{
+            		"name": "REDASH_REDIS_URL",
+            		"value": "redis://redis:6379/0"
+            	},
+            	{
+            		"name": "REDASH_LOG_LEVEL",
+            		"value": "INFO"
+            	},
+            	{
+            		"name": "PYTHONUNBUFFERED",
+            		"value": "0"
+            	}
+            ],
+            "essential": true,
+            "image": "redash/redash:latest",
+            "name": "scheduled_worker",
+            "memory": 128
+        },
+        {
+            "command": [
+                "scheduler"
+            ],
+            "links": [
+                "postgres",
+                "redis"
+            ],
+            "environment": [
+                {
+                    "name": "QUEUES",
+                    "value": "celery"
+                },
+                {
+                    "name": "WORKERS_COUNT",
+                    "value": "1"
+                },
+                {
+            		"name": "REDASH_DATABASE_URL",
+            		"value": "postgresql://postgres:password@postgres/postgres"
+            	},
+            	{
+            		"name": "POSTGRES_PASSWORD",
+            		"value": "password"
+            	},
+            	{
+            		"name": "REDASH_REDIS_URL",
+            		"value": "redis://redis:6379/0"
+            	},
+            	{
+            		"name": "REDASH_LOG_LEVEL",
+            		"value": "INFO"
+            	},
+            	{
+            		"name": "PYTHONUNBUFFERED",
+            		"value": "0"
+            	}
+            ],
+            "essential": true,
+            "image": "redash/redash:latest",
+            "name": "scheduler",
+            "memory": 128
+        },
+        {
+            "command": [
+                "server"
+            ],
+            "links": [
+                "postgres",
+                "redis"
+            ],
+            "environment": [
+                {
+                    "name": "REDASH_WEB_WORKERS",
+                    "value": "4"
+                },
+                {
+            		"name": "REDASH_DATABASE_URL",
+            		"value": "postgresql://postgres:password@postgres/postgres"
+            	},
+            	{
+            		"name": "POSTGRES_PASSWORD",
+            		"value": "password"
+            	},
+            	{
+            		"name": "REDASH_REDIS_URL",
+            		"value": "redis://redis:6379/0"
+            	},
+            	{
+            		"name": "REDASH_LOG_LEVEL",
+            		"value": "DEBUG"
+            	},
+            	{
+            		"name": "PYTHONUNBUFFERED",
+            		"value": "0"
+                }
+            ],
+            "essential": true,
+            "image": "redash/redash:latest",
+            "name": "redash",
+            "memory": 512,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 5000
+                }
+            ]
+        }
+    ],
+    "family": "",
+    "volumes": []
+}
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/worker-timeout-when-deploying-redash-on-aws-elastic-beanstalk/7558" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-17T16:48:58Z" itemprop="datePublished">
+                    November 17, 2020,  4:48pm
+                  </time>
+<meta content="2020-11-17T16:48:58Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m not sure what causes it. But the snowflake query runner looks like the culprit. If you aren’t using Snowflake, try disabling that query runner and see if the issue persists.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/tanuj99.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/tanuj99_avatar.png" tabindex="-1" width="48"/><span itemprop="name">tanuj99</span></a>
+</span>
+<link href="https://discuss.redash.io/t/worker-timeout-when-deploying-redash-on-aws-elastic-beanstalk/7558" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-17T19:59:09Z" itemprop="datePublished">
+                    November 17, 2020,  7:59pm
+                  </time>
+<meta content="2020-11-17T19:59:09Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/k4s1m">@k4s1m</a> Thank you for your comment.<br/>
+Tried out with - <code>REDASH_DISABLED_QUERY_RUNNERS=redash.query_runner.snowflake</code> . But issue persists.</p>
+<pre><code class="lang-auto">[2020-11-17 19:49:48 +0000] [1] [INFO] Starting gunicorn 19.7.1
+[2020-11-17 19:49:48 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+[2020-11-17 19:49:48 +0000] [1] [INFO] Using worker: sync
+[2020-11-17 19:49:48 +0000] [9] [INFO] Booting worker with pid: 9
+[2020-11-17 19:49:48 +0000] [10] [INFO] Booting worker with pid: 10
+[2020-11-17 19:49:48 +0000] [11] [INFO] Booting worker with pid: 11
+[2020-11-17 19:49:48 +0000] [12] [INFO] Booting worker with pid: 12
+[2020-11-17 19:50:04,552][PID:9][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-17 19:50:04,556][PID:10][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-17 19:50:04,560][PID:12][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-17 19:50:04,560][PID:11][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner.
+[2020-11-17 19:50:07,050][PID:12][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-17 19:50:07,064][PID:11][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-17 19:50:07,068][PID:9][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-17 19:50:07,094][PID:10][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner.
+[2020-11-17 19:50:07,342][PID:12][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-17 19:50:07,356][PID:11][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-17 19:50:07,358][PID:10][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-17 19:50:07,370][PID:11][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-17 19:50:07,376][PID:9][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner.
+[2020-11-17 19:50:07,382][PID:10][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-17 19:50:07,389][PID:12][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-17 19:50:07,385][PID:9][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner.
+[2020-11-17 19:50:08,295][PID:12][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-17 19:50:08,301][PID:10][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-17 19:50:08,303][PID:11][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-17 19:50:08,311][PID:9][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner.
+[2020-11-17 19:50:08,329][PID:11][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-17 19:50:08,332][PID:9][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-17 19:50:08,340][PID:10][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-17 19:50:08,341][PID:12][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner.
+[2020-11-17 19:50:08,586][PID:9][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-17 19:50:08,626][PID:12][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-17 19:50:08,638][PID:11][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-17 19:50:08,639][PID:10][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner.
+[2020-11-17 19:50:08,643][PID:9][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-17 19:50:08,648][PID:11][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-17 19:50:08,649][PID:12][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-17 19:50:08,652][PID:10][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner.
+[2020-11-17 19:50:08,886][PID:10][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-17 19:50:08,902][PID:9][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-17 19:50:08,913][PID:12][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-17 19:50:08,924][PID:11][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner.
+[2020-11-17 19:50:08,927][PID:10][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-17 19:50:08,928][PID:12][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-17 19:50:08,934][PID:11][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-17 19:50:08,928][PID:10][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-17 19:50:08,934][PID:12][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-17 19:50:08,935][PID:11][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-17 19:50:08,935][PID:9][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner.
+[2020-11-17 19:50:08,940][PID:12][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-17 19:50:08,941][PID:10][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-17 19:50:08,940][PID:9][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner.
+[2020-11-17 19:50:08,947][PID:9][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-17 19:50:08,948][PID:11][DEBUG][redash.query_runner] Registering Url (url) query runner.
+[2020-11-17 19:50:12,531][PID:12][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-17 19:50:12,533][PID:11][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-17 19:50:12,534][PID:10][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-17 19:50:12,535][PID:9][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner.
+[2020-11-17 19:50:12,543][PID:12][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-17 19:50:12,558][PID:11][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-17 19:50:12,561][PID:10][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-17 19:50:12,564][PID:9][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner.
+[2020-11-17 19:50:12,565][PID:12][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-17 19:50:12,566][PID:9][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-17 19:50:12,567][PID:11][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-17 19:50:12,568][PID:10][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner.
+[2020-11-17 19:50:12,574][PID:9][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-17 19:50:12,575][PID:12][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-17 19:50:12,577][PID:11][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-17 19:50:12,581][PID:10][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner.
+[2020-11-17 19:50:12,606][PID:10][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-17 19:50:12,609][PID:12][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-17 19:50:12,610][PID:11][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-17 19:50:12,612][PID:9][DEBUG][redash.query_runner] Registering Presto (presto) query runner.
+[2020-11-17 19:50:12,800][PID:9][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-17 19:50:12,803][PID:12][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-17 19:50:12,805][PID:9][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-17 19:50:12,806][PID:12][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-17 19:50:12,805][PID:9][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-17 19:50:12,808][PID:12][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-17 19:50:12,797][PID:10][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-17 19:50:12,810][PID:10][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-17 19:50:12,813][PID:10][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-17 19:50:12,811][PID:11][DEBUG][redash.query_runner] Registering Hive (hive) query runner.
+[2020-11-17 19:50:12,813][PID:11][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner.
+[2020-11-17 19:50:12,816][PID:11][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner.
+[2020-11-17 19:50:13,196][PID:9][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-17 19:50:13,212][PID:12][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-17 19:50:13,213][PID:11][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-17 19:50:13,204][PID:10][DEBUG][redash.query_runner] Registering Impala (impala) query runner.
+[2020-11-17 19:50:13,496][PID:12][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-17 19:50:13,508][PID:10][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-17 19:50:13,510][PID:11][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-17 19:50:13,512][PID:9][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner.
+[2020-11-17 19:50:13,520][PID:11][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-17 19:50:13,525][PID:12][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-17 19:50:13,540][PID:9][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-17 19:50:13,541][PID:10][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner.
+[2020-11-17 19:50:14,076][PID:12][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-17 19:50:14,091][PID:11][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-17 19:50:14,096][PID:9][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-17 19:50:14,102][PID:12][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-17 19:50:14,107][PID:9][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-17 19:50:14,112][PID:12][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-17 19:50:14,107][PID:11][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-17 19:50:14,114][PID:10][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner.
+[2020-11-17 19:50:14,115][PID:11][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-17 19:50:14,120][PID:9][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-17 19:50:14,121][PID:10][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner.
+[2020-11-17 19:50:14,131][PID:10][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner.
+[2020-11-17 19:50:14,246][PID:10][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-17 19:50:14,249][PID:11][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-17 19:50:14,250][PID:12][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-17 19:50:14,250][PID:9][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner.
+[2020-11-17 19:50:14,272][PID:12][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-17 19:50:14,276][PID:11][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-17 19:50:14,279][PID:9][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-17 19:50:14,280][PID:10][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner.
+[2020-11-17 19:50:15,264][PID:12][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-17 19:50:15,266][PID:9][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-17 19:50:15,271][PID:11][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-17 19:50:15,274][PID:10][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner.
+[2020-11-17 19:50:15,292][PID:11][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-17 19:50:15,293][PID:9][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-17 19:50:15,294][PID:12][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-17 19:50:15,296][PID:10][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner.
+[2020-11-17 19:50:15,305][PID:9][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-17 19:50:15,306][PID:12][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-17 19:50:15,308][PID:11][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-17 19:50:15,309][PID:10][DEBUG][redash.query_runner] MemSQL query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2020-11-17 19:50:15,905][PID:12][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-17 19:50:15,914][PID:11][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-17 19:50:15,919][PID:10][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-17 19:50:15,920][PID:9][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner.
+[2020-11-17 19:50:15,925][PID:11][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-17 19:50:15,929][PID:9][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-17 19:50:15,927][PID:12][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-17 19:50:15,931][PID:10][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner.
+[2020-11-17 19:50:15,934][PID:11][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-17 19:50:15,937][PID:9][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-17 19:50:15,938][PID:12][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-17 19:50:15,941][PID:10][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner.
+[2020-11-17 19:50:16,025][PID:12][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-17 19:50:16,026][PID:9][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-17 19:50:16,028][PID:11][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-17 19:50:16,029][PID:10][DEBUG][root] Checking for the appropriate 'python-requests' version...
+[2020-11-17 19:50:16,029][PID:11][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-17 19:50:16,030][PID:12][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-17 19:50:16,029][PID:9][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-17 19:50:16,032][PID:12][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-17 19:50:16,033][PID:9][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-17 19:50:16,033][PID:11][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-17 19:50:16,030][PID:10][DEBUG][root] Detected version of 'python-requests' : 2.21.0. OK
+[2020-11-17 19:50:16,034][PID:10][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner.
+[2020-11-17 19:50:16,166][PID:9][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-17 19:50:16,172][PID:11][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-17 19:50:16,172][PID:10][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-17 19:50:16,170][PID:12][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner.
+[2020-11-17 19:50:16,638][PID:12][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7fcc18e04328&gt;
+[2020-11-17 19:50:16,640][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7fcc18e04328&gt;
+[2020-11-17 19:50:16,641][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7fcc18dfd328&gt;
+[2020-11-17 19:50:16,642][PID:9][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class ConfigParser.SafeConfigParser at 0x7fcc18dfc390&gt;
+[2020-11-17 19:50:16,643][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,642][PID:9][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,643][PID:9][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,643][PID:12][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,644][PID:12][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,644][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,645][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:16,645][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;built-in function StringIO&gt;
+[2020-11-17 19:50:19 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:9)
+[2020-11-17 19:50:19 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:10)
+[2020-11-17 19:50:19 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:11)
+[2020-11-17 19:50:19 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:12)
+[2020-11-17 19:50:19 +0000] [9] [INFO] Worker exiting (pid: 9)
+[2020-11-17 19:50:19 +0000] [12] [INFO] Worker exiting (pid: 12)
+[2020-11-17 19:50:19 +0000] [10] [INFO] Worker exiting (pid: 10)
+[2020-11-17 19:50:19 +0000] [11] [INFO] Worker exiting (pid: 11)
+</code></pre>
+<p>Although I haven’t created any tables yet using the following command -</p>
+<p><code>python manage.py database create_tables</code>.</p>
+<p>Do you think this could be related to that? Thoughts?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/k4s1m.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/k4s1m_avatar.png" tabindex="-1" width="48"/><span itemprop="name">k4s1m</span></a>
+</span>
+<link href="https://discuss.redash.io/t/worker-timeout-when-deploying-redash-on-aws-elastic-beanstalk/7558" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-18T15:48:29Z" itemprop="datePublished">
+                    November 18, 2020,  3:48pm
+                  </time>
+<meta content="2020-11-18T15:48:29Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I would expect a lot of errors if the metadata database hasn’t been initialized. What happened when you tried running <code>manage.py database create_tables</code> first?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/tanuj99.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/tanuj99_avatar.png" tabindex="-1" width="48"/><span itemprop="name">tanuj99</span></a>
+</span>
+<link href="https://discuss.redash.io/t/worker-timeout-when-deploying-redash-on-aws-elastic-beanstalk/7558" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-11-26T11:01:47Z" itemprop="datePublished">
+                    November 26, 2020, 11:01am
+                  </time>
+<meta content="2020-11-26T11:01:47Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hey, I only enabled the query runner required for my use-case instead of enabling all of them and initialized the metadata database. Seems to be working fine now.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

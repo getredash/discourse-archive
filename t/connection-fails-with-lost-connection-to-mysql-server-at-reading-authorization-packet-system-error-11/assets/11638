@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Connection fails with &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot; - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+I have set up Redash on an Ubuntu server via getredash/setup with no issues whatsoever. When I now try to add my PlanetScale hosted database as a data source, however, I get back the following error: 
+(201&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/connection-fails-with-lost-connection-to-mysql-server-at-reading-authorization-packet-system-error-11/11638" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Connection fails with &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;&#39;" href="https://discuss.redash.io/t/connection-fails-with-lost-connection-to-mysql-server-at-reading-authorization-packet-system-error-11/11638.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d_2_1024x873.jpeg" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d_2_1024x873.jpeg" />
+<meta property="og:url" content="https://discuss.redash.io/t/connection-fails-with-lost-connection-to-mysql-server-at-reading-authorization-packet-system-error-11/11638" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/connection-fails-with-lost-connection-to-mysql-server-at-reading-authorization-packet-system-error-11/11638" />
+<meta property="og:title" content="Connection fails with &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;" />
+<meta name="twitter:title" content="Connection fails with &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;" />
+<meta property="og:description" content="Issue Summary I have set up Redash on an Ubuntu server via getredash/setup with no issues whatsoever. When I now try to add my PlanetScale hosted database as a data source, however, I get back the following error:  (2013, &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;)  This error is both being returned on the connection test that is part of the “New Data Source” page and for when I try to run an actual query from the “New Query” page.  Worth mentioning is..." />
+<meta name="twitter:description" content="Issue Summary I have set up Redash on an Ubuntu server via getredash/setup with no issues whatsoever. When I now try to add my PlanetScale hosted database as a data source, however, I get back the following error:  (2013, &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;)  This error is both being returned on the connection test that is part of the “New Data Source” page and for when I try to run an actual query from the “New Query” page.  Worth mentioning is..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2023-02-27T16:03:37+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Connection fails with \"Lost connection to MySQL server at 'reading authorization packet', system error: 11\"","mainEntity":{"@type":"Question","name":"Connection fails with \"Lost connection to MySQL server at 'reading authorization packet', system error: 11\"","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\nI have set up Redash on an Ubuntu server via getredash/setup with no issues whatsoever. When I now try to add my PlanetScale hosted database as a data source, however, I get back the following error:\n\n(2013, &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system er&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2023-02-27T16:03:37.843Z","author":{"@type":"Person","name":"Mike"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/connection-fails-with-lost-connection-to-mysql-server-at-reading-authorization-packet-system-error-11/11638">Connection fails with &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Connection fails with &quot;Lost connection to MySQL server at &#39;reading authorization packet&#39;, system error: 11&quot;'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/fooforge'><span itemprop='name'>fooforge</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connection-fails-with-lost-connection-to-mysql-server-at-reading-authorization-packet-system-error-11/11638">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2023-02-27T16:03:37Z' class='post-time'>
+                    February 27, 2023,  4:03pm
+                  </time>
+                  <meta itemprop='dateModified' content='2023-02-27T16:03:37Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>I have set up Redash on an Ubuntu server via <code>getredash/setup</code> with no issues whatsoever. When I now try to add my PlanetScale hosted database as a data source, however, I get back the following error:</p>
+<pre><code class="lang-auto">(2013, "Lost connection to MySQL server at 'reading authorization packet', system error: 11")
+</code></pre>
+<p>This error is both being returned on the connection test that is part of the <em>“New Data Source”</em> page and for when I try to run an actual query from the <em>“New Query”</em> page.</p>
+<p>Worth mentioning is that the error gets returned nearly instantly. After browsing Redash’s code it appears you have the connection timeout set to 60s so network related errors or latency can most likely be ruled out.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d.jpeg" data-download-href="/uploads/short-url/vqV47jn3N8AG3cw1SBQqJkTJl1z.jpeg?dl=1" title="CleanShot 2023-02-27 at 13.44.56" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d_2_586x500.jpeg" alt="CleanShot 2023-02-27 at 13.44.56" data-base62-sha1="vqV47jn3N8AG3cw1SBQqJkTJl1z" width="586" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d_2_586x500.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d_2_879x750.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dc4e6c93a9856507be9ce2eeec4a6e9184ce627d_2_1172x1000.jpeg 2x" data-dominant-color="F5DDCA"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">CleanShot 2023-02-27 at 13.44.56</span><span class="informations">1920×1638 79.6 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>The logs have this stack trace:</p>
+<pre><code class="lang-auto">scheduler_1         | [2023-02-27 13:38:01,319][PID:42][WARNING][ForkPoolWorker-26] task_name=redash.tasks.refresh_schema task_id=b4627530-d271-4539-80fc-b2e7eb492f51 Failed refreshing schema for the data source: PlanetScale
+scheduler_1         | Traceback (most recent call last):
+scheduler_1         |   File "/app/redash/tasks/queries.py", line 261, in refresh_schema
+scheduler_1         |     ds.get_schema(refresh=True)
+scheduler_1         |   File "/app/redash/models/__init__.py", line 155, in get_schema
+scheduler_1         |     schema = sorted(query_runner.get_schema(get_stats=refresh), key=lambda t: t['name'])
+scheduler_1         |   File "/app/redash/query_runner/__init__.py", line 142, in get_schema
+scheduler_1         |     self._get_tables(schema_dict)
+scheduler_1         |   File "/app/redash/query_runner/mysql.py", line 137, in _get_tables
+scheduler_1         |     results, error = self.run_query(query, None)
+scheduler_1         |   File "/app/redash/query_runner/mysql.py", line 164, in run_query
+scheduler_1         |     connection = self._connection()
+scheduler_1         |   File "/app/redash/query_runner/mysql.py", line 124, in _connection
+scheduler_1         |     connection = MySQLdb.connect(**params)
+scheduler_1         |   File "/usr/local/lib/python2.7/site-packages/MySQLdb/__init__.py", line 84, in Connect
+scheduler_1         |     return Connection(*args, **kwargs)
+scheduler_1         |   File "/usr/local/lib/python2.7/site-packages/MySQLdb/connections.py", line 166, in __init__
+scheduler_1         |     super(Connection, self).__init__(*args, **kwargs2)
+scheduler_1         | OperationalError: (2013, "Lost connection to MySQL server at 'reading authorization packet', system error: 11")
+scheduler_1         | [2023-02-27 13:38:01,320][PID:42][INFO][ForkPoolWorker-26] task_name=redash.tasks.refresh_schema task_id=b4627530-d271-4539-80fc-b2e7eb492f51 task=refresh_schema state=failed ds_id=2 runtime=0.47
+</code></pre>
+<p>PlanetScale is using Vitess, a database clustering system for horizontal sharding of MySQL. There are some compatibility gaps between Vitess and MySQL, but I don’t think any of them are a factor here. They have a <a href="https://github.com/planetscale/connection-examples/blob/main/python/mysql.py" rel="noopener nofollow ugc">connection example for Python’s MySQLdb</a> so it does not seem to be a broader incompatibility either.</p>
+<p>PlanetScale also has a CLI utility available that can act as a proxy. If I start that proxy and point my redash installation to it, I can connect and issue queries to my PlanetScale database from within Redash without any issues.</p>
+<p>Whether I use the MySQL or MySQL (Amazon RDS) data source does not make any difference.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/633bcbb626250b63e7da447c51d5638ddc32d91a.jpeg" data-download-href="/uploads/short-url/e9RnE05QxRvdj7BT4lTx44IGkyu.jpeg?dl=1" title="CleanShot 2023-02-27 at 14.41.39" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/633bcbb626250b63e7da447c51d5638ddc32d91a_2_586x500.jpeg" alt="CleanShot 2023-02-27 at 14.41.39" data-base62-sha1="e9RnE05QxRvdj7BT4lTx44IGkyu" width="586" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/633bcbb626250b63e7da447c51d5638ddc32d91a_2_586x500.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/633bcbb626250b63e7da447c51d5638ddc32d91a_2_879x750.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/633bcbb626250b63e7da447c51d5638ddc32d91a_2_1172x1000.jpeg 2x" data-dominant-color="F5DCC9"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">CleanShot 2023-02-27 at 14.41.39</span><span class="informations">1920×1638 70.2 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>This leads me to believe that this may be a firewall issue as it’s been discussed earlier in <a href="https://discuss.redash.io/t/redash-aws-mysql-connection/6336" class="inline-onebox">Redash AWS MySQL Connection</a>. My server’s <code>iptables</code> rules are as follows and look good to me, though.</p>
+<pre><code class="lang-auto">fooforge@prometheus:~/dev/github/setup/data$ sudo iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain FORWARD (policy DROP)
+target     prot opt source               destination
+DOCKER-USER  all  --  anywhere             anywhere
+DOCKER-ISOLATION-STAGE-1  all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+DOCKER     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+DOCKER     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere             ctstate RELATED,ESTABLISHED
+DOCKER     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
+ACCEPT     all  --  anywhere             anywhere
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain DOCKER (3 references)
+target     prot opt source               destination
+ACCEPT     tcp  --  anywhere             172.18.0.7           tcp dpt:5000
+ACCEPT     tcp  --  anywhere             172.18.0.8           tcp dpt:http
+
+Chain DOCKER-ISOLATION-STAGE-1 (1 references)
+target     prot opt source               destination
+DOCKER-ISOLATION-STAGE-2  all  --  anywhere             anywhere
+DOCKER-ISOLATION-STAGE-2  all  --  anywhere             anywhere
+DOCKER-ISOLATION-STAGE-2  all  --  anywhere             anywhere
+RETURN     all  --  anywhere             anywhere
+
+Chain DOCKER-ISOLATION-STAGE-2 (3 references)
+target     prot opt source               destination
+DROP       all  --  anywhere             anywhere
+DROP       all  --  anywhere             anywhere
+DROP       all  --  anywhere             anywhere
+RETURN     all  --  anywhere             anywhere
+
+Chain DOCKER-USER (1 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+</code></pre>
+<p>Long story short, I’m out of ideas. If anyone has any pointers for me, I would appreciate it. And, if not, thanks for reading!</p>
+<p><strong>Disclaimer:</strong> I’m a senior support engineer at PlanetScale. This issue was reported by one of our users. I was able to reproduce it so I’m hoping to get this resolved for them. <img src="https://emoji.discourse-cdn.com/twitter/upside_down_face.png?v=12" title=":upside_down_face:" class="emoji" alt=":upside_down_face:" loading="lazy" width="20" height="20"></p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0+b32245(a16f551e)</li>
+<li>Browser/OS: n/a</li>
+<li>How did you install Redash: getredash/setup on a Ubuntu 22.04 server</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

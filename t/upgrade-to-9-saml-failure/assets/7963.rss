@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Upgrade to 9 SAML failure</title>
+    <link>https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963</link>
+    <description>### Issue Summary
+
+After upgrading from redash:latest SAML login fails.  
+In the browser I see -  
+
+```
+Internal Server Error
+The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+```
+
+Looking in the logs revealed an error - 
+
+```
+[2021-02-06 12:56:30,602][PID:10][ERROR][redash.app] Exception on /saml/callback [POST]
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 269, in error_router
+    return original_handler(e)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/_compat.py&quot;, line 39, in reraise
+    raise value
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File &quot;/app/redash/authentication/saml_auth.py&quot;, line 85, in idp_initiated
+    authn_response.ava[&quot;FirstName&quot;][0],
+KeyError: &#39;FirstName&#39;
+```
+
+
+### Technical details:
+
+* Redash Version: redash/redash:9.0.0-beta.b42121
+* Browser/OS: Chrome/MacOS 10.14.6
+* How did you install Redash: K8S</description>
+    
+    <lastBuildDate>Sat, 28 Jan 2023 07:11:47 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Upgrade to 9 SAML failure</title>
+        <dc:creator><![CDATA[smartysam9821]]></dc:creator>
+        <description><![CDATA[
+            <p>hi <a class="mention" href="https://discuss.redash.io/u/jdbranham">@jdbranham</a> ,<br>
+Can you please guide on client saml configuration in keycloak for redash?<br>
+Thank You</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/4</link>
+        <pubDate>Sat, 28 Jan 2023 07:11:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7963-4</guid>
+        <source url="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963.rss">Upgrade to 9 SAML failure</source>
+      </item>
+      <item>
+        <title>Upgrade to 9 SAML failure</title>
+        <dc:creator><![CDATA[VaibhavG10]]></dc:creator>
+        <description><![CDATA[
+            <p>I also faced Similar kind of error. In My Case, I am using Azure AD as IDP. And Redash in a self-hosted environment.</p>
+<p>Maybe my solution can help other people.</p>
+<h1>Changes from Redash UI:</h1>
+<ol>
+<li>SAML Metadata URL : <a href="https://login.microsoftonline.com/823yyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyy/federationmetadata/2007-06/federationmetadata.xml?appid=avbdgh-aaaa-aaaa-aaaa-aaaaaaaa" rel="noopener nofollow ugc">https://login.microsoftonline.com/823yyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyy/federationmetadata/2007-06/federationmetadata.xml?appid=avbdgh-aaaa-aaaa-aaaa-aaaaaaaa</a>
+</li>
+<li>SAML Entity ID : avbdgh-aaaa-aaaa-aaaa-aaaaaaaa</li>
+<li>SAML NameID Format : urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</li>
+</ol>
+<p>Note: In your case Directory and appid will be different (i.e. Point No. 1 &amp; 2)</p>
+<h1>Changes from Redash Backend: Update "redash/authentication/saml_auth.py’ File</h1>
+<p>This line was given me error: authn_response.ava[“FirstName”][0]<br>
+I removed old code with this new code i.e. name = email.split(".")[0] which solved my problem.</p>
+<p>Vaibhav</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/3</link>
+        <pubDate>Fri, 26 Mar 2021 20:22:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7963-3</guid>
+        <source url="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963.rss">Upgrade to 9 SAML failure</source>
+      </item>
+      <item>
+        <title>Upgrade to 9 SAML failure</title>
+        <dc:creator><![CDATA[jdbranham]]></dc:creator>
+        <description><![CDATA[
+            <p>The SAML config I use in Keycloak had <code>FirstName</code> as the friendly name, which worked in the previous <code>latest</code> redash image.</p>
+<p>The attribute names were something like - <code>urn:oid:2.5.4.4</code>.<br>
+So I modified them to match the friendly names, and everything worked again.<br>
+I’m guessing the previous version looked at the friendly name, or was able to map the attribute a different way.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8de920e4b697d01ea6b1280cdff366b7217b64dc.png" data-download-href="/uploads/short-url/kfoNwF11FatbyKDPmmA6yc8sKao.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8de920e4b697d01ea6b1280cdff366b7217b64dc_2_647x500.png" alt="image" data-base62-sha1="kfoNwF11FatbyKDPmmA6yc8sKao" width="647" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8de920e4b697d01ea6b1280cdff366b7217b64dc_2_647x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8de920e4b697d01ea6b1280cdff366b7217b64dc_2_970x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8de920e4b697d01ea6b1280cdff366b7217b64dc_2_1294x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8de920e4b697d01ea6b1280cdff366b7217b64dc_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/2</link>
+        <pubDate>Sat, 06 Feb 2021 13:28:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7963-2</guid>
+        <source url="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963.rss">Upgrade to 9 SAML failure</source>
+      </item>
+      <item>
+        <title>Upgrade to 9 SAML failure</title>
+        <dc:creator><![CDATA[jdbranham]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>After upgrading from redash:latest SAML login fails.<br>
+In the browser I see -</p>
+<pre><code class="lang-auto">Internal Server Error
+The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+</code></pre>
+<p>Looking in the logs revealed an error -</p>
+<pre><code class="lang-auto">[2021-02-06 12:56:30,602][PID:10][ERROR][redash.app] Exception on /saml/callback [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py", line 269, in error_router
+    return original_handler(e)
+  File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python3.7/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/app/redash/authentication/saml_auth.py", line 85, in idp_initiated
+    authn_response.ava["FirstName"][0],
+KeyError: 'FirstName'
+</code></pre>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: redash/redash:9.0.0-beta.b42121</li>
+<li>Browser/OS: Chrome/MacOS 10.14.6</li>
+<li>How did you install Redash: K8S</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963/1</link>
+        <pubDate>Sat, 06 Feb 2021 13:09:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-7963-1</guid>
+        <source url="https://discuss.redash.io/t/upgrade-to-9-saml-failure/7963.rss">Upgrade to 9 SAML failure</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Queries Stuck in Queue (Celery Worker Error)</title>
+    <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706</link>
+    <description>### Issue Summary
+
+After upgrading redash to version V8 we noticed that queries started getting stuck in queue for a long time. Not only ad-hoc queries, but even scheduled queries get stuck. For this reason some of the alerts stopped working as well.
+
+So I SSH&#39;ed to the server where redash resides and ran `docker ps`, the output was the following:
+
+
+```
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                          PORTS                    NAMES
+e12109eae5d3        chorss/docker-pgadmin4       &quot;/entrypoint su-exec…&quot;   4 weeks ago         Up 4 weeks                      0.0.0.0:5050-&gt;5050/tcp   dwh-docker_pgadmin_1
+79fac26d2092        postgres:12.7                &quot;docker-entrypoint.s…&quot;   4 weeks ago         Up 4 weeks                      0.0.0.0:5432-&gt;5432/tcp   dwh-docker_database_1
+6a6253104878        redash/redash:8.0.0.b32245   &quot;/app/bin/docker-ent…&quot;   5 weeks ago         Up 5 weeks                      5000/tcp                 redash_adhoc_worker_1
+8c97854ad839        redash/redash:8.0.0.b32245   &quot;/app/bin/docker-ent…&quot;   5 weeks ago         Up 5 weeks                      0.0.0.0:5000-&gt;5000/tcp   redash_server_1
+8abf42400ed7        redash/redash:8.0.0.b32245   &quot;/app/bin/docker-ent…&quot;   5 weeks ago         Up 5 weeks                      5000/tcp                 redash_scheduler_1
+adc93a9430b3        redash/redash:8.0.0.b32245   &quot;/app/bin/docker-ent…&quot;   5 weeks ago         Restarting (2) 47 seconds ago                            redash_scheduled_worker_1
+9373639532aa        redis:5.0-alpine             &quot;docker-entrypoint.s…&quot;   5 weeks ago         Up 5 weeks                      6379/tcp                 redash_redis_1
+ec93146744ce        postgres:9.6-alpine          &quot;docker-entrypoint.s…&quot;   5 weeks ago         Up 5 weeks                      5432/tcp                 redash_postgres_1
+```
+
+As you can see from the output, the scheduled worker has crashed, so I decided to check the logs via the `docker logs --tail 50 --follow --timestamps redash_scheduled_worker_1` command with the following output:
+
+
+```
+2021-07-06T13:45:24.182512476Z usage: celery worker [options]
+2021-07-06T13:45:24.182542729Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:46:28.686261287Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:46:35.938142493Z usage: celery worker [options]
+2021-07-06T13:46:35.938182715Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:47:39.788568648Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:47:42.843662554Z usage: celery worker [options]
+2021-07-06T13:47:42.843691757Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:48:46.852063279Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:48:49.642485712Z usage: celery worker [options]
+2021-07-06T13:48:49.642520433Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:49:53.144146592Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:49:55.870134270Z usage: celery worker [options]
+2021-07-06T13:49:55.870161696Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:50:59.474186547Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:51:02.227914967Z usage: celery worker [options]
+2021-07-06T13:51:02.227945708Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:52:05.706454757Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:52:10.031044525Z usage: celery worker [options]
+2021-07-06T13:52:10.031075307Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:53:13.464539151Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:53:16.161762208Z usage: celery worker [options]
+2021-07-06T13:53:16.161789984Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:54:19.854242254Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:54:22.497243086Z usage: celery worker [options]
+2021-07-06T13:54:22.497269809Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:55:26.105825292Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:55:28.819526398Z usage: celery worker [options]
+2021-07-06T13:55:28.819566273Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:56:32.443880548Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:56:35.124311808Z usage: celery worker [options]
+2021-07-06T13:56:35.124343122Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:57:40.024410958Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:57:42.678758488Z usage: celery worker [options]
+2021-07-06T13:57:42.678795527Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:58:46.103909380Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:58:48.739862197Z usage: celery worker [options]
+2021-07-06T13:58:48.739895046Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:59:52.354996034Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:59:54.946510888Z usage: celery worker [options]
+2021-07-06T13:59:54.946571763Z celery: error: unrecognized arguments: schemas
+2021-07-06T14:00:58.614267701Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T14:01:01.451059804Z usage: celery worker [options]
+2021-07-06T14:01:01.451095450Z celery: error: unrecognized arguments: schemas
+2021-07-06T14:02:05.114272601Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T14:02:07.759691498Z usage: celery worker [options]
+2021-07-06T14:02:07.759722100Z celery: error: unrecognized arguments: schemas
+2021-07-06T14:03:11.444442734Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T14:03:14.120509238Z usage: celery worker [options]
+2021-07-06T14:03:14.120544603Z celery: error: unrecognized arguments: schemas
+```
+
+
+### Technical details:
+
+* Redash Version: V8
+* Browser/OS: Gentoo Linux</description>
+    
+    <lastBuildDate>Mon, 12 Jul 2021 13:53:12 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Queries Stuck in Queue (Celery Worker Error)</title>
+        <dc:creator><![CDATA[MusicMaker1337]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> thanks, it worked!</p>
+          <p><a href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/6</link>
+        <pubDate>Mon, 12 Jul 2021 13:53:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8706-6</guid>
+        <source url="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss">Queries Stuck in Queue (Celery Worker Error)</source>
+      </item>
+      <item>
+        <title>Queries Stuck in Queue (Celery Worker Error)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There should be a comma between <code>scheduled_queries</code> and <code>schemas</code>.</p>
+<p>Like this:</p>
+<pre><code class="lang-auto"> scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      &lt;&lt;: *redash-environment
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/5</link>
+        <pubDate>Fri, 09 Jul 2021 00:35:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8706-5</guid>
+        <source url="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss">Queries Stuck in Queue (Celery Worker Error)</source>
+      </item>
+      <item>
+        <title>Queries Stuck in Queue (Celery Worker Error)</title>
+        <dc:creator><![CDATA[MusicMaker1337]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> <a class="mention" href="https://discuss.redash.io/u/k4s1m">@k4s1m</a> could you please provide at least some guidance on this topic? Is the celery worker docker image supposed to be restarting all the time? Why are there errors in the log?</p>
+<p>We are experiencing a lot of cases when queries are stuck in queue, the issue is becoming worse and we cannot make a proper use of Redash. I can try to add more workers to resolve this, but the error in the logs is really concerning. Please help</p>
+          <p><a href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/4</link>
+        <pubDate>Thu, 08 Jul 2021 08:17:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8706-4</guid>
+        <source url="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss">Queries Stuck in Queue (Celery Worker Error)</source>
+      </item>
+      <item>
+        <title>Queries Stuck in Queue (Celery Worker Error)</title>
+        <dc:creator><![CDATA[MusicMaker1337]]></dc:creator>
+        <description><![CDATA[
+            <p>I also noticed the following lines in the docker config:</p>
+<pre><code class="lang-auto"> scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      &lt;&lt;: *redash-environment
+      QUEUES: "scheduled_queries schemas"
+      WORKERS_COUNT: 1
+</code></pre>
+<p>I’m not a dev so maybe it’s a stupid question but what if I just remove the “schemas” word from the config? Would it break anything?</p>
+          <p><a href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/3</link>
+        <pubDate>Wed, 07 Jul 2021 10:31:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8706-3</guid>
+        <source url="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss">Queries Stuck in Queue (Celery Worker Error)</source>
+      </item>
+      <item>
+        <title>Queries Stuck in Queue (Celery Worker Error)</title>
+        <dc:creator><![CDATA[MusicMaker1337]]></dc:creator>
+        <description><![CDATA[
+            <p>Can anyone please reply? I can provide more info if needed<br>
+<a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> <a class="mention" href="https://discuss.redash.io/u/k4s1m">@k4s1m</a><br>
+The celery scheduled worker keeps restarting and the <code>celery: error: unrecognized arguments: schemas</code> keeps showing up in the logs</p>
+          <p><a href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/2</link>
+        <pubDate>Wed, 07 Jul 2021 10:22:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8706-2</guid>
+        <source url="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss">Queries Stuck in Queue (Celery Worker Error)</source>
+      </item>
+      <item>
+        <title>Queries Stuck in Queue (Celery Worker Error)</title>
+        <dc:creator><![CDATA[MusicMaker1337]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>After upgrading redash to version V8 we noticed that queries started getting stuck in queue for a long time. Not only ad-hoc queries, but even scheduled queries get stuck. For this reason some of the alerts stopped working as well.</p>
+<p>So I SSH’ed to the server where redash resides and ran <code>docker ps</code>, the output was the following:</p>
+<pre><code class="lang-auto">CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                          PORTS                    NAMES
+e12109eae5d3        chorss/docker-pgadmin4       "/entrypoint su-exec…"   4 weeks ago         Up 4 weeks                      0.0.0.0:5050-&gt;5050/tcp   dwh-docker_pgadmin_1
+79fac26d2092        postgres:12.7                "docker-entrypoint.s…"   4 weeks ago         Up 4 weeks                      0.0.0.0:5432-&gt;5432/tcp   dwh-docker_database_1
+6a6253104878        redash/redash:8.0.0.b32245   "/app/bin/docker-ent…"   5 weeks ago         Up 5 weeks                      5000/tcp                 redash_adhoc_worker_1
+8c97854ad839        redash/redash:8.0.0.b32245   "/app/bin/docker-ent…"   5 weeks ago         Up 5 weeks                      0.0.0.0:5000-&gt;5000/tcp   redash_server_1
+8abf42400ed7        redash/redash:8.0.0.b32245   "/app/bin/docker-ent…"   5 weeks ago         Up 5 weeks                      5000/tcp                 redash_scheduler_1
+adc93a9430b3        redash/redash:8.0.0.b32245   "/app/bin/docker-ent…"   5 weeks ago         Restarting (2) 47 seconds ago                            redash_scheduled_worker_1
+9373639532aa        redis:5.0-alpine             "docker-entrypoint.s…"   5 weeks ago         Up 5 weeks                      6379/tcp                 redash_redis_1
+ec93146744ce        postgres:9.6-alpine          "docker-entrypoint.s…"   5 weeks ago         Up 5 weeks                      5432/tcp                 redash_postgres_1
+</code></pre>
+<p>As you can see from the output, the scheduled worker has crashed, so I decided to check the logs via the <code>docker logs --tail 50 --follow --timestamps redash_scheduled_worker_1</code> command with the following output:</p>
+<pre><code class="lang-auto">2021-07-06T13:45:24.182512476Z usage: celery worker [options]
+2021-07-06T13:45:24.182542729Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:46:28.686261287Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:46:35.938142493Z usage: celery worker [options]
+2021-07-06T13:46:35.938182715Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:47:39.788568648Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:47:42.843662554Z usage: celery worker [options]
+2021-07-06T13:47:42.843691757Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:48:46.852063279Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:48:49.642485712Z usage: celery worker [options]
+2021-07-06T13:48:49.642520433Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:49:53.144146592Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:49:55.870134270Z usage: celery worker [options]
+2021-07-06T13:49:55.870161696Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:50:59.474186547Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:51:02.227914967Z usage: celery worker [options]
+2021-07-06T13:51:02.227945708Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:52:05.706454757Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:52:10.031044525Z usage: celery worker [options]
+2021-07-06T13:52:10.031075307Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:53:13.464539151Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:53:16.161762208Z usage: celery worker [options]
+2021-07-06T13:53:16.161789984Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:54:19.854242254Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:54:22.497243086Z usage: celery worker [options]
+2021-07-06T13:54:22.497269809Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:55:26.105825292Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:55:28.819526398Z usage: celery worker [options]
+2021-07-06T13:55:28.819566273Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:56:32.443880548Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:56:35.124311808Z usage: celery worker [options]
+2021-07-06T13:56:35.124343122Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:57:40.024410958Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:57:42.678758488Z usage: celery worker [options]
+2021-07-06T13:57:42.678795527Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:58:46.103909380Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:58:48.739862197Z usage: celery worker [options]
+2021-07-06T13:58:48.739895046Z celery: error: unrecognized arguments: schemas
+2021-07-06T13:59:52.354996034Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T13:59:54.946510888Z usage: celery worker [options]
+2021-07-06T13:59:54.946571763Z celery: error: unrecognized arguments: schemas
+2021-07-06T14:00:58.614267701Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T14:01:01.451059804Z usage: celery worker [options]
+2021-07-06T14:01:01.451095450Z celery: error: unrecognized arguments: schemas
+2021-07-06T14:02:05.114272601Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T14:02:07.759691498Z usage: celery worker [options]
+2021-07-06T14:02:07.759722100Z celery: error: unrecognized arguments: schemas
+2021-07-06T14:03:11.444442734Z Starting 1 workers for queues: scheduled_queries schemas...
+2021-07-06T14:03:14.120509238Z usage: celery worker [options]
+2021-07-06T14:03:14.120544603Z celery: error: unrecognized arguments: schemas
+</code></pre>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V8</li>
+<li>Browser/OS: Gentoo Linux</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706/1</link>
+        <pubDate>Tue, 06 Jul 2021 14:26:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8706-1</guid>
+        <source url="https://discuss.redash.io/t/queries-stuck-in-queue-celery-worker-error/8706.rss">Queries Stuck in Queue (Celery Worker Error)</source>
+      </item>
+  </channel>
+</rss>

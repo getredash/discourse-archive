@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Can&#39;t delete data source</title>
+    <link>https://discuss.redash.io/t/cant-delete-data-source/5795</link>
+    <description>I am using version 7 and for some of the data source, I can&#39;t delete them. It keeps trying.</description>
+    
+    <lastBuildDate>Sat, 06 Nov 2021 00:43:02 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/cant-delete-data-source/5795.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Can&#39;t delete data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Schemas are stored in redis.</p>
+          <p><a href="https://discuss.redash.io/t/cant-delete-data-source/5795/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-delete-data-source/5795/6</link>
+        <pubDate>Sat, 06 Nov 2021 00:43:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5795-6</guid>
+        <source url="https://discuss.redash.io/t/cant-delete-data-source/5795.rss">Can&#39;t delete data source</source>
+      </item>
+      <item>
+        <title>Can&#39;t delete data source</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <p>we ran the upgrade using the management script (our database was a v5 database but we upgraded) is this table not needed anymore? How does redash v5 store the schema information?</p>
+          <p><a href="https://discuss.redash.io/t/cant-delete-data-source/5795/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-delete-data-source/5795/5</link>
+        <pubDate>Fri, 05 Nov 2021 23:59:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5795-5</guid>
+        <source url="https://discuss.redash.io/t/cant-delete-data-source/5795.rss">Can&#39;t delete data source</source>
+      </item>
+      <item>
+        <title>Can&#39;t delete data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/ramziyassine">@ramziyassine</a> thanks for sharing your code.</p>
+<p>The first part of your SQL works fine. But where are you seeing a <code>data_source_columns</code> table? I don’t see this on V10</p>
+          <p><a href="https://discuss.redash.io/t/cant-delete-data-source/5795/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-delete-data-source/5795/4</link>
+        <pubDate>Fri, 05 Nov 2021 23:05:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5795-4</guid>
+        <source url="https://discuss.redash.io/t/cant-delete-data-source/5795.rss">Can&#39;t delete data source</source>
+      </item>
+      <item>
+        <title>Can&#39;t delete data source</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <p>This is how I solved it as I was faced with the same issue (I ran this in redash v10)</p>
+<pre><code class="lang-sql">-- grab first the data source ID from data_sources example: 25
+-- In order to delete a data source 
+-- First, you need to remove all Query Results that are attached to that data source
+update queries
+set latest_query_data_id = null
+where latest_query_data_id in (
+select id
+from query_results 
+where data_source_id = 25)
+
+delete from query_results where data_source_id = 25
+
+-- Second, you need to remove the data source tables from the schema tables 
+delete from data_source_columns
+where table_id in (
+select id from data_source_tables where datasource_id = 25
+)
+
+delete from data_source_tables where datasource_id = 25
+commit
+</code></pre>
+<p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> and team if the above is wrong or if there is a better way. Please let me know</p>
+<p>Thank you<br>
+Ramzi</p>
+          <p><a href="https://discuss.redash.io/t/cant-delete-data-source/5795/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-delete-data-source/5795/3</link>
+        <pubDate>Fri, 05 Nov 2021 23:01:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5795-3</guid>
+        <source url="https://discuss.redash.io/t/cant-delete-data-source/5795.rss">Can&#39;t delete data source</source>
+      </item>
+      <item>
+        <title>Can&#39;t delete data source</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Possibly this bug?</p>
+<aside class="onebox githubissue">
+  <header class="source">
+      <a href="https://github.com/getredash/redash/issues/3843" target="_blank">github.com/getredash/redash</a>
+  </header>
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/issues/3843" target="_blank">Can't delete a data source if one of the queries references query result from it but uses a different data source</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2019-05-29" data-time="08:26:03" data-timezone="UTC">08:26AM - 29 May 19 UTC</span>
+      </div>
+
+
+      <div class="user">
+        <a href="https://github.com/arikfr" target="_blank">
+          <img alt="arikfr" src="https://avatars2.githubusercontent.com/u/71468?v=4" class="onebox-avatar-inline" width="20" height="20">
+          arikfr
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="github-row">
+  <p class="github-content">Issue Summary
+When you have the following situation:
+Query A references query result from data source A, but itself references data source B.
+You...</p>
+</div>
+
+<div class="labels">
+    <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Backend</span>
+    <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Bug</span>
+    <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">help wanted</span>
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/cant-delete-data-source/5795/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-delete-data-source/5795/2</link>
+        <pubDate>Tue, 24 Mar 2020 16:47:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5795-2</guid>
+        <source url="https://discuss.redash.io/t/cant-delete-data-source/5795.rss">Can&#39;t delete data source</source>
+      </item>
+      <item>
+        <title>Can&#39;t delete data source</title>
+        <dc:creator><![CDATA[mali]]></dc:creator>
+        <description><![CDATA[
+            <p>I am using version 7 and for some of the data source, I can’t delete them. It keeps trying.</p>
+          <p><a href="https://discuss.redash.io/t/cant-delete-data-source/5795/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cant-delete-data-source/5795/1</link>
+        <pubDate>Wed, 18 Mar 2020 10:44:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5795-1</guid>
+        <source url="https://discuss.redash.io/t/cant-delete-data-source/5795.rss">Can&#39;t delete data source</source>
+      </item>
+  </channel>
+</rss>

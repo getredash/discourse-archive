@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Lost Secret Key..now what</title>
+    <link>https://discuss.redash.io/t/lost-secret-key-now-what/10774</link>
+    <description>Due to my accident, I deleted EC2 of running redash (AMI, probably version 8), so I had to reupload redash again. But unfortunately, I do not know any old redash_cookie_secret and redash_secret_key. Since I had backend RDS (Postgresql) for previous EC2, I was able to just relocate to new EC2 and get queries, dashboards and users info. However, since I do not have old redash_cookie_secret and redash_secret_key, invalid token error is happening in data sources and new queries. Is there a way to restore old redash_cookie_secret and redash_secret_key from RDS, by chance? If not, is there a way to keep my old dashboards/queries but just replace data sources to new one? Thank you.</description>
+    
+    <lastBuildDate>Mon, 18 Jul 2022 15:47:52 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/lost-secret-key-now-what/10774.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Lost Secret Key..now what</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>After some experimentation I determined that the fix here is a bit complicated, but doable. I wrote about it in detail here:</p>
+<aside class="quote quote-modified" data-post="4" data-topic="10758">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/signature-did-not-match-digest-causing-500s-after-using-helm-chart/10758/4">"Signature did not match digest" causing 500s after using helm chart</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and using Redash.">Support</span></a>
+  </div>
+  <blockquote>
+    The procedure is going to be a little complicated. You will need to manually connect to your postgres instance and also run commands using the Redash CLI. It should go without saying that you should back up your postgres database before attempting this. I had to experiment for awhile before I found a way to make this work. 
+Note: I’m using regular Docker-Compose. k8s is not (yet) officially supported for Redash. You will need to adapt these commands to your environment. 
+
+<a name="step-1-connect-to-postgres-1" class="anchor" href="https://discuss.redash.io#step-1-connect-to-postgres-1"></a>Step 1: Connect to Post…
+  </blockquote>
+</aside>
+
+<p><strong>Note</strong>: You will need to adapt these commands to your environment. For example, you won’t connect to a <code>postgres</code> container with docker-compose, you’ll connect to your RDS postgres instead. The linked instructions are otherwise accurate.</p>
+          <p><a href="https://discuss.redash.io/t/lost-secret-key-now-what/10774/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/lost-secret-key-now-what/10774/3</link>
+        <pubDate>Mon, 18 Jul 2022 15:47:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10774-3</guid>
+        <source url="https://discuss.redash.io/t/lost-secret-key-now-what/10774.rss">Lost Secret Key..now what</source>
+      </item>
+      <item>
+        <title>Lost Secret Key..now what</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum! Sorry you’ve experienced data loss.</p>
+<aside class="quote no-group" data-username="chanhong" data-post="1" data-topic="10774">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/d78d45/40.png" class="avatar"> chanhong:</div>
+<blockquote>
+<p>Is there a way to restore old redash_cookie_secret and redash_secret_key from RDS, by chance?</p>
+</blockquote>
+</aside>
+<p>No.</p>
+<aside class="quote no-group" data-username="chanhong" data-post="1" data-topic="10774">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/d78d45/40.png" class="avatar"> chanhong:</div>
+<blockquote>
+<p>is there a way to keep my old dashboards/queries but just replace data sources to new one?</p>
+</blockquote>
+</aside>
+<p>Yes.</p>
+<pre><code class="lang-sql">UPDATE queries SET data_source_id = &lt;new id&gt; WHERE data_source_id = &lt;old_id&gt;
+</code></pre>
+<hr>
+<p>To prevent this in the future you can KMS to hold your secret keys.</p>
+          <p><a href="https://discuss.redash.io/t/lost-secret-key-now-what/10774/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/lost-secret-key-now-what/10774/2</link>
+        <pubDate>Mon, 18 Jul 2022 14:29:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10774-2</guid>
+        <source url="https://discuss.redash.io/t/lost-secret-key-now-what/10774.rss">Lost Secret Key..now what</source>
+      </item>
+      <item>
+        <title>Lost Secret Key..now what</title>
+        <dc:creator><![CDATA[chanhong]]></dc:creator>
+        <description><![CDATA[
+            <p>Due to my accident, I deleted EC2 of running redash (AMI, probably version 8), so I had to reupload redash again. But unfortunately, I do not know any old redash_cookie_secret and redash_secret_key. Since I had backend RDS (Postgresql) for previous EC2, I was able to just relocate to new EC2 and get queries, dashboards and users info. However, since I do not have old redash_cookie_secret and redash_secret_key, invalid token error is happening in data sources and new queries. Is there a way to restore old redash_cookie_secret and redash_secret_key from RDS, by chance? If not, is there a way to keep my old dashboards/queries but just replace data sources to new one? Thank you.</p>
+          <p><a href="https://discuss.redash.io/t/lost-secret-key-now-what/10774/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/lost-secret-key-now-what/10774/1</link>
+        <pubDate>Sat, 16 Jul 2022 08:46:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10774-1</guid>
+        <source url="https://discuss.redash.io/t/lost-secret-key-now-what/10774.rss">Lost Secret Key..now what</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>[MongoDB] Add support for UUID column type filters</title>
+    <link>https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688</link>
+    <description>Filter by UUID (binary subtype 0x04) for mongodb not working.
+
+### Steps to Reproduce
+
+In mongo shell I can find documents by UUID using BinData:
+
+```sh
+&gt; use users
+switched to db users
+
+&gt; db.users.insert({ &quot;_id&quot; : ObjectId(&quot;60dc2c3a7911f0e60f6dceb2&quot;), &quot;userId&quot; : UUID(&quot;1dee688c-9974-4939-ade3-bac9735efffd&quot;) })
+WriteResult({ &quot;nInserted&quot; : 1 })
+
+&gt; UUID(&#39;1dee688c-9974-4939-ade3-bac9735efffd&#39;).base64()
+He5ojJl0STmt47rJc17//Q==
+
+&gt; db.users.findOne({ &quot;userId&quot;: BinData(4, &quot;He5ojJl0STmt47rJc17//Q==&quot; ) } )
+{ &quot;_id&quot; : ObjectId(&quot;60dc2c3a7911f0e60f6dceb2&quot;), &quot;userId&quot; : UUID(&quot;1dee688c-9974-4939-ade3-bac9735efffd&quot;) }
+
+&gt; JSON.stringify(db.users.findOne({ &quot;userId&quot;: BinData(4, &quot;He5ojJl0STmt47rJc17//Q==&quot; ) } ))
+{&quot;_id&quot;:{&quot;$oid&quot;:&quot;60dc2c3a7911f0e60f6dceb2&quot;},&quot;userId&quot;:{&quot;$binary&quot;:&quot;He5ojJl0STmt47rJc17//Q==&quot;,&quot;$type&quot;:&quot;04&quot;}}
+```
+
+But in redash, same query return empty results:
+
+```json
+{
+    &quot;collection&quot;: &quot;users&quot;,
+    &quot;query&quot;: {
+        &quot;userId&quot;: {
+            &quot;$eq&quot;: {
+                &quot;$binary&quot;: {
+                    &quot;base64&quot;: &quot;He5ojJl0STmt47rJc17//Q==&quot;,
+                    &quot;subType&quot;: &quot;04&quot;
+                }
+            }
+        }
+    },
+    &quot;fields&quot;: {
+        &quot;_id&quot;: 1,
+        &quot;userId&quot;: 2
+    }
+}
+```</description>
+    
+    <lastBuildDate>Tue, 31 Aug 2021 13:40:51 +0000</lastBuildDate>
+    <category>Feature Requests</category>
+    <atom:link href="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>[MongoDB] Add support for UUID column type filters</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m moving this into the feature requests portion of the forum. It’s not a bug as such. We just don’t support that column type. Would love to see this implemented, however!</p>
+<p>Original title of this post was <code>Filter by UUID not working</code></p>
+          <p><a href="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688/3</link>
+        <pubDate>Tue, 31 Aug 2021 13:40:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8688-3</guid>
+        <source url="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688.rss">[MongoDB] Add support for UUID column type filters</source>
+      </item>
+      <item>
+        <title>[MongoDB] Add support for UUID column type filters</title>
+        <dc:creator><![CDATA[flibustier7seas]]></dc:creator>
+        <description><![CDATA[
+            <p>redash create incorrect query:</p>
+<pre><code class="lang-auto">&gt; db.system.profile.find({"ns" : "test.users"}, {"op":1, "command": 1}).pretty()
+{
+        "op" : "query",
+        "command" : {
+                "find" : "users",
+                "filter" : {
+                        "userId" : {
+                                "$eq" : BinData(3,"He5ojJl0STmt47rJc17//Q==")
+                        }
+                },
+                "projection" : {
+                        "_id" : 1,
+                        "userId" : 2
+                },
+                "lsid" : {
+                        "id" : UUID("6d70603f-de19-4f4a-ba5a-9951e2e99a9a")
+                },
+                "$readPreference" : {
+                        "mode" : "secondaryPreferred"
+                },
+                "$db" : "users"
+        }
+}
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688/2</link>
+        <pubDate>Wed, 07 Jul 2021 11:28:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8688-2</guid>
+        <source url="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688.rss">[MongoDB] Add support for UUID column type filters</source>
+      </item>
+      <item>
+        <title>[MongoDB] Add support for UUID column type filters</title>
+        <dc:creator><![CDATA[flibustier7seas]]></dc:creator>
+        <description><![CDATA[
+            <p>Filter by UUID (binary subtype 0x04) for mongodb not working.</p>
+<h3>
+<a name="steps-to-reproduce-1" class="anchor" href="https://discuss.redash.io#steps-to-reproduce-1"></a>Steps to Reproduce</h3>
+<p>In mongo shell I can find documents by UUID using BinData:</p>
+<pre><code class="lang-auto">&gt; use users
+switched to db users
+
+&gt; db.users.insert({ "_id" : ObjectId("60dc2c3a7911f0e60f6dceb2"), "userId" : UUID("1dee688c-9974-4939-ade3-bac9735efffd") })
+WriteResult({ "nInserted" : 1 })
+
+&gt; UUID('1dee688c-9974-4939-ade3-bac9735efffd').base64()
+He5ojJl0STmt47rJc17//Q==
+
+&gt; db.users.findOne({ "userId": BinData(4, "He5ojJl0STmt47rJc17//Q==" ) } )
+{ "_id" : ObjectId("60dc2c3a7911f0e60f6dceb2"), "userId" : UUID("1dee688c-9974-4939-ade3-bac9735efffd") }
+
+&gt; JSON.stringify(db.users.findOne({ "userId": BinData(4, "He5ojJl0STmt47rJc17//Q==" ) } ))
+{"_id":{"$oid":"60dc2c3a7911f0e60f6dceb2"},"userId":{"$binary":"He5ojJl0STmt47rJc17//Q==","$type":"04"}}
+</code></pre>
+<p>But in redash, same query return empty results:</p>
+<pre><code class="lang-json">{
+    "collection": "users",
+    "query": {
+        "userId": {
+            "$eq": {
+                "$binary": {
+                    "base64": "He5ojJl0STmt47rJc17//Q==",
+                    "subType": "04"
+                }
+            }
+        }
+    },
+    "fields": {
+        "_id": 1,
+        "userId": 2
+    }
+}
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688/1</link>
+        <pubDate>Wed, 30 Jun 2021 17:21:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8688-1</guid>
+        <source url="https://discuss.redash.io/t/mongodb-add-support-for-uuid-column-type-filters/8688.rss">[MongoDB] Add support for UUID column type filters</source>
+      </item>
+  </channel>
+</rss>

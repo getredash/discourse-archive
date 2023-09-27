@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Joining two sources</title>
+    <link>https://discuss.redash.io/t/joining-two-sources/10200</link>
+    <description>Hello all,
+
+I have a question. I have two data sources:
+- data from google analytics incl a ga_adwordsCampaignID
+- data from a PBX with call information incl the same id (now called Adgroup_id)
+
+What i do now: i make two queries on the two sources (query 9 and 11). I then want to join them using another query:
+```sql
+select * from query_9 as q1830
+join query_11 as qga on q1830.Adgroup_id = qga.ga_adwordsCampaignID and date(date) =date(ga_date)
+```
+
+This kind of does what i want, BUT sometimes i have id&#39;s present in table 1 and not in table 2 and visa versa:
+
+```
+table1                 table2
+id   col1    col2   id    col3    col 4
+1    2         3    1     6       7
+2    5         2
+                    3     4       2
+```
+
+What i would like is the following result:
+
+```
+
+id   col1    col2     col3    col 4
+1    2         3         6         7
+2    5         2         0         0
+3    0         0         4         2
+```
+
+Now i basically have data for every id and zeros for non existing ids in the corresponding query.
+But the above query gives me:
+```
+
+id   col1    col2     col3    col 4
+1    2         3         6         7
+```
+Any help would be greatly appreciated.</description>
+    
+    <lastBuildDate>Fri, 01 Apr 2022 16:38:02 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/joining-two-sources/10200.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Joining two sources</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="Jeroen" data-post="3" data-topic="10200">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/bbe5ce/40.png" class="avatar"> Jeroen:</div>
+<blockquote>
+<p>So my question really is: how can i make sure ids are only included once?</p>
+</blockquote>
+</aside>
+<p>Changing <code>UNION ALL</code> to just <code>UNION</code> will do it.</p>
+          <p><a href="https://discuss.redash.io/t/joining-two-sources/10200/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/joining-two-sources/10200/4</link>
+        <pubDate>Fri, 01 Apr 2022 16:38:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10200-4</guid>
+        <source url="https://discuss.redash.io/t/joining-two-sources/10200.rss">Joining two sources</source>
+      </item>
+      <item>
+        <title>Joining two sources</title>
+        <dc:creator><![CDATA[Jeroen]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello Jesse, impressively enough that query works out of the box, but what happens now is that i have a lot of duplicates like this:</p>
+<pre><code class="lang-auto">date           numcalls       clicks
+14/03/22 11:58  56             19
+14/03/22 11:58  56             19
+14/03/22 11:58  56             19
+14/03/22 11:58  56             19
+14/03/22 11:58  56             19
+15/03/22 11:07  76             25
+15/03/22 11:07  76             25
+</code></pre>
+<p>I wonder if this is coming from the union or from the LEFT JOIN?</p>
+<p>UPDATE: Yes, it is definitely coming from the UNION. The problem is the ids are included many times in the GA data (multiple dates, etc). So all_ids contains ids like: 1,1,1,1,2,2,2,2,2,3,4,4,4,5,6,7,7,etc<br>
+I tried adding a second WITH distinct_ids as () but that resulted in a syntax error (it was a long shot anyway). So my question really is: how can i make sure ids are only included once?</p>
+          <p><a href="https://discuss.redash.io/t/joining-two-sources/10200/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/joining-two-sources/10200/3</link>
+        <pubDate>Fri, 01 Apr 2022 07:29:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10200-3</guid>
+        <source url="https://discuss.redash.io/t/joining-two-sources/10200.rss">Joining two sources</source>
+      </item>
+      <item>
+        <title>Joining two sources</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum! This question is more to do with SQLite than Redash specifically. The QRDS data source uses SQLite.</p>
+<p>The problem is you’re using <code>JOIN</code> syntax, which only retrieves rows where the <code>id</code>s match. This will discard any rows on either table if the <code>id</code> doesn’t appear on <em>both</em> tables.</p>
+<p>In most other databases you would use the <code>FULL OUTER JOIN</code> syntax to include all the rows. But SQLite doesn’t support full outer joins. There is a workaround though. You’ll select all the data from both tables with a UNION statement, and then join both tables to this unioned table. There are a few ways to write it. I tried my best to make the query out of what you provided. Give this a try and see how it goes!</p>
+<pre><code class="lang-sql">
+WITH all_ids as (
+SELECT Adgroup_id id FROM query_9
+UNION ALL
+SELECT ga_adwordsCampaignID id FROM query_11
+)
+
+SELECT * FROM all_ids
+LEFT JOIN query_9 as q1830 ON all_ids.id = q1830.Adgroup_id
+LEFT JOIN query_11 as qga ON all_ids.id = qga.ga_adwordsCampaignID and date(q1830.date) = date(qga.ga_date)
+ORDER BY id
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/joining-two-sources/10200/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/joining-two-sources/10200/2</link>
+        <pubDate>Thu, 24 Mar 2022 14:48:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10200-2</guid>
+        <source url="https://discuss.redash.io/t/joining-two-sources/10200.rss">Joining two sources</source>
+      </item>
+      <item>
+        <title>Joining two sources</title>
+        <dc:creator><![CDATA[Jeroen]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello all,</p>
+<p>I have a question. I have two data sources:</p>
+<ul>
+<li>data from google analytics incl a ga_adwordsCampaignID</li>
+<li>data from a PBX with call information incl the same id (now called Adgroup_id)</li>
+</ul>
+<p>What i do now: i make two queries on the two sources (query 9 and 11). I then want to join them using another query:</p>
+<pre><code class="lang-sql">select * from query_9 as q1830
+join query_11 as qga on q1830.Adgroup_id = qga.ga_adwordsCampaignID and date(date) =date(ga_date)
+</code></pre>
+<p>This kind of does what i want, BUT sometimes i have id’s present in table 1 and not in table 2 and visa versa:</p>
+<pre><code class="lang-auto">table1                 table2
+id   col1    col2   id    col3    col 4
+1    2         3    1     6       7
+2    5         2
+                    3     4       2
+</code></pre>
+<p>What i would like is the following result:</p>
+<pre><code class="lang-auto">
+id   col1    col2     col3    col 4
+1    2         3         6         7
+2    5         2         0         0
+3    0         0         4         2
+</code></pre>
+<p>Now i basically have data for every id and zeros for non existing ids in the corresponding query.<br>
+But the above query gives me:</p>
+<pre><code class="lang-auto">
+id   col1    col2     col3    col 4
+1    2         3         6         7
+</code></pre>
+<p>Any help would be greatly appreciated.</p>
+          <p><a href="https://discuss.redash.io/t/joining-two-sources/10200/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/joining-two-sources/10200/1</link>
+        <pubDate>Thu, 24 Mar 2022 10:47:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10200-1</guid>
+        <source url="https://discuss.redash.io/t/joining-two-sources/10200.rss">Joining two sources</source>
+      </item>
+  </channel>
+</rss>

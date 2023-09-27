@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Custom sorting from mongoDB query breaks after grouping fields</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043">Custom sorting from mongoDB query breaks after grouping fields</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+<div class="topic-category">
+<div class="discourse-tags list-tags">
+<a class="discourse-tag" href="https://discuss.redash.io/query_results" rel="tag">query_results</a>, 
+            <a class="discourse-tag" href="https://discuss.redash.io/visualizations" rel="tag">visualizations</a>
+</div>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Custom sorting from mongoDB query breaks after grouping fields" itemprop="headline"/>
+<meta content="Support" itemprop="articleSection"/>
+<meta content="query_results, visualizations" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cny.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cny_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cny</span></a>
+</span>
+<link href="assets/10043" itemprop="mainEntityOfPage"/>
+<link href="assets/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-02-22T10:59:06Z" itemprop="datePublished">
+                    February 22, 2022, 10:59am
+                  </time>
+<meta content="2022-02-22T10:59:06Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.</p>
+<p>In order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentioned problem.</p>
+<p>I tried adding dummy data where a script creates documents with value of 0 for my y axis and it kind of worked.</p>
+<p>Here is my chart, it looks really ugly without the order and is unusable<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/63QIyeIAbz21fCWGWIS9Qj7Nsyj.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="63QIyeIAbz21fCWGWIS9Qj7Nsyj" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_10x10.png" height="247" src="assets/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_690x247.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_690x247.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_1035x370.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1201×431 81.4 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>I also tried searching for solutions for such issue, but to no avail, are there other things I could try?</p>
+<p>Here is, the order I want and this is achieved by removing the x values from the list where not all groups have data or when I have dummy data in place<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/iAQpjo8AkSIr1lkYJt5e5IRVYtn.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="iAQpjo8AkSIr1lkYJt5e5IRVYtn" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_10x10.png" height="222" src="assets/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_690x222.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_690x222.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_1035x333.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1156×372 102 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Is there a better way to do this maybe through redash or mongo, any advice helps.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ilyaminati.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ilyaminati_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ilyaminati</span></a>
+</span>
+<link href="assets/10043" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-02-22T19:29:22Z" itemprop="datePublished">
+                    February 22, 2022,  7:29pm
+                  </time>
+<meta content="2022-02-22T19:29:22Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Maybe these are relevant?</p>
+<aside class="quote quote-modified" data-post="1" data-topic="9394">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="https://avatars.discourse-cdn.com/v4/letter/c/57b2e6/40.png" width="20"/>
+<a href="http://discuss.redash.io/t/prevent-missing-values-in-visualization-from-being-plotted/9394">Prevent missing values in visualization from being plotted</a> <a class="badge-wrapper bullet" href="/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span class="badge-category clear-badge" data-drop-close="true" style="" title="Support on installing, configuring and using Redash.">Support</span></a>
+</div>
+<blockquote>
+    Hello, 
+How do I prevent a missing value to be displayed in a line chart. 
+[image] 
+In this Example portfolio PF-21-08 has an overdue rate of 1% at collection 3. 
+Portfolio PF-21-09 doesn’t have a collection 3 but in the visualization it still shows up on the x axis at value 3. 
+[image] 
+Any help is highly appreciated.
+  </blockquote>
+</aside>
+<aside class="onebox githubissue" data-onebox-src="https://github.com/getredash/redash/issues/4717">
+<header class="source">
+<a href="https://github.com/getredash/redash/issues/4717" rel="noopener nofollow ugc" target="_blank">github.com/getredash/redash</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Issue">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 14 16" width="60"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/getredash/redash/issues/4717" rel="noopener nofollow ugc" target="_blank">"Treat missing/null values as 0" Does not work for line charts with datetime scale x-axis</a>
+</h4>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2020-03-09" data-format="ll" data-time="12:00:52" data-timezone="UTC">12:00PM - 09 Mar 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/orenpai" rel="noopener nofollow ugc" target="_blank">
+<img alt="orenpai" class="onebox-avatar-inline" height="20" src="assets/20188692" width="20"/>
+          orenpai
+        </a>
+</div>
+</div>
+<div class="labels">
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Frontend
+        </span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Visualizations: Chart
+        </span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Visualizations
+        </span>
+</div>
+</div>
+</div>
+<div class="github-row">
+<p class="github-body-container">### Issue Summary
+
+When creating a line chart with a datetime based x-axis, fr<span class="show-more-container"><a class="show-more" href="" rel="noopener">…</a></span><span class="excerpt hidden">om a table with missing dates ("holes"), the line chart continues as if no data was present, even though the option "Treat missing/null values as 0" is turned on.
+In contrast, bar charts work as expected - in which the bar is nonexistent (effectively size 0) on those missing dates.
+
+### Steps to Reproduce
+You can use this csv data as an example, or use the attached CSV.
+[Incoming_Users_2020_03_09.csv.txt](https://github.com/getredash/redash/files/4306409/Incoming_Users_2020_03_09.csv.txt)
+
+dt,installs
+06/02/2020,1
+10/02/2020,8
+11/02/2020,5
+12/02/2020,1
+
+(Please note European date format, switch month and day if necessary)
+
+Create a chart visualization (x-axis is dt, y axis is installs); Make sure the "Treat missing/null values as 0" checkbox is selected. In the x-axis settings make sure the scale is Datetime (default). Notice how the chart line continues straight in all dates between 06/02 and 10/02, as if they value continued to be "1" for these dates (even though indeed no marker is present when you hover the chart with the mouse cursor).
+Switch to bar chart - all bars in the same dates show a value of 0 (no bar). 
+Notice how unchecking and checking the checkbox "Treat missing/null values as 0" does not alter either of these charts. 
+
+Screenshots attached
+&lt;img width="796" alt="BarChart" src="https://user-images.githubusercontent.com/20188692/76211109-28b16500-620e-11ea-872c-b59cb22f7cd1.png"&gt;
+&lt;img width="791" alt="LineChart" src="https://user-images.githubusercontent.com/20188692/76211112-2a7b2880-620e-11ea-97bb-327900a9c1bc.png"&gt;
+
+The expected behavior is that when the checkbox is checked, the line chart would go to 0 on the dates that are not available in the table, similar to how the bar chart looks. For the bar chart, if the checkbox is unchecked, I would expect the same bar value to be kept, similar to how the line chart is.
+
+* Redash Version: 8.0.0+b32245 (a16f551e)
+* Browser/OS: Chrome Version 80.0.3987.122 (Official Build) (64-bit)
+* How did you install Redash: AWS ami-0b97435028ca44fcc</span></p>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/cny.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/cny_avatar.png" tabindex="-1" width="48"/><span itemprop="name">cny</span></a>
+</span>
+<link href="assets/10043" itemprop="mainEntityOfPage"/>
+<link href="assets/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-02-23T05:41:41Z" itemprop="datePublished">
+                    February 23, 2022,  5:41am
+                  </time>
+<meta content="2022-02-23T05:41:41Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I enabled stacking and excluded set missing values not to show up and got a lot better looking line chart<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/7gbxXvL6romyHhme2tiuRiiwE4c.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="7gbxXvL6romyHhme2tiuRiiwE4c" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_10x10.png" height="296" src="assets/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_690x296.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_690x296.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">904×388 38.9 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>“The Treat missing/null values as 0” issue does not work for me by itself as well, so it could be relevant, but the order is still messed up, at least the chart looks bearable</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

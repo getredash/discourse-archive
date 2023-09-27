@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Datasource and other API calls are failing with InvaildToken - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Hi, 
+We want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed. 
+
+Created a new vm in GCP using the prebuilt Image by referring the doc: https://redash.io/help/open-source/setup/
+
+Took t&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Datasource and other API calls are failing with InvaildToken&#39;" href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650" />
+<meta property="og:title" content="Datasource and other API calls are failing with InvaildToken" />
+<meta name="twitter:title" content="Datasource and other API calls are failing with InvaildToken" />
+<meta property="og:description" content="Hi,  We want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed.   Created a new vm in GCP using the prebuilt Image by referring the doc: https://redash.io/help/open-source/setup/  Took the pg_dump from the existing v7* server and pushed it to the new vm with v8* created in step1 We did pg_restore and got all the data into. I am able to see all the users, list of dashboards, list of queries etc. Now, I am unable to see the data sources and dashboards and queries. ..." />
+<meta name="twitter:description" content="Hi,  We want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed.   Created a new vm in GCP using the prebuilt Image by referring the doc: https://redash.io/help/open-source/setup/  Took the pg_dump from the existing v7* server and pushed it to the new vm with v8* created in step1 We did pg_restore and got all the data into. I am able to see all the users, list of dashboards, list of queries etc. Now, I am unable to see the data sources and dashboards and queries. ..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2020-02-27T15:32:42+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Datasource and other API calls are failing with InvaildToken","mainEntity":{"@type":"Question","name":"Datasource and other API calls are failing with InvaildToken","text":"Hi,\n\nWe want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed.\n\nCreated a new vm in GCP using the prebuilt Image by referring the doc: <a href=\"https://redash.io/help/open-source/setup/\" rel=\"nofollow noopener\">https://redash.io/help/open-source/setup/<\/a>\n\nTook the pg_dump from the existing v7* server and pushed it to the new vm with v8* cre&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2020-02-27T15:32:41.945Z","author":{"@type":"Person","name":"Krishna Chaitanya"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650">Datasource and other API calls are failing with InvaildToken</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Datasource and other API calls are failing with InvaildToken'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/krishna.chaitanya'><span itemprop='name'>krishna.chaitanya</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-02-27T15:32:42Z' class='post-time'>
+                    February 27, 2020,  3:32pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-02-27T15:32:42Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hi,</p>
+<p>We want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed.</p>
+<ol>
+<li>Created a new vm in GCP using the prebuilt Image by referring the doc: <a href="https://redash.io/help/open-source/setup/" rel="nofollow noopener">https://redash.io/help/open-source/setup/</a>
+</li>
+<li>Took the pg_dump from the existing v7* server and pushed it to the new vm with v8* created in step1</li>
+<li>We did pg_restore and got all the data into.</li>
+<li>I am able to see all the users, list of dashboards, list of queries etc.</li>
+<li>Now, I am unable to see the data sources and dashboards and queries.</li>
+<li>Upon checking the logs, I see the following error message:</li>
+</ol>
+<pre><code class="lang-auto">[2020-02-27 15:11:29,501] ERROR in app: Exception on /api/data_sources [GET]
+ Traceback (most recent call last):
+   File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+     rv = self.dispatch_request()
+   File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+     return self.view_functions[rule.endpoint](**req.view_args)
+   File "/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py", line 477, in wrapper
+     resp = resource(*args, **kwargs)
+   File "/usr/local/lib/python2.7/site-packages/flask_login/utils.py", line 228, in decorated_view
+     return func(*args, **kwargs)
+   File "/usr/local/lib/python2.7/site-packages/flask/views.py", line 84, in view
+     return self.dispatch_request(*args, **kwargs)
+   File "/app/redash/handlers/base.py", line 31, in dispatch_request
+     return super(BaseResource, self).dispatch_request(*args, **kwargs)
+   File "/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py", line 587, in dispatch_request
+     resp = meth(*args, **kwargs)
+   File "/app/redash/permissions.py", line 67, in decorated
+     return fn(*args, **kwargs)
+   File "/app/redash/handlers/data_sources.py", line 95, in get
+     for ds in data_sources:
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 98, in instances
+     util.raise_from_cause(err)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 265, in raise_from_cause
+     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 79, in instances
+     rows = [proc(row) for row in fetch]
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 511, in _instance
+     loaded_instance, populate_existing, populators)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 611, in _populate_full
+     dict_[key] = getter(row)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py", line 1226, in process
+     return process_value(impl_processor(value), dialect)
+   File "/app/redash/models/types.py", line 28, in process_result_value
+     return ConfigurationContainer.from_json(super(EncryptedConfiguration, self).process_result_value(value, dialect))
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py", line 409, in 
+     decrypted_value = self.engine.decrypt(value)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py", line 216, in decrypt
+     decrypted = self.fernet.decrypt(value)
+   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 75, in decrypt
+     return self._decrypt_data(data, timestamp, ttl)
+   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 119, in _decrypt_data
+     self._verify_signature(data)
+   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 108, in _verify_signature
+     raise InvalidToken
+ InvalidToken
+ [2020-02-27 15:11:29,508][PID:11][INFO][metrics] method=GET path=/api/data_sources endpoint=data_sources status=500 content_type=application/json content_length=36 duration=21.21 query_count=5 query_duration=19.35
+</code></pre>
+<p>For this, we modified <code>REDASH_COOKIE_SECRET </code> env variable with the default key and also with the existing v7* key.</p>
+<p>None of them worked.</p>
+<p>This seems to be happening to most of the API calls.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: Version: 8.0.0+b32245 (a16f551e)</li>
+<li>Browser/OS: Ubuntu 18 / Chrome</li>
+<li>How did you install Redash: using the preconfigured VM.</li>
+</ul>
+<p>Please let us know</p>
+<ol>
+<li>The steps we performed are correct? or did we miss any of the steps?</li>
+<li>If it’s okay, then how to fix this API call issue.</li>
+</ol>
+<p>Many Thanks.<br>
+Krishna</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/heyuan'><span itemprop='name'>heyuan</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-03-25T18:44:17Z' class='post-time'>
+                    March 25, 2021,  6:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-03-25T18:44:17Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/krishna.chaitanya">@krishna.chaitanya</a> Hi, have you ever figured this out ? We are facing very similar issues</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/arunkuralla'><span itemprop='name'>arunkuralla</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-17T17:33:26Z' class='post-time'>
+                    January 17, 2022,  5:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-17T17:33:26Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I am also facing the same issue when I moved rehash from KOPS managed Kubernetes cluster to EKS. I am using the same database backend (RDS) and same cookie secret.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-18T20:06:51Z' class='post-time'>
+                    January 18, 2022,  8:06pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-18T20:06:51Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Since this is an old thread and refers to a non-kubernetes deployment, would you mind making a fresh thread with details about your setup and the exact issue you face? Thanks!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

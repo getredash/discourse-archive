@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>LDAP configuration with docker</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/ldap-configuration-with-docker/11003">LDAP configuration with docker</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="LDAP configuration with docker" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/11003" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-09-06T11:38:20Z" itemprop="datePublished">
+                    September 6, 2022, 11:38am
+                  </time>
+<meta content="2022-09-06T11:38:20Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Hi !<br/>
+I’m working on a self hosted instance of redash (v11, docker configuration) and I don’t really understand how to create an image (<a href="https://redash.io/help/open-source/admin-guide/ldap-authentication" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/ldap-authentication</a>) to add LDAP. Where can I add the following lines, according to the admin guide ?</p>
+<pre><code class="lang-auto">FROM redash/redash:latest
+RUN pip install ldap3
+</code></pre>
+<p>I tried two ways (as described here <a href="http://discuss.redash.io/t/ad-authentication-500-error-caused-by-redash-ldap-email-key/8294/2">#8294</a>) but it doesn’t work.</p>
+<p>The only working method for me was to install <em>ldap3</em> (with pip) in each container (worker, scheduler and server). But this is not a good and permanent way to fix this issue. Any other idea ?</p>
+<p>Thanks in advance for your help <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/xavier-d.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/xavier-d_avatar.png" tabindex="-1" width="48"/><span itemprop="name">xavier-d</span></a>
+</span>
+<link href="assets/11003" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-09-06T12:50:49Z" itemprop="datePublished">
+                    September 6, 2022, 12:50pm
+                  </time>
+<meta content="2022-09-06T12:50:49Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I don’t know how you have deployed your version, but I believe that you have used the lastest Docker image.<br/>
+So in your setup you should have a <strong>Dockerfile</strong> where the following command is written.</p>
+<blockquote>
+<p>FROM redash/redash:latest</p>
+</blockquote>
+<p>you need to add in it, before your deployment</p>
+<blockquote>
+<p>RUN pip install ldap3</p>
+</blockquote>
+<p>It will avoid you to deploy manually the package on each node, and it will be persistant in case a new instance</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/11003" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-09-07T04:55:37Z" itemprop="datePublished">
+                    September 7, 2022,  4:55am
+                  </time>
+<meta content="2022-09-07T04:55:37Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for your reply.<br/>
+Unfortunately, if I’ve this file, I don’t have the line “FROM redash/redash:latest”.</p>
+<p>This is the file content :</p>
+<pre><code class="lang-auto"># PATH : /redash/Dockerfile
+
+FROM node:14.17 as frontend-builder
+
+RUN npm install --global --force yarn@1.22.10
+
+# Controls whether to build the frontend assets
+ARG skip_frontend_build
+
+ENV CYPRESS_INSTALL_BINARY=0
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+
+RUN useradd -m -d /frontend redash
+USER redash
+
+WORKDIR /frontend
+COPY --chown=redash package.json yarn.lock .yarnrc /frontend/
+COPY --chown=redash viz-lib /frontend/viz-lib
+
+# Controls whether to instrument code for coverage information
+ARG code_coverage
+ENV BABEL_ENV=${code_coverage:+test}
+
+RUN if [ "x$skip_frontend_build" = "x" ] ; then yarn --frozen-lockfile --network-concurrency 1; fi
+
+COPY --chown=redash client /frontend/client
+COPY --chown=redash webpack.config.js /frontend/
+RUN if [ "x$skip_frontend_build" = "x" ] ; then yarn build; else mkdir -p /frontend/client/dist &amp;&amp; touch /frontend/client/dist/multi_org.html &amp;&amp; touch /frontend/client/dist/index.html; fi
+
+FROM python:3.7-slim-buster
+
+EXPOSE 5000
+
+# Controls whether to install extra dependencies needed for all data sources.
+ARG skip_ds_deps
+# Controls whether to install dev dependencies.
+ARG skip_dev_deps
+
+RUN useradd --create-home redash
+
+# Ubuntu packages
+RUN apt-get update &amp;&amp; \
+  apt-get install -y --no-install-recommends \
+    curl \
+    gnupg \
+    build-essential \
+    pwgen \
+    libffi-dev \
+    sudo \
+    git-core \
+    # Postgres client
+    libpq-dev \
+    # ODBC support:
+    g++ unixodbc-dev \
+    # for SAML
+    xmlsec1 \
+    # Additional packages required for data sources:
+    libssl-dev \
+    default-libmysqlclient-dev \
+    freetds-dev \
+    libsasl2-dev \
+    unzip \
+    libsasl2-modules-gssapi-mit &amp;&amp; \
+    apt-get clean &amp;&amp; \
+     rm -rf /var/lib/apt/lists/*
+
+
+ARG TARGETPLATFORM
+ARG databricks_odbc_driver_url=https://databricks.com/wp-content/uploads/2.6.10.1010-2/SimbaSparkODBC-2.6.10.1010-2-Debian-64bit.zip
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    &amp;&amp; curl https://packages.microsoft.com/config/debian/10/prod.list &gt; /etc/apt/sources.list.d/mssql-release.list \
+    &amp;&amp; apt-get update \
+    &amp;&amp; ACCEPT_EULA=Y apt-get install  -y --no-install-recommends msodbcsql17 \
+    &amp;&amp; apt-get clean \
+    &amp;&amp; rm -rf /var/lib/apt/lists/* \
+    &amp;&amp; curl "$databricks_odbc_driver_url" --location --output /tmp/simba_odbc.zip \
+    &amp;&amp; chmod 600 /tmp/simba_odbc.zip \
+    &amp;&amp; unzip /tmp/simba_odbc.zip -d /tmp/ \
+    &amp;&amp; dpkg -i /tmp/SimbaSparkODBC-*/*.deb \
+    &amp;&amp; printf "[Simba]\nDriver = /opt/simba/spark/lib/64/libsparkodbc_sb64.so" &gt;&gt; /etc/odbcinst.ini \
+    &amp;&amp; rm /tmp/simba_odbc.zip \
+    &amp;&amp; rm -rf /tmp/SimbaSparkODBC*; fi
+
+WORKDIR /app
+
+# Disable PIP Cache and Version Check
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PIP_NO_CACHE_DIR=1
+
+# rollback pip version to avoid legacy resolver problem
+RUN pip install pip==20.2.4;
+
+# We first copy only the requirements file, to avoid rebuilding on every file change.
+COPY requirements_all_ds.txt ./
+RUN if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi
+
+COPY requirements_bundles.txt requirements_dev.txt ./
+RUN if [ "x$skip_dev_deps" = "x" ] ; then pip install -r requirements_dev.txt ; fi
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY --chown=redash . /app
+COPY --from=frontend-builder --chown=redash /frontend/client/dist /app/client/dist
+RUN chown redash /app
+USER redash
+
+ENTRYPOINT ["/app/bin/docker-entrypoint"]
+CMD ["server"]
+</code></pre>
+<p>Is it the good file ? Where can I insert the command <em>RUN pip install ldap3</em> ? Is it possible to rebuild the instance without redeployment ?</p>
+<p>Thanks again <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/11003" itemprop="mainEntityOfPage"/>
+<link href="assets/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-09-07T04:59:54Z" itemprop="datePublished">
+                    September 7, 2022,  4:59am
+                  </time>
+<meta content="2022-09-07T04:59:54Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>According to the admin guide (<em>cf.</em> capture), I use docker-compose and I have a <em>docker-compose.yml</em> file in the same directory.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/bhmCELUYjI77J7UOuJ3Q1gZ5bpn.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg" rel="noopener nofollow ugc" title="Capture"><img alt="Capture" data-base62-sha1="bhmCELUYjI77J7UOuJ3Q1gZ5bpn" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39_2_10x10.png" height="242" src="assets/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39_2_690x242.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39_2_690x242.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">Capture</span><span class="informations">987×347 37.2 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/11003" itemprop="mainEntityOfPage"/>
+<link href="assets/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-09-07T07:48:38Z" itemprop="datePublished">
+                    September 7, 2022,  7:48am
+                  </time>
+<meta content="2022-09-07T07:48:38Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I really don’t understand what happens with my configuration.<br/>
+I wrote a <em>Dockerfile.ldap</em> as :</p>
+<pre><code class="lang-auto">FROM redash/redash:latest
+RUN pip install --user ldap3
+</code></pre>
+<p>And then, I tried : <code>docker build -f Dockerfile.ldap . --no-cache</code><br/>
+Everything looked fine but… when I triy <code>docker-compose logs -f --tail 5</code>, this is the result :</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/yAmGNm8gZ7836N9eawKBCt7Jsx5.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg" rel="noopener nofollow ugc" title="Capture"><img alt="Capture" data-base62-sha1="yAmGNm8gZ7836N9eawKBCt7Jsx5" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db_2_10x10.png" height="50" src="assets/f26648b2bc820304f3528e8c6df4059b52c7f7db_2_690x50.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db_2_690x50.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">Capture</span><span class="informations">936×69 15.9 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Any idea ?</p>
+<p>This is my docker-compose.yml configuration (concerning LDAP) :</p>
+<pre><code class="lang-auto">REDASH_LDAP_LOGIN_ENABLED: "true"
+REDASH_PASSWORD_LOGIN_ENABLED: "false"
+REDASH_LDAP_URL: "XXX.XXX.XX.XX:389"
+REDASH_LDAP_BIND_DN: "..."
+REDASH_LDAP_BIND_DN_PASSWORD: "..."
+REDASH_LDAP_DISPLAY_NAME_KEY: "..."
+REDASH_LDAP_DISPLAY_EMAIL_KEY: "..."
+REDASH_LDAP_CUSTOM_USERNAME_PROMPT: "..."
+</code></pre>
+<p>Thanks again <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/GymYJ.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/GymYJ_avatar.png" tabindex="-1" width="48"/><span itemprop="name">GymYJ</span></a>
+</span>
+<link href="assets/11003" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-09-15T03:57:22Z" itemprop="datePublished">
+                    September 15, 2022,  3:57am
+                  </time>
+<meta content="2022-09-15T04:01:49Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>in my case, I added ‘build’ context in the <em>docker-compose.yml</em> file.<br/>
+like this :</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:8.0.0.b32245
+  build:
+    context: .
+    dockerfile: Dockerfile
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+...
+</code></pre>
+<p>and wrote a <em>Dockerfile</em> in same directory with the <em>docker-compose.yml</em><br/>
+Dockerfile as :</p>
+<pre><code class="lang-auto">FROM redash/redash:latest
+
+RUN pip install ldap3 --user
+</code></pre>
+<p>and then run docker-compose</p>
+<pre><code class="lang-auto">$ sudo docker-compose run --rm server create_db
+$ sudo docker-compose up -d
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

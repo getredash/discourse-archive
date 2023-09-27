@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Hey everyone, 
+I’m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp;amp; EC2 instance running Redash are in separate networks). 
+I’v&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash&#39;" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082" />
+<meta property="og:title" content="Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash" />
+<meta name="twitter:title" content="Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash" />
+<meta property="og:description" content="Hey everyone,  I’m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp; EC2 instance running Redash are in separate networks).  I’ve read the instructions here:   The part that was confusing is that it asks you to download the Redash public key and put it in the home of your bastion. For self-hosted Redash, should I generate my own private/public key pair, and then ssh into my EC2 server that is hosting Reda..." />
+<meta name="twitter:description" content="Hey everyone,  I’m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp; EC2 instance running Redash are in separate networks).  I’ve read the instructions here:   The part that was confusing is that it asks you to download the Redash public key and put it in the home of your bastion. For self-hosted Redash, should I generate my own private/public key pair, and then ssh into my EC2 server that is hosting Reda..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="4 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="7 ❤" />
+<meta property="article:published_time" content="2021-03-03T20:38:20+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+        <link rel="next" href="/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082?page=2">
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash","mainEntity":{"@type":"Question","name":"Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash","text":"Hey everyone,\n\nI’m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp; EC2 instance running Redash are in separate networks).\n\nI’ve read the instructions here:\n\n[image]\n\n<a href=\"https://redash.io/help/user-guide/integrations-and-api/ssh-tunnel-api/\" target=\"_blank\" rel=\"noopener nofollow ugc\">SSH Tunnel API<\/a>\n\n&hellip;","upvoteCount":1,"answerCount":0,"dateCreated":"2021-03-03T20:38:19.971Z","author":{"@type":"Person","name":"Jon"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jon234'><span itemprop='name'>jon234</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-03-03T20:38:20Z' class='post-time'>
+                    March 3, 2021,  8:38pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-03-03T20:38:20Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hey everyone,</p>
+<p>I’m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp; EC2 instance running Redash are in separate networks).</p>
+<p>I’ve read the instructions here:</p><aside class="onebox allowlistedgeneric">
+  <header class="source">
+      <img src="https://redash.io/assets/images/favicon.ico" class="site-icon" width="16" height="16">
+      <a href="https://redash.io/help/user-guide/integrations-and-api/ssh-tunnel-api/" target="_blank" rel="noopener nofollow ugc">redash.io</a>
+  </header>
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://redash.io/assets/images/social-facebook-1200x630.png" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://redash.io/help/user-guide/integrations-and-api/ssh-tunnel-api/" target="_blank" rel="noopener nofollow ugc">SSH Tunnel API</a></h3>
+
+
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p>The part that was confusing is that it asks you to download the Redash public key and put it in the home of your bastion. For self-hosted Redash, should I generate my own private/public key pair, and then ssh into my EC2 server that is hosting Redash and copy that private key into the file under ssh_tunnel_auth here: <a href="https://github.com/getredash/redash/pull/4797/files#diff-2b8c3360e32eb15eab426c242f90a24312923304700b324c4a0cdcfa3d51473fR30" class="inline-onebox" rel="noopener nofollow ugc">Run queries through ad-hoc SSH tunnels by rauchy · Pull Request #4797 · getredash/redash · GitHub</a><br>
+What’s the best way to do this?</p>
+<p>Then I take the corresponding public key I generated (as opposed to the Redash public key) and put it in the home of my user for the bastion?</p>
+<p>Thank you!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/k4s1m'><span itemprop='name'>k4s1m</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-03-08T15:20:54Z' class='post-time'>
+                    March 8, 2021,  3:20pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-03-08T15:20:54Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You have the right idea.</p>
+<p>The doc you linked is specific to customers of <a href="http://app.redash.io" rel="noopener nofollow ugc">app.redash.io</a>. For a self-hosted instance you need your own public/private key pair. Add the public key to the trusted hosts on your bastion. Add the path to the private key to the Python file you linked. And configure an <code>ssh_tunnel</code> object on the data source using the REST API.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-30T09:07:18Z' class='post-time'>
+                    October 30, 2021,  9:07am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-30T09:07:18Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>For a digital ocean droplet using Redash marketplace app, is it possible to modify the file redash/settings/dynamic_settings.py on the droplet itself?  Where would that file be located?  I’d prefer not to build my own Redash just to get the ssh tunnel feature.  Thanks</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-04T12:55:19Z' class='post-time'>
+                    November 4, 2021, 12:55pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-04T12:55:19Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Any comment on using SSH tunnel with an image?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-04T12:56:46Z' class='post-time'>
+                    November 4, 2021, 12:56pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-04T12:56:46Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Is there a way to do this with the AWS image or Digital Ocean’s marketplace App for Redash?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-04T18:10:51Z' class='post-time'>
+                    November 4, 2021,  6:10pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-04T18:10:51Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hey sorry for my late response here! Yes you can totally edit the file on digital ocean, although it is probably more hassle than it should be (this is an area for improvement). I’ve been using <code>sed</code> since that’s the only built-in utility within the container itself.</p>
+<p>I’ll put together a guide of how to do it in the next couple days. Until then, you are welcome to message me directly through the forum.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-08T02:57:29Z' class='post-time'>
+                    November 8, 2021,  2:57am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-08T02:57:29Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>That’s great to hear.  I’m eager to get it set up to avoid a last minute rush.  Which container would that change be part of?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-08T15:40:22Z' class='post-time'>
+                    November 8, 2021,  3:40pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-08T15:40:22Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I haven’t done this before, but I think only the worker containers really need the change. They are the containers that actually connect and run queries. The others (server, scheduler, nginx, redis, postgres) never communicate outside the local network.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-11T14:17:57Z' class='post-time'>
+                    November 11, 2021,  2:17pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-11T14:17:57Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Possibly a script that copies the python code into the container.  Although it would be better to have that as a mapped volume on the container so it doesn’t get removed if the container is re-created. Even better,  could the source be modified with a default key configured to a mapped volume?  That’d be best I think.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-11T14:22:18Z' class='post-time'>
+                    November 11, 2021,  2:22pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-11T14:22:18Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You can of course modify anything on the image itself. Will need to consider how we can update the defaults going forward (we’re getting ready to build the V10 images so this is topical <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=10" title=":smiley:" class="emoji" alt=":smiley:"> )</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-11T16:15:17Z' class='post-time'>
+                    November 11, 2021,  4:15pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-11T16:15:17Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I recall seeing this issue.  <a href="https://github.com/getredash/redash/issues/2013" class="inline-onebox" rel="noopener nofollow ugc">[Feature] Tunnel support in default Docker image · Issue #2013 · getredash/redash · GitHub</a>.  Perhaps that can be re-opened?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-11T17:59:32Z' class='post-time'>
+                    November 11, 2021,  5:59pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-11T17:59:32Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We won’t reopen that issue because we’re not going to make ssh tunnels the default behavior. But we could certainly use some documentation for setting one up. I’d love to review a PR adding those docs (along with many others <img src="https://emoji.discourse-cdn.com/twitter/sweat_smile.png?v=10" title=":sweat_smile:" class="emoji" alt=":sweat_smile:">)</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-14T03:48:22Z' class='post-time'>
+                    November 14, 2021,  3:48am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-14T03:48:22Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>One working approach for doing this with Docker based installs, is adding the keys and customised python into the containers using volumes:</p>
+<pre><code class="lang-auto">    volumes:
+      - /some/path/to/the/ssh/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+</code></pre>
+<p>That <code>/opt/redash/overrides/</code> directory is something you’d need to manually create, then put the modified <code>dynamic_settings.py</code> in.  The modified <code>dynamic_settings.py</code> has an updated <code>ssh_tunnel_auth()</code> function:</p>
+<pre><code class="lang-auto">def ssh_tunnel_auth():
+    """
+    To enable data source connections via SSH tunnels, provide your SSH authentication
+    pkey here. Return a string pointing at your **private** key's path (which will be used
+    to extract the public key), or a `paramiko.pkey.PKey` instance holding your **public** key.
+    """
+    return {
+        'ssh_pkey': '/keys/id_rsa'
+    }
+</code></pre>
+<p>Note that the <code>/keys/</code> directory there matches up with the <code>/keys</code> directory given in the volume clause above.  So, the <code>/keys/id_rsa</code> file is really just an <code>id_rsa</code> file that needs to exist in your actual keys directory.  The file needs to be readable by the <code>ubuntu</code> user inside the container too (uid 1000), which is probably easiest to do by <code>chown</code>-ing it.  eg <code>chown 1000: id_rsa</code>.</p>
+<p>As Jesse mentions above, only the <code>scheduled_worker</code>, <code>adhoc_worker</code>, and <code>worker</code> containers need the volume piece added, and they can all use the exact same keys.</p>
+<p>eg:</p>
+<pre><code class="lang-auto">  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-14T03:54:44Z' class='post-time'>
+                    November 14, 2021,  3:54am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-14T05:43:09Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>There’s also another approach - using persistent ssh tunnels - which doesn’t need using modified python scripts, instead having the ssh tunnel be set up externally to Redash.  eg using a container to manage the tunnel.</p>
+<p>Both ways seem to work fine, but have different strengths and weaknesses:</p>
+<ul>
+<li>
+<p>Redash managed SSH tunnel</p>
+<ul>
+<li>Slow to run queries due to tunnel creation each time
+<ul>
+<li>For long running queries, this extra time isn’t really noticeable</li>
+</ul>
+</li>
+<li>But, doesn’t really need separate monitoring</li>
+</ul>
+</li>
+<li>
+<p>Persistent SSH tunnel</p>
+<ul>
+<li>Quick to run queries, as the tunnel is already existing and ready to go
+<ul>
+<li>Better for fast queries, where faster GUI responsiveness is noticeable</li>
+</ul>
+</li>
+<li>Needs separate monitoring</li>
+<li>Each SSH tunnel needs manually setting up/configuring</li>
+</ul>
+</li>
+</ul>
+<p>Hopefully that helps. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-15T12:08:00Z' class='post-time'>
+                    November 15, 2021, 12:08pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-15T12:08:00Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Beauty!  Setting up the volume mapping looks great!  I am not familiar enough with open source Redash but it appears the <code>overrides</code> folder is a mechanism built in to Redash to allow setting customization, right?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_16' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-15T14:12:38Z' class='post-time'>
+                    November 15, 2021,  2:12pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-15T14:12:38Z'>
+              <span itemprop='position'>16</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="louisn" data-post="15" data-topic="8082">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/louisn/40/1707_2.png" class="avatar"> louisn:</div>
+<blockquote>
+<p>but it appears the <code>overrides</code> folder is a mechanism built in to Redash to allow setting customization</p>
+</blockquote>
+</aside>
+<p>Almost.  Docker (Redash uses it for management) allows sharing files and folders from the host server with it’s containers.  So, in this case, it’s a way of both making SSH keys available to the worker containers + a way of persistently replacing specific Docker files.</p>
+<p>Without an override like that, people would need to build their own custom Redash docker images (possible, but a bunch of effort).  Or they’d need to manually log into their Docker containers and update files inside them.  Which would then lose the changes any time the Docker container is rebuilt (can be pretty often, depending on what’s happening).</p>
+<p>Does that help? <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_17' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-22T19:27:13Z' class='post-time'>
+                    November 22, 2021,  7:27pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-22T19:27:13Z'>
+              <span itemprop='position'>17</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>That helps tremendously!  Is there a way to see that the key is getting picked up correctly. A log file or similar?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_18' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-22T22:38:44Z' class='post-time'>
+                    November 22, 2021, 10:38pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-22T22:39:10Z'>
+              <span itemprop='position'>18</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I configured the volume mapping with the key and placed the public key on the ssh tunnel host in the same manner as the hosted Redash configuration.  I’m getting an ssh negotiation error, most likely not picking up the key or something along those lines.  Any idea how to troubleshoot on the self hosted redash with Docker implementation?</p>
+<p>{<br>
+“message”: “could not send SSL negotiation packet: Resource temporarily unavailable\n”,<br>
+“ok”: false<br>
+}</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_19' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-23T02:30:13Z' class='post-time'>
+                    November 23, 2021,  2:30am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-23T02:51:13Z'>
+              <span itemprop='position'>19</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="louisn" data-post="18" data-topic="8082">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/louisn/40/1707_2.png" class="avatar"> louisn:</div>
+<blockquote>
+<p>“message”: “could not send SSL negotiation packet: Resource temporarily unavailable\n”,</p>
+</blockquote>
+</aside>
+<p>Hmmm, if you manually run SSH (using that key) from the host your Redash is on, does the connection succeed? eg:</p>
+<pre><code class="lang-auto">$ ssh -i path_to_key someuser@your_bastion_host
+</code></pre>
+<p>Note that a simple ssh like above will try creating a remote login session for your user (eg in order to run commands remotely).  That capability can be disabled on the bastion server, and isn’t needed for tunnels.  So, it’s very possible you’ll connect successfully when testing, then ssh will just close the connection without further message.</p>
+<p>The thing to look for is whether the attempted connection times out, generates an error, or something similar.  A timeout or “No route to host” will generally mean there’s a network layer problem that needs fixing (maybe a firewall needs updating?), whereas other things are more obvious.  eg if ssh prompts for acceptance of a host key, then it means the connection is getting to the server and it might be a public key problem after all</p>
+<p>So, try the connection, and let us know what happens with it… <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_20' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/louisn'><span itemprop='name'>louisn</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-26T19:13:19Z' class='post-time'>
+                    November 26, 2021,  7:13pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-26T19:13:19Z'>
+              <span itemprop='position'>20</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yes the ssh connection works.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+    <div role='navigation' itemscope itemtype='http://schema.org/SiteNavigationElement' class="topic-body crawler-post">
+        <span itemprop='name'><b><a rel="next" itemprop="url" href="/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082?page=2">next page →</a></b></span>
+    </div>
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

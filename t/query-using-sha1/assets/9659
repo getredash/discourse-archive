@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Query Using SHA1 - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hello! I have query and i’am using SHA1 but it returns me empty 
+Example: 
+SELECT SHA1(to_utf8(cast(&amp;#39;foo&amp;#39; as varchar))), &amp;#39;foo&amp;#39; as ident 
+If i remove SHA1 in my query, returns for me ‘foo’ 
+I using Redash V8 
+Please help &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/query-using-sha1/9659" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Query Using SHA1&#39;" href="https://discuss.redash.io/t/query-using-sha1/9659.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_1024x376.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_1024x376.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/query-using-sha1/9659" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/query-using-sha1/9659" />
+<meta property="og:title" content="Query Using SHA1" />
+<meta name="twitter:title" content="Query Using SHA1" />
+<meta property="og:description" content="Hello! I have query and i’am using SHA1 but it returns me empty  Example:  SELECT SHA1(to_utf8(cast(&#39;foo&#39; as varchar))), &#39;foo&#39; as ident  If i remove SHA1 in my query, returns for me ‘foo’  I using Redash V8  Please help me! Thanks" />
+<meta name="twitter:description" content="Hello! I have query and i’am using SHA1 but it returns me empty  Example:  SELECT SHA1(to_utf8(cast(&#39;foo&#39; as varchar))), &#39;foo&#39; as ident  If i remove SHA1 in my query, returns for me ‘foo’  I using Redash V8  Please help me! Thanks" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="og:article:tag" content="query_results" />
+<meta property="article:published_time" content="2021-12-08T23:16:18+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Query Using SHA1","mainEntity":{"@type":"Question","name":"Query Using SHA1","text":"Hello! I have query and i’am using SHA1 but it returns me empty\n\nExample:\n\nSELECT SHA1(to_utf8(cast(&#39;foo&#39; as varchar))), &#39;foo&#39; as ident\n\nIf i remove SHA1 in my query, returns for me ‘foo’\n\nI using Redash V8\n\nPlease help me! Thanks\n\n<a class=\"lightbox\" href=\"https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a.png\" data-download-href=\"/uploads/short-url/7baKe0Zu8RKO9TxTC0iVU6UWl6y.png?dl=1\" title=\"image\" rel=\"noopener nofollow ugc\">[image]<\/a>","upvoteCount":0,"answerCount":0,"dateCreated":"2021-12-08T23:16:18.838Z","author":{"@type":"Person","name":"Ricardo Galdi"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/query-using-sha1/9659">Query Using SHA1</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/query_results' class='discourse-tag' rel="tag">query_results</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Query Using SHA1'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content='query_results'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/RGaldi'><span itemprop='name'>RGaldi</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-08T23:16:18Z' class='post-time'>
+                    December 8, 2021, 11:16pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-08T23:16:18Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hello! I have query and i’am using SHA1 but it returns me empty</p>
+<p>Example:<br>
+<code>SELECT SHA1(to_utf8(cast('foo' as varchar))), 'foo' as ident</code></p>
+<p>If i remove SHA1 in my query, returns for me ‘foo’</p>
+<p>I using Redash V8</p>
+<p>Please help me! Thanks</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a.png" data-download-href="/uploads/short-url/7baKe0Zu8RKO9TxTC0iVU6UWl6y.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_690x254.png" alt="image" data-base62-sha1="7baKe0Zu8RKO9TxTC0iVU6UWl6y" width="690" height="254" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_690x254.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_1035x381.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_1380x508.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32528def63da77b5a71a9ac539d5da38e09da75a_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1725×635 25.4 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T04:57:03Z' class='post-time'>
+                    December 9, 2021,  4:57am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T04:57:03Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi there, what kind of data source is this? If you check the network inspector in your browser after you execute the query you should be able to see the network response that includes the query result (it will use the <code>api/results</code> endpoint). Do you see any data in that response?</p>
+<p>It’s important to know if the data is coming from Athena but the web application can’t display it. Or if it’s not even making it to the browser.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/RGaldi'><span itemprop='name'>RGaldi</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T12:40:06Z' class='post-time'>
+                    December 9, 2021, 12:40pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T12:40:06Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi jesse, i did the verification in Network and i haven’t the <code>api/results</code>.  I tried in Google Chrome and Mozilla but the results its same.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc.png" data-download-href="/uploads/short-url/2FyHeXujtBbQ2lRzqLMspVnUD6s.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc_2_690x199.png" alt="image" data-base62-sha1="2FyHeXujtBbQ2lRzqLMspVnUD6s" width="690" height="199" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc_2_690x199.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc_2_1035x298.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc_2_1380x398.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/12b7034277325899a35a1fbe384a266afac5c1fc_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">2018×583 57.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>At Athens SHA1 returns to me <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=12" title=":confused:" class="emoji" alt=":confused:" loading="lazy" width="20" height="20"></p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1a061707c7ca763bee3221eb20d0b510dd56cbec.png" data-download-href="/uploads/short-url/3IdsDBxnyiWWAqhgQBnCKo6Hrgo.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1a061707c7ca763bee3221eb20d0b510dd56cbec_2_690x288.png" alt="image" data-base62-sha1="3IdsDBxnyiWWAqhgQBnCKo6Hrgo" width="690" height="288" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1a061707c7ca763bee3221eb20d0b510dd56cbec_2_690x288.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1a061707c7ca763bee3221eb20d0b510dd56cbec_2_1035x432.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1a061707c7ca763bee3221eb20d0b510dd56cbec.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1a061707c7ca763bee3221eb20d0b510dd56cbec_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1062×444 29.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Thanks for follow up.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T13:35:17Z' class='post-time'>
+                    December 9, 2021,  1:35pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T13:35:17Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Good!</p>
+<p>Please check that final network request (at the bottom of the list) in your screenshot. The one you highlighted is the initial request when the query was enqueued but had not yet executed.</p>
+<p>See how there are “duplicate” requests after it? That’s the web application checking once-per-second for a result to the query. The final request will actually contain the query result, which is what we want to see.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/RGaldi'><span itemprop='name'>RGaldi</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/d23350718081328f1198c4712c15d248da64e1a0.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T14:27:17Z' class='post-time'>
+                    December 9, 2021,  2:27pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T14:27:17Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Alright! the final requets, response is:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/d23350718081328f1198c4712c15d248da64e1a0.png" data-download-href="/uploads/short-url/tZwcXvupNwCrzWrDSLVPL5xalVu.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d23350718081328f1198c4712c15d248da64e1a0_2_690x202.png" alt="image" data-base62-sha1="tZwcXvupNwCrzWrDSLVPL5xalVu" width="690" height="202" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d23350718081328f1198c4712c15d248da64e1a0_2_690x202.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d23350718081328f1198c4712c15d248da64e1a0_2_1035x303.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d23350718081328f1198c4712c15d248da64e1a0_2_1380x404.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/d23350718081328f1198c4712c15d248da64e1a0_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1970×578 62.8 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Thanks!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T17:46:41Z' class='post-time'>
+                    December 9, 2021,  5:46pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T17:46:41Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thank you, that’s very helpful. Notice how the status code on this final request is <code>4</code> (four). According to the <a href="https://redash.io/help/user-guide/integrations-and-api/api">api documentation</a> this means that the query execution job failed. So the root issue here is with the <em>backend</em> of Redash, not the web application.</p>
+<p>Next we can see what exactly went wrong with the back-end. You do this by monitoring the log output from docker-compose while attempting to execute the query.</p>
+<ol>
+<li>On the server that runs Redash from the <code>/opt/redash</code> directory (or wherever your installation keeps the <code>docker-compose.yml</code> file, run <code>docker-compose logs -f --tail 100</code>. Log messages will begin scrolling across your screen periodically.</li>
+<li>In the web application, click the Execute button on this query.</li>
+<li>You will see an error from Python in the logs from step 1.</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/RGaldi'><span itemprop='name'>RGaldi</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T20:17:14Z' class='post-time'>
+                    December 9, 2021,  8:17pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T20:25:56Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Jesse, follow the error:</p>
+<pre><code class="lang-auto">[2021-12-09 20:02:16,537][PID:1][INFO][MainProcess] Received task: redash.tasks.execute_query[421383cf-630f-43a4-b8a1-ca371ad01117]  
+
+[2021-12-09 20:02:16,540][PID:100][INFO][ForkPoolWorker-89] task_name=redash.tasks.execute_query task_id=421383cf-630f-43a4-b8a1-ca371ad01117 task=execute_query state=load_ds ds_id=1
+
+[2021-12-09 20:02:16,552][PID:100][INFO][ForkPoolWorker-89] task_name=redash.tasks.execute_query task_id=421383cf-630f-43a4-b8a1-ca371ad01117 task=execute_query state=executing_query query_hash=93d13f559c660078a1646eed2eda8abb type=athena ds_id=1  task_id=421383cf-630f-43a4-b8a1-ca371ad01117 queue=queries query_id=adhoc username=****@****.com
+
+[2021-12-09 20:02:17,935][PID:100][INFO][ForkPoolWorker-89] task_name=redash.tasks.execute_query task_id=421383cf-630f-43a4-b8a1-ca371ad01117 task=execute_query query_hash=93d13f559c660078a1646eed2eda8abb data_length=None error=[]
+
+[2021-12-09 20:02:17,937][PID:100][ERROR][ForkPoolWorker-89] Task redash.tasks.execute_query[421383cf-630f-43a4-b8a1-ca371ad01117] raised unexpected: QueryExecutionError('',)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/app/redash/worker.py", line 84, in __call__
+    return TaskBase.__call__(self, *args, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/app/redash/tasks/queries.py", line 436, in execute_query
+    scheduled_query).run()
+  File "/app/redash/tasks/queries.py", line 382, in run
+    raise result
+QueryExecutionError
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T20:30:34Z' class='post-time'>
+                    December 9, 2021,  8:30pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T20:30:34Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Is there more to that error? It seems to be cut off.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/RGaldi'><span itemprop='name'>RGaldi</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/query-using-sha1/9659">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-09T20:57:24Z' class='post-time'>
+                    December 9, 2021,  8:57pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-09T21:04:45Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>That its all <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=12" title=":confused:" class="emoji" alt=":confused:" loading="lazy" width="20" height="20"></p>
+<p>I run: `docker logs --tail 100 CONTAINER_ID(redash_adhoc_worker_1)’</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f.png" data-download-href="/uploads/short-url/e2QNMhVFzovJMuzVNJCYSNMkOjt.png?dl=1" title="Seleção_001" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f_2_690x262.png" alt="Seleção_001" data-base62-sha1="e2QNMhVFzovJMuzVNJCYSNMkOjt" width="690" height="262" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f_2_690x262.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f_2_1035x393.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f_2_1380x524.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6270f52c951c6b9d628486aa58bb2273d4e6073f_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Seleção_001</span><span class="informations">2554×973 273 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>In this print have  two tries run query</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Questions about The main Redash Postgresql Database</title>
+    <link>https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337</link>
+    <description>### Context
+We are spinning up a redash v10 cluster (Thank you for all your help as I have asked many questions already). We are at the point of spinning up an AWS RDS postgres (version 13.4) to serve as the main redash database (for queries, query results, events, ...) 
+
+### Questions 
+* What is a recommended Postgres version, we are planning on using version 13.4, any issues you know of?
+* I looked at the [github repo](https://github.com/getredash/redash/tree/release/10.0.x) I could not really find the place where the **REDASH_DATABASE_URL** , **DATABASE_URL**, **SQLALCHEMY_DATABASE_URI** is used to actually connect to the database (I see it referenced in the environment and the docker compose files), Can you point at where it is used, this will answer questions like how is authentication handled (I assume the URI needs a username/password) 
+* On the Subject of Authentication, do you support IAM authentication for the main database?
+
+
+As always, Thank you in advance, 
+Ramzi</description>
+    
+    <lastBuildDate>Wed, 27 Oct 2021 14:07:10 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Questions about The main Redash Postgresql Database</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>My bad. I thought I saw somewhere you had a fork using PG14. Looking through thought I don’t see it any longer</p>
+          <p><a href="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/5</link>
+        <pubDate>Wed, 27 Oct 2021 14:07:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9337-5</guid>
+        <source url="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337.rss">Questions about The main Redash Postgresql Database</source>
+      </item>
+      <item>
+        <title>Questions about The main Redash Postgresql Database</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="2" data-topic="9337">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3002_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>Officially Redash is still on postgres 13 but I think <a class="mention" href="https://discuss.redash.io/u/justinclift">@justinclift</a> has done some experiments with Postgres 14 and it works okay.</p>
+</blockquote>
+</aside>
+<p>Ironically, haven’t tested PG 14 with Redash yet.  Effort is going into other other, higher importance things first. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/4</link>
+        <pubDate>Wed, 27 Oct 2021 12:05:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9337-4</guid>
+        <source url="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337.rss">Questions about The main Redash Postgresql Database</source>
+      </item>
+      <item>
+        <title>Questions about The main Redash Postgresql Database</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you so much this was helpful</p>
+          <p><a href="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/3</link>
+        <pubDate>Mon, 25 Oct 2021 22:22:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9337-3</guid>
+        <source url="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337.rss">Questions about The main Redash Postgresql Database</source>
+      </item>
+      <item>
+        <title>Questions about The main Redash Postgresql Database</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This can be a bit confusing. You can’t see where <code>SQLALCHEMY_DATABASE_URI</code> is used because it’s read by library code, not our application code. Redash uses Flask-SQLAlchemy, an extension to Flask which has access to the <code>app.config</code> dictionary, to connect with the metadata database. Flask-SQLAlchemy expects to find the URI under <code>app.config.SQLALCHEMY_DATABASE_URI</code>.</p>
+<p>Redash sets this value in <code>settings/__init__.py</code> <a href="https://github.com/getredash/redash/blob/1c5ceecd50bf6c183cabc347656640b29ad809a0/redash/settings/__init__.py#L32-L33">here</a> and then sets it on the Flask object <a href="https://github.com/getredash/redash/blob/1c5ceecd50bf6c183cabc347656640b29ad809a0/redash/app.py#L22">here</a> using Flasks’s  <code>config.from_object()</code> method.</p>
+<p>We never touch the URI again.</p>
+<p>Officially Redash is still on postgres 13 but I think <a class="mention" href="https://discuss.redash.io/u/justinclift">@justinclift</a> has done some experiments with Postgres 14 and it works okay.</p>
+<p>IAM Auth isn’t directly implemented on the metadata db. But I think this would be trivial to implement if you wanted. We’d happily review a pull request adding it to <code>master</code> <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+          <p><a href="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/2</link>
+        <pubDate>Mon, 25 Oct 2021 22:01:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9337-2</guid>
+        <source url="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337.rss">Questions about The main Redash Postgresql Database</source>
+      </item>
+      <item>
+        <title>Questions about The main Redash Postgresql Database</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="context-1" class="anchor" href="https://discuss.redash.io#context-1"></a>Context</h3>
+<p>We are spinning up a redash v10 cluster (Thank you for all your help as I have asked many questions already). We are at the point of spinning up an AWS RDS postgres (version 13.4) to serve as the main redash database (for queries, query results, events, …)</p>
+<h3>
+<a name="questions-2" class="anchor" href="https://discuss.redash.io#questions-2"></a>Questions</h3>
+<ul>
+<li>What is a recommended Postgres version, we are planning on using version 13.4, any issues you know of?</li>
+<li>I looked at the <a href="https://github.com/getredash/redash/tree/release/10.0.x" rel="noopener nofollow ugc">github repo</a> I could not really find the place where the <strong>REDASH_DATABASE_URL</strong> , <strong>DATABASE_URL</strong>, <strong>SQLALCHEMY_DATABASE_URI</strong> is used to actually connect to the database (I see it referenced in the environment and the docker compose files), Can you point at where it is used, this will answer questions like how is authentication handled (I assume the URI needs a username/password)</li>
+<li>On the Subject of Authentication, do you support IAM authentication for the main database?</li>
+</ul>
+<p>As always, Thank you in advance,<br>
+Ramzi</p>
+          <p><a href="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337/1</link>
+        <pubDate>Mon, 25 Oct 2021 20:29:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9337-1</guid>
+        <source url="https://discuss.redash.io/t/questions-about-the-main-redash-postgresql-database/9337.rss">Questions about The main Redash Postgresql Database</source>
+      </item>
+  </channel>
+</rss>

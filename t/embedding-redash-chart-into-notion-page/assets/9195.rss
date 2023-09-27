@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Embedding Redash chart into Notion page</title>
+    <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195</link>
+    <description>Does anyone here knows how to embed Redash chart into Notion page? When I try it it only shows the bookmark box.
+
+Thank you</description>
+    
+    <lastBuildDate>Tue, 30 Nov 2021 11:05:13 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[lelesrc]]></dc:creator>
+        <description><![CDATA[
+            <p>Update:</p>
+<p>I get in touch with Notion support asking for embedding specs.<br>
+The answer is that they delegate the embedding feature to an external service (embed.ly) and we must comply with it.</p>
+<p>I had a quick look to embed.ly documentation and AFAIU the requirement we are interested in is compliance with oEmbed standard (<a href="https://oembed.com/" rel="noopener nofollow ugc">https://oembed.com/</a>).</p>
+<p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a>: To answer your question, supporting oEmbed is probably the right way to make Redash widget embedding supported on most platforms (including Notion).</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/13</link>
+        <pubDate>Tue, 30 Nov 2021 11:05:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-13</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[lelesrc]]></dc:creator>
+        <description><![CDATA[
+            <p>ATM the only workaround I’ve found around is putting the redash widget url in a page like this:</p>
+<pre><code class="lang-auto">&lt;html&gt;
+
+&lt;head&gt;
+  &lt;title&gt;Notion Embeddable&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;iframe src="REDASH_URL_HERE" width="100%" height="300px"&gt;
+  &lt;/iframe&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre>
+<p>The POC I wrote builds this page from url params and gives it back to Notion.</p>
+<p>Basically, the same html could be returned by:</p>
+<ul>
+<li>a named route like <code>/deep-embed/query/20/visualization/40</code>
+</li>
+<li>adding query params <code>/embed/query/20/visualization/40?deep_embed=true</code>
+</li>
+</ul>
+<p>…but I don’t personally like this solution. The solution I’d prefer would be refactor the widget page to make it directly embeddable on most platforms - and I’m pretty sure the above html is not the best option.</p>
+<p>I’m asking guys at Notion if they have some guidelines about content embedding and I’ll keep you updated!</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/12</link>
+        <pubDate>Fri, 26 Nov 2021 16:23:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-12</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is excellent. Thanks so much!</p>
+<p>Anything we can change about Redash embeds to make them more compatible for this?</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/11</link>
+        <pubDate>Thu, 25 Nov 2021 18:43:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-11</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[lelesrc]]></dc:creator>
+        <description><![CDATA[
+            <p>At the end, embedding Redash widgets in Notion is not (only) a CORS problem, definitely.</p>
+<p>Embeddability is decided somehow by Notion (it “checks” the site as soon as the url is entered) and there are no published specs about how this check works, ATM.</p>
+<p>I tested a static html page  on the same redash server (w/ tested cors configuration, X-Frame-Options allow all) containing only a redash widget url wrapped in an iframe tag. In this way it works perfectly.</p>
+<p>Since the same frontend serve both the redash widget url (that doesn’t work as embed) and the static page containing the iframe-wrapped redash widget url (that instead works), CORS is ruled out -  it seems only a matter of html content.</p>
+<p>I quickly built a simple tool to embed redash widgets in notion:</p>
+<p><a href="https://lt1jl.sse.codesandbox.io/generator" class="onebox" target="_blank" rel="noopener nofollow ugc">https://lt1jl.sse.codesandbox.io/generator</a></p>
+<p>It generates a link that Notion accepts as embed.<br>
+Using query params, the link points to an html page where the redash share url is wrapped in an iframe.</p>
+<p>This should solve the op issue and may be useful to other notion/redash users.</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/10</link>
+        <pubDate>Thu, 25 Nov 2021 02:09:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-10</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[lelesrc]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> for your kind support!</p>
+<p>Had a look around and I guess this is the problem, or at least we are very close…</p>
+<aside class="quote quote-modified" data-post="1" data-topic="6863">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/superwesman/40/2230_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/why-are-cors-headers-only-partially-implemented-in-redash-8-will-this-be-fixed-in-redash-9/6863">Why are CORS headers only partially implemented in Redash 8? Will this be fixed in Redash 9?</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Issue Summary
+We have been attempting to write a web application that uses the redash API and have been stymied by CORS errors.  We have found that the REDASH_CORS_ACCESS_CONTROL_ALLOW_ORIGIN setting does not consistently affect the presence of CORS headers in the redash responses. 
+As we looked more closely, we found that the CORS headers are only provided as part of the query_result endpoint and not as part of any other endpoint in the redash API. 
+<a class="mention" href="https://discuss.redash.io/u/arikfr">@arikfr</a>, Why is CORS support only partially i…
+  </blockquote>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/9</link>
+        <pubDate>Tue, 23 Nov 2021 21:56:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-9</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="lelesrc" data-post="7" data-topic="9195">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/lelesrc/40/3550_2.png" class="avatar"> lelesrc:</div>
+<blockquote>
+<p>HEAD makes my think to something (NotionEmbedder?) doing a CORS pre-flight check.</p>
+</blockquote>
+</aside>
+<p>Agreed.</p>
+<p>Have you set your Redash CORS headers to allow requests from notion?</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/8</link>
+        <pubDate>Tue, 23 Nov 2021 18:13:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-8</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[lelesrc]]></dc:creator>
+        <description><![CDATA[
+            <p>In the logs I attached you have 2 http reqs. Response codes are both 200 OK, so nothing to investigate on.</p>
+<p>The only element I see here is that one req is a GET, the other is an HEAD.</p>
+<p>HEAD makes my think to something (NotionEmbedder?) doing a CORS pre-flight check.<br>
+Check that goes wrong in our case…</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/7</link>
+        <pubDate>Tue, 23 Nov 2021 17:07:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-7</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is great information. You can get a better sense of what’s happening on the Redash side by examining the server logs. Find the request from Notion and see if Redash returns a code 200 or 500 or something else.</p>
+<p>There are a few ways this could break depending on what Notion expects to find when scraping embed content.</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/6</link>
+        <pubDate>Tue, 23 Nov 2021 16:49:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-6</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[lelesrc]]></dc:creator>
+        <description><![CDATA[
+            <p>Same here: embedding a redash iframe in notion results in a bookmark and not an actual iframe as expected.<br>
+I don’t believe the issue to be client-related. I run a self-hosted instance; inspecting server logs I noticed this request when adding the embedded iframe in notion:</p>
+<pre><code class="lang-auto">"GET /embed/query/3/visualization/11?api_key=xxxxxxxxxx HTTP/1.1" 200 568 "-" "Mozilla/5.0 (compatible; Embedly/0.2; +http://support.embed.ly/)"
+"HEAD /embed/query/3/visualization/11?api_key=xxxxxxxxxx&amp; HTTP/1.1" 200 0 "-" "NotionEmbedder"
+</code></pre>
+<p>So, it seems that notion/embed.ly visits the page and finds something that prevents the embed.</p>
+<p>Maybe this information can help.</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/5</link>
+        <pubDate>Tue, 23 Nov 2021 00:06:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-5</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Unless you post examples of the errors you see there’s no way we can help you.</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/4</link>
+        <pubDate>Thu, 07 Oct 2021 14:06:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-4</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[maeda]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse, thanks for your reply. Yes I see a lot of errors on my browser console.</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/3</link>
+        <pubDate>Thu, 07 Oct 2021 09:11:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-3</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Do you see any errors in your browser console if you visit notion from a web browser?</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/2</link>
+        <pubDate>Thu, 07 Oct 2021 05:49:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-2</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+      <item>
+        <title>Embedding Redash chart into Notion page</title>
+        <dc:creator><![CDATA[maeda]]></dc:creator>
+        <description><![CDATA[
+            <p>Does anyone here knows how to embed Redash chart into Notion page? When I try it it only shows the bookmark box.</p>
+<p>Thank you</p>
+          <p><a href="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195/1</link>
+        <pubDate>Mon, 04 Oct 2021 11:18:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9195-1</guid>
+        <source url="https://discuss.redash.io/t/embedding-redash-chart-into-notion-page/9195.rss">Embedding Redash chart into Notion page</source>
+      </item>
+  </channel>
+</rss>

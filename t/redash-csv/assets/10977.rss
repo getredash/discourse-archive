@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>RedashのCSVダウンロード文字コードの変更について</title>
+    <link>https://discuss.redash.io/t/redash-csv/10977</link>
+    <description>先日までSupervisor型の旧Redash(v4)を利用していたのですが、これをv10の Docker型に環境変更を実施しました。
+
+元々v4を使用していた際に、csvファイルの文字コードがutf-8で使いづらいという話があり、以下サイトを参考に、cp932の設定を.envに入れ使っていました。
+
+https://www.yamamanx.com/redash-csv-utf-8-other-code/
+
+現在、v10の環境で関連の設定を一通り引き継いだつもりなのですが、文字コードがutf-8のままで困っています。
+docker型での設定方法などご存じの方はいらっしゃいますでしょうか？</description>
+    
+    <lastBuildDate>Fri, 09 Sep 2022 00:54:03 +0000</lastBuildDate>
+    <category>Japanese</category>
+    <atom:link href="https://discuss.redash.io/t/redash-csv/10977.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>RedashのCSVダウンロード文字コードの変更について</title>
+        <dc:creator><![CDATA[tosawada]]></dc:creator>
+        <description><![CDATA[
+            <p>ありがとうございます！<br>
+こちらの記事参考にさせていただき対応入れたところ、実現できました。</p>
+          <p><a href="https://discuss.redash.io/t/redash-csv/10977/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-csv/10977/3</link>
+        <pubDate>Fri, 09 Sep 2022 00:54:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10977-3</guid>
+        <source url="https://discuss.redash.io/t/redash-csv/10977.rss">RedashのCSVダウンロード文字コードの変更について</source>
+      </item>
+      <item>
+        <title>RedashのCSVダウンロード文字コードの変更について</title>
+        <dc:creator><![CDATA[ishiguro]]></dc:creator>
+        <description><![CDATA[
+            <p>恐らくredashのpython3化後、.envのREDASH_CSV_WRITER_ENCODINGはcsv生成に使われなくなってしまいました。最適な方法とは思えないのですが、私も困っていたため、（バージョンアップの度に再設定する必要がありますが）下記の箇所のソースコードを変更しました。</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/handlers/query_results.py#L436</a></h4>
+
+
+
+    <pre class="onebox"><code class="lang-py">
+      <ol class="start lines" start="426" style="counter-reset: li-counter 425 ;">
+          <li>    else:</li>
+          <li>        abort(404, message="No cached result found for this query.")</li>
+          <li>
+          </li>
+<li>@staticmethod</li>
+          <li>def make_json_response(query_result):</li>
+          <li>    data = json_dumps({"query_result": query_result.to_dict()})</li>
+          <li>    headers = {"Content-Type": "application/json"}</li>
+          <li>    return make_response(data, 200, headers)</li>
+          <li>
+          </li>
+<li>@staticmethod</li>
+          <li class="selected">def make_csv_response(query_result):</li>
+          <li>    headers = {"Content-Type": "text/csv; charset=UTF-8"}</li>
+          <li>    return make_response(</li>
+          <li>        serialize_query_result_to_dsv(query_result, ","), 200, headers</li>
+          <li>    )</li>
+          <li>
+          </li>
+<li>@staticmethod</li>
+          <li>def make_tsv_response(query_result):</li>
+          <li>    headers = {"Content-Type": "text/tab-separated-values; charset=UTF-8"}</li>
+          <li>    return make_response(</li>
+          <li>        serialize_query_result_to_dsv(query_result, "\t"), 200, headers</li>
+      </ol>
+    </code></pre>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>詳細は先程記事にしてみました。</p>
+<p>Redash v10でs-jisでcsvをダウンロードする方法</p><aside class="onebox allowlistedgeneric" data-onebox-src="https://qiita.com/koike_moyashi/items/d0d5dc37a93b398f0aaa">
+  <header class="source">
+      <img src="https://cdn.qiita.com/assets/favicons/public/production-c620d3e403342b1022967ba5e3db1aaa.ico" class="site-icon" width="120" height="120">
+
+      <a href="https://qiita.com/koike_moyashi/items/d0d5dc37a93b398f0aaa" target="_blank" rel="noopener nofollow ugc">Qiita</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://qiita-user-contents.imgix.net/https%3A%2F%2Fcdn.qiita.com%2Fassets%2Fpublic%2Farticle-ogp-background-9f5428127621718a910c8b63951390ad.png?ixlib=rb-4.0.0&amp;w=1200&amp;mark64=aHR0cHM6Ly9xaWl0YS11c2VyLWNvbnRlbnRzLmltZ2l4Lm5ldC9-dGV4dD9peGxpYj1yYi00LjAuMCZ3PTkxNiZ0eHQ9UmVkYXNoJTIwdjEwJUUzJTgxJUE3cy1qaXMlRTMlODElQTdjc3YlRTMlODIlOTIlRTMlODMlODAlRTMlODIlQTYlRTMlODMlQjMlRTMlODMlQUQlRTMlODMlQkMlRTMlODMlODklRTMlODElOTklRTMlODIlOEIlRTYlOTYlQjklRTYlQjMlOTUmdHh0LWNvbG9yPSUyMzIxMjEyMSZ0eHQtZm9udD1IaXJhZ2lubyUyMFNhbnMlMjBXNiZ0eHQtc2l6ZT01NiZ0eHQtY2xpcD1lbGxpcHNpcyZ0eHQtYWxpZ249bGVmdCUyQ3RvcCZzPTliZGY1NjY5OWYyZGYxNGU0NmE0Yjg3OGE5OTU0NDg1&amp;mark-x=142&amp;mark-y=112&amp;blend64=aHR0cHM6Ly9xaWl0YS11c2VyLWNvbnRlbnRzLmltZ2l4Lm5ldC9-dGV4dD9peGxpYj1yYi00LjAuMCZ3PTYxNiZ0eHQ9JTQwa29pa2VfbW95YXNoaSZ0eHQtY29sb3I9JTIzMjEyMTIxJnR4dC1mb250PUhpcmFnaW5vJTIwU2FucyUyMFc2JnR4dC1zaXplPTM2JnR4dC1hbGlnbj1sZWZ0JTJDdG9wJnM9MDZkYWQ2MTVhZWQ5OWE2OWZhOWU4MGI4OWI5ZDk0NTc&amp;blend-x=142&amp;blend-y=491&amp;blend-mode=normal&amp;s=348fa9920a0acb18a688d6a3dc037701" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://qiita.com/koike_moyashi/items/d0d5dc37a93b398f0aaa" target="_blank" rel="noopener nofollow ugc">Redash v10でs-jisでcsvをダウンロードする方法 - Qiita</a></h3>
+
+  <p>かつての方法
+python2時代のredashは.envに↓を書けば、shift-jisでcsvがダウンロードできました。
+export REDASH_CSV_WRITER_ENCODING="cp932" 
+
+しかし、v9からpy...</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>ご参考まで。</p>
+          <p><a href="https://discuss.redash.io/t/redash-csv/10977/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-csv/10977/2</link>
+        <pubDate>Thu, 01 Sep 2022 11:05:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10977-2</guid>
+        <source url="https://discuss.redash.io/t/redash-csv/10977.rss">RedashのCSVダウンロード文字コードの変更について</source>
+      </item>
+      <item>
+        <title>RedashのCSVダウンロード文字コードの変更について</title>
+        <dc:creator><![CDATA[tosawada]]></dc:creator>
+        <description><![CDATA[
+            <p>先日までSupervisor型の旧Redash(v4)を利用していたのですが、これをv10の Docker型に環境変更を実施しました。</p>
+<p>元々v4を使用していた際に、csvファイルの文字コードがutf-8で使いづらいという話があり、以下サイトを参考に、cp932の設定を.envに入れ使っていました。</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://www.yamamanx.com/redash-csv-utf-8-other-code/">
+  <header class="source">
+      <img src="https://www.yamamanx.com/wp-content/themes/stinger5ver20140902/images/favicon.ico" class="site-icon" width="16" height="16">
+
+      <a href="https://www.yamamanx.com/redash-csv-utf-8-other-code/" target="_blank" rel="noopener nofollow ugc">ヤマムギ</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:504/219;"><img src="https://www.yamamanx.com/wp-content/uploads/2017/07/Contributors_to_getredash_redash.png" class="thumbnail" width="504" height="219"></div>
+
+<h3><a href="https://www.yamamanx.com/redash-csv-utf-8-other-code/" target="_blank" rel="noopener nofollow ugc">Re:dash CSVの出力コードをUTF-8から他の文字コードに変更する事が出来るようになります</a></h3>
+
+  <p>先日、Re:dash CSVの出力文字コードをUTF-8からShift-JISに ...</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>現在、v10の環境で関連の設定を一通り引き継いだつもりなのですが、文字コードがutf-8のままで困っています。<br>
+docker型での設定方法などご存じの方はいらっしゃいますでしょうか？</p>
+          <p><a href="https://discuss.redash.io/t/redash-csv/10977/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-csv/10977/1</link>
+        <pubDate>Wed, 31 Aug 2022 06:12:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10977-1</guid>
+        <source url="https://discuss.redash.io/t/redash-csv/10977.rss">RedashのCSVダウンロード文字コードの変更について</source>
+      </item>
+  </channel>
+</rss>

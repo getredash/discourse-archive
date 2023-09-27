@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</title>
+    <link>https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537</link>
+    <description>### Issue Summary
+
+I never get the database connection to work if I try to run the docker-compose command. Or do I have to run &quot;follow-up&quot; commands, to finish the installation? 
+
+I read this thread: http://discuss.redash.io/t/fatal-password-authentication-failed-for-user-postgres-after-docker-compose-up-d-on-your-ec2-ami/2443/12
+
+But it still fails :/ 
+
+After running docker-compose, everything seems to be smoothly running, until I do 
+
+**wget localhost**.
+`--2021-11-24 11:17:53--  http://localhost/`       
+ `Resolving localhost (localhost)... 127.0.0.1`     
+ `Connecting to localhost (localhost)|127.0.0.1|:80... connected.`   
+`HTTP request sent, awaiting response... 302 FOUND`
+`Location: http://localhost/login?next=http%3A%2F%2Flocalhost%2F [following]`  
+`--2021-11-24 11:17:53--  http://localhost/login?next=http%3A%2F%2Flocalhost%2F`
+`Reusing existing connection to localhost:80.`      
+`TTP request sent, awaiting response... 500 INTERNAL SERVER ERROR`                                                                                             `2021-11-24 11:17:53 ERROR 500: INTERNAL SERVER ERROR.`
+
+**sudo docker logs data_postgres_1**    
+PostgreSQL Database directory appears to contain a database; Skipping initialization                                                                                                                                                                                                                                                                    LOG:  database system was interrupted; last known up at 2021-11-24 10:53:15 UTC                                                                                             LOG:  database system was not properly shut down; automatic recovery in progress                                                                                            LOG:  invalid record length at 0/14EEEF8: wanted 24, got 0                                                                                                                  LOG:  redo is not required                                                                                                                                                  LOG:  MultiXact member wraparound protections are now enabled                                                                                                               **LOG:  database system is ready to accept connections**                                                                                                                        LOG:  autovacuum launcher started                                                                                                                                           **FATAL:  password authentication failed for user &quot;postgres&quot;**                                                                                                                  DETAIL:  Password does not match for user &quot;postgres&quot;.                                                                                                                               Connection matched pg_hba.conf line 95: &quot;host all all all md5&quot;                                                                                                      FATAL:  password authentication failed for user &quot;postgres&quot;                                                                                                                  DETAIL:  Password does not match for user &quot;postgres&quot;.                                                                                                                               Connection matched pg_hba.conf line 95: &quot;host all all all md5&quot;    
+
+#### My docker-compose file 
+
+```
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 2
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+```
+
+#### My env file
+`PYTHONUNBUFFERED=0                                                                                                                                                          REDASH_LOG_LEVEL=INFO                                                                                                                                                       REDASH_REDIS_URL=redis://redis:6379/0                                                                                                                                       POSTGRES_PASSWORD=2ncXTlL03k8uqzlDFtInlNHEh7YBEwDX                                                                                                                          REDASH_COOKIE_SECRET=VcL08bwCD4n4DJOUBc7mQZQiUyLSprRk                                                                                                                       REDASH_SECRET_KEY=puM2FMpI1NokVaqGKwfwuD9aYiUFrHHL                                                                                                                          REDASH_DATABASE_URL=postgresql://postgres:2ncXTlL03k8uqzlDFtInlNHEh7YBEwDX@postgres/postgres`   
+
+### Technical details:
+
+* Redash Version: 10.0.1
+* Browser/OS:                                                                                                                                          Distributor ID: Ubuntu                                                                                                                                                      Description:    Ubuntu 20.04.3 LTS                                                                                                                                          Release:        20.04                                                                                                                                                       Codename:       focal  
+* How did you install Redash: Using docker-compose</description>
+    
+    <lastBuildDate>Mon, 10 Jan 2022 17:10:20 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</title>
+        <dc:creator><![CDATA[np00]]></dc:creator>
+        <description><![CDATA[
+            <p>worked, thanks a lot for the help!</p>
+          <p><a href="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537/3</link>
+        <pubDate>Mon, 10 Jan 2022 17:10:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9537-3</guid>
+        <source url="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537.rss">Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</source>
+      </item>
+      <item>
+        <title>Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>If you’re installing from the setup script, this tends to happen when you do the installation of Redash for a 2nd time, but forget to remove the “postgres-data” directory before hand.</p>
+<p>So, the setup runs and generates a new configuration… but the existing PostgreSQL database is seen and used (with the old values, including the old password).  So, things don’t work at that point.</p>
+<p>Assuming this is supposed to be a totally fresh installation of Redash (eg you don’t need to keep the existing Redash database), you should be able to:</p>
+<ol>
+<li>Shut down the docker containers (<code>docker-compose down</code>)</li>
+<li>Wipe the <code>/opt/redash</code> directory (<code>rm -rf /opt/redash</code>)</li>
+<li>Then run the <code>setup.sh</code> script again</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537/2</link>
+        <pubDate>Wed, 24 Nov 2021 13:30:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9537-2</guid>
+        <source url="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537.rss">Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</source>
+      </item>
+      <item>
+        <title>Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</title>
+        <dc:creator><![CDATA[np00]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I never get the database connection to work if I try to run the docker-compose command. Or do I have to run “follow-up” commands, to finish the installation?</p>
+<p>I read this thread: <a href="http://discuss.redash.io/t/fatal-password-authentication-failed-for-user-postgres-after-docker-compose-up-d-on-your-ec2-ami/2443/12" class="inline-onebox">FATAL: password authentication failed for user "postgres", after "docker-compose up -d" on your EC2 AMI - #12 by arikfr</a></p>
+<p>But it still fails <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=10" title=":confused:" class="emoji" alt=":confused:"></p>
+<p>After running docker-compose, everything seems to be smoothly running, until I do</p>
+<p><strong>wget localhost</strong>.<br>
+<code>--2021-11-24 11:17:53--  http://localhost/</code><br>
+<code>Resolving localhost (localhost)... 127.0.0.1</code><br>
+<code>Connecting to localhost (localhost)|127.0.0.1|:80... connected.</code><br>
+<code>HTTP request sent, awaiting response... 302 FOUND</code><br>
+<code>Location: http://localhost/login?next=http%3A%2F%2Flocalhost%2F [following]</code><br>
+<code>--2021-11-24 11:17:53--  http://localhost/login?next=http%3A%2F%2Flocalhost%2F</code><br>
+<code>Reusing existing connection to localhost:80.</code><br>
+<code>TTP request sent, awaiting response... 500 INTERNAL SERVER ERROR</code>                                                                                             <code>2021-11-24 11:17:53 ERROR 500: INTERNAL SERVER ERROR.</code></p>
+<p><strong>sudo docker logs data_postgres_1</strong><br>
+PostgreSQL Database directory appears to contain a database; Skipping initialization                                                                                                                                                                                                                                                                    LOG:  database system was interrupted; last known up at 2021-11-24 10:53:15 UTC                                                                                             LOG:  database system was not properly shut down; automatic recovery in progress                                                                                            LOG:  invalid record length at 0/14EEEF8: wanted 24, got 0                                                                                                                  LOG:  redo is not required                                                                                                                                                  LOG:  MultiXact member wraparound protections are now enabled                                                                                                               <strong>LOG:  database system is ready to accept connections</strong>                                                                                                                        LOG:  autovacuum launcher started                                                                                                                                           <strong>FATAL:  password authentication failed for user “postgres”</strong>                                                                                                                  DETAIL:  Password does not match for user “postgres”.                                                                                                                               Connection matched pg_hba.conf line 95: “host all all all md5”                                                                                                      FATAL:  password authentication failed for user “postgres”                                                                                                                  DETAIL:  Password does not match for user “postgres”.                                                                                                                               Connection matched pg_hba.conf line 95: “host all all all md5”</p>
+<h4>
+<a name="my-docker-compose-file-2" class="anchor" href="https://discuss.redash.io#my-docker-compose-file-2"></a>My docker-compose file</h4>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+<h4>
+<a name="my-env-file-3" class="anchor" href="https://discuss.redash.io#my-env-file-3"></a>My env file</h4>
+<p><code>PYTHONUNBUFFERED=0                                                                                                                                                          REDASH_LOG_LEVEL=INFO                                                                                                                                                       REDASH_REDIS_URL=redis://redis:6379/0                                                                                                                                       POSTGRES_PASSWORD=2ncXTlL03k8uqzlDFtInlNHEh7YBEwDX                                                                                                                          REDASH_COOKIE_SECRET=VcL08bwCD4n4DJOUBc7mQZQiUyLSprRk                                                                                                                       REDASH_SECRET_KEY=puM2FMpI1NokVaqGKwfwuD9aYiUFrHHL                                                                                                                          REDASH_DATABASE_URL=postgresql://postgres:2ncXTlL03k8uqzlDFtInlNHEh7YBEwDX@postgres/postgres</code></p>
+<h3>
+<a name="technical-details-4" class="anchor" href="https://discuss.redash.io#technical-details-4"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.1</li>
+<li>Browser/OS:                                                                                                                                          Distributor ID: Ubuntu                                                                                                                                                      Description:    Ubuntu 20.04.3 LTS                                                                                                                                          Release:        20.04                                                                                                                                                       Codename:       focal</li>
+<li>How did you install Redash: Using docker-compose</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537/1</link>
+        <pubDate>Wed, 24 Nov 2021 11:34:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9537-1</guid>
+        <source url="https://discuss.redash.io/t/redash-installation-failed-on-ubuntu-20-04-password-authentification-failed-for-user-postgres/9537.rss">Redash installation failed on Ubuntu 20.04: &quot;password authentification failed for user &#39;postgres&#39;&quot;</source>
+      </item>
+  </channel>
+</rss>

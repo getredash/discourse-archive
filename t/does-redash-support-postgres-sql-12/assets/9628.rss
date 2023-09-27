@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Does Redash support Postgres SQL 12?</title>
+    <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628</link>
+    <description>I just upgraded the backend db from Postgres 9.6 to 12.7
+Then I got this error `/app/bin/docker-entrypoint: line 35:     7 Segmentation fault      (core dumped) /app/manage.py db upgrade`.
+I don&#39;t know if it&#39;s because of the db version upgrade :thinking:</description>
+    
+    <lastBuildDate>Thu, 09 Dec 2021 13:23:35 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i’ll do it and report back in the other thread <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=10" title=":rocket:" class="emoji" alt=":rocket:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/18</link>
+        <pubDate>Thu, 09 Dec 2021 13:23:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-18</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Glad that fixed it for you! Now maybe you can test the types in schema browser feature for redshift? <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"> <img src="https://emoji.discourse-cdn.com/twitter/pray.png?v=10" title=":pray:" class="emoji" alt=":pray:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/17</link>
+        <pubDate>Thu, 09 Dec 2021 04:55:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-17</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>surprise surprise<br>
+this is the root cause: <a href="https://github.com/getredash/redash/issues/5593" class="inline-onebox" rel="noopener nofollow ugc">Redash server exited with code 139 with docker · Issue #5593 · getredash/redash · GitHub</a><br>
+this is the solution: <a href="https://github.com/getredash/redash/pull/5608" class="inline-onebox" rel="noopener nofollow ugc">Fix: Specify the protobuf version by zoomdot · Pull Request #5608 · getredash/redash · GitHub</a><br>
+<img src="https://emoji.discourse-cdn.com/twitter/astonished.png?v=10" title=":astonished:" class="emoji only-emoji" alt=":astonished:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/16</link>
+        <pubDate>Thu, 09 Dec 2021 03:54:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-16</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i added</p>
+<pre><code class="lang-auto">ENV PIP_USE_DEPRECATED=legacy-resolver
+</code></pre>
+<p>around Mar, 2021 as a workaround to the broken build back then. It could be problematic now.</p>
+<p>i’m replacing it with</p>
+<pre><code class="lang-auto"># rollback pip version to avoid legacy resolver problem
+RUN pip install pip==20.2.4;
+</code></pre>
+<p>[update]<br>
+using <code>RUN pip install pip==20.2.4;</code> still gave me the same <code>Segmentation fault</code> <img src="https://emoji.discourse-cdn.com/twitter/cry.png?v=10" title=":cry:" class="emoji" alt=":cry:"></p>
+<p>now i’m going through all libraries in all requirements.txt one by one <img src="https://emoji.discourse-cdn.com/twitter/muscle.png?v=10" title=":muscle:" class="emoji" alt=":muscle:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/15</link>
+        <pubDate>Wed, 08 Dec 2021 21:41:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-15</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I don’t think their fork is so much different than getredash/redash. But you’ll have a better idea of what your needs are.</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/14</link>
+        <pubDate>Wed, 08 Dec 2021 21:36:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-14</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i may have to switch back to the official redash first<br>
+i’m using a slightly-customized version on top of the mozilla fork <code>m30</code> tag, don’t even know where to start at this point <img src="https://emoji.discourse-cdn.com/twitter/man_facepalming.png?v=10" title=":man_facepalming:" class="emoji" alt=":man_facepalming:"></p>
+<p>i’ll do a <code>docker-compose build --no-cache</code> and see if there is a build issue…</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/13</link>
+        <pubDate>Wed, 08 Dec 2021 20:45:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-13</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yeah that seems unrelated. Can you make a backup of your current database, spin up a fresh instance of V10.1, restore with the backup you made, and then upgrade to Postgres 12?</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/12</link>
+        <pubDate>Wed, 08 Dec 2021 20:31:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-12</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i’m definitely having a different issue right now <img src="https://emoji.discourse-cdn.com/twitter/joy.png?v=10" title=":joy:" class="emoji" alt=":joy:"><br>
+i’m running <code>docker-compose up</code> using my 7-week old image of <code>postgres:9.5-alpine</code> and it gave me</p>
+<pre><code class="lang-auto">worker_1     | /app/bin/docker-entrypoint: line 28:     8 Segmentation fault      (core dumped) /app/manage.py db upgrade
+scheduler_1  | /app/bin/docker-entrypoint: line 11:     7 Segmentation fault      (core dumped) /app/manage.py db upgrade
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/11</link>
+        <pubDate>Wed, 08 Dec 2021 20:30:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-11</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Cool. Let’s rule out what’s causing the issue. In a stock docker development environment, what happens if you update the <code>postgres</code> image from <code>postgres:9.5-alpine</code> to <code>postgres:12-bullseye</code>? Does it work?</p>
+<p>When I tried I first saw this in the logs:</p>
+<pre><code class="lang-bash">postgres_1   | PostgreSQL Database directory appears to contain a database; Skipping initialization
+postgres_1   | 
+postgres_1   | 2021-12-08 20:25:06.553 UTC [1] FATAL:  database files are incompatible with server
+postgres_1   | 2021-12-08 20:25:06.553 UTC [1] DETAIL:  The data directory was initialized by PostgreSQL version 9.5, which is not compatible with this version 12.9 (Debian 12.9-1.pgdg110+1).
+</code></pre>
+<br>
+<p>So I ran <code>docker-compose down &amp;&amp; docker-compose up -d &amp;&amp; docker-compose run --rm server create_db</code> and then it loaded fine.</p>
+<p>Redash now loads and runs as expected.</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/10</link>
+        <pubDate>Wed, 08 Dec 2021 20:22:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-10</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>It’s a regular postgresql database hosted on RDS.</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/9</link>
+        <pubDate>Wed, 08 Dec 2021 20:12:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-9</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>So I’m clear: are you running the metadata database as a service within docker-compose? Or did you store it in a different place (redshift e.g.)</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/8</link>
+        <pubDate>Wed, 08 Dec 2021 20:11:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-8</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>after further investigation, i have 99.5% ruled out PostgreSQL 12 being the issue:</p>
+<ol>
+<li>under PostgreSQL 12, there are no errors spinning up containers using previously built (~Aug 2021) images</li>
+<li>this error ONLY occurs with newly built images</li>
+</ol>
+<p>so my guess is some dependencies got updated between August and now <img src="https://emoji.discourse-cdn.com/twitter/sob.png?v=10" title=":sob:" class="emoji" alt=":sob:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/7</link>
+        <pubDate>Tue, 07 Dec 2021 22:29:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-7</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="zachliu" data-post="1" data-topic="9628">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/zachliu/40/872_2.png" class="avatar"> zachliu:</div>
+<blockquote>
+<p>I just upgraded the backend db from Postgres 9.6 to 12.7</p>
+</blockquote>
+</aside>
+<p>It <em>sounds</em> like you updated the PostgreSQL software version.  If that’s the case, then it’s likely pretty unhappy as the format of the data on the disk changed a lot between those two versions.</p>
+<p>For that kind of thing, you’ll probably want to do a dump of the PostgreSQL data from PostgreSQL 9.6 first, then load it into a fresh new PostgreSQL 12 instance.</p>
+<p>If you still have a backup of your Redash <code>postgresql-data</code> directory directory from before you did the upgrade, you could run the old PostgreSQL version using that.  You’d use <code>pg_dumpall</code> to dump the data out to a sql file.</p>
+<p>Then you could load that .sql file into PostgreSQL 12, and it should work ok.  In theory.</p>
+<p>Obviously, take backups on the way through when trying it out though. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/6</link>
+        <pubDate>Tue, 07 Dec 2021 15:59:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-6</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>there was no migration, i didn’t upgrade my redash or anything<br>
+<code>/app/manage.py db upgrade</code> is just there as a standard procedure before starting the server<br>
+it’s been there since the start of our redash journey 5 years ago. never caused any issues until i upgrade postgres (aws rds mandates this version upgrade. they will stop supporting postgres 9 very soon)</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/5</link>
+        <pubDate>Mon, 06 Dec 2021 17:04:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-5</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Are any migrations actually required? What steps did you follow before updating the postgres version? I would assume that the migrations are intended to be run on the version of the database where the migration was created. i.e. you should run the migration, <em>then</em> update the postgres version.</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/4</link>
+        <pubDate>Mon, 06 Dec 2021 16:59:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-4</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p><code>/app/manage.py db upgrade</code><br>
+as in</p>
+<pre><code class="lang-auto">server() {
+  /app/manage.py db upgrade
+  # Recycle gunicorn workers every n-th request. See http://docs.gunicorn.org/en/stable/settings.html#max-requests for more details.
+  MAX_REQUESTS=${MAX_REQUESTS:-1000}
+  MAX_REQUESTS_JITTER=${MAX_REQUESTS_JITTER:-100}
+  exec /usr/local/bin/gunicorn -b 0.0.0.0:5000 -c config_gunicorn.py --name redash -w${REDASH_WEB_WORKERS:-4} redash.wsgi:app --max-requests $MAX_REQUESTS --max-requests-jitter $MAX_REQUESTS_JITTER
+}
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/3</link>
+        <pubDate>Mon, 06 Dec 2021 16:57:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-3</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What command are you running that results in the seg fault?</p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/2</link>
+        <pubDate>Mon, 06 Dec 2021 16:54:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-2</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+      <item>
+        <title>Does Redash support Postgres SQL 12?</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>I just upgraded the backend db from Postgres 9.6 to 12.7<br>
+Then I got this error <code>/app/bin/docker-entrypoint: line 35:     7 Segmentation fault      (core dumped) /app/manage.py db upgrade</code>.<br>
+I don’t know if it’s because of the db version upgrade <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=10" title=":thinking:" class="emoji" alt=":thinking:"></p>
+          <p><a href="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/1</link>
+        <pubDate>Sat, 04 Dec 2021 03:32:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9628-1</guid>
+        <source url="https://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628.rss">Does Redash support Postgres SQL 12?</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Mail configuration problem</title>
+    <link>https://discuss.redash.io/t/mail-configuration-problem/4429</link>
+    <description>i added this two line in .env file
+![Screenshot%20from%202019-08-29%2012-53-59|690x387](upload://jAfOYp5aHHCnMU4Z1kl1ouUWfYK.png) 
+but when i test email get this error
+socket.error: [Errno 99] Cannot assign requested address
+how to solve it</description>
+    
+    <lastBuildDate>Thu, 23 Feb 2023 08:28:08 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/mail-configuration-problem/4429.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[Sheshma.B]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a><br>
+I’m also facing same email issue here is my env file and docker-compose.yml file</p>
+<p>PYTHONUNBUFFERED=0<br>
+REDASH_LOG_LEVEL=INFO<br>
+REDASH_REDIS_URL=redis://redis:6379/0<br>
+POSTGRES_PASSWORD=XXXXXXXXXXXXXXXXXXXXX<br>
+REDASH_COOKIE_SECRET=XXXXXXXXXXXXXXXxxx<br>
+REDASH_SECRET_KEY=XXXXXXXXXXXXXXXXXXXXXXxxxxx<br>
+REDASH_DATABASE_URL=postgresql://postgres:XXXXXXXXXXXXXXXXXXxxxx@postgres/postgres<br>
+REDASH_RATELIMIT_ENABLED=false<br>
+REDASH_MAIL_SERVER=<a href="http://email-smtp.us-east-1.amazonaws.com" rel="noopener nofollow ugc">email-smtp.us-east-1.amazonaws.com</a><br>
+REDASH_MAIL_PORT=587<br>
+REDASH_MAIL_USE_SSL=true<br>
+REDASH_MAIL_USE_TLS=true<br>
+REDASH_MAIL_USERNAME=XXXXXXXXXXXXX<br>
+REDASH_MAIL_PASSWORD=XXXXXXXXXXXXXXXXXXXXX<br>
+<a href="mailto:REDASH_MAIL_DEFAULT_SENDER=info@springrole.com">REDASH_MAIL_DEFAULT_SENDER=info@springrole.com</a><br>
+REDASH_HOST=<a href="https://redash.springworks.in" rel="noopener nofollow ugc">https://redash.springworks.in</a></p>
+<p>docker-compose.yml file</p>
+<p>version: “2”<br>
+x-redash-service: &amp;redash-service<br>
+image: redash/redash:10.0.0.b50363<br>
+depends_on:</p>
+<ul>
+<li>postgres</li>
+<li>redis<br>
+env_file: /opt/redash/env<br>
+restart: always<br>
+services:<br>
+server:<br>
+&lt;&lt;: *redash-service<br>
+command: server<br>
+ports:</li>
+<li>“5000:5000”<br>
+environment:<br>
+REDASH_WEB_WORKERS: 6<br>
+scheduler:<br>
+&lt;&lt;: *redash-service<br>
+command: scheduler<br>
+scheduled_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “scheduled_queries,schemas”<br>
+WORKERS_COUNT: 2<br>
+adhoc_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “email,queries,default,periodic”<br>
+WORKERS_COUNT: 2<br>
+worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “periodic emails default”<br>
+WORKERS_COUNT: 2<br>
+redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+env_file: /opt/redash/env<br>
+volumes:</li>
+<li>/opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest<br>
+ports:</li>
+<li>“80:80”<br>
+depends_on:</li>
+<li>server<br>
+links:</li>
+<li>server:redash<br>
+restart: always</li>
+</ul>
+<p>No errors in the logs unable to add new users in the redash invite emails are not receiving or is there any way to set the password?<br>
+Any help here thanks in advance.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/19</link>
+        <pubDate>Wed, 22 Feb 2023 18:24:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-19</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[Quanglam]]></dc:creator>
+        <description><![CDATA[
+            <p>please, can you tell to me about what mean of option “-rm” ?</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/18</link>
+        <pubDate>Tue, 01 Sep 2020 04:01:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-18</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[Frady]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey there,</p>
+<p>Has there been any update to this?  I’m in the same boat as many others.  A very default install, just trying to get emails sent.  Only specifying REDASH_MAIL_DEFAULT_SENDER as something I made up to test.</p>
+<p>Trying:</p>
+<p>docker-compose run --rm server manage send_test_mail</p>
+<p>Results in:</p>
+<p>socket.error: [Errno 99] Cannot assign requested address</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/17</link>
+        <pubDate>Thu, 09 Jul 2020 19:57:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-17</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[woodwater]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks very much.</p>
+<p>Really appreciated it.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/16</link>
+        <pubDate>Wed, 29 Apr 2020 02:27:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-16</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Not disturbing at all. I need to replicate your environment on my end and do some testing which might take me a few days. Meanwhile, you can actually use the Redash API to create your users if need be. The only places where you’ll need the emailer are for invitation links and alert destinations.</p>
+<aside class="quote quote-modified" data-post="2" data-topic="5965">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/create-users-with-pre-determined-password/5965/2">Create users with pre-determined password</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    You can’t insert usernames and passwords directly, but you can do this with the API. Each user requires two requests: 
+First Request: create a new user
+Do this with a POST request to baseurl/api/users?no_invite. Your request should include a JSON object with name and email keys. The no_invite querystring variable forces Redash to return an invite_link in the response. 
+Second Request: Push a password
+POST to the invite_link URL from the first request. This network request should be multi-part fo…
+  </blockquote>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/15</link>
+        <pubDate>Wed, 29 Apr 2020 02:00:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-15</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[woodwater]]></dc:creator>
+        <description><![CDATA[
+            <p>For your information, I was using the latest version I think. It’s 8.0.0.b32245.</p>
+<p>I have added the configuration to every environment variable there, but it still doesnt work somehow.</p>
+<p>Sorry to keep disturbing. Don’t know where to go to troubleshooting this issue.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f6a13588e4450001a856b3ce1bbc4a4eaa0d078.png" data-download-href="/uploads/short-url/bkwZ8hCue6kDJA8imDi06QZpDEA.png?dl=1" title="QQ截图20200429095655" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f6a13588e4450001a856b3ce1bbc4a4eaa0d078_2_526x500.png" alt="QQ截图20200429095655" data-base62-sha1="bkwZ8hCue6kDJA8imDi06QZpDEA" width="526" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f6a13588e4450001a856b3ce1bbc4a4eaa0d078_2_526x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f6a13588e4450001a856b3ce1bbc4a4eaa0d078.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f6a13588e4450001a856b3ce1bbc4a4eaa0d078.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f6a13588e4450001a856b3ce1bbc4a4eaa0d078_2_10x10.png"></a></div><p></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f015de47f3b6a3d7b0be2ab97e51b967b2a4f112.png" data-download-href="/uploads/short-url/yfTrCtuDAHc07QYYx1zrQM6cJIS.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f015de47f3b6a3d7b0be2ab97e51b967b2a4f112_2_690x197.png" alt="image" data-base62-sha1="yfTrCtuDAHc07QYYx1zrQM6cJIS" width="690" height="197" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f015de47f3b6a3d7b0be2ab97e51b967b2a4f112_2_690x197.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f015de47f3b6a3d7b0be2ab97e51b967b2a4f112_2_1035x295.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f015de47f3b6a3d7b0be2ab97e51b967b2a4f112.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f015de47f3b6a3d7b0be2ab97e51b967b2a4f112_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/14</link>
+        <pubDate>Wed, 29 Apr 2020 01:58:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-14</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[woodwater]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your response.<br>
+I have tried to change the ‘0.0.0.0’ to ‘server’, server and the ip of the server.  All failed with the same error that the mail server has not been configured yet.  But there’s one difference, when I tried to run the test email command, I can get the result of the starting redash redis_1.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8ddccfe2d7477a85a618354e3d3a5b57c14e2e09.png" data-download-href="/uploads/short-url/keYptNUkNqCP3hkm9bEJiFSX3LP.png?dl=1" title="QQ截图20200428083809" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8ddccfe2d7477a85a618354e3d3a5b57c14e2e09_2_553x500.png" alt="QQ截图20200428083809" data-base62-sha1="keYptNUkNqCP3hkm9bEJiFSX3LP" width="553" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8ddccfe2d7477a85a618354e3d3a5b57c14e2e09_2_553x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8ddccfe2d7477a85a618354e3d3a5b57c14e2e09.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8ddccfe2d7477a85a618354e3d3a5b57c14e2e09.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8ddccfe2d7477a85a618354e3d3a5b57c14e2e09_2_10x10.png"></a></div><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c8b6da0032c04866e82fa25eef69d9ebc21a77f.png" data-download-href="/uploads/short-url/k3jziYvaW0uoufvnAMeLFeuMyDB.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c8b6da0032c04866e82fa25eef69d9ebc21a77f_2_690x308.png" alt="image" data-base62-sha1="k3jziYvaW0uoufvnAMeLFeuMyDB" width="690" height="308" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c8b6da0032c04866e82fa25eef69d9ebc21a77f_2_690x308.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c8b6da0032c04866e82fa25eef69d9ebc21a77f.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c8b6da0032c04866e82fa25eef69d9ebc21a77f.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c8b6da0032c04866e82fa25eef69d9ebc21a77f_2_10x10.png"></a></div><p></p>
+<p>Furthermore, actually I received the test message from redash.</p>
+<p>Maybe I can find some logs if that’s needed.</p>
+<p>Thanks again.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/13</link>
+        <pubDate>Tue, 28 Apr 2020 00:42:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-13</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is a shot in the dark: but try changing <code>REDASH_HOST</code> from <code>0.0.0.0.0</code> to <code>server</code>. Restart the services and try again.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/12</link>
+        <pubDate>Mon, 27 Apr 2020 14:00:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-12</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[woodwater]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello, dear Team,<br>
+I’ve come across the same problem.</p>
+<p>At first, I added the configuration inside the env file, but I noticed that you suggested that I should modify the yml file if we were using the docker.</p>
+<p>But my docker-compose.yml file seems a little different. I added the configuaration into the environment part.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a83570337d6e7f6b2d64e008c6804f459af886d3.png" data-download-href="/uploads/short-url/o02HLZMA7HGm4qpLWLE6yu4DwY3.png?dl=1" title="1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a83570337d6e7f6b2d64e008c6804f459af886d3_2_505x500.png" alt="1" data-base62-sha1="o02HLZMA7HGm4qpLWLE6yu4DwY3" width="505" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a83570337d6e7f6b2d64e008c6804f459af886d3_2_505x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a83570337d6e7f6b2d64e008c6804f459af886d3.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a83570337d6e7f6b2d64e008c6804f459af886d3.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a83570337d6e7f6b2d64e008c6804f459af886d3_2_10x10.png"></a></div><p></p>
+<p>I restarted the service and tested the email, there’s no error.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fad39f8fdfce5bd6664460ca2c40ff5092caa68f.png" data-download-href="/uploads/short-url/zMULDNxTJLx5gyF3cCC6l3moeMT.png?dl=1" title="2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fad39f8fdfce5bd6664460ca2c40ff5092caa68f_2_690x218.png" alt="2" data-base62-sha1="zMULDNxTJLx5gyF3cCC6l3moeMT" width="690" height="218" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fad39f8fdfce5bd6664460ca2c40ff5092caa68f_2_690x218.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fad39f8fdfce5bd6664460ca2c40ff5092caa68f.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fad39f8fdfce5bd6664460ca2c40ff5092caa68f.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fad39f8fdfce5bd6664460ca2c40ff5092caa68f_2_10x10.png"></a></div><p></p>
+<p>But it doesnt work, still saying ‘It seems that your email server is not configured’</p>
+<p>Btw, I can acess the external network normally.</p>
+<p>Thanks in advance.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/11</link>
+        <pubDate>Mon, 27 Apr 2020 07:25:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-11</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[dqy]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi:<br>
+It seem ok when i set environment in “worker” and “server” tag of docker-compose.yml.<br>
+thank you verify much.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/10</link>
+        <pubDate>Fri, 17 Apr 2020 03:53:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-10</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[dqy]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi:<br>
+Thank you very much for you advise.<br>
+I try to change port 465 to 994,  the test is success through command “docker-compose run --rm server manage send_test_mail” but redash send mail is failed.<br>
+The log is shown follow:<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7a1a6ee012228c636e1832305e3042b321db5e9e.png" data-download-href="/uploads/short-url/hqaSOlikb37x4Uy5HOglzBmC0Z8.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a1a6ee012228c636e1832305e3042b321db5e9e_2_690x165.png" alt="image" data-base62-sha1="hqaSOlikb37x4Uy5HOglzBmC0Z8" width="690" height="165" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a1a6ee012228c636e1832305e3042b321db5e9e_2_690x165.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a1a6ee012228c636e1832305e3042b321db5e9e_2_1035x247.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a1a6ee012228c636e1832305e3042b321db5e9e_2_1380x330.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a1a6ee012228c636e1832305e3042b321db5e9e_2_10x10.png"></a></div><br>
+At the same time, my machine can access  internet.<br>
+Do you mean to check docker container if can access internet?<p></p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/9</link>
+        <pubDate>Fri, 17 Apr 2020 03:01:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-9</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Are you certain you Docker instance can access the internet? This looks like a DNS lookup problem.</p>
+<p>Also, maybe try mail port 994 just in case 465 is too chatty.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/8</link>
+        <pubDate>Thu, 16 Apr 2020 14:01:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-8</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[dqy]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi:<br>
+I have the similar problem.<br>
+The mail config of docker-compose.yml is shown as follow .<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4d59a994f6500dae77b6db332e9ea26690cb6f6.png" data-download-href="/uploads/short-url/pNJAvQtvDVEIMwSGhOoqxcvoTFY.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4d59a994f6500dae77b6db332e9ea26690cb6f6_2_690x439.png" alt="image" data-base62-sha1="pNJAvQtvDVEIMwSGhOoqxcvoTFY" width="690" height="439" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4d59a994f6500dae77b6db332e9ea26690cb6f6_2_690x439.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4d59a994f6500dae77b6db332e9ea26690cb6f6.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4d59a994f6500dae77b6db332e9ea26690cb6f6.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4d59a994f6500dae77b6db332e9ea26690cb6f6_2_10x10.png"></a></div><br>
+The test is success through command “docker-compose run --rm server manage send_test_mail”.<br>
+But when I send mail through redash，the error is raised.<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a5cf1ae323cf4270066b77fbb9cf5a5d5b612410.png" data-download-href="/uploads/short-url/nEOvbV37AyKQ5pzTiiZe8mQZjlm.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a5cf1ae323cf4270066b77fbb9cf5a5d5b612410_2_690x306.png" alt="image" data-base62-sha1="nEOvbV37AyKQ5pzTiiZe8mQZjlm" width="690" height="306" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a5cf1ae323cf4270066b77fbb9cf5a5d5b612410_2_690x306.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a5cf1ae323cf4270066b77fbb9cf5a5d5b612410.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a5cf1ae323cf4270066b77fbb9cf5a5d5b612410.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a5cf1ae323cf4270066b77fbb9cf5a5d5b612410_2_10x10.png"></a></div><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da36ad35ed467235857b0eb65b356b8f11ae336b.png" data-download-href="/uploads/short-url/v8peqh5nd6BveNGQQP4tRC46KYr.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da36ad35ed467235857b0eb65b356b8f11ae336b_2_690x189.png" alt="image" data-base62-sha1="v8peqh5nd6BveNGQQP4tRC46KYr" width="690" height="189" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da36ad35ed467235857b0eb65b356b8f11ae336b_2_690x189.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da36ad35ed467235857b0eb65b356b8f11ae336b_2_1035x283.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da36ad35ed467235857b0eb65b356b8f11ae336b.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da36ad35ed467235857b0eb65b356b8f11ae336b_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/7</link>
+        <pubDate>Thu, 16 Apr 2020 11:53:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-7</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It appears you haven’t changed any of your environment variables since your last post. Right now, Redash is trying to send emails using itself which won’t work. You need to point Redash at an SMTP server in your organization.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/6</link>
+        <pubDate>Thu, 29 Aug 2019 12:23:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-6</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[AmiraShaker]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a><br>
+i edited it </p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1831c4cb5bc691352067495137e9d19c5e8225fc.png" data-download-href="/uploads/short-url/3s25tq48cyLDbb1lctp5qfKBfZy.png?dl=1" title="Screenshot%20from%202019-08-29%2014-08-45" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1831c4cb5bc691352067495137e9d19c5e8225fc_2_690x387.png" alt="Screenshot%20from%202019-08-29%2014-08-45" data-base62-sha1="3s25tq48cyLDbb1lctp5qfKBfZy" width="690" height="387" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1831c4cb5bc691352067495137e9d19c5e8225fc_2_690x387.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1831c4cb5bc691352067495137e9d19c5e8225fc_2_1035x580.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1831c4cb5bc691352067495137e9d19c5e8225fc.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1831c4cb5bc691352067495137e9d19c5e8225fc_2_10x10.png"></a></div><br>
+now i get this<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7731370b1cf90f4dca15d3e4687391a204ec28ce.png" data-download-href="/uploads/short-url/h0qgdPFaf4YZQk3CKzQbcj7CCwm.png?dl=1" title="Screenshot%20from%202019-08-29%2014-01-52" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7731370b1cf90f4dca15d3e4687391a204ec28ce_2_690x387.png" alt="Screenshot%20from%202019-08-29%2014-01-52" data-base62-sha1="h0qgdPFaf4YZQk3CKzQbcj7CCwm" width="690" height="387" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7731370b1cf90f4dca15d3e4687391a204ec28ce_2_690x387.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7731370b1cf90f4dca15d3e4687391a204ec28ce_2_1035x580.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7731370b1cf90f4dca15d3e4687391a204ec28ce.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7731370b1cf90f4dca15d3e4687391a204ec28ce_2_10x10.png"></a></div><br>
+is this internet connection problem or another issue?<p></p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/5</link>
+        <pubDate>Thu, 29 Aug 2019 12:11:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-5</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Your mail server address should not be the same as your Redash host. Usually that address will be something like <code>mail.speakol.com</code> or <code>smtp.speakol.com</code>.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/4</link>
+        <pubDate>Thu, 29 Aug 2019 11:28:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-4</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[AmiraShaker]]></dc:creator>
+        <description><![CDATA[
+            <p>i set it </p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e59afbff6277487669b84c04800d23d5cb95d5be.png" data-download-href="/uploads/short-url/wLbontHpcbuIrR1wQoomAzzU4LY.png?dl=1" title="Screenshot%20from%202019-08-29%2013-22-38" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e59afbff6277487669b84c04800d23d5cb95d5be_2_690x387.png" alt="Screenshot%20from%202019-08-29%2013-22-38" data-base62-sha1="wLbontHpcbuIrR1wQoomAzzU4LY" width="690" height="387" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e59afbff6277487669b84c04800d23d5cb95d5be_2_690x387.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e59afbff6277487669b84c04800d23d5cb95d5be_2_1035x580.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e59afbff6277487669b84c04800d23d5cb95d5be.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e59afbff6277487669b84c04800d23d5cb95d5be_2_10x10.png"></a></div><br>
+now get htis error<br>
+socket.gaierror: [Errno -2] Name or service not known <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a><p></p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/3</link>
+        <pubDate>Thu, 29 Aug 2019 11:26:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-3</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You need to set <code>REDASH_MAIL_SERVER</code>. It tries to send from <code>localhost</code> by default; which is why you see that error. <a href="https://redash.io/help/open-source/setup/#Mail-Configuration" rel="nofollow noopener">Here</a> is the relevant page in our documentation about how to configure the mail server.</p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/2</link>
+        <pubDate>Thu, 29 Aug 2019 11:19:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-2</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+      <item>
+        <title>Mail configuration problem</title>
+        <dc:creator><![CDATA[AmiraShaker]]></dc:creator>
+        <description><![CDATA[
+            <p>i added this two line in .env file<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8942780243603b62dfbbf23a4caa3f981ac23262.png" data-download-href="/uploads/short-url/jAfOYp5aHHCnMU4Z1kl1ouUWfYK.png?dl=1" title="Screenshot%20from%202019-08-29%2012-53-59" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8942780243603b62dfbbf23a4caa3f981ac23262_2_690x387.png" alt="Screenshot%20from%202019-08-29%2012-53-59" data-base62-sha1="jAfOYp5aHHCnMU4Z1kl1ouUWfYK" width="690" height="387" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8942780243603b62dfbbf23a4caa3f981ac23262_2_690x387.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8942780243603b62dfbbf23a4caa3f981ac23262_2_1035x580.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8942780243603b62dfbbf23a4caa3f981ac23262.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8942780243603b62dfbbf23a4caa3f981ac23262_2_10x10.png"></a></div><br>
+but when i test email get this error<br>
+socket.error: [Errno 99] Cannot assign requested address<br>
+how to solve it<p></p>
+          <p><a href="https://discuss.redash.io/t/mail-configuration-problem/4429/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mail-configuration-problem/4429/1</link>
+        <pubDate>Thu, 29 Aug 2019 11:05:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4429-1</guid>
+        <source url="https://discuss.redash.io/t/mail-configuration-problem/4429.rss">Mail configuration problem</source>
+      </item>
+  </channel>
+</rss>

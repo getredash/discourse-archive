@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Internal Error at groups/2/data_sources and schema refresh fails</title>
+    <link>https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910</link>
+    <description>Hi, I upgraded redash from v8 to v10 .
+But after I upgraded and after a while, I have encountered two bugs.
+First, I visit https://[domain]/groups/2/data_sources, I get Internal 500 error.
+Second, schema refresh always fails.
+
+I checked the docker-compose logs and, I found error messages.
+Here is the error messages. (Those two bugs generate the same error messages)
+
+```
+redash_server_1     | Traceback (most recent call last):
+redash_server_1     |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1949, in full_dispatch_request
+redash_server_1     |     rv = self.dispatch_request()
+redash_server_1     |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1935, in dispatch_request
+redash_server_1     |     return self.view_functions[rule.endpoint](**req.view_args)
+redash_server_1     |   File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 458, in wrapper
+redash_server_1     |     resp = resource(*args, **kwargs)
+redash_server_1     |   File &quot;/usr/local/lib/python3.7/site-packages/flask_login/utils.py&quot;, line 261, in decorated_view
+redash_server_1     |     return func(*args, **kwargs)
+redash_server_1     |   File &quot;/usr/local/lib/python3.7/site-packages/flask/views.py&quot;, line 89, in view
+redash_server_1     |     return self.dispatch_request(*args, **kwargs)
+redash_server_1     |   File &quot;/app/redash/handlers/base.py&quot;, line 33, in dispatch_request
+redash_server_1     |     return super(BaseResource, self).dispatch_request(*args, **kwargs)
+redash_server_1     |   File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 573, in dispatch_request
+redash_server_1     |     resp = meth(*args, **kwargs)
+redash_server_1     |   File &quot;/app/redash/permissions.py&quot;, line 71, in decorated
+redash_server_1     |     return fn(*args, **kwargs)
+redash_server_1     |   File &quot;/app/redash/handlers/groups.py&quot;, line 177, in get
+redash_server_1     |     return [ds.to_dict(with_permissions_for=group) for ds in data_sources]
+redash_server_1     |   File &quot;/app/redash/handlers/groups.py&quot;, line 177, in &lt;listcomp&gt;
+redash_server_1     |     return [ds.to_dict(with_permissions_for=group) for ds in data_sources]
+redash_server_1     |   File &quot;/app/redash/models/__init__.py&quot;, line 122, in to_dict
+redash_server_1     |     &quot;syntax&quot;: self.query_runner.syntax,
+redash_server_1     | AttributeError: &#39;NoneType&#39; object has no attribute &#39;syntax&#39;
+redash_server_1     | [2022-08-17 13:58:19,468][PID:31][INFO][metrics] method=GET path=/api/groups/2/data_sources endpoint=group_data_sources status=500 content_type=application/json content_length=36 duration=34.64 query_count=7 query_duration=11.88
+```
+
+And, here is my docker-compose.yml
+
+```
+version: &quot;3.3&quot;
+services:
+  x-redash-service: &amp;redash-service
+    image: redash/redash:10.1.0.b50633
+    env_file: /opt/redash/redash_env
+    restart: always
+  redash_server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - 5000:5000
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 2
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/redash_env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /opt/redash/nginx/certs:/etc/letsencrypt
+      - /opt/redash/nginx/certs-data:/data/letsencrypt
+    restart: always
+```
+
+Thanks,</description>
+    
+    <lastBuildDate>Sun, 18 Sep 2022 00:08:08 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Internal Error at groups/2/data_sources and schema refresh fails</title>
+        <dc:creator><![CDATA[Shu.O]]></dc:creator>
+        <description><![CDATA[
+            <p>this problem only happens to me? Does anyone get this error?</p>
+          <p><a href="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/4</link>
+        <pubDate>Sun, 18 Sep 2022 00:08:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10910-4</guid>
+        <source url="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910.rss">Internal Error at groups/2/data_sources and schema refresh fails</source>
+      </item>
+      <item>
+        <title>Internal Error at groups/2/data_sources and schema refresh fails</title>
+        <dc:creator><![CDATA[Shu.O]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks.<br>
+Yes, I run database migrations followed by [this topic].(<a href="https://github.com/getredash/redash/issues/5542#issuecomment-885717247" rel="noopener nofollow ugc">Exception after upgrade to v10 · Issue #5542 · getredash/redash · GitHub</a>)</p>
+<p>so I executed migration.</p>
+<pre><code class="lang-auto"> /opt/redash $ sudo docker-compose run --rm redash_server manage db upgrade
+Starting redash_redis_1 ... done
+Starting redash_postgres_1 ... done
+[2022-08-18 00:42:11,382][PID:1][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2022-08-18 00:42:11,383][PID:1][INFO][alembic.runtime.migration] Will assume transactional DDL.
+</code></pre>
+<p>Also, I upgraded followed by [this section.].(<a href="https://github.com/getredash/redash/blob/release/10.0.x/CHANGELOG.md#upgrading" rel="noopener nofollow ugc">redash/CHANGELOG.md at release/10.0.x · getredash/redash · GitHub</a>)</p>
+<p>But, still I get the bug…</p>
+<p>Curiously, I can visit other data_sources pages like /groups/1/data_sources and /groups/3/data_sources without the bug.<br>
+The directory /groups/1/data_sources is for admin and /groups/2/data_sources is for default. Those two are both built-in. However, Only visiting /groups/2/data_sources generates the bug.</p>
+          <p><a href="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/3</link>
+        <pubDate>Thu, 18 Aug 2022 00:48:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10910-3</guid>
+        <source url="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910.rss">Internal Error at groups/2/data_sources and schema refresh fails</source>
+      </item>
+      <item>
+        <title>Internal Error at groups/2/data_sources and schema refresh fails</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your question and welcome to the forum. When you upgraded, did you run the database migrations? What steps did you follow?</p>
+          <p><a href="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/2</link>
+        <pubDate>Wed, 17 Aug 2022 16:20:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10910-2</guid>
+        <source url="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910.rss">Internal Error at groups/2/data_sources and schema refresh fails</source>
+      </item>
+      <item>
+        <title>Internal Error at groups/2/data_sources and schema refresh fails</title>
+        <dc:creator><![CDATA[Shu.O]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, I upgraded redash from v8 to v10 .<br>
+But after I upgraded and after a while, I have encountered two bugs.<br>
+First, I visit https://[domain]/groups/2/data_sources, I get Internal 500 error.<br>
+Second, schema refresh always fails.</p>
+<p>I checked the docker-compose logs and, I found error messages.<br>
+Here is the error messages. (Those two bugs generate the same error messages)</p>
+<pre><code class="lang-auto">redash_server_1     | Traceback (most recent call last):
+redash_server_1     |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1949, in full_dispatch_request
+redash_server_1     |     rv = self.dispatch_request()
+redash_server_1     |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1935, in dispatch_request
+redash_server_1     |     return self.view_functions[rule.endpoint](**req.view_args)
+redash_server_1     |   File "/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py", line 458, in wrapper
+redash_server_1     |     resp = resource(*args, **kwargs)
+redash_server_1     |   File "/usr/local/lib/python3.7/site-packages/flask_login/utils.py", line 261, in decorated_view
+redash_server_1     |     return func(*args, **kwargs)
+redash_server_1     |   File "/usr/local/lib/python3.7/site-packages/flask/views.py", line 89, in view
+redash_server_1     |     return self.dispatch_request(*args, **kwargs)
+redash_server_1     |   File "/app/redash/handlers/base.py", line 33, in dispatch_request
+redash_server_1     |     return super(BaseResource, self).dispatch_request(*args, **kwargs)
+redash_server_1     |   File "/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py", line 573, in dispatch_request
+redash_server_1     |     resp = meth(*args, **kwargs)
+redash_server_1     |   File "/app/redash/permissions.py", line 71, in decorated
+redash_server_1     |     return fn(*args, **kwargs)
+redash_server_1     |   File "/app/redash/handlers/groups.py", line 177, in get
+redash_server_1     |     return [ds.to_dict(with_permissions_for=group) for ds in data_sources]
+redash_server_1     |   File "/app/redash/handlers/groups.py", line 177, in &lt;listcomp&gt;
+redash_server_1     |     return [ds.to_dict(with_permissions_for=group) for ds in data_sources]
+redash_server_1     |   File "/app/redash/models/__init__.py", line 122, in to_dict
+redash_server_1     |     "syntax": self.query_runner.syntax,
+redash_server_1     | AttributeError: 'NoneType' object has no attribute 'syntax'
+redash_server_1     | [2022-08-17 13:58:19,468][PID:31][INFO][metrics] method=GET path=/api/groups/2/data_sources endpoint=group_data_sources status=500 content_type=application/json content_length=36 duration=34.64 query_count=7 query_duration=11.88
+</code></pre>
+<p>And, here is my docker-compose.yml</p>
+<pre><code class="lang-auto">version: "3.3"
+services:
+  x-redash-service: &amp;redash-service
+    image: redash/redash:10.1.0.b50633
+    env_file: /opt/redash/redash_env
+    restart: always
+  redash_server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - 5000:5000
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/redash_env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /opt/redash/nginx/certs:/etc/letsencrypt
+      - /opt/redash/nginx/certs-data:/data/letsencrypt
+    restart: always
+</code></pre>
+<p>Thanks,</p>
+          <p><a href="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910/1</link>
+        <pubDate>Wed, 17 Aug 2022 14:00:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10910-1</guid>
+        <source url="https://discuss.redash.io/t/internal-error-at-groups-2-data-sources-and-schema-refresh-fails/10910.rss">Internal Error at groups/2/data_sources and schema refresh fails</source>
+      </item>
+  </channel>
+</rss>

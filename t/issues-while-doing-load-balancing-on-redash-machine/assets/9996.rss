@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Issues while doing load balancing on redash machine</title>
+    <link>https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996</link>
+    <description>Hello,
+We have deployed multiple redash  machine  behind ELB,
+Issue ::
+Whenever we are hitting request from Redash browser the request comes to both the machine, even after doing load balancing .As per my understanding the request should come to one machine only.
+But the same thing when I am trying from apache bench , the request is coming to only one machine which is working correctly.It would be great if someone can help on this.
+
+**1.nginx.config :**
+---------------------------------------------------------
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+-----------------------------------------------------------------------
+
+**2.default.conf :**
+
+
+upstream redash {
+  server redash:5000;
+}
+
+server {
+  listen   80 default;
+
+  gzip on;
+  gzip_types *;
+  gzip_proxied any;
+  proxy_buffer_size 8k;
+
+  location / {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+    proxy_pass       http://redash;
+  }
+}</description>
+    
+    <lastBuildDate>Sat, 12 Feb 2022 06:09:01 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Issues while doing load balancing on redash machine</title>
+        <dc:creator><![CDATA[zhongshaoming1]]></dc:creator>
+        <description><![CDATA[
+            <p>I suspect that using the ip_hash policy in Nginx load balancing should solve this problem</p>
+          <p><a href="https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996/2</link>
+        <pubDate>Sat, 12 Feb 2022 06:09:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9996-2</guid>
+        <source url="https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996.rss">Issues while doing load balancing on redash machine</source>
+      </item>
+      <item>
+        <title>Issues while doing load balancing on redash machine</title>
+        <dc:creator><![CDATA[deepakdas12]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,<br>
+We have deployed multiple redash  machine  behind ELB,<br>
+Issue ::<br>
+Whenever we are hitting request from Redash browser the request comes to both the machine, even after doing load balancing .As per my understanding the request should come to one machine only.<br>
+But the same thing when I am trying from apache bench , the request is coming to only one machine which is working correctly.It would be great if someone can help on this.</p>
+<h2>
+<a name="h-1nginxconfig-1" class="anchor" href="https://discuss.redash.io#h-1nginxconfig-1"></a><strong>1.nginx.config :</strong>
+</h2>
+<p>user  nginx;<br>
+worker_processes  1;</p>
+<p>error_log  /var/log/nginx/error.log warn;<br>
+pid        /var/run/nginx.pid;</p>
+<p>events {<br>
+worker_connections  1024;<br>
+}</p>
+<p>http {<br>
+include       /etc/nginx/mime.types;<br>
+default_type  application/octet-stream;</p>
+<pre><code>log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                  '$status $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+access_log  /var/log/nginx/access.log  main;
+
+sendfile        on;
+#tcp_nopush     on;
+
+keepalive_timeout  65;
+
+#gzip  on;
+
+include /etc/nginx/conf.d/*.conf;
+</code></pre>
+<h2>
+<a name="h-2" class="anchor" href="https://discuss.redash.io#h-2"></a>}</h2>
+<p><strong>2.default.conf :</strong></p>
+<p>upstream redash {<br>
+server redash:5000;<br>
+}</p>
+<p>server {<br>
+listen   80 default;</p>
+<p>gzip on;<br>
+gzip_types *;<br>
+gzip_proxied any;<br>
+proxy_buffer_size 8k;</p>
+<p>location / {<br>
+proxy_set_header Host $http_host;<br>
+proxy_set_header X-Real-IP $remote_addr;<br>
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;<br>
+proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;</p>
+<pre><code>proxy_pass       http://redash;
+</code></pre>
+<p>}<br>
+}</p>
+          <p><a href="https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996/1</link>
+        <pubDate>Fri, 11 Feb 2022 05:50:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9996-1</guid>
+        <source url="https://discuss.redash.io/t/issues-while-doing-load-balancing-on-redash-machine/9996.rss">Issues while doing load balancing on redash machine</source>
+      </item>
+  </channel>
+</rss>

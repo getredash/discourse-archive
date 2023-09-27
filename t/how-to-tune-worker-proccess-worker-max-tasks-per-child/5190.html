@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>How to tune worker proccess, worker_max_tasks_per_child</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/how-to-tune-worker-proccess-worker-max-tasks-per-child/5190">How to tune worker proccess, worker_max_tasks_per_child</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="How to tune worker proccess, worker_max_tasks_per_child" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/TSaku0816.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/TSaku0816_avatar.png" tabindex="-1" width="48"/><span itemprop="name">TSaku0816</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-tune-worker-proccess-worker-max-tasks-per-child/5190" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-12-16T03:38:00Z" itemprop="datePublished">
+                    December 16, 2019,  3:38am
+                  </time>
+<meta content="2019-12-16T03:38:00Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<h3>Issue Summary</h3>
+<p>Celery process often grab CPU core, and eventually hosted machine get  100% CPU utils.<br/>
+I will try to tune the parameters related celery worker.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Docker Image: redash:6.0.0.b8537</li>
+<li>OS: Ubuntu 16.04 LTS</li>
+<li>2core, 8GB</li>
+<li>current env variable at worker container</li>
+</ul>
+<pre><code class="lang-auto">REDASH_REDIS_URL=redis://xxx
+PYTHONUNBUFFERED=0
+QUEUES=queries,scheduled_queries,celery
+CELERY_WORKER_PREFETCH_MULTIPLIER=0
+SHLVL=0
+HOME=/home/redash
+WORKERS_COUNT=2
+REDASH_DATABASE_URL=postgresql://xxx
+</code></pre>
+<p>I intend to tune worker_max_tasks_per_child, but there is default value.<br/>
+<a class="onebox" href="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint/#L10" rel="nofollow noopener" target="_blank">https://github.com/getredash/redash/blob/master/bin/docker-entrypoint/#L10</a></p>
+<blockquote>
+<p>–max-tasks-per-child=10</p>
+</blockquote>
+<p>In case of CPU hang at Celery, worker_max_tasks_per_child is useful ?<br/>
+I’m recognizing worker_max_tasks_per_child as memory-bound. But it seems be impossible to tune worker_max_tasks_per_child in above the code.</p>
+<p>First of all, it may be heavy query that is problem causing CPU hang.<br/>
+And, I know the roadmap of Celery migration to RQ.<br/>
+Now, I just want to know how tuning the parameters is possible.</p>
+<p>waits for any advice.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rauchy.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rauchy_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rauchy</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-tune-worker-proccess-worker-max-tasks-per-child/5190" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-12-20T21:12:24Z" itemprop="datePublished">
+                    December 20, 2019,  9:12pm
+                  </time>
+<meta content="2019-12-20T21:12:24Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Tuning <code>worker_max_tasks_per_child</code> is unlikely to affect CPU usage. It tells Celery when it should recycle workers (i.e. after <code>n</code> tasks it will kill the worker process and fork a new one) in order to avoid potential memory leaks.</p>
+<p>Yes, migration of query executions to RQ is right around the corner - is there anything stopping you from changing the value of <code>worker_max_tasks_per_child</code> in your <code>docker-entrypoint</code> until the migration is complete?</p>
+<p>If it’s important for you to modify this as an environment variable and don’t want <code>docker-entrypoint</code> to depart from <code>master</code>, go ahead and submit this as a PR and add me as a reviewer.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/TSaku0816.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/TSaku0816_avatar.png" tabindex="-1" width="48"/><span itemprop="name">TSaku0816</span></a>
+</span>
+<link href="https://discuss.redash.io/t/how-to-tune-worker-proccess-worker-max-tasks-per-child/5190" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-12-22T11:34:51Z" itemprop="datePublished">
+                    December 22, 2019, 11:34am
+                  </time>
+<meta content="2019-12-22T11:34:51Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks your advice <a class="mention" href="/u/rauchy">@rauchy</a>.<br/>
+I misunderstood that it maye be max_tasks_per_child that improve CPU usage. That is because that at Celery community, some CPU hangs cases was shown as max_tasks_per_child issue.<br/>
+<aside class="onebox githubissue">
+<header class="source">
+<a href="https://github.com/celery/celery/issues/5299#issuecomment-494297426" rel="nofollow noopener" target="_blank">github.com/celery/celery</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Issue">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 14 16" width="60"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/celery/celery/issues/5299#issuecomment-494297426" rel="nofollow noopener" target="_blank">Celery worker using 100% CPU around epoll w/ prefork+SQS but still consuming tasks</a>
+</h4>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2019-01-22" data-format="ll" data-time="16:47:11" data-timezone="UTC">04:47PM - 22 Jan 19 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/tuky" rel="nofollow noopener" target="_blank">
+<img alt="tuky" class="onebox-avatar-inline" height="20" src="assets/2981274" width="20"/>
+          tuky
+        </a>
+</div>
+</div>
+</div>
+</div>
+<div class="github-row">
+<p class="github-content">Environment &amp; Settings
+Celery version:
+celery==4.2.1 but also tried the latest master, where the problem also occurs:
+-e git+https://github.com/celery/celery.git@c1d0bfea9ad98477cbc1def99157fe5109555500#egg=celery
+django-celery-beat==1.4.0
+kombu==4.2.2.post1
+Report:
+software -&gt; celery:4.2.0 (windowlicker) kombu:4.2.2-post1 py:3.6.6
+...</p>
+</div>
+<div class="labels">
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Component: Amazon SQS Broker</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Component: Prefork Workers Pool</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Issue Type: Bug Report</span>
+<span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">Severity: Critical</span>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</p>
+<p>In my case, I decided that first countermeasure is timeout setting for detecting query stuck. (REDASH_ADHOC_QUERY_TIME_LIMIT, REDASH_JOB_EXPIRY_TIME)<br/>
+After that, I will consider kernel parameter tuning. (ex. somaxconn, tcp_tw_reuse)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

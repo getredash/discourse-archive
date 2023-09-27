@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Installing pip packages for Python Data Source with Redash docker image</title>
+    <link>https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142</link>
+    <description>I can successfully create a Python Data Source and use it, but now I&#39;m trying to use various pip libraries (like `awswrangler`), which aren&#39;t installed in the docker image.
+
+My question is how do I go about making these packages available to the Python Data Sources that I create within Redash?
+
+I guess I could `exec` into the redash worker containers and `pip install` them manually, but I&#39;d need to redo this work every time the container was stopped. 
+
+I&#39;m thinking another way of doing this is to edit the `docker-compose.yml` file, add a `volume` my host machine&#39;s `site-packages` for Python, and then add that volume as an &quot;Additional Module Path&quot; to the data source. I&#39;m also assuming that would require create a virtual environment to ensure the packages are installed using the same version of python that&#39;s being used in the Redash docker image? But, I&#39;m not sure which container to do this in, and I can&#39;t seem to figure out the version of Python being used. The Dockerfile sure looks like it&#39;s 3.7, but executions of `docker-compose exec &lt;container&gt; python --version` show 2.7 and `python3` isn&#39;t in the PATH of any of the containers.
+
+How do others solve this issue? Thanks!
+
+Edit: the images in question were built using the AWS AMI. If that&#39;s old and I should be using an updated image (e.g. `docker-compose pull`) that&#39;d be good to know!</description>
+    
+    <lastBuildDate>Wed, 16 Mar 2022 16:58:29 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Installing pip packages for Python Data Source with Redash docker image</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Any of those solutions would work. I agree with all the pitfalls you specified.</p>
+<p>Generally, we need to publish better docs around this.</p>
+<p>That said, modifying the source the AMI deployments isn’t easy. But it’s not really supposed to be. The AMIs are meant to address the most common use-case of Redash: click a button to deploy, connect a sql database, get to work.</p>
+<p>For a more complex use-case like modifying the source code or tweaking the Dockerfile to install extra packages to the worker Python site-packages I’d go the more typical setup route where you build the docker image from source.</p>
+<p>With this approach, you can modify Redash’s Dockerfile to install your desired dependencies, build an image with the modified Dockerfile, and use that in your <code>docker-compose</code> instead of the default dockerhub tag (you can see an example of this in the <code>docker-compose.yml</code> file at the root of our repo).</p>
+          <p><a href="https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142/2</link>
+        <pubDate>Wed, 16 Mar 2022 16:58:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10142-2</guid>
+        <source url="https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142.rss">Installing pip packages for Python Data Source with Redash docker image</source>
+      </item>
+      <item>
+        <title>Installing pip packages for Python Data Source with Redash docker image</title>
+        <dc:creator><![CDATA[massung]]></dc:creator>
+        <description><![CDATA[
+            <p>I can successfully create a Python Data Source and use it, but now I’m trying to use various pip libraries (like <code>awswrangler</code>), which aren’t installed in the docker image.</p>
+<p>My question is how do I go about making these packages available to the Python Data Sources that I create within Redash?</p>
+<p>I guess I could <code>exec</code> into the redash worker containers and <code>pip install</code> them manually, but I’d need to redo this work every time the container was stopped.</p>
+<p>I’m thinking another way of doing this is to edit the <code>docker-compose.yml</code> file, add a <code>volume</code> my host machine’s <code>site-packages</code> for Python, and then add that volume as an “Additional Module Path” to the data source. I’m also assuming that would require create a virtual environment to ensure the packages are installed using the same version of python that’s being used in the Redash docker image? But, I’m not sure which container to do this in, and I can’t seem to figure out the version of Python being used. The Dockerfile sure looks like it’s 3.7, but executions of <code>docker-compose exec &lt;container&gt; python --version</code> show 2.7 and <code>python3</code> isn’t in the PATH of any of the containers.</p>
+<p>How do others solve this issue? Thanks!</p>
+<p>Edit: the images in question were built using the AWS AMI. If that’s old and I should be using an updated image (e.g. <code>docker-compose pull</code>) that’d be good to know!</p>
+          <p><a href="https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142/1</link>
+        <pubDate>Tue, 15 Mar 2022 16:02:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10142-1</guid>
+        <source url="https://discuss.redash.io/t/installing-pip-packages-for-python-data-source-with-redash-docker-image/10142.rss">Installing pip packages for Python Data Source with Redash docker image</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Memory maxing out then 504</title>
+    <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308</link>
+    <description>Self hosted on AWS using the eu-west-1 AMI.
+Version 8
+
+We are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error.
+From the metrics we have, it looks like the memory is maxing out.
+It looks like it might be related to this issue:
+https://github.com/getredash/redash/issues/78
+
+I am thinking our problem might be that people are running large queries, redash doesn&#39;t limit it in any way, the memory is maxing out and then it crashes. We have some large tables (multiple 200+GB), but most of the queries made throughout the day are small. If we resize the instance it would have to be pretty massive just to handle the odd time someone runs a big query without a LIMIT clause.
+
+If it is related to the above git topic, is there any kind of workaround? Hard to believe that people have just lived with it repeatedly crashing for 5+ years in that case, so presumably there is something else going on in our situation.</description>
+    
+    <lastBuildDate>Tue, 26 Oct 2021 11:42:58 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[km-if]]></dc:creator>
+        <description><![CDATA[
+            <p>Looking at docker stats again, I only see one worker even though I increased the counts to 2. Is that right? Did I maybe do something wrong?</p>
+<pre><code>    redash_scheduler_1          0.05%               186.9MiB / 124.4GiB   0.15%               51.3kB / 64.9kB     0B / 147kB          2
+    redash_nginx_1              0.00%               3.555MiB / 124.4GiB   0.00%               345kB / 233kB       0B / 0B             2
+    redash_adhoc_worker_1       0.02%               559.9MiB / 124.4GiB   0.44%               5.35kB / 5.85kB     0B / 442kB          7
+    redash_server_1             0.02%               730.1MiB / 124.4GiB   0.57%               564kB / 496kB       8.19kB / 590kB      9
+    redash_worker_1             0.02%               561.4MiB / 124.4GiB   0.44%               8.32MB / 744kB      0B / 442kB          7
+    redash_scheduled_worker_1   0.02%               560.9MiB / 124.4GiB   0.44%               62.3kB / 66.3kB     0B / 442kB          7
+    redash_postgres_1           0.00%               14.85MiB / 124.4GiB   0.01%               501kB / 8.5MB       946kB / 676kB       10
+    redash_redis_1              0.05%               5.719MiB / 124.4GiB   0.00%               631kB / 370kB       0B / 0B             4</code></pre>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/9</link>
+        <pubDate>Tue, 26 Oct 2021 11:42:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-9</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[km-if]]></dc:creator>
+        <description><![CDATA[
+            <p>No improvement unfortunately</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/8</link>
+        <pubDate>Tue, 26 Oct 2021 11:13:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-8</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It shouldn’t make a difference, but is there any difference if you unify the formatting of your <code>QUEUES</code> specifications? Some of them are space-separated where others are comma-separated.</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/7</link>
+        <pubDate>Mon, 25 Oct 2021 15:40:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-7</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[km-if]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks!</p>
+<p>docker compose:</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0-beta.b49597
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "6000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1  
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+<p>So I should just increase my worker services count to 2 for all WORKERS_COUNT? (Just tried this and tested without success)</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/6</link>
+        <pubDate>Sun, 24 Oct 2021 21:58:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-6</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is an amazing write-up. Good job.</p>
+<p>Your memory usage looks dead-on to me (1.7GB on the main, 10mb-400mb for the other services).</p>
+<p>It’s normal for a <em>worker process</em> to crash if it pulls too much data. But it’s <em>not normal</em> for this to take down the entire worker <em>container</em> or the entire EC2 instance. Ideally, the worker will just fail gracefully, restart itself, and everything will stabilise.</p>
+<p>Can you share your docker-compose file? I wonder how many worker services you have configured.</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/5</link>
+        <pubDate>Fri, 22 Oct 2021 15:39:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-5</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[km-if]]></dc:creator>
+        <description><![CDATA[
+            <p>Forgot to mention, we are on v10</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/4</link>
+        <pubDate>Fri, 22 Oct 2021 11:39:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-4</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[km-if]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse, thanks for your response.</p>
+<p>I ran some experiments and think I can clarify a bit better what’s going on.</p>
+<p>We have an instance with 128GB memory (r5.4xlarge).<br>
+This is pointed to two PostgreSQL data sources. These sources have several tables which are 200+GB in size.<br>
+Typical queries are fairly small as most people use the tool appropriately (not for making large data extracts). Outside of these crashing queries, the max memory I’ve seen is around 7GB.<br>
+sudo docker stats shows typical memory usage quite low (highest is redash_server_1 with 1.7GB, rest are between 10-400MB).</p>
+<p>The problem occurs when people aren’t using the tool properly. They uncheck the LIMIT 1000 tickbox, don’t set their own LIMIT clause, whatever. So they do something like “SELECT * FROM 200gb_table” without LIMIT checked. We can see that the query starts to run, the memory usage just goes up and up until it hits max, then redash crashes and the EC2 needs rebooting before anyone can use it again.<br>
+The behaviour when crashing is:</p>
+<ul>
+<li>the query hangs</li>
+<li>the query says it cannot connect</li>
+<li>shortly afterwards the page gets a 504 error if you refresh, until the instance is rebooted<br>
+Below screenshot shows the memory metrics during one of these crashes (we resized to 128GB after this).<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d.png" data-download-href="/uploads/short-url/62uBncEbDJF0CKoQP4zS3lTKEYB.png?dl=1" title="Screenshot 2021-10-21 at 18.28.09" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_690x252.png" alt="Screenshot 2021-10-21 at 18.28.09" data-base62-sha1="62uBncEbDJF0CKoQP4zS3lTKEYB" width="690" height="252" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_690x252.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_1035x378.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_10x10.png"></a></div>
+</li>
+</ul>
+<p>We could continue to resize the EC2 until it can handle every full table read, but as you say it’s not what redash is for. It would be very expensive and only ever needed for those times people run massive table extracts without thinking. The problem as I see it is that it’s too easy for users to bring the whole instance down and make it unusable for anyone else.</p>
+<p>What we’d like is to be able to handle these bad queries better. We tried a timeout but with a simple query on a large table it can be quite fast to crash. Ideally some way so that redash can run out of memory for a query, stay alive, and then just return a failure result on the query without taking the instance down for anyone else. Maybe we need to host it on two load balanced EC2s so that if a large query kills an instance the other one can continue serving queries without users being impacted?</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/3</link>
+        <pubDate>Fri, 22 Oct 2021 11:21:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-3</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What you’re describing sounds familiar to an issue I’m working on with V10 performance (<a href="http://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271/3">here</a>). The first thing I’d recommend is increasing your instance provision at least temporarily so you can debug without absurd delays. If you’re on a t2.small go up to t2.medium, for example.</p>
+<p>Next, I have a few clarifying questions for you:</p>
+<ol>
+<li>
+<p><strong>How large are your query results?</strong> Redash is built to <em>visualise</em> results. Not for making large data extracts. The git issue you referenced refers to improving performance if your individual query results are sizable. Until we can address this: you should expect degraded performance of the front-end if your query results exceed around 20mb in size. However, this <em>will not cause a 504 timeout</em>.</p>
+</li>
+<li>
+<p><strong>You mentioned the front-end “freezes”.</strong> Under what circumstances? When you execute a large query?</p>
+</li>
+<li>
+<p><strong>How much RAM are your containers using?</strong> You can find this by SSH into the EC2 instance and run <code>sudo docker stats</code>. You can also run the <code>top</code> command to see if your system is using <code>kswap0</code> frequently,.</p>
+</li>
+<li>
+<p><strong>How many types of data sources are you using?</strong> If you only need a few data sources, you can reduce Redash’s memory footprint by disabling the ones you don’t need.</p>
+</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/2</link>
+        <pubDate>Thu, 21 Oct 2021 17:58:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-2</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+      <item>
+        <title>Memory maxing out then 504</title>
+        <dc:creator><![CDATA[km-if]]></dc:creator>
+        <description><![CDATA[
+            <p>Self hosted on AWS using the eu-west-1 AMI.<br>
+Version 8</p>
+<p>We are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error.<br>
+From the metrics we have, it looks like the memory is maxing out.<br>
+It looks like it might be related to this issue:</p><aside class="onebox githubissue" data-onebox-src="https://github.com/getredash/redash/issues/78">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/issues/78" target="_blank" rel="noopener nofollow ugc">github.com/getredash/redash</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/issues/78" target="_blank" rel="noopener nofollow ugc">Better support for large query results</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2014-02-05" data-time="13:33:36" data-timezone="UTC">01:33PM - 05 Feb 14 UTC</span>
+      </div>
+
+
+      <div class="user">
+        <a href="https://github.com/arikfr" target="_blank" rel="noopener nofollow ugc">
+          <img alt="arikfr" src="https://avatars.githubusercontent.com/u/71468?v=4" class="onebox-avatar-inline" width="20" height="20">
+          arikfr
+        </a>
+      </div>
+    </div>
+
+    <div class="labels">
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          backlog
+        </span>
+    </div>
+  </div>
+</div>
+
+  <div class="github-row">
+    <p class="github-body-container">If a query has large result (~50K rows) it will make the UI to get stuck. We nee<span class="show-more-container"><a href="https://discuss.redash.io" rel="noopener" class="show-more">…</a></span><span class="excerpt hidden">d to detect large results sets and handle them differently (server side pagination?).</span></p>
+  </div>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>I am thinking our problem might be that people are running large queries, redash doesn’t limit it in any way, the memory is maxing out and then it crashes. We have some large tables (multiple 200+GB), but most of the queries made throughout the day are small. If we resize the instance it would have to be pretty massive just to handle the odd time someone runs a big query without a LIMIT clause.</p>
+<p>If it is related to the above git topic, is there any kind of workaround? Hard to believe that people have just lived with it repeatedly crashing for 5+ years in that case, so presumably there is something else going on in our situation.</p>
+          <p><a href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/memory-maxing-out-then-504/9308/1</link>
+        <pubDate>Thu, 21 Oct 2021 16:44:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9308-1</guid>
+        <source url="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss">Memory maxing out then 504</source>
+      </item>
+  </channel>
+</rss>

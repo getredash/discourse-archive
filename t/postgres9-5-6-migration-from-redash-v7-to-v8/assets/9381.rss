@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Postgres9.5.6 migration (from Redash_v7 to v8)</title>
+    <link>https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381</link>
+    <description>### Issue Summary
+* I dumped data of postgres9.5.6 (redash v7) using &#39;pg_dump&#39; command.
+* I imported the data to postgres9.6.23 (redash v8).
+* It started redash v8 and I could login with adimn account.
+* But &quot;Datasource&quot; does not work correctly.
+
+
+### Technical details:
+* Now, we use Redash 7.0.0.b18042 (docker).
+* I want to migrate to v8.
+...
+* I dumped postgres-data of v7. (command : &#39;pg_dump -U postgres postgres | gzip &gt; pgdata.gz&#39; )
+* I built brand new Redash v8 using setup.sh.  (8.0.0.b32245)
+* And I stopped it. (cd /opt/redash ; docker-compose down)
+...
+* I started temp container.
+```
+# docker container run -d -v /opt/redash/postgres-data:/var/lib/postgresql/data -p 5432:5432 postgres:9.6-alpine
+（I dropped template1, and create template1）
+```
+* I imported data to new postgres (command: &#39;zcat pgdata.gz | psql -U postgres -d postgres&#39;)
+* I removed temp container.(stop &amp; rm)
+
+* I started redash v8.
+```
+# cd /opt/redash
+# docker-compose run --rm server manage db upgrade
+# docker-compose run --rm server create_db
+# docker-compose up -d --remove-orphans
+```
+
+* It looks pretty good, but only the data source isn&#39;t working.
+
+* any workaround?
+
+  * pic_1
+![1|345x153](upload://fcaUEA3tzWs245Ul1SADmwOgR8J.png)
+
+  * pic_2
+![2|316x180](upload://gB5tSLHXjf2igQzKRKQPfV0Sfkn.png)</description>
+    
+    <lastBuildDate>Tue, 02 Nov 2021 16:39:55 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Postgres9.5.6 migration (from Redash_v7 to v8)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>In order for Redash to view and use the data sources from your previous instance, it must have the same secret key available that was used to encrypt that data on the previous instance.</p>
+          <p><a href="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/4</link>
+        <pubDate>Tue, 02 Nov 2021 16:39:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9381-4</guid>
+        <source url="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381.rss">Postgres9.5.6 migration (from Redash_v7 to v8)</source>
+      </item>
+      <item>
+        <title>Postgres9.5.6 migration (from Redash_v7 to v8)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>I commented out “REDASH_SECRET_KEY” in env file.</p>
+</blockquote>
+<p>We’ve actually got a PR open right now adding documentation about this (PR <a href="https://github.com/getredash/website/pull/612">here</a>).</p>
+<p>The secret key is used to encrypt your data source details. if you don’t set it, the cookie secret is used instead.</p>
+          <p><a href="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/3</link>
+        <pubDate>Tue, 02 Nov 2021 16:39:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9381-3</guid>
+        <source url="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381.rss">Postgres9.5.6 migration (from Redash_v7 to v8)</source>
+      </item>
+      <item>
+        <title>Postgres9.5.6 migration (from Redash_v7 to v8)</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <p>I commented out “REDASH_SECRET_KEY” in env file.</p>
+<pre><code class="lang-auto">PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=*****bna
+REDASH_COOKIE_SECRET: *****uru
+# REDASH_SECRET_KEY=*****mvw
+REDASH_DATABASE_URL=postgresql://postgres:*****bna@postgres/postgres
+</code></pre>
+<p>and restart redash, then I could access datasources.</p>
+<p>…But, is this ok to use redash v8  in the commented out state ??</p>
+          <p><a href="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/2</link>
+        <pubDate>Mon, 01 Nov 2021 15:36:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9381-2</guid>
+        <source url="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381.rss">Postgres9.5.6 migration (from Redash_v7 to v8)</source>
+      </item>
+      <item>
+        <title>Postgres9.5.6 migration (from Redash_v7 to v8)</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<ul>
+<li>I dumped data of postgres9.5.6 (redash v7) using ‘pg_dump’ command.</li>
+<li>I imported the data to postgres9.6.23 (redash v8).</li>
+<li>It started redash v8 and I could login with adimn account.</li>
+<li>But “Datasource” does not work correctly.</li>
+</ul>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Now, we use Redash 7.0.0.b18042 (docker).</li>
+<li>I want to migrate to v8.<br>
+…</li>
+<li>I dumped postgres-data of v7. (command : ‘pg_dump -U postgres postgres | gzip &gt; pgdata.gz’ )</li>
+<li>I built brand new Redash v8 using setup.sh.  (8.0.0.b32245)</li>
+<li>And I stopped it. (cd /opt/redash ; docker-compose down)<br>
+…</li>
+<li>I started temp container.</li>
+</ul>
+<pre><code class="lang-auto"># docker container run -d -v /opt/redash/postgres-data:/var/lib/postgresql/data -p 5432:5432 postgres:9.6-alpine
+（I dropped template1, and create template1）
+</code></pre>
+<ul>
+<li>
+<p>I imported data to new postgres (command: ‘zcat pgdata.gz | psql -U postgres -d postgres’)</p>
+</li>
+<li>
+<p>I removed temp container.(stop &amp; rm)</p>
+</li>
+<li>
+<p>I started redash v8.</p>
+</li>
+</ul>
+<pre><code class="lang-auto"># cd /opt/redash
+# docker-compose run --rm server manage db upgrade
+# docker-compose run --rm server create_db
+# docker-compose up -d --remove-orphans
+</code></pre>
+<ul>
+<li>
+<p>It looks pretty good, but only the data source isn’t working.</p>
+</li>
+<li>
+<p>any workaround?</p>
+<ul>
+<li>
+<p>pic_1<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6a80f6860252d20a1a838403c4c22e1241e39291.png" data-download-href="/uploads/short-url/fcaUEA3tzWs245Ul1SADmwOgR8J.png?dl=1" title="1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6a80f6860252d20a1a838403c4c22e1241e39291_2_345x153.png" alt="1" data-base62-sha1="fcaUEA3tzWs245Ul1SADmwOgR8J" width="345" height="153" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6a80f6860252d20a1a838403c4c22e1241e39291_2_345x153.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6a80f6860252d20a1a838403c4c22e1241e39291_2_517x229.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6a80f6860252d20a1a838403c4c22e1241e39291_2_690x306.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6a80f6860252d20a1a838403c4c22e1241e39291_2_10x10.png"></a></div><p></p>
+</li>
+<li>
+<p>pic_2<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/74540f15c28d569b6bfd2d65dd4e03e4b11d899b.png" alt="2" data-base62-sha1="gB5tSLHXjf2igQzKRKQPfV0Sfkn" width="316" height="180"></p>
+</li>
+</ul>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381/1</link>
+        <pubDate>Mon, 01 Nov 2021 10:45:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9381-1</guid>
+        <source url="https://discuss.redash.io/t/postgres9-5-6-migration-from-redash-v7-to-v8/9381.rss">Postgres9.5.6 migration (from Redash_v7 to v8)</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Getting 500 Internal Server Error while creating new Alert Destination</title>
+    <link>https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238</link>
+    <description>Redash 8.0.2.b37747 (deployed in Kubernetes with https://github.com/getredash/redash)  
+I have a problem creating a new alert destination
+
+First issue was - Redash showed me just &quot;Loading&quot; if I tried to open Alert Destinations page
+I fixed it with  ALTER TABLE notification_destinations ADD COLUMN options TEXT 
+( http://discuss.redash.io/t/temporarily-fixed-upgrade-to-redash-9-failed-with-migrations-and-alert-destinations-are-throwing-internal-server-error/7945 )
+
+But now if I try to create new alert destination, Redash shows me an error:
+&quot;The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.&quot;
+
+On the server`s console throws error
+
+[2021-10-12 07:57:58,738[] ERROR in app: Exception on /api/destinations [POST[]
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint[](**req.view_args)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 477, in wrapper
+    resp = resource(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask_login/utils.py&quot;, line 228, in decorated_view
+    return func(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask/views.py&quot;, line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+  File &quot;/app/redash/handlers/base.py&quot;, line 31, in dispatch_request
+    return super(BaseResource, self).dispatch_request(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 587, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File &quot;/app/redash/permissions.py&quot;, line 67, in decorated
+    return fn(*args, **kwargs)
+  File &quot;/app/redash/handlers/destinations.py&quot;, line 117, in post
+    abort(500)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 31, in abort
+    original_flask_abort(http_status_code)
+  File &quot;/usr/local/lib/python2.7/site-packages/werkzeug/exceptions.py&quot;, line 646, in __call__
+    raise self.mapping[code[](*args, **kwargs)
+InternalServerError: 500: Internal Server Error
+
+Meanwhile I&#39;m able to update already created destinations..</description>
+    
+    <lastBuildDate>Wed, 13 Oct 2021 15:17:29 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Getting 500 Internal Server Error while creating new Alert Destination</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is a really good find. Thank you for sharing your solution.</p>
+<p>I hope we can improve our story around K8S deployments. Right now I think the helm-chart repo is pinned to V8. That repo is not maintained by the core team. But I hope our K8S friends will get to use the cool features in V10 and forward soon.</p>
+          <p><a href="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238/3</link>
+        <pubDate>Wed, 13 Oct 2021 15:17:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9238-3</guid>
+        <source url="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238.rss">Getting 500 Internal Server Error while creating new Alert Destination</source>
+      </item>
+      <item>
+        <title>Getting 500 Internal Server Error while creating new Alert Destination</title>
+        <dc:creator><![CDATA[olx]]></dc:creator>
+        <description><![CDATA[
+            <p>looks like Redash is quite sensitive for table structures…<br>
+It was migration-related issue (ec2&gt;kubernetes&gt;v8&gt;v10&gt;v8)<br>
+Several tables were modified, but after rollback from v10 to v8 this factor causes issues time to time.</p>
+<p>ALTER TABLE notification_destinations ADD COLUMN options TEXT;<br>
+ALTER TABLE notification_destinations DROP COLUMN encrypted_options;<br>
+helped</p>
+<p>Issue fixed</p>
+          <p><a href="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238/2</link>
+        <pubDate>Wed, 13 Oct 2021 08:14:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9238-2</guid>
+        <source url="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238.rss">Getting 500 Internal Server Error while creating new Alert Destination</source>
+      </item>
+      <item>
+        <title>Getting 500 Internal Server Error while creating new Alert Destination</title>
+        <dc:creator><![CDATA[olx]]></dc:creator>
+        <description><![CDATA[
+            <p>Redash 8.0.2.b37747 (deployed in Kubernetes with <a href="https://github.com/getredash/redash" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getredash/redash: Make Your Company Data Driven. Connect to any data source, easily visualize, dashboard and share your data.</a>)<br>
+I have a problem creating a new alert destination</p>
+<p>First issue was - Redash showed me just “Loading” if I tried to open Alert Destinations page<br>
+I fixed it with  ALTER TABLE notification_destinations ADD COLUMN options TEXT<br>
+( <a href="http://discuss.redash.io/t/temporarily-fixed-upgrade-to-redash-9-failed-with-migrations-and-alert-destinations-are-throwing-internal-server-error/7945" class="inline-onebox">[Temporarily Fixed] Upgrade to Redash 9 failed with migrations and Alert Destinations are throwing internal server error</a> )</p>
+<p>But now if I try to create new alert destination, Redash shows me an error:<br>
+“The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.”</p>
+<p>On the server`s console throws error</p>
+<p>[2021-10-12 07:57:58,738<span class="chcklst-box fa fa-square-o fa-fw"></span> ERROR in app: Exception on /api/destinations [POST<span class="chcklst-box fa fa-square-o fa-fw"></span><br>
+Traceback (most recent call last):<br>
+File “/usr/local/lib/python2.7/site-packages/flask/app.py”, line 1612, in full_dispatch_request<br>
+rv = self.dispatch_request()<br>
+File “/usr/local/lib/python2.7/site-packages/flask/app.py”, line 1598, in dispatch_request<br>
+return self.view_functions[rule.endpoint<a href="https://discuss.redash.io"></a><br>
+File “/usr/local/lib/python2.7/site-packages/flask_restful/<strong>init</strong>.py”, line 477, in wrapper<br>
+resp = resource(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask_login/utils.py”, line 228, in decorated_view<br>
+return func(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask/views.py”, line 84, in view<br>
+return self.dispatch_request(*args, **kwargs)<br>
+File “/app/redash/handlers/base.py”, line 31, in dispatch_request<br>
+return super(BaseResource, self).dispatch_request(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask_restful/<strong>init</strong>.py”, line 587, in dispatch_request<br>
+resp = meth(*args, **kwargs)<br>
+File “/app/redash/permissions.py”, line 67, in decorated<br>
+return fn(*args, **kwargs)<br>
+File “/app/redash/handlers/destinations.py”, line 117, in post<br>
+abort(500)<br>
+File “/usr/local/lib/python2.7/site-packages/flask_restful/<strong>init</strong>.py”, line 31, in abort<br>
+original_flask_abort(http_status_code)<br>
+File “/usr/local/lib/python2.7/site-packages/werkzeug/exceptions.py”, line 646, in <strong>call</strong><br>
+raise self.mapping[code<span class="chcklst-box fa fa-square-o fa-fw"></span>(*args, **kwargs)<br>
+InternalServerError: 500: Internal Server Error</p>
+<p>Meanwhile I’m able to update already created destinations…</p>
+          <p><a href="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238/1</link>
+        <pubDate>Tue, 12 Oct 2021 08:21:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9238-1</guid>
+        <source url="https://discuss.redash.io/t/getting-500-internal-server-error-while-creating-new-alert-destination/9238.rss">Getting 500 Internal Server Error while creating new Alert Destination</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Connecting to AWS Elasticsearch 7.1?</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/connecting-to-aws-elasticsearch-7-1/5142">Connecting to AWS Elasticsearch 7.1?</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Connecting to AWS Elasticsearch 7.1?" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/oliviaandersonm.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/oliviaandersonm_avatar.png" tabindex="-1" width="48"/><span itemprop="name">oliviaandersonm</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-12-06T18:04:04Z" itemprop="datePublished">
+                    December 6, 2019,  6:04pm
+                  </time>
+<meta content="2019-12-06T18:04:04Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<h3>Issue Summary</h3>
+<p>Connecting to AWS Elasticsearch reporting success on connection test, but fails to load indices or execute queries.  Errors arise when refreshing (“Cannot refresh indices”) and when executing any query ("Type ‘bool’ is not iterable) - so it looks like possibly AWS Elasticsearch Service 7.1 is not supported?</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0</li>
+<li>Browser/OS: chrome, macos</li>
+<li>How did you install Redash: self hosted, premade ec2 ami</li>
+</ul>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Konstantine.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Konstantine_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Konstantine</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-04T12:09:57Z" itemprop="datePublished">
+                    March 4, 2020, 12:09pm
+                  </time>
+<meta content="2020-03-04T12:09:57Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Same case here, Elasticsearch also hosted.</p>
+<p>Error same.</p>
+<p>Tried to capture/decode communication with wireshark, Elasticsearch looks like correct output, no any error while linting, but looks a bit weird, like it contains lot’s of staff but no records.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Konstantine.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Konstantine_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Konstantine</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-04T12:18:49Z" itemprop="datePublished">
+                    March 4, 2020, 12:18pm
+                  </time>
+<meta content="2020-03-04T12:18:49Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Here is some more detailed error from redash:</p>
+<pre><code>[2020-03-04 11:22:31,194][PID:388][WARNING][ForkPoolWorker-333] task_name=redash.tasks.refresh_schema task_id=df03835a-1353-4d13-a1d9-397722499742 Failed refreshing schema for the data source: XXX
+Traceback (most recent call last):
+  File "/app/redash/tasks/queries.py", line 261, in refresh_schema
+    ds.get_schema(refresh=True)
+  File "/app/redash/models/__init__.py", line 155, in get_schema
+    schema = sorted(query_runner.get_schema(get_stats=refresh), key=lambda t: t['name'])
+  File "/app/redash/query_runner/elasticsearch.py", line 173, in get_schema
+    columns.extend(parse_doc(items))
+  File "/app/redash/query_runner/elasticsearch.py", line 154, in parse_doc
+    for field, description in doc['properties'].items():
+TypeError: string indices must be integers</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5c0c9655472fba52a62b31aa838a266fb9bfa287.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-04T13:04:53Z" itemprop="datePublished">
+                    March 4, 2020,  1:04pm
+                  </time>
+<meta content="2020-03-04T13:04:53Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Which ES connector? There are two.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/d8iTvAR86jo9nB7xiaICASYP1BB.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5c0c9655472fba52a62b31aa838a266fb9bfa287.png" title="image"><img alt="image" data-base62-sha1="d8iTvAR86jo9nB7xiaICASYP1BB" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5c0c9655472fba52a62b31aa838a266fb9bfa287_2_10x10.png" height="500" src="assets/5c0c9655472fba52a62b31aa838a266fb9bfa287_2_463x500.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5c0c9655472fba52a62b31aa838a266fb9bfa287_2_463x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5c0c9655472fba52a62b31aa838a266fb9bfa287.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5c0c9655472fba52a62b31aa838a266fb9bfa287.png 2x" width="463"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">537×579 15.8 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Konstantine.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Konstantine_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Konstantine</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-04T13:15:56Z" itemprop="datePublished">
+                    March 4, 2020,  1:15pm
+                  </time>
+<meta content="2020-03-04T13:15:56Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>As I have self hosted elastic tried both Kibana and Elasticsearch (not amazon one)</p>
+<p>both end up with same result.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Konstantine.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Konstantine_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Konstantine</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-03-04T13:17:22Z" itemprop="datePublished">
+                    March 4, 2020,  1:17pm
+                  </time>
+<meta content="2020-03-04T13:17:22Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>trying to run simple queries from this page:</p>
+<p><a class="onebox" href="https://redash.io/help/data-sources/querying/elasticsearch" rel="nofollow noopener" target="_blank">https://redash.io/help/data-sources/querying/elasticsearch</a></p>
+<p>just replacing names of index and fields.</p>
+<p>Also found that if I specify wrong index name, correct error message appears that no such index.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/thaya.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/thaya_avatar.png" tabindex="-1" width="48"/><span itemprop="name">thaya</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-04-06T07:22:30Z" itemprop="datePublished">
+                    April 6, 2020,  7:22am
+                  </time>
+<meta content="2020-04-06T07:22:30Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,<br/>
+I tried to connect elasticsearch to redash but while checking for connection…I am getting an error as connection failed.Can you help me to how to connect with elasticsearch.</p>
+<p>Thanks,<br/>
+Thaya</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jasony.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jasony_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jasony</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-04T23:58:30Z" itemprop="datePublished">
+                    May 4, 2020, 11:58pm
+                  </time>
+<meta content="2020-05-04T23:58:30Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I host on <a href="http://Elastic.co" rel="nofollow noopener">Elastic.co</a> and was able to connect successfully and run a basic query using the Kibana connector and this format of host:<br/>
+https://.us-west-2.aws.found.io:9243</p>
+<p>I had some trouble with the ElasticSearch connector (test connection works, but queries time out), but this worked.</p>
+<p>Now, I’m trying to figure out how to run the queries generated by Kibana, but I get the error below. I’m guessing there must be some nested data structures that Redash doesn’t know how to handle? I pretty new to ES so trying learning as I go with it.</p>
+<p>Error running query:  <strong>‘list’ object has no attribute 'rstrip’</strong></p>
+<p>Query:</p>
+<pre><code>{"index":"snowplow",
+  "version": true,
+  "size": 500,
+  "sort": [
+    {
+      "collector_tstamp": {
+        "order": "desc",
+        "unmapped_type": "boolean"
+      }
+    }
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "aggs": {
+    "2": {
+      "date_histogram": {
+        "field": "collector_tstamp",
+        "calendar_interval": "1m",
+        "time_zone": "America/Los_Angeles",
+        "min_doc_count": 1
+      }
+    }
+  },
+  "stored_fields": [
+    "*"
+  ],
+  "script_fields": {
+    "Server Load Time": {
+      "script": {
+        "source": "doc['contexts_org_w3_performance_timing_1.responseStart'].value - doc['contexts_org_w3_performance_timing_1.connectStart'].value",
+        "lang": "painless"
+      }
+    },
+    "Coupon": {
+      "script": {
+        "source": "if (doc['contexts_com_session_variables_1.coupon.keyword'].size() != 0) {\n    doc['contexts_com_session_variables_1.coupon.keyword'].value\n}",
+        "lang": "painless"
+      }
+    }
+  },
+  "docvalue_fields": [
+    {
+      "field": "collector_tstamp",
+      "format": "date_time"
+    },
+    {
+      "field": "derived_tstamp",
+      "format": "date_time"
+    },
+    {
+      "field": "dvce_created_tstamp",
+      "format": "date_time"
+    },
+    {
+      "field": "dvce_sent_tstamp",
+      "format": "date_time"
+    },
+    {
+      "field": "etl_tstamp",
+      "format": "date_time"
+    }
+  ],
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        },
+        {
+          "range": {
+            "collector_tstamp": {
+              "format": "strict_date_optional_time",
+              "gte": "2020-05-04T22:43:07.986Z",
+              "lte": "2020-05-04T23:43:07.986Z"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      "@kibana-highlighted-field@"
+    ],
+    "post_tags": [
+      "@/kibana-highlighted-field@"
+    ],
+    "fields": {
+      "*": {}
+    },
+    "fragment_size": 2147483647
+  }
+}</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-05-05T18:56:18Z" itemprop="datePublished">
+                    May 5, 2020,  6:56pm
+                  </time>
+<meta content="2020-05-05T18:56:18Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Our ES connector is in bad condition. It was a community contribution from several years ago and needs to be rewritten. This process is underway but it’s a low priority for us. If ES is a major part of your data viz needs then Redash might not be the best tool for now.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/itssimon.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/itssimon_avatar.png" tabindex="-1" width="48"/><span itemprop="name">itssimon</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-07-13T02:51:31Z" itemprop="datePublished">
+                    July 13, 2020,  2:51am
+                  </time>
+<meta content="2020-07-13T02:51:31Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m also having issues with the AWS ES connector and for us this is really important. Is there any way we can contribute to getting the new ES connector across the line?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/connecting-to-aws-elasticsearch-7-1/5142" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2020-07-13T03:20:58Z" itemprop="datePublished">
+                    July 13, 2020,  3:20am
+                  </time>
+<meta content="2020-07-13T03:20:58Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Yes! Here’s the current PR <a href="https://github.com/getredash/redash/pull/4391">https://github.com/getredash/redash/pull/4391</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

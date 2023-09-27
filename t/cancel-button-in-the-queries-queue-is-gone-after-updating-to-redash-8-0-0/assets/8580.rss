@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Cancel button in the queries queue is gone after updating to redash 8.0.0</title>
+    <link>https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580</link>
+    <description>### Issue Summary
+
+I upgraded my installation of redash from version 6.0.0 to 8.0.0 following the how to upgrade guide (https://redash.io/help/open-source/admin-guide/how-to-upgrade) one by one mayor semantic version at the time and migrating the database as well for each version, almost everything seems to work correctly but under System Status -&gt; Queries Queue the cancel button for In progress queries is no longer there, this used to be important in my workflow as some times I needed to prioritize another query in the queue, did I miss something in my upgrade process or is this an expected behavior? if this is expected, is there any plan to bringing this button back in the future?.
+
+Thank you
+
+### Technical details:
+
+* Redash Version: 8.0.0
+* Browser/OS: Chrome 90.0.443.212
+* How did you install Redash: Using Docker, self managed</description>
+    
+    <lastBuildDate>Tue, 15 Jun 2021 15:34:55 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Cancel button in the queries queue is gone after updating to redash 8.0.0</title>
+        <dc:creator><![CDATA[wvd]]></dc:creator>
+        <description><![CDATA[
+            <p>That would be amazing as there are features from the new version that I would like to try, I hope this is possible in the future, thank you so much for the support <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=9" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p>Best</p>
+          <p><a href="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/5</link>
+        <pubDate>Tue, 15 Jun 2021 15:34:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8580-5</guid>
+        <source url="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580.rss">Cancel button in the queries queue is gone after updating to redash 8.0.0</source>
+      </item>
+      <item>
+        <title>Cancel button in the queries queue is gone after updating to redash 8.0.0</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>That looks right to me. You can still cancel jobs with the API. The button just isn’t there. Maybe we should add it back?</p>
+          <p><a href="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/4</link>
+        <pubDate>Mon, 14 Jun 2021 18:36:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8580-4</guid>
+        <source url="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580.rss">Cancel button in the queries queue is gone after updating to redash 8.0.0</source>
+      </item>
+      <item>
+        <title>Cancel button in the queries queue is gone after updating to redash 8.0.0</title>
+        <dc:creator><![CDATA[wvd]]></dc:creator>
+        <description><![CDATA[
+            <p>I went to see the code and found that the cancel button component is still there in version 8.0.0</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/v8.0.0/client/app/components/cancel-query-button/index.js#L10">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/v8.0.0/client/app/components/cancel-query-button/index.js#L10" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/v8.0.0/client/app/components/cancel-query-button/index.js#L10" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/v8.0.0/client/app/components/cancel-query-button/index.js#L10</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-js">
+      <ol class="start lines" start="1" style="counter-reset: li-counter 0 ;">
+          <li>function cancelQueryButton() {</li>
+          <li>  return {</li>
+          <li>    restrict: 'E',</li>
+          <li>    scope: {</li>
+          <li>      queryId: '=',</li>
+          <li>      taskId: '=',</li>
+          <li>    },</li>
+          <li>    transclude: true,</li>
+          <li>    template:</li>
+          <li class="selected">      '&lt;button class="btn btn-default" ng-disabled="inProgress" ng-click="cancelExecution()"&gt;&lt;i class="zmdi zmdi-spinner zmdi-hc-spin" ng-if="inProgress"&gt;&lt;/i&gt; Cancel&lt;/button&gt;',</li>
+          <li>    replace: true,</li>
+          <li>    controller($scope, $http, currentUser, Events) {</li>
+          <li>      $scope.inProgress = false;</li>
+          <li>
+          </li>
+<li>      $scope.cancelExecution = () =&gt; {</li>
+          <li>        $http.delete(`api/jobs/${$scope.taskId}`).success(() =&gt; {});</li>
+          <li>
+          </li>
+<li>        let queryId = $scope.queryId;</li>
+          <li>        if ($scope.queryId === 'adhoc') {</li>
+          <li>          queryId = null;</li>
+      </ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>and it was being used still in version 6.0.0</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/v6.0.0/client/app/pages/admin/tasks/tasks.html#L45">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/v6.0.0/client/app/pages/admin/tasks/tasks.html#L45" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/v6.0.0/client/app/pages/admin/tasks/tasks.html#L45" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/v6.0.0/client/app/pages/admin/tasks/tasks.html#L45</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-html">
+      <ol class="start lines" start="35" style="counter-reset: li-counter 34 ;">
+          <li>      &lt;td&gt;{{row.data_source_id}}&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.username}}&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.state}} &lt;span ng-if="row.state === 'failed'" uib-popover="{{row.error}}" popover-trigger="mouseenter" class="zmdi zmdi-help"&gt;&lt;/span&gt;&lt;/td&gt;</li>
+          <li>      &lt;td&gt;&lt;a href="queries/{{row.query_id}}"&gt;{{row.query_id}}&lt;/a&gt;&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.query_hash}}&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.run_time | durationHumanize}}&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.created_at | toMilliseconds | dateTime }}&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.started_at | toMilliseconds | dateTime }}&lt;/td&gt;</li>
+          <li>      &lt;td&gt;{{row.updated_at | toMilliseconds | dateTime }}&lt;/td&gt;</li>
+          <li>      &lt;td ng-if="selectedTab === 'in_progress'"&gt;</li>
+          <li class="selected">        &lt;cancel-query-button query-id="row.query_id" task-id="row.task_id"&gt;&lt;/cancel-query-button&gt;</li>
+          <li>      &lt;/td&gt;</li>
+          <li>    &lt;/tr&gt;</li>
+          <li>    &lt;/tbody&gt;</li>
+          <li>  &lt;/table&gt;</li>
+          <li>  &lt;paginator paginator="$ctrl.tasksPaginator"&gt;&lt;/paginator&gt;</li>
+          <li>
+          </li>
+<li>  &lt;div class="p-15"&gt;</li>
+          <li>    &lt;label&gt;&lt;input type="checkbox" ng-model="autoUpdate"&gt; Auto Update&lt;/label&gt;</li>
+          <li>  &lt;/div&gt;</li>
+          <li>&lt;/div&gt;</li>
+      </ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>but on version 7.0.0 this view section was replaced with an admin celery status component that doesn’t have it</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/v7.0.0/client/app/components/admin/CeleryStatus.jsx">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/v7.0.0/client/app/components/admin/CeleryStatus.jsx" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/v7.0.0/client/app/components/admin/CeleryStatus.jsx" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/v7.0.0/client/app/components/admin/CeleryStatus.jsx</a></h4>
+
+
+    <pre><code class="lang-jsx">import React from 'react';
+import PropTypes from 'prop-types';
+import { $http } from '@/services/ng';
+import Table from 'antd/lib/table';
+import Col from 'antd/lib/col';
+import Row from 'antd/lib/row';
+import Card from 'antd/lib/card';
+import Spin from 'antd/lib/spin';
+import Badge from 'antd/lib/badge';
+import Tabs from 'antd/lib/tabs';
+import Alert from 'antd/lib/alert';
+import moment from 'moment';
+import values from 'lodash/values';
+import { Columns } from '@/components/items-list/components/ItemsTable';
+
+function parseTasks(tasks) {
+  const queues = {};
+  const queries = [];
+  const otherTasks = [];
+
+</code></pre>
+
+
+  This file has been truncated. <a href="https://github.com/getredash/redash/blob/v7.0.0/client/app/components/admin/CeleryStatus.jsx" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>so I guess this answers my question</p>
+          <p><a href="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/3</link>
+        <pubDate>Fri, 11 Jun 2021 13:11:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8580-3</guid>
+        <source url="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580.rss">Cancel button in the queries queue is gone after updating to redash 8.0.0</source>
+      </item>
+      <item>
+        <title>Cancel button in the queries queue is gone after updating to redash 8.0.0</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I don’t think the cancel button was included in the migration from Angular to React a couple years ago. <a class="mention" href="https://discuss.redash.io/u/levko">@levko</a> any idea why?</p>
+          <p><a href="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/2</link>
+        <pubDate>Wed, 09 Jun 2021 22:17:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8580-2</guid>
+        <source url="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580.rss">Cancel button in the queries queue is gone after updating to redash 8.0.0</source>
+      </item>
+      <item>
+        <title>Cancel button in the queries queue is gone after updating to redash 8.0.0</title>
+        <dc:creator><![CDATA[wvd]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I upgraded my installation of redash from version 6.0.0 to 8.0.0 following the how to upgrade guide (<a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/how-to-upgrade</a>) one by one mayor semantic version at the time and migrating the database as well for each version, almost everything seems to work correctly but under System Status → Queries Queue the cancel button for In progress queries is no longer there, this used to be important in my workflow as some times I needed to prioritize another query in the queue, did I miss something in my upgrade process or is this an expected behavior? if this is expected, is there any plan to bringing this button back in the future?.</p>
+<p>Thank you</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0</li>
+<li>Browser/OS: Chrome 90.0.443.212</li>
+<li>How did you install Redash: Using Docker, self managed</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580/1</link>
+        <pubDate>Wed, 09 Jun 2021 15:40:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8580-1</guid>
+        <source url="https://discuss.redash.io/t/cancel-button-in-the-queries-queue-is-gone-after-updating-to-redash-8-0-0/8580.rss">Cancel button in the queries queue is gone after updating to redash 8.0.0</source>
+      </item>
+  </channel>
+</rss>

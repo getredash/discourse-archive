@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Custom sorting from mongoDB query breaks after grouping fields - Support - Redash Discourse</title>
+    <meta name="description" content="I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on. 
+In order to create my custom sorting I added a&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Custom sorting from mongoDB query breaks after grouping fields&#39;" href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_1024x367.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_1024x367.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043" />
+<meta property="og:title" content="Custom sorting from mongoDB query breaks after grouping fields" />
+<meta name="twitter:title" content="Custom sorting from mongoDB query breaks after grouping fields" />
+<meta property="og:description" content="I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.  In order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentioned problem.  I tried adding dummy data where a script creates documents with value of 0 for my y axis and it kind of worked.  Here is my chart, it looks really ugly without the order and is unusable  ..." />
+<meta name="twitter:description" content="I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.  In order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentioned problem.  I tried adding dummy data where a script creates documents with value of 0 for my y axis and it kind of worked.  Here is my chart, it looks really ugly without the order and is unusable  ..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:tag" content="query_results" />
+<meta property="og:article:tag" content="visualizations" />
+<meta property="article:published_time" content="2022-02-22T10:59:06+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Custom sorting from mongoDB query breaks after grouping fields","mainEntity":{"@type":"Question","name":"Custom sorting from mongoDB query breaks after grouping fields","text":"I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.\n\nIn order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentio&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2022-02-22T10:59:06.490Z","author":{"@type":"Person","name":"Cnyllou"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043">Custom sorting from mongoDB query breaks after grouping fields</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/query_results' class='discourse-tag' rel="tag">query_results</a>, 
+            <a href='https://discuss.redash.io/tag/visualizations' class='discourse-tag' rel="tag">visualizations</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Custom sorting from mongoDB query breaks after grouping fields'>
+        <meta itemprop='articleSection' content='Support'>
+      <meta itemprop='keywords' content='query_results, visualizations'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/cny'><span itemprop='name'>cny</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-02-22T10:59:06Z' class='post-time'>
+                    February 22, 2022, 10:59am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-02-22T10:59:06Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>I needed to create custom sorting based on some rules, so my data looks logical, but I ran into issues, when there is no data for one of the groups which the x value is on.</p>
+<p>In order to create my custom sorting I added a column weight, and calculated the values, but the order breaks after the mentioned problem.</p>
+<p>I tried adding dummy data where a script creates documents with value of 0 for my y axis and it kind of worked.</p>
+<p>Here is my chart, it looks really ugly without the order and is unusable<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png" data-download-href="/uploads/short-url/63QIyeIAbz21fCWGWIS9Qj7Nsyj.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_690x247.png" alt="image" data-base62-sha1="63QIyeIAbz21fCWGWIS9Qj7Nsyj" width="690" height="247" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_690x247.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_1035x370.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a7c7703e57e09fd3a695c465895bb49a0b76ec7_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1201×431 81.4 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>I also tried searching for solutions for such issue, but to no avail, are there other things I could try?</p>
+<p>Here is, the order I want and this is achieved by removing the x values from the list where not all groups have data or when I have dummy data in place<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455.png" data-download-href="/uploads/short-url/iAQpjo8AkSIr1lkYJt5e5IRVYtn.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_690x222.png" alt="image" data-base62-sha1="iAQpjo8AkSIr1lkYJt5e5IRVYtn" width="690" height="222" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_690x222.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_1035x333.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/82515f0a9e74d7cf42a4d24da50057b5ad1f8455_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1156×372 102 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Is there a better way to do this maybe through redash or mongo, any advice helps.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ilyaminati'><span itemprop='name'>ilyaminati</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-02-22T19:29:22Z' class='post-time'>
+                    February 22, 2022,  7:29pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-02-22T19:29:22Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Maybe these are relevant?</p>
+<aside class="quote quote-modified" data-post="1" data-topic="9394">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/c/57b2e6/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/prevent-missing-values-in-visualization-from-being-plotted/9394">Prevent missing values in visualization from being plotted</a> <a class="badge-wrapper  bullet" href="/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and using Redash.">Support</span></a>
+  </div>
+  <blockquote>
+    Hello, 
+How do I prevent a missing value to be displayed in a line chart. 
+[image] 
+In this Example portfolio PF-21-08 has an overdue rate of 1% at collection 3. 
+Portfolio PF-21-09 doesn’t have a collection 3 but in the visualization it still shows up on the x axis at value 3. 
+[image] 
+Any help is highly appreciated.
+  </blockquote>
+</aside>
+
+<aside class="onebox githubissue" data-onebox-src="https://github.com/getredash/redash/issues/4717">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/issues/4717" target="_blank" rel="noopener nofollow ugc">github.com/getredash/redash</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewbox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/issues/4717" target="_blank" rel="noopener nofollow ugc">"Treat missing/null values as 0" Does not work for line charts with datetime scale x-axis</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2020-03-09" data-time="12:00:52" data-timezone="UTC">12:00PM - 09 Mar 20 UTC</span>
+      </div>
+
+
+      <div class="user">
+        <a href="https://github.com/orenpai" target="_blank" rel="noopener nofollow ugc">
+          <img alt="orenpai" src="https://avatars.githubusercontent.com/u/20188692?v=4" class="onebox-avatar-inline" width="20" height="20">
+          orenpai
+        </a>
+      </div>
+    </div>
+
+    <div class="labels">
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Frontend
+        </span>
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Visualizations: Chart
+        </span>
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          Visualizations
+        </span>
+    </div>
+  </div>
+</div>
+
+  <div class="github-row">
+    <p class="github-body-container">### Issue Summary
+
+When creating a line chart with a datetime based x-axis, fr<span class="show-more-container"><a href="" rel="noopener" class="show-more">…</a></span><span class="excerpt hidden">om a table with missing dates ("holes"), the line chart continues as if no data was present, even though the option "Treat missing/null values as 0" is turned on.
+In contrast, bar charts work as expected - in which the bar is nonexistent (effectively size 0) on those missing dates.
+
+### Steps to Reproduce
+You can use this csv data as an example, or use the attached CSV.
+[Incoming_Users_2020_03_09.csv.txt](https://github.com/getredash/redash/files/4306409/Incoming_Users_2020_03_09.csv.txt)
+
+dt,installs
+06/02/2020,1
+10/02/2020,8
+11/02/2020,5
+12/02/2020,1
+
+(Please note European date format, switch month and day if necessary)
+
+Create a chart visualization (x-axis is dt, y axis is installs); Make sure the "Treat missing/null values as 0" checkbox is selected. In the x-axis settings make sure the scale is Datetime (default). Notice how the chart line continues straight in all dates between 06/02 and 10/02, as if they value continued to be "1" for these dates (even though indeed no marker is present when you hover the chart with the mouse cursor).
+Switch to bar chart - all bars in the same dates show a value of 0 (no bar). 
+Notice how unchecking and checking the checkbox "Treat missing/null values as 0" does not alter either of these charts. 
+
+Screenshots attached
+&lt;img width="796" alt="BarChart" src="https://user-images.githubusercontent.com/20188692/76211109-28b16500-620e-11ea-872c-b59cb22f7cd1.png"&gt;
+&lt;img width="791" alt="LineChart" src="https://user-images.githubusercontent.com/20188692/76211112-2a7b2880-620e-11ea-97bb-327900a9c1bc.png"&gt;
+
+The expected behavior is that when the checkbox is checked, the line chart would go to 0 on the dates that are not available in the table, similar to how the bar chart looks. For the bar chart, if the checkbox is unchecked, I would expect the same bar value to be kept, similar to how the line chart is.
+
+* Redash Version: 8.0.0+b32245 (a16f551e)
+* Browser/OS: Chrome Version 80.0.3987.122 (Official Build) (64-bit)
+* How did you install Redash: AWS ami-0b97435028ca44fcc</span></p>
+  </div>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/cny'><span itemprop='name'>cny</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/custom-sorting-from-mongodb-query-breaks-after-grouping-fields/10043">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-02-23T05:41:41Z' class='post-time'>
+                    February 23, 2022,  5:41am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-02-23T05:41:41Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I enabled stacking and excluded set missing values not to show up and got a lot better looking line chart<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png" data-download-href="/uploads/short-url/7gbxXvL6romyHhme2tiuRiiwE4c.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_690x296.png" alt="image" data-base62-sha1="7gbxXvL6romyHhme2tiuRiiwE4c" width="690" height="296" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_690x296.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/32e39ecb2e4a30524f7fdc8af6b723b65da86dc4_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">904×388 38.9 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>“The Treat missing/null values as 0” issue does not work for me by itself as well, so it could be relevant, but the order is still messed up, at least the chart looks bearable</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

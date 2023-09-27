@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Postgres DB access problems when using docker compose</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/postgres-db-access-problems-when-using-docker-compose/418">Postgres DB access problems when using docker compose</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Postgres DB access problems when using docker compose" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/richard.fisk.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/richard.fisk_avatar.png" tabindex="-1" width="48"/><span itemprop="name">richard.fisk</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T05:55:20Z" itemprop="datePublished">
+                    February 8, 2017,  5:55am
+                  </time>
+<meta content="2017-02-08T05:55:20Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I’m having problems running the docker-compose self-hosted solution. The <code>worker</code> component seems not be able to access the Postgres database. However, running <code>docker-compose -f docker-compose.yml run server create_db</code> seems to work without error.</p>
+<p>I get this error: <code>worker_1 | [2017-02-08 05:53:49,111: ERROR/Beat] Removing corrupted schedule file 'celerybeat-schedule': DBAccessError(13, 'Permission denied')</code></p>
+<p>This appears in the docker-compose output for the command <code>docker-compose -f docker-compose.yml up</code>:</p>
+<pre><code class="lang-auto">redash_redis_1 is up-to-date
+redash_postgres_1 is up-to-date
+Creating redash_server_1
+Creating redash_worker_1
+Attaching to redash_redis_1, redash_postgres_1, redash_server_1, redash_worker_1
+redis_1     | [1] 08 Feb 05:53:34.536 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis_1     |                 _._                                                  
+redis_1     |            _.-``__ ''-._                                             
+redis_1     |       _.-``    `.  `_.  ''-._           Redis 2.8.23 (00000000/0) 64 bit
+redis_1     |   .-`` .-```.  ```\/    _.,_ ''-._                                   
+redis_1     |  (    '      ,       .-`  | `,    )     Running in stand alone mode
+redis_1     |  |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+redis_1     |  |    `-._   `._    /     _.-'    |     PID: 1
+redis_1     |   `-._    `-._  `-./  _.-'    _.-'                                   
+redis_1     |  |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+redis_1     |  |    `-._`-._        _.-'_.-'    |           http://redis.io        
+redis_1     |   `-._    `-._`-.__.-'_.-'    _.-'                                   
+redis_1     |  |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+redis_1     |  |    `-._`-._        _.-'_.-'    |                                  
+redis_1     |   `-._    `-._`-.__.-'_.-'    _.-'                                   
+redis_1     |       `-._    `-.__.-'    _.-'                                       
+redis_1     |           `-._        _.-'                                           
+redis_1     |               `-.__.-'                                               
+redis_1     | 
+redis_1     | [1] 08 Feb 05:53:34.549 # Server started, Redis version 2.8.23
+redis_1     | [1] 08 Feb 05:53:34.549 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+redis_1     | [1] 08 Feb 05:53:34.549 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+redis_1     | [1] 08 Feb 05:53:34.549 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1     | [1] 08 Feb 05:53:34.549 * The server is now ready to accept connections on port 6379
+postgres_1  | The files belonging to this database system will be owned by user "postgres".
+postgres_1  | This user must also own the server process.
+postgres_1  | 
+postgres_1  | The database cluster will be initialized with locale "en_US.utf8".
+postgres_1  | The default database encoding has accordingly been set to "UTF8".
+postgres_1  | The default text search configuration will be set to "english".
+postgres_1  | 
+postgres_1  | Data page checksums are disabled.
+postgres_1  | 
+postgres_1  | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+postgres_1  | creating subdirectories ... ok
+postgres_1  | selecting default max_connections ... 100
+postgres_1  | selecting default shared_buffers ... 128MB
+postgres_1  | creating configuration files ... ok
+postgres_1  | creating template1 database in /var/lib/postgresql/data/base/1 ... ok
+postgres_1  | initializing pg_authid ... ok
+postgres_1  | initializing dependencies ... ok
+postgres_1  | creating system views ... ok
+postgres_1  | loading system objects' descriptions ... ok
+postgres_1  | creating collations ... ok
+postgres_1  | creating conversions ... ok
+postgres_1  | creating dictionaries ... ok
+postgres_1  | setting privileges on built-in objects ... ok
+postgres_1  | creating information schema ... ok
+postgres_1  | loading PL/pgSQL server-side language ... ok
+postgres_1  | vacuuming database template1 ... ok
+postgres_1  | copying template1 to template0 ... ok
+postgres_1  | copying template1 to postgres ... ok
+postgres_1  | 
+postgres_1  | WARNING: enabling "trust" authentication for local connections
+postgres_1  | You can change this by editing pg_hba.conf or using the option -A, or
+postgres_1  | --auth-local and --auth-host, the next time you run initdb.
+postgres_1  | ****************************************************
+postgres_1  | WARNING: No password has been set for the database.
+postgres_1  |          This will allow anyone with access to the
+postgres_1  |          Postgres port to access your database. In
+postgres_1  |          Docker's default configuration, this is
+postgres_1  |          effectively any other container on the same
+postgres_1  |          system.
+postgres_1  | 
+postgres_1  |          Use "-e POSTGRES_PASSWORD=password" to set
+postgres_1  |          it in "docker run".
+postgres_1  | ****************************************************
+postgres_1  | syncing data to disk ... ok
+postgres_1  | 
+postgres_1  | Success. You can now start the database server using:
+postgres_1  | 
+postgres_1  |     postgres -D /var/lib/postgresql/data
+postgres_1  | or
+postgres_1  |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+postgres_1  | 
+postgres_1  | waiting for server to start....LOG:  database system was shut down at 2017-02-08 05:53:36 UTC
+postgres_1  | LOG:  MultiXact member wraparound protections are now enabled
+postgres_1  | LOG:  database system is ready to accept connections
+postgres_1  | LOG:  autovacuum launcher started
+postgres_1  |  done
+postgres_1  | server started
+postgres_1  | ALTER ROLE
+postgres_1  | 
+postgres_1  | 
+postgres_1  | /docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+postgres_1  | 
+postgres_1  | LOG:  received fast shutdown request
+postgres_1  | LOG:  aborting any active transactions
+postgres_1  | LOG:  autovacuum launcher shutting down
+postgres_1  | LOG:  shutting down
+postgres_1  | waiting for server to shut down....LOG:  database system is shut down
+postgres_1  |  done
+postgres_1  | server stopped
+postgres_1  | 
+postgres_1  | PostgreSQL init process complete; ready for start up.
+postgres_1  | 
+postgres_1  | LOG:  database system was shut down at 2017-02-08 05:53:37 UTC
+postgres_1  | LOG:  MultiXact member wraparound protections are now enabled
+postgres_1  | LOG:  database system is ready to accept connections
+postgres_1  | LOG:  autovacuum launcher started
+worker_1    | Starting scheduler and 2 workers for queues: queries,scheduled_queries,celery...
+worker_1    | [2017-02-08 05:53:46,515][PID:5][WARNING][redash.query_runner] BigQueryGCE query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+worker_1    | [2017-02-08 05:53:48,684: WARNING/MainProcess] /usr/local/lib/python2.7/dist-packages/celery/apps/worker.py:161: CDeprecationWarning: 
+worker_1    | Starting from version 3.2 Celery will refuse to accept pickle by default.
+worker_1    | 
+worker_1    | The pickle serializer is a security concern as it may give attackers
+worker_1    | the ability to execute any command.  It's important to secure
+worker_1    | your broker from unauthorized access when using pickle, so we think
+worker_1    | that enabling pickle should require a deliberate action and not be
+worker_1    | the default choice.
+worker_1    | 
+worker_1    | If you depend on pickle then you should set a setting to disable this
+worker_1    | warning and to be sure that everything will continue working
+worker_1    | when you upgrade to Celery 3.2::
+worker_1    | 
+worker_1    |     CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+worker_1    | 
+worker_1    | You must only enable the serializers that you will actually use.
+worker_1    | 
+worker_1    | 
+worker_1    |   warnings.warn(CDeprecationWarning(W_PICKLE_DEPRECATED))
+worker_1    |  
+worker_1    |  -------------- celery@f7158f86b438 v3.1.23 (Cipater)
+worker_1    | ---- **** ----- 
+worker_1    | --- * ***  * -- Linux-4.4.43-boot2docker-x86_64-with-Ubuntu-16.04-xenial
+worker_1    | -- * - **** --- 
+worker_1    | - ** ---------- [config]
+worker_1    | - ** ---------- .&gt; app:         redash:0x7f466e41f850
+worker_1    | - ** ---------- .&gt; transport:   redis://redis:6379/0
+worker_1    | - ** ---------- .&gt; results:     redis://redis:6379/0
+worker_1    | - *** --- * --- .&gt; concurrency: 2 (prefork)
+worker_1    | -- ******* ---- 
+worker_1    | --- ***** ----- [queues]
+worker_1    |  -------------- .&gt; celery           exchange=celery(direct) key=celery
+worker_1    |                 .&gt; queries          exchange=queries(direct) key=queries
+worker_1    |                 .&gt; scheduled_queries exchange=scheduled_queries(direct) key=scheduled_queries
+worker_1    | 
+worker_1    | [tasks]
+worker_1    |   . redash.tasks.check_alerts_for_query
+worker_1    |   . redash.tasks.cleanup_query_results
+worker_1    |   . redash.tasks.cleanup_tasks
+worker_1    |   . redash.tasks.execute_query
+worker_1    |   . redash.tasks.record_event
+worker_1    |   . redash.tasks.refresh_queries
+worker_1    |   . redash.tasks.refresh_schemas
+worker_1    |   . redash.tasks.send_mail
+worker_1    |   . redash.tasks.subscribe
+worker_1    |   . redash.tasks.version_check
+worker_1    | 
+worker_1    | [2017-02-08 05:53:49,047: INFO/Beat] beat: Starting...
+worker_1    | [2017-02-08 05:53:49,111: ERROR/Beat] Removing corrupted schedule file 'celerybeat-schedule': DBAccessError(13, 'Permission denied')
+worker_1    | Traceback (most recent call last):
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 376, in setup_schedule
+worker_1    |     self._store = self._open_schedule()
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 366, in _open_schedule
+worker_1    |     return self.persistence.open(self.schedule_filename, writeback=True)
+worker_1    |   File "/usr/lib/python2.7/shelve.py", line 243, in open
+worker_1    |     return DbfilenameShelf(filename, flag, protocol, writeback)
+worker_1    |   File "/usr/lib/python2.7/shelve.py", line 227, in __init__
+worker_1    |     Shelf.__init__(self, anydbm.open(filename, flag), protocol, writeback)
+worker_1    |   File "/usr/lib/python2.7/anydbm.py", line 85, in open
+worker_1    |     return mod.open(file, flag, mode)
+worker_1    |   File "/usr/lib/python2.7/dbhash.py", line 18, in open
+worker_1    |     return bsddb.hashopen(file, flag, mode)
+worker_1    |   File "/usr/lib/python2.7/bsddb/__init__.py", line 364, in hashopen
+worker_1    |     d.open(file, db.DB_HASH, flags, mode)
+worker_1    | DBAccessError: (13, 'Permission denied')
+worker_1    | [2017-02-08 05:53:49,127: INFO/MainProcess] Connected to redis://redis:6379/0
+worker_1    | [2017-02-08 05:53:49,152: INFO/MainProcess] mingle: searching for neighbors
+server_1    | [2017-02-08 05:53:46,291][PID:5][WARNING][redash.query_runner] BigQueryGCE query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+server_1    | [2017-02-08 05:53:49,638][PID:5][INFO][werkzeug]  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+worker_1    | [2017-02-08 05:53:49,188: ERROR/Beat] Process Beat
+worker_1    | Traceback (most recent call last):
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/billiard/process.py", line 292, in _bootstrap
+worker_1    |     self.run()
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 553, in run
+worker_1    |     self.service.start(embedded_process=True)
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 470, in start
+worker_1    |     humanize_seconds(self.scheduler.max_interval))
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/kombu/utils/__init__.py", line 325, in __get__
+worker_1    |     value = obj.__dict__[self.__name__] = self.__get(obj)
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 512, in scheduler
+worker_1    |     return self.get_scheduler()
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 507, in get_scheduler
+worker_1    |     lazy=lazy)
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/utils/imports.py", line 53, in instantiate
+worker_1    |     return symbol_by_name(name)(*args, **kwargs)
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 358, in __init__
+worker_1    |     Scheduler.__init__(self, *args, **kwargs)
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 185, in __init__
+worker_1    |     self.setup_schedule()
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 384, in setup_schedule
+worker_1    |     self._store = self._destroy_open_corrupted_schedule(exc)
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 372, in _destroy_open_corrupted_schedule
+worker_1    |     return self._open_schedule()
+worker_1    |   File "/usr/local/lib/python2.7/dist-packages/celery/beat.py", line 366, in _open_schedule
+worker_1    |     return self.persistence.open(self.schedule_filename, writeback=True)
+worker_1    |   File "/usr/lib/python2.7/shelve.py", line 243, in open
+worker_1    |     return DbfilenameShelf(filename, flag, protocol, writeback)
+worker_1    |   File "/usr/lib/python2.7/shelve.py", line 227, in __init__
+worker_1    |     Shelf.__init__(self, anydbm.open(filename, flag), protocol, writeback)
+worker_1    |   File "/usr/lib/python2.7/anydbm.py", line 85, in open
+worker_1    |     return mod.open(file, flag, mode)
+worker_1    |   File "/usr/lib/python2.7/dbhash.py", line 18, in open
+worker_1    |     return bsddb.hashopen(file, flag, mode)
+worker_1    |   File "/usr/lib/python2.7/bsddb/__init__.py", line 364, in hashopen
+worker_1    |     d.open(file, db.DB_HASH, flags, mode)
+worker_1    | DBAccessError: (13, 'Permission denied')
+worker_1    | [2017-02-08 05:53:50,179: INFO/MainProcess] mingle: all alone
+server_1    | [2017-02-08 05:53:49,703][PID:5][INFO][werkzeug]  * Restarting with stat
+server_1    | [2017-02-08 05:53:51,470][PID:133][WARNING][redash.query_runner] BigQueryGCE query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+server_1    | [2017-02-08 05:53:52,806][PID:133][WARNING][werkzeug]  * Debugger is active!
+</code></pre>
+<p>Has anyone experienced something similar or have suggestions for further diagnosis?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/getting-error-while-installing-redash-using-docker/441/2" itemprop="url">Getting Error While Installing redash Using Docker</a>
+<meta content="1" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T10:05:28Z" itemprop="datePublished">
+                    February 8, 2017, 10:05am
+                  </time>
+<meta content="2017-02-08T10:05:28Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It’s not an issue with the Postgres DB, but with a file Celery uses to manage scheduled tasks.</p>
+<p>Did you run Redash in some otherway from this folder before?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/maladmin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/maladmin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">maladmin</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T16:00:58Z" itemprop="datePublished">
+                    February 8, 2017,  4:00pm
+                  </time>
+<meta content="2017-02-08T16:00:58Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Same problem here. Also using docker-compose, this is a clean clone from github. Only commands run are:<br/>
+docker-compose -f docker-compose.yml run server create_db<br/>
+docker-compose -f docker-compose.yml up</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T16:18:21Z" itemprop="datePublished">
+                    February 8, 2017,  4:18pm
+                  </time>
+<meta content="2017-02-08T16:18:21Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I will try a clean clone too and see if I can reproduce this.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/maladmin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/maladmin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">maladmin</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T17:05:57Z" itemprop="datePublished">
+                    February 8, 2017,  5:05pm
+                  </time>
+<meta content="2017-02-08T17:05:57Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for taking a look.<br/>
+I’m still poking around with this (I’m new to docker too). I can get a redash entry page, however the username / password admin:admin don’t seem to work. I have been trying to find the <code>/opt/redash/.env</code> file. I see 4 docker containers running but /opt/redash doesn’t exist in any of them. Am I looking at the wrong install instructions?</p>
+<blockquote>
+<pre><code>$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+288b734e86f2        redash_server       "/app/bin/docker-e..."   48 minutes ago      Up 7 minutes        0.0.0.0:5000-&gt;5000/tcp   redash_server_1
+2a6eece07973        postgres:9.3        "/docker-entrypoin..."   48 minutes ago      Up 7 minutes        5432/tcp                 redash_postgres_1
+f4858c7c86db        redash_worker       "/app/bin/docker-e..."   48 minutes ago      Up 7 minutes        5000/tcp                 redash_worker_1
+fdc25c577c24        redis:2.8           "docker-entrypoint..."   2 hours ago         Up 7 minutes        6379/tcp                 redash_redis_1</code></pre>
+</blockquote>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T17:12:26Z" itemprop="datePublished">
+                    February 8, 2017,  5:12pm
+                  </time>
+<meta content="2017-02-08T17:12:26Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>With the new v1.0.0 version and Docker setup you create the user when you first launch Redash, therefore admin/admin doesn’t work as it doesn’t exist yet. Didn’t it ask for you the username?</p>
+<p>Also /opt/redash/.env doesn’t exist, as it’s not necessary. You pass configuration via the environment configuration in the Docker Compose file.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/stevanl.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/stevanl_avatar.png" tabindex="-1" width="48"/><span itemprop="name">stevanl</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T17:32:19Z" itemprop="datePublished">
+                    February 8, 2017,  5:32pm
+                  </time>
+<meta content="2017-02-08T17:57:54Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m also experiencing the same issue above. I would add that nginx also fails to start for me:</p>
+<pre><code>redash deployer$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                       CREATED               STATUS                   PORTS                  NAMES
+fa6e1385f01d        redash/nginx:latest "nginx -g 'daemon ..."        16 minutes ago        Exited (1) 5 seconds ago                        redash_nginx_1
+d710f35cb674        redash_server       "/app/bin/docker-e..."        16 minutes ago        Up 6 seconds             0.0.0.0:5000-&gt;5000/tcp redash_server_1
+edf5a95b36fb        redash_worker       "/app/bin/docker-e..."        16 minutes ago        Up 6 seconds             5000/tcp               redash_worker_1
+048421ec6279        postgres:9.3        "/docker-entrypoin..."        16 minutes ago        Up 6 seconds             5432/tcp               redash_postgres_1
+e42f94e213af        redis:2.8           "docker-entrypoint..."        16 minutes ago        Up 7 seconds             6379/tcp               redash_redis_1
+</code></pre>
+<p>When trying to sign up via port 5000 to create an admin account, I get the following error on submission:</p>
+<blockquote>
+<p>Internal Server Error</p>
+</blockquote>
+<blockquote>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+</blockquote>
+<p>Here’s the log when I run <code>docker-compose -f docker-compose.production.yml up</code>: <a href="https://gist.github.com/stevanl/d003866be086be4780d7f88e1597fffc" rel="nofollow noopener">https://gist.github.com/stevanl/d003866be086be4780d7f88e1597fffc</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T18:07:22Z" itemprop="datePublished">
+                    February 8, 2017,  6:07pm
+                  </time>
+<meta content="2017-02-08T18:07:22Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It seems that nginx fails to start because Redash isn’t ready yet.</p>
+<p>“Internal Server Error” - I don’t see anything in the log about this. Were there more output afterwards? Did you create the database tables?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/stevanl.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/stevanl_avatar.png" tabindex="-1" width="48"/><span itemprop="name">stevanl</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T18:24:40Z" itemprop="datePublished">
+                    February 8, 2017,  6:24pm
+                  </time>
+<meta content="2017-02-08T18:24:40Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Yes, followed the steps outlined here: <a href="https://redash.io/help-onpremise/setup/setting-up-redash-instance.html" rel="nofollow noopener">https://redash.io/help-onpremise/setup/setting-up-redash-instance.html</a></p>
+<p>Result when running step 4:</p>
+<pre><code>redash deployer$ docker-compose -f docker-compose.production.yml run --rm server create_db
+Creating redash_postgres_1
+Creating redash_redis_1
+[2017-02-08 18:13:52,081][PID:5][WARNING][redash.query_runner] BigQueryGCE query runner enabled but not supported, not registering. Either disable or install missing dependencies.
+[2017-02-08 18:13:53,482][PID:5][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2017-02-08 18:13:53,483][PID:5][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2017-02-08 18:13:53,492][PID:5][INFO][alembic.runtime.migration] Running stamp_revision  -&gt; 65fc9ede4746
+</code></pre>
+<p>Result from step 5 is pretty much the same as in the previous reply (I’ve deleted the containers and retried a few times).</p>
+<p>Here’s the log when creating an admin and the successive “Internal Server Error”:</p>
+<p>Log from the create admin account page load (on port 5000):</p>
+<pre><code>server_1    | [2017-02-08 18:20:13,076][PID:11][INFO][metrics] method=GET path=/ endpoint=redash.index status=302 content_type=text/html; charset=utf-8 content_length=305 duration=58.49 query_count=2 query_duration=8.06
+server_1    | [2017-02-08 18:20:13,127][PID:17][INFO][metrics] method=GET path=/login endpoint=redash.login status=302 content_type=text/html; charset=utf-8 content_length=219 duration=30.00 query_count=1 query_duration=3.05
+server_1    | [2017-02-08 18:20:13,216][PID:20][INFO][metrics] method=GET path=/setup endpoint=redash.setup status=200 content_type=text/html; charset=utf-8 content_length=3197 duration=67.24 query_count=2 query_duration=6.57
+server_1    | [2017-02-08 18:20:13,453][PID:14][INFO][metrics] method=GET path=/fonts/roboto/Roboto-Medium-webfont.woff endpoint=redash.send_static status=404 content_type=text/html content_length=233 duration=2.50 query_count=0 query_duration=0.00
+server_1    | [2017-02-08 18:20:13,457][PID:11][INFO][metrics] method=GET path=/fonts/roboto/Roboto-Regular-webfont.woff endpoint=redash.send_static status=404 content_type=text/html content_length=233 duration=4.01 query_count=0 query_duration=0.00
+server_1    | [2017-02-08 18:20:13,640][PID:17][INFO][metrics] method=GET path=/fonts/roboto/Roboto-Medium-webfont.ttf endpoint=redash.send_static status=404 content_type=text/html content_length=233 duration=2.41 query_count=0 query_duration=0.00
+server_1    | [2017-02-08 18:20:13,641][PID:20][INFO][metrics] method=GET path=/fonts/roboto/Roboto-Regular-webfont.ttf endpoint=redash.send_static status=404 content_type=text/html content_length=233 duration=1.66 query_count=0 query_duration=0.00
+</code></pre>
+<p>Log of the error returned when attempting to post on above form:</p>
+<pre><code>worker_1    | [2017-02-08 18:20:46,941: INFO/MainProcess] Received task: redash.tasks.record_event[2403dabe-4952-438f-b0bb-427cc89782e1]
+server_1    | [2017-02-08 18:20:46,943][PID:20][INFO][metrics] method=POST path=/setup endpoint=redash.setup status=302 content_type=text/html; charset=utf-8 content_length=209 duration=124.86 query_count=10 query_duration=12.92
+worker_1    | [2017-02-08 18:20:46,944: INFO/MainProcess] Received task: redash.tasks.subscribe[7f69aaed-e2ac-424e-b4ba-248dc18966ea]
+worker_1    | [2017-02-08 18:20:46,948: INFO/Worker-3] redash.tasks.subscribe[7f69aaed-e2ac-424e-b4ba-248dc18966ea]: Subscribing to: [security notifications=True], [newsletter=True]
+server_1    | [2017-02-08 18:20:47,002] ERROR in app: Exception on / [GET]
+server_1    | Traceback (most recent call last):
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1988, in wsgi_app
+server_1    |     response = self.full_dispatch_request()
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1641, in full_dispatch_request
+server_1    |     rv = self.handle_user_exception(e)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask_restful/__init__.py", line 271, in error_router
+server_1    |     return original_handler(e)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1544, in handle_user_exception
+server_1    |     reraise(exc_type, exc_value, tb)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1639, in full_dispatch_request
+server_1    |     rv = self.dispatch_request()
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1625, in dispatch_request
+server_1    |     return self.view_functions[rule.endpoint](**req.view_args)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask_login/utils.py", line 228, in decorated_view
+server_1    |     return func(*args, **kwargs)
+server_1    |   File "/app/redash/handlers/static.py", line 30, in index
+server_1    |     return send_file(full_path, **dict(cache_timeout=0, conditional=True))
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/helpers.py", line 536, in send_file
+server_1    |     file = open(filename, 'rb')
+server_1    | IOError: [Errno 2] No such file or directory: '/app/redash/../client/dist/index.html'
+server_1    | [2017-02-08 18:20:47,002][PID:14][ERROR][redash] Exception on / [GET]
+server_1    | Traceback (most recent call last):
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1988, in wsgi_app
+server_1    |     response = self.full_dispatch_request()
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1641, in full_dispatch_request
+server_1    |     rv = self.handle_user_exception(e)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask_restful/__init__.py", line 271, in error_router
+server_1    |     return original_handler(e)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1544, in handle_user_exception
+server_1    |     reraise(exc_type, exc_value, tb)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1639, in full_dispatch_request
+server_1    |     rv = self.dispatch_request()
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/app.py", line 1625, in dispatch_request
+server_1    |     return self.view_functions[rule.endpoint](**req.view_args)
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask_login/utils.py", line 228, in decorated_view
+server_1    |     return func(*args, **kwargs)
+server_1    |   File "/app/redash/handlers/static.py", line 30, in index
+server_1    |     return send_file(full_path, **dict(cache_timeout=0, conditional=True))
+server_1    |   File "/usr/local/lib/python2.7/dist-packages/flask/helpers.py", line 536, in send_file
+server_1    |     file = open(filename, 'rb')
+server_1    | IOError: [Errno 2] No such file or directory: '/app/redash/../client/dist/index.html'
+server_1    | [2017-02-08 18:20:47,006][PID:14][INFO][metrics] method=GET path=/ endpoint=redash.index status=500 content_type=? content_length=-1 duration=35.36 query_count=2 query_duration=4.61
+worker_1    | [2017-02-08 18:20:47,446: INFO/MainProcess] Task redash.tasks.record_event[2403dabe-4952-438f-b0bb-427cc89782e1] succeeded in 0.500917271001s: None
+worker_1    | [2017-02-08 18:20:47,988: INFO/MainProcess] Task redash.tasks.subscribe[7f69aaed-e2ac-424e-b4ba-248dc18966ea] succeeded in 1.039947474s: None
+</code></pre>
+<p>Thank you for your continued help on this Arik.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/maladmin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/maladmin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">maladmin</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T18:25:37Z" itemprop="datePublished">
+                    February 8, 2017,  6:25pm
+                  </time>
+<meta content="2017-02-08T18:25:37Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>nginx is also failing for me.<br/>
+After logging in at port:5000 I’m also getting the 500 error. In the logs I see:</p>
+<blockquote>
+<p>IOError: [Errno 2] No such file or directory: ‘/app/redash/…/client/dist/index.html’</p>
+</blockquote>
+<p>I think this path should be</p>
+<blockquote>
+<p>/app/redash/…client/app/index.html</p>
+</blockquote>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-08T19:24:28Z" itemprop="datePublished">
+                    February 8, 2017,  7:24pm
+                  </time>
+<meta content="2017-02-08T19:24:28Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>No, it has the correct path. While I added Docker Compose config for production, the image is the same. And the dev image assumes you have the client built locally.</p>
+<p>I will post a new Dockerfile for production usage that builds the frontend assets.</p>
+<p>I will post here once I’m done.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T15:12:57Z" itemprop="datePublished">
+                    February 9, 2017,  3:12pm
+                  </time>
+<meta content="2017-02-09T15:12:57Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>OK, if you pull latest master it should all be good now. The fixes are in <a href="https://github.com/getredash/redash/pull/1582">#1582</a> (permissions issue) and <a href="https://github.com/getredash/redash/pull/1570">#1570</a> (nginx issue).</p>
+<p>You probably will need to recreate your containers (docker-compose rm and then create or up), as network settings seem to persist between restarts.</p>
+<p>Please update here if you still having any issues after pulling latest master.</p>
+<p>Sorry for all the issues and thank you for your patience <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Bzook.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Bzook_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Bzook</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T17:40:41Z" itemprop="datePublished">
+                    February 9, 2017,  5:40pm
+                  </time>
+<meta content="2017-02-09T17:40:41Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’ve made a clean installation but still get the following error after login:</p>
+<p>IOError: [Errno 2] No such file or directory: ‘/app/redash/…/client/dist/index.html’</p>
+<p>client/dist really does’nt exist. Think it should be client/app</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T18:21:54Z" itemprop="datePublished">
+                    February 9, 2017,  6:21pm
+                  </time>
+<meta content="2017-02-09T18:21:54Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Please make sure that:</p>
+<ul>
+<li>You pulled master again and have a recent Dockerfile.</li>
+<li>That you rebuilt your Docker image after pulling updated version (you can verify by checking the timestamp when running <code>docker images</code>).</li>
+</ul>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/slattery.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/slattery_avatar.png" tabindex="-1" width="48"/><span itemprop="name">slattery</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T20:00:07Z" itemprop="datePublished">
+                    February 9, 2017,  8:00pm
+                  </time>
+<meta content="2017-02-09T20:00:07Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi <a class="mention" href="/u/arikfr">@arikfr</a>,</p>
+<p>Thanks for the update, adding ‘redash’ to the compose file does allow nginx to launch!   But I still got this issue:<br/>
+<code>server_1 | IOError: [Errno 2] No such file or directory: '/app/redash/../client/dist/index.html'</code></p>
+<p>Background: I wiped the repo locally, cloned it, clobbered all the docker images and containers except the postgres and redis containers, ran the<br/>
+<code>docker-compose -f docker-compose.production.yml run --rm server create_db</code><br/>
+and<br/>
+<code>docker-compose -f docker-compose.production.yml up</code><br/>
+commands</p>
+<p>I did the following to get me into the webapp, sorry that this is not the same as figuring out why…</p>
+<p>Entered the running container<br/>
+<code>sudo docker exec -i -t redash_server_1 /bin/bash</code></p>
+<p>There is no client/dist in the /app directory!</p>
+<p>Not sure why not, I did see npm activity in the compose output.   But I could do the following:</p>
+<p><code>$ npm install $ npm build &lt;-- died sliently $ NODE_ENV=production node node_modules/.bin/webpack</code></p>
+<p>Then I gained the client/dist folder and the webserver allowed me past the initial admin sign-up screen.</p>
+<p>Cheers and thanks,<br/>
+Mike</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T20:27:51Z" itemprop="datePublished">
+                    February 9, 2017,  8:27pm
+                  </time>
+<meta content="2017-02-09T20:27:51Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It should be <code>npm run build</code> and not <code>npm build</code>… The strange thing is that it worked for me on a clean machine <img alt=":open_mouth:" class="emoji" src="assets/open_mouth.png" title=":open_mouth:"/> Anyway <a href="https://github.com/getredash/redash/commit/7bbc782e5d62020395c41af3f81ac555efd7a9de">fixed the Dockerfile</a>.</p>
+<p>I’m now testing this again on another machine, but should be good.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/slattery.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/slattery_avatar.png" tabindex="-1" width="48"/><span itemprop="name">slattery</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T21:02:05Z" itemprop="datePublished">
+                    February 9, 2017,  9:02pm
+                  </time>
+<meta content="2017-02-09T21:02:05Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Ah yes… ‘run build’ I looked right past that.</p>
+<p>Cheers!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/sven.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/sven_avatar.png" tabindex="-1" width="48"/><span itemprop="name">sven</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T21:46:35Z" itemprop="datePublished">
+                    February 9, 2017,  9:46pm
+                  </time>
+<meta content="2017-02-09T21:46:35Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,<br/>
+I just pulled the last image and still have a similar error message<br/>
+like<br/>
+index.html not found<br/>
+but also another one<br/>
+DBAccessError</p>
+<p>thank you for your support</p>
+<p>worker_1    |   File “/usr/lib/python2.7/shelve.py”, line 227, in <strong>init</strong><br/>
+server_1    |   File “/app/redash/handlers/static.py”, line 30, in index<br/>
+worker_1    |     Shelf.<strong>init</strong>(self, anydbm.open(filename, flag), protocol, writeback)<br/>
+server_1    |     return send_file(full_path, **dict(cache_timeout=0, conditional=True))<br/>
+worker_1    |   File “/usr/lib/python2.7/anydbm.py”, line 85, in open<br/>
+server_1    |   File “/usr/local/lib/python2.7/dist-packages/flask/helpers.py”, line 536, in send_file<br/>
+worker_1    |     return mod.open(file, flag, mode)<br/>
+server_1    |     file = open(filename, ‘rb’)<br/>
+worker_1    |   File “/usr/lib/python2.7/dbhash.py”, line 18, in open<br/>
+server_1    | IOError: [Errno 2] No such file or directory: ‘/app/redash/…/client/dist/index.html’<br/>
+worker_1    |     return bsddb.hashopen(file, flag, mode)<br/>
+server_1    | [2017-02-09 21:30:58,391][PID:20][INFO][metrics] method=GET path=/ endpoint=redash.index status=500 content_type=? content_length=-1 duration=26.83 query_count=2 query_duration=3.30<br/>
+worker_1    |   File “/usr/lib/python2.7/bsddb/<strong>init</strong>.py”, line 364, in hashopen<br/>
+worker_1    |     d.open(file, db.DB_HASH, flags, mode)<br/>
+worker_1    | DBAccessError: (13, ‘Permission denied’)<br/>
+worker_1    | [2017-02-09 21:30:03,103: ERROR/Beat] Process Beat</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_19" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-09T22:03:17Z" itemprop="datePublished">
+                    February 9, 2017, 10:03pm
+                  </time>
+<meta content="2017-02-09T22:03:17Z" itemprop="dateModified"/>
+<span itemprop="position">19</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>When did you pull? I pushed another fix for the missing client files 2 hours ago.</p>
+<p>Also for users with Ubuntu as the host OS, I pushed another fix for the “permission denied” issue 15 minutes ago.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_20" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Bzook.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Bzook_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Bzook</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-access-problems-when-using-docker-compose/418" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-02-10T10:24:08Z" itemprop="datePublished">
+                    February 10, 2017, 10:24am
+                  </time>
+<meta content="2017-02-10T10:24:08Z" itemprop="dateModified"/>
+<span itemprop="position">20</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It now works!</p>
+<p>Thanks!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+<span itemprop="name"><b><a href="/t/postgres-db-access-problems-when-using-docker-compose/418?page=2" itemprop="url" rel="next">next page →</a></b></span>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

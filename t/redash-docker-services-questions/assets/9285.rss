@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash docker services questions</title>
+    <link>https://discuss.redash.io/t/redash-docker-services-questions/9285</link>
+    <description>### Issue Summary
+
+We are working on deploying a product-level redash v10 in AWS ECS. There are many topics on this site that has helped (Example: http://discuss.redash.io/t/redash-on-aws-ecs/1124).
+
+### My assumption
+
+First I wanted to understand the purpose of each service as it is listed in the docker compose file. I created this diagram by looking at the code in redash&#39;s github.
+
+![redash_services|690x454](upload://jh1e3UpDfN4Yt6W9SKNOMF1lqh5.png)
+
+### My questions
+
+* Is my diagram correct? Any help on this is appreciated
+* It is still not clear to me the role of the **scheduler** 
+  * Is it creating the rq-scheduler?
+  * Is it scheduling scheduled queries, or is the server doing that?
+  * Does it hit the RDS database
+* We want to understand so that we can reason about how many ecs tasks, CPU, mem limits, multiple az,...
+
+Any comments are appreciated</description>
+    
+    <lastBuildDate>Tue, 19 Oct 2021 15:58:23 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-docker-services-questions/9285.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash docker services questions</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Great question. We should probably publish something like this in the docs <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=10" title=":thinking:" class="emoji" alt=":thinking:"></p>
+<p>You can tell a lot about the services by looking at the <code>command</code> they run once started. Here I’m running through the <code>docker-compose.yml</code> file in getredash/redash but the same would apply if you are modeling off of <code>setup.sh</code>.</p>
+<h2>
+<a name="server-1" class="anchor" href="https://discuss.redash.io#server-1"></a><code>server</code>
+</h2>
+<p>Handles HTTP requests to the API and the front-end. It spends most of its time waiting for HTTP traffic.</p>
+<h2>
+<a name="scheduler-2" class="anchor" href="https://discuss.redash.io#scheduler-2"></a><code>scheduler</code>
+</h2>
+<p>Enqueues periodic jobs in <code>redis</code>. It checks for scheduled queries that need to be executed now, data source schema refreshes, cleaning up old query results, and any other periodic job specified <a href="https://github.com/getredash/redash/blob/39ca71c35606862a8fc0a9d8906e83dc5a360d89/redash/tasks/schedule.py#L61">here</a>. The scheduler runs this routine twice a minute for infinity.</p>
+<h2>
+<a name="worker-3" class="anchor" href="https://discuss.redash.io#worker-3"></a><code>worker</code>
+</h2>
+<p>Pulls job definitions from <code>redis</code> and does them. This can be query executions, schedule refreshes, clearing out old results anything. If you see <code>adhoc_worker</code> or <code>scheduled_worker</code>, these are actually duplicates of the <code>worker</code> spec. They all run the same <code>command</code>. The difference is that <code>adhoc_worker</code> only looks for jobs in the <code>adhoc</code> queue in Redis. <code>scheduled_worker</code> only looks for tasks in the <code>scheduled</code> queue. This is helpful so that if your scheduled tasks begin to bottleneck, it won’t affect users running queries.</p>
+<h2>
+<a name="redis-4" class="anchor" href="https://discuss.redash.io#redis-4"></a><code>redis</code>
+</h2>
+<p>Runs the Redis instance that Redash uses for message queuing</p>
+<h2>
+<a name="postgres-5" class="anchor" href="https://discuss.redash.io#postgres-5"></a><code>postgres</code>
+</h2>
+<p>Runs the Postgres database where Redash preserves its state.</p>
+<h2>
+<a name="email-6" class="anchor" href="https://discuss.redash.io#email-6"></a><code>email</code>
+</h2>
+<p>An image used for sending emails (if configured).</p>
+<h2>
+<a name="nginx-7" class="anchor" href="https://discuss.redash.io#nginx-7"></a><code>nginx</code>
+</h2>
+<p>We use this as a proxy in front of <code>server</code> because it’s an easy way to configure HTTPs.</p>
+          <p><a href="https://discuss.redash.io/t/redash-docker-services-questions/9285/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-docker-services-questions/9285/2</link>
+        <pubDate>Tue, 19 Oct 2021 15:58:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9285-2</guid>
+        <source url="https://discuss.redash.io/t/redash-docker-services-questions/9285.rss">Redash docker services questions</source>
+      </item>
+      <item>
+        <title>Redash docker services questions</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>We are working on deploying a product-level redash v10 in AWS ECS. There are many topics on this site that has helped (Example: <a href="http://discuss.redash.io/t/redash-on-aws-ecs/1124" class="inline-onebox">Redash on AWS ECS</a>).</p>
+<h3>
+<a name="my-assumption-2" class="anchor" href="https://discuss.redash.io#my-assumption-2"></a>My assumption</h3>
+<p>First I wanted to understand the purpose of each service as it is listed in the docker compose file. I created this diagram by looking at the code in redash’s github.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8715d4362af6ba2e61207fa45c448e60a0e467d3.png" data-download-href="/uploads/short-url/jh1e3UpDfN4Yt6W9SKNOMF1lqh5.png?dl=1" title="redash_services" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8715d4362af6ba2e61207fa45c448e60a0e467d3_2_690x454.png" alt="redash_services" data-base62-sha1="jh1e3UpDfN4Yt6W9SKNOMF1lqh5" width="690" height="454" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8715d4362af6ba2e61207fa45c448e60a0e467d3_2_690x454.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8715d4362af6ba2e61207fa45c448e60a0e467d3_2_1035x681.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8715d4362af6ba2e61207fa45c448e60a0e467d3.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8715d4362af6ba2e61207fa45c448e60a0e467d3_2_10x10.png"></a></div><p></p>
+<h3>
+<a name="my-questions-3" class="anchor" href="https://discuss.redash.io#my-questions-3"></a>My questions</h3>
+<ul>
+<li>Is my diagram correct? Any help on this is appreciated</li>
+<li>It is still not clear to me the role of the <strong>scheduler</strong>
+<ul>
+<li>Is it creating the rq-scheduler?</li>
+<li>Is it scheduling scheduled queries, or is the server doing that?</li>
+<li>Does it hit the RDS database</li>
+</ul>
+</li>
+<li>We want to understand so that we can reason about how many ecs tasks, CPU, mem limits, multiple az,…</li>
+</ul>
+<p>Any comments are appreciated</p>
+          <p><a href="https://discuss.redash.io/t/redash-docker-services-questions/9285/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-docker-services-questions/9285/1</link>
+        <pubDate>Mon, 18 Oct 2021 22:27:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9285-1</guid>
+        <source url="https://discuss.redash.io/t/redash-docker-services-questions/9285.rss">Redash docker services questions</source>
+      </item>
+  </channel>
+</rss>

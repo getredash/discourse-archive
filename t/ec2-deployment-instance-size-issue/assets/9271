@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>EC2 Deployment Instance Size Issue - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="tl;dr minimum EC2 instance size for V10 is t2.medium. Any ideas why? 
+
+Background
+One of our V10 release follow-ups is to build new cloud images for V10. We build these images by running our setup script through Packer. &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;EC2 Deployment Instance Size Issue&#39;" href="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271" />
+<meta property="og:title" content="EC2 Deployment Instance Size Issue" />
+<meta name="twitter:title" content="EC2 Deployment Instance Size Issue" />
+<meta property="og:description" content="tl;dr minimum EC2 instance size for V10 is t2.medium. Any ideas why?   Background One of our V10 release follow-ups is to build new cloud images for V10. We build these images by running our setup script through Packer. Until this work is finished, you can use V10 in EC2 still, just deploy a V8 image and upgrade it.  Per our documentation:   Launch the instance with the pre-baked AMI we create (for small deployments t2.small should be enough):    The Problem A t2.small instance doesn’t have enou..." />
+<meta name="twitter:description" content="tl;dr minimum EC2 instance size for V10 is t2.medium. Any ideas why?   Background One of our V10 release follow-ups is to build new cloud images for V10. We build these images by running our setup script through Packer. Until this work is finished, you can use V10 in EC2 still, just deploy a V8 image and upgrade it.  Per our documentation:   Launch the instance with the pre-baked AMI we create (for small deployments t2.small should be enough):    The Problem A t2.small instance doesn’t have enou..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2021-10-15T16:12:56+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"EC2 Deployment Instance Size Issue","mainEntity":{"@type":"Question","name":"EC2 Deployment Instance Size Issue","text":"tl;dr minimum EC2 instance size for V10 is t2.medium. Any ideas why?\n\n<a name=\"background-1\" class=\"anchor\" href=\"#background-1\"><\/a>Background\n\nOne of our <a href=\"http://discuss.redash.io/t/v10-follow-up-items/9257\">V10 release follow-ups<\/a> is to build new cloud images for V10. We build these images by running our <a >setup script<\/a> through <a href=\"https://www.packer.io/\">Packer<\/a>. Until this work is finished, you can use V10 in EC2 still, just deploy a V8 imag&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-10-15T16:12:56.757Z","author":{"@type":"Person","name":"jesse"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/ec2-deployment-instance-size-issue/9271">EC2 Deployment Instance Size Issue</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='EC2 Deployment Instance Size Issue'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-15T16:12:56Z' class='post-time'>
+                    October 15, 2021,  4:12pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-15T16:12:56Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p><strong>tl;dr</strong> minimum EC2 instance size for V10 is t2.medium. Any ideas why?</p>
+<h1>
+<a name="background-1" class="anchor" href="#background-1"></a>Background</h1>
+<p>One of our <a href="http://discuss.redash.io/t/v10-follow-up-items/9257">V10 release follow-ups</a> is to build new cloud images for V10. We build these images by running our <a>setup script</a> through <a href="https://www.packer.io/">Packer</a>. Until this work is finished, you can use V10 in EC2 still, just deploy a V8 image and upgrade it.</p>
+<p>Per our <a href="https://redash.io/help/open-source/setup#aws">documentation</a>:</p>
+<blockquote>
+<p>Launch the instance with the pre-baked AMI we create (for small deployments t2.small should be enough):</p>
+</blockquote>
+<h1>
+<a name="the-problem-2" class="anchor" href="#the-problem-2"></a>The Problem</h1>
+<p>A t2.small instance doesn’t have enough RAM for V10. We didn’t expect this. And it’s quite annoying. Because the V8 image will deploy on t2.small and will run normally. But once you upgrade to V10 and restart the containers, the instance becomes non-responsive.</p>
+<p>You need to change the instance type to t2.medium before service is restored.</p>
+<h2>
+<a name="v8-resource-consumption-3" class="anchor" href="#v8-resource-consumption-3"></a>V8 Resource Consumption</h2>
+<p>Here’s the output from <code>sudo docker stats</code> on a V8 instance that wasn’t upgraded. Notice total available RAM is just under 2gb. About 75% of this is in use.</p>
+<pre><code class="lang-auto">CONTAINER ID        NAME                        CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+074069f3c875        redash_nginx_1              0.00%               2.492MiB / 1.945GiB   0.13%               8.01MB / 3.52MB     34.8MB / 0B         2
+ba89d824f682        redash_adhoc_worker_1       0.05%               291.7MiB / 1.945GiB   14.65%              126MB / 59.3MB      101MB / 0B          3
+6aba3ac4a872        redash_scheduler_1          0.17%               274.8MiB / 1.945GiB   13.80%              138MB / 81.8MB      645MB / 12.1MB      3
+39d98fe4cf2a        redash_server_1             0.01%               670.3MiB / 1.945GiB   33.65%              1.16MB / 8.62MB     302MB / 0B          5
+b2a9ccd1285b        redash_scheduled_worker_1   0.13%               190.2MiB / 1.945GiB   9.55%               126MB / 68MB        90.3MB / 0B         2
+1e40cfb160a2        redash_postgres_1           0.01%               13.39MiB / 1.945GiB   0.67%               6.09MB / 5.45MB     382MB / 134MB       12
+bc73e56ac9a2        redash_redis_1              0.18%               2.477MiB / 1.945GiB   0.12%               204MB / 385MB       84.6MB / 71.4MB     4
+</code></pre>
+<h2>
+<a name="v10-resource-consumption-4" class="anchor" href="#v10-resource-consumption-4"></a>V10 Resource Consumption</h2>
+<p>Here’s the output from <code>sudo docker stats</code> on a V8 instance upgraded to V10. Total available RAM is just under 4gb (because this is a t2.medium instance) and total RAM consumption is around 2100Mb.</p>
+<pre><code class="lang-auto">CONTAINER ID        NAME                    CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+d013031b8481        redash_nginx_1          0.00%               3.188MiB / 3.842GiB   0.08%               8.7MB / 4.42MB      0B / 0B             2
+e44e049a70cf        redash_scheduler_1      0.00%               195.1MiB / 3.842GiB   4.96%               10.5MB / 18.7MB     0B / 0B             2
+e0e0d1829567        redash_adhoc_worker_1   0.03%               589MiB / 3.842GiB     14.97%              4.49MB / 6.42MB     627kB / 0B          7
+61bcba583f8e        redash_worker_1         0.03%               590.3MiB / 3.842GiB   15.01%              35.3MB / 54.4MB     77.8kB / 0B         7
+7eb1a4502a89        redash_server_1         0.01%               772.1MiB / 3.842GiB   19.63%              1.61MB / 9.19MB     1.15MB / 0B         9
+ff160d1d6d48        redash_postgres_1       0.00%               11.86MiB / 3.842GiB   0.30%               11.1MB / 11.5MB     762kB / 42.8MB      10
+149b61ecedcd        redash_redis_1          0.15%               2.473MiB / 3.842GiB   0.06%               69.6MB / 39.9MB     0B / 2.54MB         4
+</code></pre>
+<h2>
+<a name="analysis-5" class="anchor" href="#analysis-5"></a>Analysis</h2>
+<p>The V10 instance containers are using than the maximum RAM available on the t2.small instance (2gb). This means the system starts swapping, which is slow. This is the cause of degraded performance on the upgraded system.</p>
+<p>What isn’t clear is <em>why</em> the containers use more memory in V10 than V8. The only containers that are comparable are the <code>redis</code>, <code>postgres</code>, and <code>nginx</code> containers (which come from images we don’t maintain).</p>
+<p>From what I can tell, there’s no reason V10 should require this much RAM for a basic deployment. But I’d like to figure this out before we build the new images. In case there is an easy tweak we can make to the setup script that avoids it.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-16T14:42:45Z' class='post-time'>
+                    October 16, 2021,  2:42pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-16T15:02:04Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>As an initial sanity check, to help narrow down potential causes… will the V10 application run if you build its image with the same NodeJS version as <a href="https://github.com/getredash/redash/blob/a16f551e22c6288df6f067aa12caa5afd9a8f1dd/Dockerfile#L1" rel="noopener nofollow ugc">the V8 images</a> (eg node:10)?</p>
+<p>Note - I’m not suggesting to do this for the production build.  More suggesting it as something to investigate. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p>If it does build and run ok, I’d try that and see if it’s the newer NodeJS version causing the problem.</p>
+<p>Ditto, similar type of thought for the Python processes.  Maybe see if you can run the new V10 Python code using the older V8 python base (or the old v8 code on the new V10 python base), then compare.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-17T04:43:12Z' class='post-time'>
+                    October 17, 2021,  4:43am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-17T04:43:12Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Heh, I should probably ensure I’m not super tired when posting replies to things. <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>That being said, the concept from my post above - try running both code bases using the same foundation - is a reasonable approach for trying to figure out runtime operational differences.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/memory-maxing-out-then-504/9308/2">Memory maxing out then 504</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                </div>
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

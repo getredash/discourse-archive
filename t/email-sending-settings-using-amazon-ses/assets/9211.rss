@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Email sending settings using Amazon SES</title>
+    <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211</link>
+    <description>### Issue Summary
+When I added a New User in Redash, 
+it didn&#39;t send email form redash with Amazon SES.
+Is there something missing in env?
+
+### Technical details:
+* Redash Version: 10.0.0.b50363
+* Browser/OS: Ubuntu 20.04.1 LTS
+* How did you install Redash:
+```
+# mkdir /opt/redash/
+# cd /opt
+# git clone https://github.com/getredash/setup.git
+# cd setup
+# sh setup.sh
+. . .
+# vim /opt/redash/docker-compose.yml
+change :
+ --------------------------------------------------
+ image: redash/redash:10.0.0.b50363
+ --------------------------------------------------
+
+# vim /opt/redash/env
+add :
+--------------------------------------------------
+REDASH_MAIL_SERVER=email-smtp.xxxxxxxxxxxxxx
+REDASH_MAIL_PORT=25 (or 465, 587)
+REDASH_MAIL_USE_TLS=false (or true)
+REDASH_MAIL_USE_SSL=false (or ture)
+REDASH_MAIL_USERNAME=xxxxxxxxxxx (AWS creds smtp username)
+REDASH_MAIL_PASSWORD=xxxxxxxxxxx (AWS creds smtp password)
+REDASH_MAIL_DEFAULT_SENDER=myname1@mydomain1
+--------------------------------------------------
+
+# cd /opt/redash
+# docker-compose down &amp;&amp; docker-compose up -d
+```
+
+
+
+##  Amazon SES
+Verify a New Email Address &gt; Verified
+Send a Test Email  
+```
+--------------------------------------------------
+From : myname1@mydomain1
+To : myname1@mydomain1
+--------------------------------------------------
+&gt; OK (sent)
+```
+
+Create My SMTP Credentials &gt; OK (done) 
+
+## Redash
+Logged in Redash (http://192.168.x.x/login)
+Settings &gt; Users &gt; +New User
+```
+Name : hoge
+Email : myname1@mydomain1
+```
+Create &gt; [(v) Saved.]
+
+
+## comment
+I haven&#39;t received the email. There are no particular error messages in Redash. Is there a log file somewhere?</description>
+    
+    <lastBuildDate>Thu, 09 Dec 2021 20:31:19 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for posting your solution. We’ll update the docs for this ASAP. Also the CLI is definitely broken.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/17</link>
+        <pubDate>Thu, 09 Dec 2021 20:31:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-17</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[ryan.qw]]></dc:creator>
+        <description><![CDATA[
+            <p>I found the solution in a Github issue: <a href="https://github.com/getredash/redash/issues/5640" class="inline-onebox" rel="noopener nofollow ugc">Email invite doesn't send after update Redash to v10 · Issue #5640 · getredash/redash · GitHub</a></p>
+<p>You need to assign the <code>emails</code> queue to a worker in <code>docker-compose.yml</code>.</p>
+<pre><code class="lang-auto"># Old
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+# New
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "emails,queries,default,periodic"
+      WORKERS_COUNT: 2
+</code></pre>
+<p>This fixes emails from the front end, the CLI <code>users invite</code> still returns the error, but this solves the issue for me.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/16</link>
+        <pubDate>Thu, 09 Dec 2021 19:22:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-16</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[ryan.qw]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> - I tried your recommended settings of:</p>
+<pre><code class="lang-auto">REDASH_MAIL_USE_SSL=true
+REDASH_MAIL_PORT=465
+</code></pre>
+<p>This resulted in the same error when inviting a user:</p>
+<pre><code class="lang-auto">  File "/usr/local/lib/python3.7/site-packages/flask/helpers.py", line 333, in url_for
+    "Application was not able to create a URL adapter for request"
+RuntimeError: Application was not able to create a URL adapter for request independent URL generation. You might be able to fix this by setting the SERVER_NAME config variable.
+</code></pre>
+<p>Unlike using port 587 and TLS, <code>send-test-email</code> also returns an error:</p>
+<pre><code class="lang-auto">  File "/app/redash/cli/__init__.py", line 73, in send_test_mail
+    subject="Test Message from Redash", recipients=[email], body="Test message."
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 491, in send
+    with self.connect() as connection:
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 144, in __enter__
+    self.host = self.configure_host()
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 163, in configure_host
+    host.starttls()
+  File "/usr/local/lib/python3.7/smtplib.py", line 757, in starttls
+    "STARTTLS extension not supported by server.")
+smtplib.SMTPNotSupportedError: STARTTLS extension not supported by server.
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/15</link>
+        <pubDate>Thu, 09 Dec 2021 16:14:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-15</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>REDASH_MAIL_USE_SSL=true<br>
+REDASH_MAIL_PORT=465</p>
+</blockquote>
+<p>Yes, I tried it.</p>
+<blockquote>
+<p>Restart your services</p>
+</blockquote>
+<p>Yes, I did.</p>
+<p>I am trying various things. I will add comments here when I understand something.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/14</link>
+        <pubDate>Thu, 09 Dec 2021 11:34:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-14</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Have you tried setting <code>REDASH_MAIL_USE_SSL=true</code> and <code>REDASH_MAIL_PORT=465</code>?</p>
+<p>Restart your services after making these changes to ensure they take effect.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/13</link>
+        <pubDate>Wed, 08 Dec 2021 15:49:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-13</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <p>and it was possible to send with version 8.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/12</link>
+        <pubDate>Wed, 08 Dec 2021 08:39:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-12</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you reply.<br>
+Production Access is Enabled.</p>
+<p>I was able to send an email to Gmail.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/11</link>
+        <pubDate>Wed, 08 Dec 2021 08:09:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-11</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The organisation name is irrelevant unless you enabled multi-org (which is off by default).</p>
+<p>Your logs don’t show any failures. Which means Redash thinks the email has gone out successfully (and SES did not return any exceptions).</p>
+<p>Have you verified that your sending address is no longer sandboxed with SES?</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/10</link>
+        <pubDate>Tue, 07 Dec 2021 18:39:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-10</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <p>I haven’t sent an email with the combination of redash v10 and amazon ses yet.</p>
+<p>What I did.<br>
+・Email authentication.<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8030fc021a0b1a192c329347fbb910b8591b6292.png" alt="email_verify_2021-12-07 135702" data-base62-sha1="ii241bKY1XBAj1PLQE0Iu6PXhxU" width="341" height="172"></p>
+<p>env</p>
+<pre><code class="lang-auto">## email
+REDASH_SERVER_NAME=https://****.mydomain.com
+REDASH_MAIL_SERVER=email-smtp.ap-northeast-1.amazonaws.com
+REDASH_MAIL_PORT=587
+REDASH_MAIL_USE_TLS=true
+# REDASH_MAIL_PORT=465
+# REDASH_MAIL_USE_SSL=true
+REDASH_MAIL_USERNAME=AKIA***
+REDASH_MAIL_PASSWORD=****
+REDASH_MAIL_DEFAULT_SENDER=xxx@mydomain.com
+</code></pre>
+<p>Logs.</p>
+<pre><code class="lang-auto">redash-nginx-1             | 172.28.0.1 - - [07/Dec/2021:06:47:06 +0000] "GET /api/users?order=-created_at&amp;page=1&amp;page_size=20&amp;pending=true HTTP/1.0" 200 1994 "https://***.mydomain.com/users/pending?order=-created_at&amp;page=1&amp;page_size=20" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" "ipaddress"
+redash-scheduler-1         | [2021-12-07 15:47:09,871][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:09,872][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:09,872][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:14,876][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:14,877][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:14,879][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:19,882][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:19,882][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:19,883][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 17dcw25bf3586a6a629110d27f788b05c0700233 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,885][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 18281a8657dcw25ef3586a6a62ed3d1a60f7dcw4 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,886][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 305c0cae0a196ae96915fd2b6f81001c435aad65 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,888][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 59a84668e46f3386c5335565213686878e814b72 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,889][PID:1][DEBUG][rq_scheduler.scheduler] Pushing e527c427209009c17c575fc7d0957cb21756e661 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,890][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 4.99 seconds
+redash-redis-1             | 1:M 07 Dec 2021 06:47:20.079 * 100 changes in 300 seconds. Saving...
+redash-redis-1             | 1:M 07 Dec 2021 06:47:20.079 * Background saving started by pid 23
+redash-redis-1             | 23:C 07 Dec 2021 06:47:20.085 * DB saved on disk
+redash-redis-1             | 23:C 07 Dec 2021 06:47:20.085 * RDB: 0 MB of memory used by copy-on-write
+redash-redis-1             | 1:M 07 Dec 2021 06:47:20.179 * Background saving terminated with success
+redash-scheduler-1         | [2021-12-07 15:47:24,884][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:24,885][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:24,886][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:29,890][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:29,890][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:29,891][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:34,895][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+</code></pre>
+<p>Is the organization name relevant?</p>
+<pre><code class="lang-auto">(./manage.py org list)
+Id: 1
+Name: mydomain
+Slug: default
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/9</link>
+        <pubDate>Tue, 07 Dec 2021 06:54:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-9</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I successfully configured Amazon SES with an V8 AMI that I upgraded to V10 in EC2. It didn’t require anything fancy. Here were my settings in <code>/opt/redash/env</code></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a.png" data-download-href="/uploads/short-url/4F9ulslKPgDgHD6bHQjMMH12i4W.png?dl=1" title="CleanShot 2021-11-22 at 10.51.25@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_690x239.png" alt="CleanShot 2021-11-22 at 10.51.25@2x" data-base62-sha1="4F9ulslKPgDgHD6bHQjMMH12i4W" width="690" height="239" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_690x239.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_1035x358.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_1380x478.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_10x10.png"></a></div><p></p>
+<p>I did not test the CLI functions. I just reproduced that users would receive invitations triggered in the web app, reset password emails went normally, and alerts worked as expected.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/8</link>
+        <pubDate>Mon, 22 Nov 2021 17:46:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-8</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, thank you for everyone.</p>
+<p>I tried inviting new user with Redash v8.  It worked completry.</p>
+<p>But after update to v10, it does not work.<br>
+Even if I added “SERVER_NAME or REDASH_SERVER_NAME”.</p>
+<pre><code class="lang-auto"># docker-compose run --rm server manage send_test_mail
+Starting redash_postgres_1 ... done
+Starting redash_redis_1    ... done
+(OK)
+
+・・・
+# docker-compose run --rm server manage users invite myname1@mydomain1 hoge myname1@mydomain1
+Starting redash_postgres_1 ... done
+Starting redash_redis_1    ... done
+The inviter [myname1@mydomain1] was not found.
+</code></pre>
+<p>I will use v8 for a while.<br>
+I will search for the manual(documents) to update for v10.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/7</link>
+        <pubDate>Fri, 08 Oct 2021 06:49:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-7</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[ryan.qw]]></dc:creator>
+        <description><![CDATA[
+            <p>I am encountering this as well. Running <code>manage.py send_test_email</code> works, but sending an email from UI fails. An error message can be obtained with <code>manage.py users invite $email_to_invite $username $send_from_email</code>, which will return:<br>
+RuntimeError: Application was not able to create a URL adapter for request independent URL generation. You might be able to fix this by setting the SERVER_NAME config variable.</p>
+<p>However, setting SERVER_NAME or REDASH_SERVER_NAME does not have an impact. The same issue is reported on 8.x here: <a href="https://github.com/getredash/redash/issues/5266" class="inline-onebox" rel="noopener nofollow ugc">Invitation etc emails not being sent on the account of the code failing to generate urls · Issue #5266 · getredash/redash · GitHub</a>. That solution did not work for v10.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/6</link>
+        <pubDate>Thu, 07 Oct 2021 18:48:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-6</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Looking into this further I think there may be a compatibility issue specifically between Redash and SES. Investigating…</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/5</link>
+        <pubDate>Thu, 07 Oct 2021 14:24:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-5</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <p>thank you.<br>
+I will try redash v8. and edit setup.sh.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/4</link>
+        <pubDate>Thu, 07 Oct 2021 04:50:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-4</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Rather than editing the env file within the container, try making those changes in the setup script itself and re-running.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/3</link>
+        <pubDate>Thu, 07 Oct 2021 04:16:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-3</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m away from my workstation. But FYI The setup script has not been updated to for V10 yet. I don’t think that would be the issue but it’s possible.</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/2</link>
+        <pubDate>Thu, 07 Oct 2021 04:15:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-2</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+      <item>
+        <title>Email sending settings using Amazon SES</title>
+        <dc:creator><![CDATA[yui]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>When I added a New User in Redash,<br>
+it didn’t send email form redash with Amazon SES.<br>
+Is there something missing in env?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0.b50363</li>
+<li>Browser/OS: Ubuntu 20.04.1 LTS</li>
+<li>How did you install Redash:</li>
+</ul>
+<pre><code class="lang-auto"># mkdir /opt/redash/
+# cd /opt
+# git clone https://github.com/getredash/setup.git
+# cd setup
+# sh setup.sh
+. . .
+# vim /opt/redash/docker-compose.yml
+change :
+ --------------------------------------------------
+ image: redash/redash:10.0.0.b50363
+ --------------------------------------------------
+
+# vim /opt/redash/env
+add :
+--------------------------------------------------
+REDASH_MAIL_SERVER=email-smtp.xxxxxxxxxxxxxx
+REDASH_MAIL_PORT=25 (or 465, 587)
+REDASH_MAIL_USE_TLS=false (or true)
+REDASH_MAIL_USE_SSL=false (or ture)
+REDASH_MAIL_USERNAME=xxxxxxxxxxx (AWS creds smtp username)
+REDASH_MAIL_PASSWORD=xxxxxxxxxxx (AWS creds smtp password)
+REDASH_MAIL_DEFAULT_SENDER=myname1@mydomain1
+--------------------------------------------------
+
+# cd /opt/redash
+# docker-compose down &amp;&amp; docker-compose up -d
+</code></pre>
+<h2>
+<a name="amazon-ses-3" class="anchor" href="https://discuss.redash.io#amazon-ses-3"></a>Amazon SES</h2>
+<p>Verify a New Email Address &gt; Verified<br>
+Send a Test Email</p>
+<pre><code class="lang-auto">--------------------------------------------------
+From : myname1@mydomain1
+To : myname1@mydomain1
+--------------------------------------------------
+&gt; OK (sent)
+</code></pre>
+<p>Create My SMTP Credentials &gt; OK (done)</p>
+<h2>
+<a name="redash-4" class="anchor" href="https://discuss.redash.io#redash-4"></a>Redash</h2>
+<p>Logged in Redash (<a href="http://192.168.x.x/login" rel="noopener nofollow ugc">http://192.168.x.x/login</a>)<br>
+Settings &gt; Users &gt; +New User</p>
+<pre><code class="lang-auto">Name : hoge
+Email : myname1@mydomain1
+</code></pre>
+<p>Create &gt; [(v) Saved.]</p>
+<h2>
+<a name="comment-5" class="anchor" href="https://discuss.redash.io#comment-5"></a>comment</h2>
+<p>I haven’t received the email. There are no particular error messages in Redash. Is there a log file somewhere?</p>
+          <p><a href="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211/1</link>
+        <pubDate>Thu, 07 Oct 2021 03:47:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9211-1</guid>
+        <source url="https://discuss.redash.io/t/email-sending-settings-using-amazon-ses/9211.rss">Email sending settings using Amazon SES</source>
+      </item>
+  </channel>
+</rss>

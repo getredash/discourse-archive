@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Auth0 integration</title>
+    <link>https://discuss.redash.io/t/auth0-integration/586</link>
+    <description>I am looking for ways to integrate redash with auth0. Anyone with relevant experience or ideas, please comment on this thread.
+
+TIA
+Chiddu</description>
+    
+    <lastBuildDate>Sun, 22 May 2022 10:08:26 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/auth0-integration/586.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[Eyf_Gy]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,<br>
+For that I found a solution:<br>
+you need to put in SAML settings the array of “nameIdentifierProbes” like this =&gt;</p>
+<pre><code class="lang-auto">{
+  "mappings": {
+    "nickname": "FirstName",
+    "name": "LastName"
+  },
+  "passthroughClaimsWithNoMapping": false,
+  "includeAttributeNameFormat": false,
+  "nameIdentifierProbes": [
+    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+  ]
+}
+</code></pre>
+<p>By default this array include the user_id in first position</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/11</link>
+        <pubDate>Sun, 22 May 2022 10:08:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-11</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yeah that doesn’t sound convenient at all -.-</p>
+<p>I don’t think this requires a change in Redash. The problem is Auth0 is providing their uid instead of an Email address. I don’t think changing the SAML NameID Format will fix it. You need to instead update your mappings in Auth0 so that a user’s email address is supplied to the NameID field when the user is created.</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/10</link>
+        <pubDate>Wed, 19 Jan 2022 20:26:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-10</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[adfineberg]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey,<br>
+Came back to this after a bit, and I noticed that with the Auth0 users all have the id given by Auth0 as their email. Strings that look like <code>auth0|12345678123456</code>. The problem is that when I try to add users to different groups, the UI requires an email containing a <code>@</code> sign.<br>
+I can work around this and set it directly in the DB, but it’s very inconvenient.</p>
+<p>What am I missing? I’ve been trying to change the SAML NameID Format without any luck.</p>
+<p>Thanks!</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/9</link>
+        <pubDate>Wed, 19 Jan 2022 16:24:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-9</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for this! Hoping to improve our SAML implementation and docs as well so this doesn’t need to be as cryptic <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=10" title=":confused:" class="emoji" alt=":confused:"></p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/8</link>
+        <pubDate>Tue, 26 Oct 2021 15:45:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-8</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[adfineberg]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi! Thanks a lot for this information, I had to tweak this a bit as we don’t have an identity provider connection in Auth0, so we don’t have <code>given_name</code> or <code>family_name</code> for the mappings. I had to give it 2 other string variables it has. It isn’t the cleanest, but I used:</p>
+<pre><code class="lang-auto">"mappings": {
+    "nickname": "FirstName",
+    "name": "LastName"
+},
+</code></pre>
+<p>Also, the SAML NameID Format that worked for me was <code>Email</code>.</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/7</link>
+        <pubDate>Tue, 26 Oct 2021 14:00:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-7</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for sharing this!</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/6</link>
+        <pubDate>Thu, 28 Mar 2019 07:37:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-6</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[madAndroid]]></dc:creator>
+        <description><![CDATA[
+            <p>We managed to get this working - you will need to use the following configuration within Auth0:</p>
+<ul>
+<li>Create a traditional webapp</li>
+<li>Under add-ons, enable SAML2</li>
+<li>In the SAML2 config use the following call back url:</li>
+</ul>
+<pre><code class="lang-auto">https://[YOUR_REDASH_HOSTNAME]/saml/callback?org_slug=default
+</code></pre>
+<ul>
+<li>In the SAML2 config use the following settings JSON:</li>
+</ul>
+<pre><code class="lang-auto">{
+  "mappings": {
+    "given_name": "FirstName",
+    "family_name": "LastName"
+  },
+  "passthroughClaimsWithNoMapping": false,
+  "includeAttributeNameFormat": false
+}
+</code></pre>
+<p>Within Redash, use the following config:<br>
+SAML Metadata URL: <code>https://[YOUR_TENANT_HOSTNAME]/samlp/metadata/[CONNECTION_ID]</code><br>
+SAML Entity ID: <code>urn:auth0:[YOUR_TENANT_NAME]:[CONNECTION_NAME]</code><br>
+SAML NameID Format: <code>EmailAddress</code></p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/5</link>
+        <pubDate>Tue, 26 Mar 2019 05:12:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-5</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[chiddu]]></dc:creator>
+        <description><![CDATA[
+            <p>I meant the tag AudienceRestriction</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/4</link>
+        <pubDate>Thu, 20 Apr 2017 10:51:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-4</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[chiddu]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes it does. Configured redash for saml as per this document.Added two parameters to the .env file ,<br>
+REDASH_SAML_METADATA_URL  and REDASH_SAML_CALLBACK_SERVER_NAME</p>
+<p>However , the redash server seems to take outrage at the fact that the tag <a href="https://discuss.redash.io">saml:AudienceRestriction</a>  is empty.</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/3</link>
+        <pubDate>Thu, 20 Apr 2017 10:50:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-3</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Auth0 supports SAML, no?</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/2</link>
+        <pubDate>Wed, 19 Apr 2017 11:07:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-2</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+      <item>
+        <title>Auth0 integration</title>
+        <dc:creator><![CDATA[chiddu]]></dc:creator>
+        <description><![CDATA[
+            <p>I am looking for ways to integrate redash with auth0. Anyone with relevant experience or ideas, please comment on this thread.</p>
+<p>TIA<br>
+Chiddu</p>
+          <p><a href="https://discuss.redash.io/t/auth0-integration/586/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auth0-integration/586/1</link>
+        <pubDate>Wed, 19 Apr 2017 07:55:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-586-1</guid>
+        <source url="https://discuss.redash.io/t/auth0-integration/586.rss">Auth0 integration</source>
+      </item>
+  </channel>
+</rss>

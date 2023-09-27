@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</title>
+    <link>https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941</link>
+    <description>### Issue Summary
+A summary of the issue and the browser/OS environment in which it occurs.
+
+### Technical details:
+* Redash Version:7.0.0+b18042 (4a978bad)
+* Browser/OS:Ubuntu 18.04.5 LTS
+* How did you install Redash: In order to install redash on a server(not local machine), I followed the steps as below:-
+- curl -O https://raw.githubusercontent.com/getredash/setup/master/setup.sh
+- chmod +x setup.sh
+- sudo ./setup.sh
+and I got the following error:- 
+
+Traceback (most recent call last):
+  File &quot;/app/manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 716, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask/cli.py&quot;, line 380, in main
+    return AppGroup.main(self, *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 696, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 889, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 534, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/click/decorators.py&quot;, line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/flask/cli.py&quot;, line 257, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File &quot;/usr/local/lib/python2.7/site-packages/click/core.py&quot;, line 534, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/app/redash/cli/database.py&quot;, line 34, in create_tables
+    stamp()
+  File &quot;/usr/local/lib/python2.7/site-packages/flask_migrate/__init__.py&quot;, line 360, in stamp
+    command.stamp(config, revision, sql=sql, tag=tag)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/command.py&quot;, line 579, in stamp
+    script.run_env()
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/base.py&quot;, line 489, in run_env
+    util.load_python_file(self.dir, &quot;env.py&quot;)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/util/pyfiles.py&quot;, line 98, in load_python_file
+    module = load_module_py(module_id, path)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/util/compat.py&quot;, line 239, in load_module_py
+    mod = imp.load_source(module_id, path, fp)
+  File &quot;migrations/env.py&quot;, line 87, in &lt;module&gt;
+    run_migrations_online()
+  File &quot;migrations/env.py&quot;, line 80, in run_migrations_online
+    context.run_migrations()
+  File &quot;&lt;string&gt;&quot;, line 8, in run_migrations
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/runtime/environment.py&quot;, line 846, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/runtime/migration.py&quot;, line 507, in run_migrations
+    for step in self._migrations_fn(heads, self):
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/command.py&quot;, line 567, in do_stamp
+    return script._stamp_revs(util.to_tuple(destination_revs), rev)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/base.py&quot;, line 394, in _stamp_revs
+    heads = self.get_revisions(heads)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/base.py&quot;, line 227, in get_revisions
+    return self.revision_map.get_revisions(id_)
+  File &quot;/usr/local/lib/python2.7/contextlib.py&quot;, line 35, in __exit__
+    self.gen.throw(type, value, traceback)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/base.py&quot;, line 194, in _catch_revision_errors
+    compat.raise_from_cause(util.CommandError(resolution))
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/util/compat.py&quot;, line 312, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/base.py&quot;, line 162, in _catch_revision_errors
+    yield
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/base.py&quot;, line 227, in get_revisions
+    return self.revision_map.get_revisions(id_)
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/revision.py&quot;, line 319, in get_revisions
+    return sum([self.get_revisions(id_elem) for id_elem in id_], ())
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/revision.py&quot;, line 324, in get_revisions
+    for rev_id in resolved_id
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/revision.py&quot;, line 324, in &lt;genexpr&gt;
+    for rev_id in resolved_id
+  File &quot;/usr/local/lib/python2.7/site-packages/alembic/script/revision.py&quot;, line 397, in _revision_for_ident
+    resolved_id,
+alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;
+
+Can anybody please help me with this?</description>
+    
+    <lastBuildDate>Wed, 18 Aug 2021 10:44:18 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</title>
+        <dc:creator><![CDATA[curiousLearner]]></dc:creator>
+        <description><![CDATA[
+            <p>No particular reason or compulsion on my side to use a particular version though. I got the same error while trying to install from ‘<a href="https://github.com/getredash/setup/blob/master/setup.sh" class="inline-onebox" rel="noopener nofollow ugc">setup/setup.sh at master · getredash/setup · GitHub</a>’ as well. Can use any advice/suggestions to do so. Would prefer latest stable version</p>
+          <p><a href="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941/3</link>
+        <pubDate>Wed, 18 Aug 2021 10:44:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8941-3</guid>
+        <source url="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941.rss">alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</source>
+      </item>
+      <item>
+        <title>alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Why are you installing V7?</p>
+          <p><a href="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941/2</link>
+        <pubDate>Mon, 16 Aug 2021 14:41:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8941-2</guid>
+        <source url="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941.rss">alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</source>
+      </item>
+      <item>
+        <title>alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</title>
+        <dc:creator><![CDATA[curiousLearner]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>A summary of the issue and the browser/OS environment in which it occurs.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version:7.0.0+b18042 (4a978bad)</li>
+<li>Browser/OS:Ubuntu 18.04.5 LTS</li>
+<li>How did you install Redash: In order to install redash on a server(not local machine), I followed the steps as below:-</li>
+</ul>
+<ul>
+<li>curl -O <a href="https://raw.githubusercontent.com/getredash/setup/master/setup.sh" rel="noopener nofollow ugc">https://raw.githubusercontent.com/getredash/setup/master/setup.sh</a>
+</li>
+<li>chmod +x setup.sh</li>
+<li>sudo ./setup.sh<br>
+and I got the following error:-</li>
+</ul>
+<p>Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 716, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask/cli.py”, line 380, in main<br>
+return AppGroup.main(self, *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 696, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 1060, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 1060, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 889, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 534, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/click/decorators.py”, line 17, in new_func<br>
+return f(get_current_context(), *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/flask/cli.py”, line 257, in decorator<br>
+return __ctx.invoke(f, *args, **kwargs)<br>
+File “/usr/local/lib/python2.7/site-packages/click/core.py”, line 534, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/app/redash/cli/database.py”, line 34, in create_tables<br>
+stamp()<br>
+File “/usr/local/lib/python2.7/site-packages/flask_migrate/<strong>init</strong>.py”, line 360, in stamp<br>
+command.stamp(config, revision, sql=sql, tag=tag)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/command.py”, line 579, in stamp<br>
+script.run_env()<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/base.py”, line 489, in run_env<br>
+util.load_python_file(self.dir, “env.py”)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/util/pyfiles.py”, line 98, in load_python_file<br>
+module = load_module_py(module_id, path)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/util/compat.py”, line 239, in load_module_py<br>
+mod = imp.load_source(module_id, path, fp)<br>
+File “migrations/env.py”, line 87, in <br>
+run_migrations_online()<br>
+File “migrations/env.py”, line 80, in run_migrations_online<br>
+context.run_migrations()<br>
+File “”, line 8, in run_migrations<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/runtime/environment.py”, line 846, in run_migrations<br>
+self.get_context().run_migrations(**kw)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/runtime/migration.py”, line 507, in run_migrations<br>
+for step in self._migrations_fn(heads, self):<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/command.py”, line 567, in do_stamp<br>
+return script._stamp_revs(util.to_tuple(destination_revs), rev)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/base.py”, line 394, in <em>stamp_revs<br>
+heads = self.get_revisions(heads)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/base.py”, line 227, in get_revisions<br>
+return self.revision_map.get_revisions(id</em>)<br>
+File “/usr/local/lib/python2.7/contextlib.py”, line 35, in <strong>exit</strong><br>
+self.gen.throw(type, value, traceback)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/base.py”, line 194, in <em>catch_revision_errors<br>
+compat.raise_from_cause(util.CommandError(resolution))<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/util/compat.py”, line 312, in raise_from_cause<br>
+reraise(type(exception), exception, tb=exc_tb)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/base.py”, line 162, in <em>catch_revision_errors<br>
+yield<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/base.py”, line 227, in get_revisions<br>
+return self.revision_map.get_revisions(id</em>)<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/revision.py”, line 319, in get_revisions<br>
+return sum([self.get_revisions(id_elem) for id_elem in id</em>], ())<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/revision.py”, line 324, in get_revisions<br>
+for rev_id in resolved_id<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/revision.py”, line 324, in <br>
+for rev_id in resolved_id<br>
+File “/usr/local/lib/python2.7/site-packages/alembic/script/revision.py”, line 397, in _revision_for_ident<br>
+resolved_id,<br>
+alembic.util.exc.CommandError: Can’t locate revision identified by ‘89bc7873a3e0’</p>
+<p>Can anybody please help me with this?</p>
+          <p><a href="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941/1</link>
+        <pubDate>Mon, 16 Aug 2021 04:32:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8941-1</guid>
+        <source url="https://discuss.redash.io/t/alembic-util-exc-commanderror-cant-locate-revision-identified-by-89bc7873a3e0/8941.rss">alembic.util.exc.CommandError: Can&#39;t locate revision identified by &#39;89bc7873a3e0&#39;</source>
+      </item>
+  </channel>
+</rss>

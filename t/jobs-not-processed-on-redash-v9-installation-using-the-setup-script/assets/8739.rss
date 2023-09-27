@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Jobs not processed on Redash V9 installation using the setup script</title>
+    <link>https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739</link>
+    <description>Hi all, I am facing an issue with the installation of redash V9...
+
+I am using the [setup script](https://github.com/getredash/setup) to complete the installation. 
+while this works well with redash v8, when i set the target docker image(in the docker-compose.yml:3) from **redash/redash:8.0.0.b32245**
+to **redash/redash:9.0.0-beta.b49509**, the resulting redash instance works well except that the queued jobs are not getting started which means that some functionality is not working properly (mails, alerts, periodic tasks etc))
+![image|690x163](upload://qSUJbeSuLKqbju7jT5wMQ4MHDlZ.png)
+
+![image|690x181](upload://rMKQXZzsqlf9IkO9ufFRIgQFyxD.png)
+
+
+I suspect this is related to the fact celery was replaced by RQ in V9 but i am not sure how to confirm or debug that hypothesis. 
+I&#39;ve seen this line in the [docker-compose.yml which mentions &quot;celery&quot;](https://github.com/getredash/setup/blob/master/data/docker-compose.yml#L21) 
+![image|483x151](upload://peS15x7aTAQjx1e7jlCXlut3oBG.png)
+and i suspect this should probably be changed to something else. tried &quot;RQ&quot; and tried to remove this env var with no different result...
+
+These are the logs of the scheduler(no more logs are appended no matter what i do):
+![image|690x120](upload://8WNI1djtyOy7ySGjBm39OK7Jfuq.png)
+
+These are the logs of the scheduled worker:
+```
+ubuntu@ip-172-31-14-56:/opt/redash$ docker logs -f redash_scheduled_worker_1
+Starting RQ worker...
+2021-07-13 10:53:52,328 INFO RPC interface &#39;supervisor&#39; initialized
+2021-07-13 10:53:52,328 CRIT Server &#39;unix_http_server&#39; running without any HTTP authentication checking
+2021-07-13 10:53:52,328 INFO supervisord started with pid 1
+2021-07-13 10:53:53,331 INFO spawned: &#39;worker_healthcheck&#39; with pid 9
+2021-07-13 10:53:53,333 INFO spawned: &#39;worker-0&#39; with pid 10
+2021-07-13 10:53:54,334 INFO success: worker_healthcheck entered RUNNING state, process has stayed up for &gt; than 1 seconds (startsecs)
+[2021-07-13 10:54:13,205][PID:10][INFO][rq.worker] Worker rq:worker:41149f94a975468ca15b0c7cf860b136: started, version 1.5.0
+[2021-07-13 10:54:13,206][PID:10][INFO][rq.worker] *** Listening on scheduled_queries, schemas...
+[2021-07-13 10:54:13,208][PID:10][INFO][rq.worker] Cleaning registries for queue: scheduled_queries
+[2021-07-13 10:54:13,212][PID:10][INFO][rq.worker] Cleaning registries for queue: schemas
+2021/07/13 10:54:13 [worker_healthcheck] Starting the health check for worker process Checks config: [(&lt;class &#39;redash.cli.rq.WorkerHealthcheck&#39;&gt;, {})]
+2021/07/13 10:54:13 [worker_healthcheck] Installing signal handlers.
+READY
+2021/07/13 10:54:13 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:54:13 [worker_healthcheck] No processes in state RUNNING found for process worker
+RESULT 2
+OKREADY
+2021/07/13 10:55:01 [worker_healthcheck] Received TICK_60 event from supervisor
+RESULT 2
+OKREADY
+2021/07/13 10:55:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+2021/07/13 10:56:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:56:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+RESULT 2
+OKREADY
+2021/07/13 10:57:01 [worker_healthcheck] Received TICK_60 event from supervisor
+RESULT 2
+OKREADY
+2021/07/13 10:57:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+2021/07/13 10:58:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:58:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+RESULT 2
+OKREADY
+2021-07-13 10:58:54,154 INFO success: worker-0 entered RUNNING state, process has stayed up for &gt; than 300 seconds (startsecs)
+2021/07/13 10:59:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:59:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+2021/07/13 10:59:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? False (287 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 10:59:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+RESULT 2
+OKREADY
+2021/07/13 11:00:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 11:00:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+RESULT 2
+OKREADY
+2021/07/13 11:00:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? False (348 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 11:00:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+2021/07/13 11:01:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 11:01:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+RESULT 2
+2021/07/13 11:01:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? True (3 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 11:01:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+OKREADY
+2021/07/13 11:02:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 11:02:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+RESULT 2
+OKREADY
+2021/07/13 11:02:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? False (63 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 11:02:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+
+```
+
+Any help would be highly appreciated, thank you.</description>
+    
+    <lastBuildDate>Tue, 13 Jul 2021 15:58:36 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Jobs not processed on Redash V9 installation using the setup script</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The setup script has not been updated since V8. You can use it as a guide but it won’t be exact. This is mentioned in the <a href="https://github.com/getredash/redash/blob/d8d7c78992e44a4b6d7fdd4c39ccc1c35cd8c7a9/CHANGELOG.md#upgrading">CHANGELOG</a> which addresses this directly.</p>
+<p>tl;dr you can delete the <code>QUEUES</code> and <code>WORKERS_COUNT</code> keys. And you need to add a new worker for periodic jobs.</p>
+          <p><a href="https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739/2</link>
+        <pubDate>Tue, 13 Jul 2021 15:58:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8739-2</guid>
+        <source url="https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739.rss">Jobs not processed on Redash V9 installation using the setup script</source>
+      </item>
+      <item>
+        <title>Jobs not processed on Redash V9 installation using the setup script</title>
+        <dc:creator><![CDATA[halx4]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi all, I am facing an issue with the installation of redash V9…</p>
+<p>I am using the <a href="https://github.com/getredash/setup" rel="noopener nofollow ugc">setup script</a> to complete the installation.<br>
+while this works well with redash v8, when i set the target docker image(in the docker-compose.yml:3) from <strong>redash/redash:8.0.0.b32245</strong><br>
+to <strong>redash/redash:9.0.0-beta.b49509</strong>, the resulting redash instance works well except that the queued jobs are not getting started which means that some functionality is not working properly (mails, alerts, periodic tasks etc))<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bc6dab356d84fd8eff9ce71a133cacca42784017.png" data-download-href="/uploads/short-url/qSUJbeSuLKqbju7jT5wMQ4MHDlZ.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bc6dab356d84fd8eff9ce71a133cacca42784017_2_690x163.png" alt="image" data-base62-sha1="qSUJbeSuLKqbju7jT5wMQ4MHDlZ" width="690" height="163" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bc6dab356d84fd8eff9ce71a133cacca42784017_2_690x163.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bc6dab356d84fd8eff9ce71a133cacca42784017_2_1035x244.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bc6dab356d84fd8eff9ce71a133cacca42784017_2_1380x326.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bc6dab356d84fd8eff9ce71a133cacca42784017_2_10x10.png"></a></div><p></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c2bd9aaa8aa84f2e6933a83bbde56d09b4afbd25.png" data-download-href="/uploads/short-url/rMKQXZzsqlf9IkO9ufFRIgQFyxD.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2bd9aaa8aa84f2e6933a83bbde56d09b4afbd25_2_690x181.png" alt="image" data-base62-sha1="rMKQXZzsqlf9IkO9ufFRIgQFyxD" width="690" height="181" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2bd9aaa8aa84f2e6933a83bbde56d09b4afbd25_2_690x181.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2bd9aaa8aa84f2e6933a83bbde56d09b4afbd25_2_1035x271.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2bd9aaa8aa84f2e6933a83bbde56d09b4afbd25_2_1380x362.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2bd9aaa8aa84f2e6933a83bbde56d09b4afbd25_2_10x10.png"></a></div><p></p>
+<p>I suspect this is related to the fact celery was replaced by RQ in V9 but i am not sure how to confirm or debug that hypothesis.<br>
+I’ve seen this line in the <a href="https://github.com/getredash/setup/blob/master/data/docker-compose.yml#L21" rel="noopener nofollow ugc">docker-compose.yml which mentions “celery”</a><br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b0e4b2a2ce262ea62bff2ccc8a34baf4d038e038.png" alt="image" data-base62-sha1="peS15x7aTAQjx1e7jlCXlut3oBG" width="483" height="151"><br>
+and i suspect this should probably be changed to something else. tried “RQ” and tried to remove this env var with no different result…</p>
+<p>These are the logs of the scheduler(no more logs are appended no matter what i do):<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3eb703b857e4725a655197acec6200a3e18833e2.png" data-download-href="/uploads/short-url/8WNI1djtyOy7ySGjBm39OK7Jfuq.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3eb703b857e4725a655197acec6200a3e18833e2_2_690x120.png" alt="image" data-base62-sha1="8WNI1djtyOy7ySGjBm39OK7Jfuq" width="690" height="120" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3eb703b857e4725a655197acec6200a3e18833e2_2_690x120.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3eb703b857e4725a655197acec6200a3e18833e2_2_1035x180.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3eb703b857e4725a655197acec6200a3e18833e2_2_1380x240.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3eb703b857e4725a655197acec6200a3e18833e2_2_10x10.png"></a></div><p></p>
+<p>These are the logs of the scheduled worker:</p>
+<pre><code class="lang-auto">ubuntu@ip-172-31-14-56:/opt/redash$ docker logs -f redash_scheduled_worker_1
+Starting RQ worker...
+2021-07-13 10:53:52,328 INFO RPC interface 'supervisor' initialized
+2021-07-13 10:53:52,328 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2021-07-13 10:53:52,328 INFO supervisord started with pid 1
+2021-07-13 10:53:53,331 INFO spawned: 'worker_healthcheck' with pid 9
+2021-07-13 10:53:53,333 INFO spawned: 'worker-0' with pid 10
+2021-07-13 10:53:54,334 INFO success: worker_healthcheck entered RUNNING state, process has stayed up for &gt; than 1 seconds (startsecs)
+[2021-07-13 10:54:13,205][PID:10][INFO][rq.worker] Worker rq:worker:41149f94a975468ca15b0c7cf860b136: started, version 1.5.0
+[2021-07-13 10:54:13,206][PID:10][INFO][rq.worker] *** Listening on scheduled_queries, schemas...
+[2021-07-13 10:54:13,208][PID:10][INFO][rq.worker] Cleaning registries for queue: scheduled_queries
+[2021-07-13 10:54:13,212][PID:10][INFO][rq.worker] Cleaning registries for queue: schemas
+2021/07/13 10:54:13 [worker_healthcheck] Starting the health check for worker process Checks config: [(&lt;class 'redash.cli.rq.WorkerHealthcheck'&gt;, {})]
+2021/07/13 10:54:13 [worker_healthcheck] Installing signal handlers.
+READY
+2021/07/13 10:54:13 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:54:13 [worker_healthcheck] No processes in state RUNNING found for process worker
+RESULT 2
+OKREADY
+2021/07/13 10:55:01 [worker_healthcheck] Received TICK_60 event from supervisor
+RESULT 2
+OKREADY
+2021/07/13 10:55:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+2021/07/13 10:56:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:56:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+RESULT 2
+OKREADY
+2021/07/13 10:57:01 [worker_healthcheck] Received TICK_60 event from supervisor
+RESULT 2
+OKREADY
+2021/07/13 10:57:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+2021/07/13 10:58:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:58:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+RESULT 2
+OKREADY
+2021-07-13 10:58:54,154 INFO success: worker-0 entered RUNNING state, process has stayed up for &gt; than 300 seconds (startsecs)
+2021/07/13 10:59:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 10:59:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+2021/07/13 10:59:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? False (287 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 10:59:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+RESULT 2
+OKREADY
+2021/07/13 11:00:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 11:00:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+RESULT 2
+OKREADY
+2021/07/13 11:00:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? False (348 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 11:00:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+2021/07/13 11:01:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 11:01:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+RESULT 2
+2021/07/13 11:01:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? True (3 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 11:01:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+OKREADY
+2021/07/13 11:02:01 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/07/13 11:02:01 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+RESULT 2
+OKREADY
+2021/07/13 11:02:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:41149f94a975468ca15b0c7cf860b136 healthcheck: Is busy? False. Seen lately? False (63 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/07/13 11:02:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+
+</code></pre>
+<p>Any help would be highly appreciated, thank you.</p>
+          <p><a href="https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739/1</link>
+        <pubDate>Tue, 13 Jul 2021 11:12:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8739-1</guid>
+        <source url="https://discuss.redash.io/t/jobs-not-processed-on-redash-v9-installation-using-the-setup-script/8739.rss">Jobs not processed on Redash V9 installation using the setup script</source>
+      </item>
+  </channel>
+</rss>

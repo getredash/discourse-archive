@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>IMPORTANT: Redash V10.1 patches three security vulnerabilities, now available</title>
+    <link>https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535</link>
+    <description># Summary 
+Today, we are releasing V10.1 which includes fixes for three security vulnerabilities. Click the links for complete details to see whether your installation is affected:
+
+* Insecure default configuration affects installations where `REDASH_COOKIE_SECRET` is not set explicitly ([CVE-2021-41192](https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv))
+* SSRF vulnerability affects installations that enabled URL-loading data sources ([CVE-2021-43780](https://github.com/getredash/redash/security/advisories/GHSA-fcpv-hgq6-87h7))
+* Incorrect usage of `state` parameter in OAuth client code affects installations where Google Login is enabled ([CVE-2021-43777](https://github.com/getredash/redash/security/advisories/GHSA-vhc7-w7r8-8m34))
+
+The [V10.1 release page] is live on Github now.
+
+As always we recommend upgrading to the latest version, especially if any of the security issues affect your deployment. If this is not possible, please refer to the disclosures for information about possible workarounds and mitigation steps.
+
+This release also incorporates these two PR’s which didn’t merge before the V10 release:
+
+* Speed up big query schema loading ([#5632](https://github.com/getredash/redash/pull/5632))
+* Add support for Firebolt data source ([#5606](https://github.com/getredash/redash/pull/5606))
+
+The docker tag for this release is `redash/redash:10.1.0.b50633`
+
+Huge thanks to [Ian Carroll](https://github.com/iangcarroll) and a reporter who wished to remain anonymous for disclosing these vulnerabilities and helping us make Redash safer.
+
+# Upgrading
+*These instructions are duplicated from the [V10.1 Release Page]*
+
+## From V10.0:
+
+Follow our standard upgrade process (reproduced below). 
+1. Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.
+2. Change directory to /opt/redash.
+3. Update `/opt/redash/docker-compose.yml` Redash image reference to `redash/redash:10.1.0.b50633`
+4. Stop Redash services: `docker-compose stop server scheduler scheduled_worker adhoc_worker` (you might need to list additional services if you updated your configuration)
+5. (No migrations are needed when upgrading from 10.0)
+6. Read the `Impact` segment at [this link](https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv). If your installation is affected, follow the instructions under the `Patches` heading to secure the secret fields in your database.
+7. Start services with docker-compose up -d
+
+## From V9:
+Follow the same steps as V10 but for step 5:
+
+5. Apply migration: `docker-compose run --rm server manage db upgrade`
+
+## From V8 or earlier
+1. Follow the complete steps outlined in the [V10.0 release ](https://github.com/getredash/redash/releases/tag/v10.0.0) but use this Docker Tag in step 3: `redash/redash:10.1.0.b50633`
+2. Read the `Impact` segment at [this link](https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv). If your installation is affected, follow the instructions under the `Patches` heading to secure the secret fields in your database.
+
+# Vulnerabilities
+
+We have reproduced the formal disclosure for each vulnerability below.
+
+## [CVE-2021-41192] - HIGH SEVERITY - Insecure default configuration of secret keys
+
+### Impact
+
+If you configured Redash without explicitly specifying the `REDASH_COOKIE_SECRET` environment variable, Redash instead used a default value that is the same across all installations. In such cases, the instance is vulnerable to attackers being able to forge sessions using the known default value.
+
+In conjunction with removing the default value to make sure that a value is always provided, we have added a page to our documentation about [setting and managing secret keys in Redash](https://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret).
+
+Our thanks to Ian Carroll (@iangcarroll on Github) for responsibly disclosing this vulnerability.
+
+#### How can I tell if my instance is affected?
+
+You can verify whether your instance is affected by checking whether the `REDASH_COOKIE_SECRET` environment variable is set for your installation. If it is not present in your configuration then you should follow the steps to secure instance, outlined in the Patches section below
+
+If you are using any of Redash’s official cloud images (AWS, GCE, Digital Ocean) or used our setup script to generate your Docker installation this vulnerability is most likely mitigated already. Please check `/opt/redash/env` to confirm that an explicit value for `REDASH_COOKIE_SECRET` has been set.
+
+### Patches
+
+A software patch is not required to fix this vulnerability. Instead, an admin must modify Redash&#39;s configuration through environment variables. Depending on the version of Redash, an admin may also need to run a CLI command to re-encrypt some fields in the database (see below).
+
+The current `master` and `release/10.0.x` branches have removed the default value for `REDASH_COOKIE_SECRET`. All future releases will also require this to be set explicitly. For Docker installations, you can upgrade to Docker Tag `redash/redash:10.1.0.b50633`.
+
+For existing installations, you will need to ensure that explicit values are set for the `REDASH_COOKIE_SECRET` _and_ `REDASH_SECRET_KEY` variables.
+
+#### V7 and later
+
+Starting in version 7, Redash encrypts data source and alert destination details in the database using the `REDASH_SECRET_KEY` environment variable. 
+
+If you _have not_ set `REDASH_SECRET_KEY` explicitly:
+
+1. Set the `REDASH_SECRET_KEY` environment variable to be the default (current) cookie_secret : `c292a0a3aa32397cdb050e233733900f`
+2. Set `REDASH_COOKIE_SECRET` to a different value [^1]
+3. Use the Redash CLI to re-encrypt using a secret key different from step 1 (see [docs](http://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret))
+4. Set the `REDASH_SECRET_KEY` environment variable to the new value you used in step 3
+5. Restart Redash
+
+If you _have_ set `REDASH_SECRET_KEY` explicitly:
+
+1. Set the `REDASH_COOKIE_SECRET` environment variable [^1]
+2. Restart Redash
+
+#### V6 and earlier
+
+If you&#39;re using Redash version 6 or older (before we introduced data sources encryption): 
+
+1. Set the `REDASH_COOKIE_SECRET` environment variable [^1]
+2. Restart Redash
+
+### For more information
+If you have any questions or comments about this advisory:
+* Open an issue in [getredash/redash](https://github.com/getredash/redash) if you believe further development is needed.
+* Start a thread in [the forum](http://discuss.redash.io/).
+
+[^1]: Read about how to pick a secret key in our [docs]
+
+[docs]: http://redash.io/help/open-source/admin-guide/secrets#Choosing-a-Secret-Key
+
+
+## [CVE-2021-43777] - MODERATE SEVERITY - Insecure use of state parameter for Google Login
+
+### Impact
+
+**If you do not use Google Login for your instance of Redash, this vulnerability does not affect you.**
+
+The current implementation of Google Login (via OAuth) incorrectly uses the `state` parameter to pass the next URL to redirect the user to after login. The `state` parameter should be used for a CSRF token, not a static and easily predicted value.
+
+Our thanks to the reporter of this vulnerability, who wished to remain anonymous.
+
+### Patches
+
+The current `master` and `release/10.x.x` branches address this by replacing `Flask-Oauthlib` with [Authlib](https://github.com/lepture/authlib) which automatically provides and validates a CSRF token for the `state` variable. The new implementation stores the next URL on the user session object.
+
+Affected users should upgrade to V10.1. For Docker installations, you can upgrade to Docker Tag `redash/redash:10.1.0.b50633`.
+
+### Workarounds
+
+Disabling Google Login will mitigate the vulnerability.
+
+1. First you should re-enable password login for your instance.
+2. Then disable Google login.
+3. After this, each user will need to reset their password from the log-in screen.
+
+### References
+
+[Redash Authentication Guide](https://redash.io/help/user-guide/users/authentication-options)
+[Google&#39;s Official guidance on the state token](https://developers.google.com/identity/protocols/oauth2/openid-connect?hl=en#createxsrftoken)
+
+
+### For more information
+If you have any questions or comments about this advisory:
+* Open an issue in [getredash/redash](https://github.com/getredash/redash) if you believe further development is needed.
+* Start a thread in [the forum](http://discuss.redash.io/).
+
+## [CVE-2021-43780] - MODERATE SEVERITY - URL-loading data sources subject to SSRF vulnerability
+
+### Impact
+The current implementation of URL-loading data sources like JSON, CSV, or Excel is vulnerable to advanced methods of Server Side Request Forgery (SSRF). These vulnerabilities are only exploitable on installations where a URL-loading data source is enabled.
+
+Our thanks to Ian Carroll (@iangcarroll on Github) for responsibly disclosing this vulnerability.
+
+### Patches
+
+The current `master` and `release/10.x.x` branches address this by applying the [Advocate library](https://github.com/JordanMilne/Advocate) for making http requests instead of the requests library directly. Users should upgrade to version 10.1 to receive this patch. For Docker installations, you can upgrade to Docker Tag `redash/redash:10.1.0.b50633`.
+
+### Workarounds
+
+To mitigate the vulnerability without upgrading:
+
+1. You can disable the vulnerable data sources entirely, by adding the following env variable to your configuration. This will make them unavailable inside the webapp.
+
+```bash
+REDASH_DISABLED_QUERY_RUNNERS = &quot;redash.query_runner.excel,redash.query_runner.csv,redash.query_runner.json_ds,redash.query_runner.url,redash.query_runner.drill,redash.query_runner.jira&quot;
+```
+
+2. You can switch any data source of the following types to be &quot;View Only&quot; for all groups on the Settings &gt; Groups &gt; Data Sources screen:
+
+- JSON
+- CSV
+- Excel
+- Apache Drill
+- Jira
+- URL
+
+![CleanShot 2021-11-05 at 11 44 35@2x](https://user-images.githubusercontent.com/17067911/140547237-db269f31-8cbb-482e-a978-77105e47603a.png)
+
+
+### For more information
+If you have any questions or comments about this advisory:
+* Open an issue in [getredash/redash](https://github.com/getredash/redash) if you believe further development is needed.
+* Start a thread in [the forum](http://discuss.redash.io/).
+
+---
+
+
+[V10.1 Release Page]: https://github.com/getredash/redash/releases/tag/v10.1.0
+
+[CVE-2021-41192]: https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv
+[CVE-2021-43780]: https://github.com/getredash/redash/security/advisories/GHSA-fcpv-hgq6-87h7
+[CVE-2021-43777]: https://github.com/getredash/redash/security/advisories/GHSA-vhc7-w7r8-8m34</description>
+    
+    <lastBuildDate>Wed, 24 Nov 2021 04:11:46 +0000</lastBuildDate>
+    <category>Announcements</category>
+    <atom:link href="https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>IMPORTANT: Redash V10.1 patches three security vulnerabilities, now available</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            
+          <p><a href="https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535/4</link>
+        <pubDate>Wed, 24 Nov 2021 04:12:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9535-4</guid>
+        <source url="https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535.rss">IMPORTANT: Redash V10.1 patches three security vulnerabilities, now available</source>
+      </item>
+      <item>
+        <title>IMPORTANT: Redash V10.1 patches three security vulnerabilities, now available</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <h1>
+<a name="summary-1" class="anchor" href="https://discuss.redash.io#summary-1"></a>Summary</h1>
+<p>Today, we are releasing V10.1 which includes fixes for three security vulnerabilities. Click the links for complete details to see whether your installation is affected:</p>
+<ul>
+<li>Insecure default configuration affects installations where <code>REDASH_COOKIE_SECRET</code> is not set explicitly (<a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv">CVE-2021-41192</a>)</li>
+<li>SSRF vulnerability affects installations that enabled URL-loading data sources (<a href="https://github.com/getredash/redash/security/advisories/GHSA-fcpv-hgq6-87h7">CVE-2021-43780</a>)</li>
+<li>Incorrect usage of <code>state</code> parameter in OAuth client code affects installations where Google Login is enabled (<a href="https://github.com/getredash/redash/security/advisories/GHSA-vhc7-w7r8-8m34">CVE-2021-43777</a>)</li>
+</ul>
+<p>The <a href="https://github.com/getredash/redash/releases/tag/v10.1.0">V10.1 release page</a> is live on Github now.</p>
+<p>As always we recommend upgrading to the latest version, especially if any of the security issues affect your deployment. If this is not possible, please refer to the disclosures for information about possible workarounds and mitigation steps.</p>
+<p>This release also incorporates these two PR’s which didn’t merge before the V10 release:</p>
+<ul>
+<li>Speed up big query schema loading (<a href="https://github.com/getredash/redash/pull/5632">#5632</a>)</li>
+<li>Add support for Firebolt data source (<a href="https://github.com/getredash/redash/pull/5606">#5606</a>)</li>
+</ul>
+<p>The docker tag for this release is <code>redash/redash:10.1.0.b50633</code></p>
+<p>Huge thanks to <a href="https://github.com/iangcarroll">Ian Carroll</a> and a reporter who wished to remain anonymous for disclosing these vulnerabilities and helping us make Redash safer.</p>
+<h1>
+<a name="upgrading-2" class="anchor" href="https://discuss.redash.io#upgrading-2"></a>Upgrading</h1>
+<p><em>These instructions are duplicated from the <a href="https://github.com/getredash/redash/releases/tag/v10.1.0">V10.1 Release Page</a></em></p>
+<h2>
+<a name="from-v100-3" class="anchor" href="https://discuss.redash.io#from-v100-3"></a>From V10.0:</h2>
+<p>Follow our standard upgrade process (reproduced below).</p>
+<ol>
+<li>Make sure to backup your data. You only need to backup Redash’s PostgreSQL database (the database Redash stores metadata in, not the ones you might be querying) as the data in Redis is transient.</li>
+<li>Change directory to /opt/redash.</li>
+<li>Update <code>/opt/redash/docker-compose.yml</code> Redash image reference to <code>redash/redash:10.1.0.b50633</code>
+</li>
+<li>Stop Redash services: <code>docker-compose stop server scheduler scheduled_worker adhoc_worker</code> (you might need to list additional services if you updated your configuration)</li>
+<li>(No migrations are needed when upgrading from 10.0)</li>
+<li>Read the <code>Impact</code> segment at <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv">this link</a>. If your installation is affected, follow the instructions under the <code>Patches</code> heading to secure the secret fields in your database.</li>
+<li>Start services with docker-compose up -d</li>
+</ol>
+<h2>
+<a name="from-v9-4" class="anchor" href="https://discuss.redash.io#from-v9-4"></a>From V9:</h2>
+<p>Follow the same steps as V10 but for step 5:</p>
+<ol start="5">
+<li>Apply migration: <code>docker-compose run --rm server manage db upgrade</code>
+</li>
+</ol>
+<h2>
+<a name="from-v8-or-earlier-5" class="anchor" href="https://discuss.redash.io#from-v8-or-earlier-5"></a>From V8 or earlier</h2>
+<ol>
+<li>Follow the complete steps outlined in the <a href="https://github.com/getredash/redash/releases/tag/v10.0.0">V10.0 release </a> but use this Docker Tag in step 3: <code>redash/redash:10.1.0.b50633</code>
+</li>
+<li>Read the <code>Impact</code> segment at <a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv">this link</a>. If your installation is affected, follow the instructions under the <code>Patches</code> heading to secure the secret fields in your database.</li>
+</ol>
+<h1>
+<a name="vulnerabilities-6" class="anchor" href="https://discuss.redash.io#vulnerabilities-6"></a>Vulnerabilities</h1>
+<p>We have reproduced the formal disclosure for each vulnerability below.</p>
+<h2>
+<a name="cve-2021-41192-high-severity-insecure-default-configuration-of-secret-keys-7" class="anchor" href="https://discuss.redash.io#cve-2021-41192-high-severity-insecure-default-configuration-of-secret-keys-7"></a><a href="https://github.com/getredash/redash/security/advisories/GHSA-g8xr-f424-h2rv">CVE-2021-41192</a> - HIGH SEVERITY - Insecure default configuration of secret keys</h2>
+<h3>
+<a name="impact-8" class="anchor" href="https://discuss.redash.io#impact-8"></a>Impact</h3>
+<p>If you configured Redash without explicitly specifying the <code>REDASH_COOKIE_SECRET</code> environment variable, Redash instead used a default value that is the same across all installations. In such cases, the instance is vulnerable to attackers being able to forge sessions using the known default value.</p>
+<p>In conjunction with removing the default value to make sure that a value is always provided, we have added a page to our documentation about <a href="https://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret">setting and managing secret keys in Redash</a>.</p>
+<p>Our thanks to Ian Carroll (<span class="mention">@iangcarroll</span> on Github) for responsibly disclosing this vulnerability.</p>
+<h4>
+<a name="how-can-i-tell-if-my-instance-is-affected-9" class="anchor" href="https://discuss.redash.io#how-can-i-tell-if-my-instance-is-affected-9"></a>How can I tell if my instance is affected?</h4>
+<p>You can verify whether your instance is affected by checking whether the <code>REDASH_COOKIE_SECRET</code> environment variable is set for your installation. If it is not present in your configuration then you should follow the steps to secure instance, outlined in the Patches section below</p>
+<p>If you are using any of Redash’s official cloud images (AWS, GCE, Digital Ocean) or used our setup script to generate your Docker installation this vulnerability is most likely mitigated already. Please check <code>/opt/redash/env</code> to confirm that an explicit value for <code>REDASH_COOKIE_SECRET</code> has been set.</p>
+<h3>
+<a name="patches-10" class="anchor" href="https://discuss.redash.io#patches-10"></a>Patches</h3>
+<p>A software patch is not required to fix this vulnerability. Instead, an admin must modify Redash’s configuration through environment variables. Depending on the version of Redash, an admin may also need to run a CLI command to re-encrypt some fields in the database (see below).</p>
+<p>The current <code>master</code> and <code>release/10.0.x</code> branches have removed the default value for <code>REDASH_COOKIE_SECRET</code>. All future releases will also require this to be set explicitly. For Docker installations, you can upgrade to Docker Tag <code>redash/redash:10.1.0.b50633</code>.</p>
+<p>For existing installations, you will need to ensure that explicit values are set for the <code>REDASH_COOKIE_SECRET</code> <em>and</em> <code>REDASH_SECRET_KEY</code> variables.</p>
+<h4>
+<a name="v7-and-later-11" class="anchor" href="https://discuss.redash.io#v7-and-later-11"></a>V7 and later</h4>
+<p>Starting in version 7, Redash encrypts data source and alert destination details in the database using the <code>REDASH_SECRET_KEY</code> environment variable.</p>
+<p>If you <em>have not</em> set <code>REDASH_SECRET_KEY</code> explicitly:</p>
+<ol>
+<li>Set the <code>REDASH_SECRET_KEY</code> environment variable to be the default (current) cookie_secret : <code>c292a0a3aa32397cdb050e233733900f</code>
+</li>
+<li>Set <code>REDASH_COOKIE_SECRET</code> to a different value [^1]</li>
+<li>Use the Redash CLI to re-encrypt using a secret key different from step 1 (see <a href="http://redash.io/help/open-source/admin-guide/secrets#Changing-the-Application-Secret">docs</a>)</li>
+<li>Set the <code>REDASH_SECRET_KEY</code> environment variable to the new value you used in step 3</li>
+<li>Restart Redash</li>
+</ol>
+<p>If you <em>have</em> set <code>REDASH_SECRET_KEY</code> explicitly:</p>
+<ol>
+<li>Set the <code>REDASH_COOKIE_SECRET</code> environment variable [^1]</li>
+<li>Restart Redash</li>
+</ol>
+<h4>
+<a name="v6-and-earlier-12" class="anchor" href="https://discuss.redash.io#v6-and-earlier-12"></a>V6 and earlier</h4>
+<p>If you’re using Redash version 6 or older (before we introduced data sources encryption):</p>
+<ol>
+<li>Set the <code>REDASH_COOKIE_SECRET</code> environment variable [^1]</li>
+<li>Restart Redash</li>
+</ol>
+<h3>
+<a name="for-more-information-13" class="anchor" href="https://discuss.redash.io#for-more-information-13"></a>For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/getredash/redash">getredash/redash</a> if you believe further development is needed.</li>
+<li>Start a thread in <a href="http://discuss.redash.io/">the forum</a>.</li>
+</ul>
+<p>[^1]: Read about how to pick a secret key in our <a href="http://redash.io/help/open-source/admin-guide/secrets#Choosing-a-Secret-Key">docs</a></p>
+<h2>
+<a name="cve-2021-43777-moderate-severity-insecure-use-of-state-parameter-for-google-login-14" class="anchor" href="https://discuss.redash.io#cve-2021-43777-moderate-severity-insecure-use-of-state-parameter-for-google-login-14"></a><a href="https://github.com/getredash/redash/security/advisories/GHSA-vhc7-w7r8-8m34">CVE-2021-43777</a> - MODERATE SEVERITY - Insecure use of state parameter for Google Login</h2>
+<h3>
+<a name="impact-15" class="anchor" href="https://discuss.redash.io#impact-15"></a>Impact</h3>
+<p><strong>If you do not use Google Login for your instance of Redash, this vulnerability does not affect you.</strong></p>
+<p>The current implementation of Google Login (via OAuth) incorrectly uses the <code>state</code> parameter to pass the next URL to redirect the user to after login. The <code>state</code> parameter should be used for a CSRF token, not a static and easily predicted value.</p>
+<p>Our thanks to the reporter of this vulnerability, who wished to remain anonymous.</p>
+<h3>
+<a name="patches-16" class="anchor" href="https://discuss.redash.io#patches-16"></a>Patches</h3>
+<p>The current <code>master</code> and <code>release/10.x.x</code> branches address this by replacing <code>Flask-Oauthlib</code> with <a href="https://github.com/lepture/authlib">Authlib</a> which automatically provides and validates a CSRF token for the <code>state</code> variable. The new implementation stores the next URL on the user session object.</p>
+<p>Affected users should upgrade to V10.1. For Docker installations, you can upgrade to Docker Tag <code>redash/redash:10.1.0.b50633</code>.</p>
+<h3>
+<a name="workarounds-17" class="anchor" href="https://discuss.redash.io#workarounds-17"></a>Workarounds</h3>
+<p>Disabling Google Login will mitigate the vulnerability.</p>
+<ol>
+<li>First you should re-enable password login for your instance.</li>
+<li>Then disable Google login.</li>
+<li>After this, each user will need to reset their password from the log-in screen.</li>
+</ol>
+<h3>
+<a name="references-18" class="anchor" href="https://discuss.redash.io#references-18"></a>References</h3>
+<p><a href="https://redash.io/help/user-guide/users/authentication-options">Redash Authentication Guide</a><br>
+<a href="https://developers.google.com/identity/protocols/oauth2/openid-connect?hl=en#createxsrftoken">Google’s Official guidance on the state token</a></p>
+<h3>
+<a name="for-more-information-19" class="anchor" href="https://discuss.redash.io#for-more-information-19"></a>For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/getredash/redash">getredash/redash</a> if you believe further development is needed.</li>
+<li>Start a thread in <a href="http://discuss.redash.io/">the forum</a>.</li>
+</ul>
+<h2>
+<a name="cve-2021-43780-moderate-severity-url-loading-data-sources-subject-to-ssrf-vulnerability-20" class="anchor" href="https://discuss.redash.io#cve-2021-43780-moderate-severity-url-loading-data-sources-subject-to-ssrf-vulnerability-20"></a><a href="https://github.com/getredash/redash/security/advisories/GHSA-fcpv-hgq6-87h7">CVE-2021-43780</a> - MODERATE SEVERITY - URL-loading data sources subject to SSRF vulnerability</h2>
+<h3>
+<a name="impact-21" class="anchor" href="https://discuss.redash.io#impact-21"></a>Impact</h3>
+<p>The current implementation of URL-loading data sources like JSON, CSV, or Excel is vulnerable to advanced methods of Server Side Request Forgery (SSRF). These vulnerabilities are only exploitable on installations where a URL-loading data source is enabled.</p>
+<p>Our thanks to Ian Carroll (<span class="mention">@iangcarroll</span> on Github) for responsibly disclosing this vulnerability.</p>
+<h3>
+<a name="patches-22" class="anchor" href="https://discuss.redash.io#patches-22"></a>Patches</h3>
+<p>The current <code>master</code> and <code>release/10.x.x</code> branches address this by applying the <a href="https://github.com/JordanMilne/Advocate">Advocate library</a> for making http requests instead of the requests library directly. Users should upgrade to version 10.1 to receive this patch. For Docker installations, you can upgrade to Docker Tag <code>redash/redash:10.1.0.b50633</code>.</p>
+<h3>
+<a name="workarounds-23" class="anchor" href="https://discuss.redash.io#workarounds-23"></a>Workarounds</h3>
+<p>To mitigate the vulnerability without upgrading:</p>
+<ol>
+<li>You can disable the vulnerable data sources entirely, by adding the following env variable to your configuration. This will make them unavailable inside the webapp.</li>
+</ol>
+<pre><code class="lang-bash">REDASH_DISABLED_QUERY_RUNNERS = "redash.query_runner.excel,redash.query_runner.csv,redash.query_runner.json_ds,redash.query_runner.url,redash.query_runner.drill,redash.query_runner.jira"
+</code></pre>
+<ol start="2">
+<li>You can switch any data source of the following types to be “View Only” for all groups on the Settings &gt; Groups &gt; Data Sources screen:</li>
+</ol>
+<ul>
+<li>JSON</li>
+<li>CSV</li>
+<li>Excel</li>
+<li>Apache Drill</li>
+<li>Jira</li>
+<li>URL</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/17067911/140547237-db269f31-8cbb-482e-a978-77105e47603a.png" alt="CleanShot 2021-11-05 at 11 44 35@2x" width="690" height="345"></p>
+<h3>
+<a name="for-more-information-24" class="anchor" href="https://discuss.redash.io#for-more-information-24"></a>For more information</h3>
+<p>If you have any questions or comments about this advisory:</p>
+<ul>
+<li>Open an issue in <a href="https://github.com/getredash/redash">getredash/redash</a> if you believe further development is needed.</li>
+<li>Start a thread in <a href="http://discuss.redash.io/">the forum</a>.</li>
+</ul>
+<hr>
+          <p><a href="https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535/1</link>
+        <pubDate>Wed, 24 Nov 2021 04:11:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9535-1</guid>
+        <source url="https://discuss.redash.io/t/important-redash-v10-1-patches-three-security-vulnerabilities-now-available/9535.rss">IMPORTANT: Redash V10.1 patches three security vulnerabilities, now available</source>
+      </item>
+  </channel>
+</rss>

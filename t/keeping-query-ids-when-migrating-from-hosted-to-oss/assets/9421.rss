@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Keeping Query IDs when migrating from hosted to OSS</title>
+    <link>https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421</link>
+    <description>Hi there, 
+As hosted Redash about to reach EoL, we are working on migrating to the open source version of Redash. From what we understand, query IDs are expected to change in this process. This will create friction to our work as many users have bookmarks to dashboards/queries that contains the current query ID.
+
+Is there a way to complete the migration in a manner that would be transparent to the end user (i.e - query IDs will not change)?
+
+Thank you,
+Yair</description>
+    
+    <lastBuildDate>Wed, 10 Nov 2021 20:04:18 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Keeping Query IDs when migrating from hosted to OSS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for writing this up.</p>
+<p><img src="https://emoji.discourse-cdn.com/twitter/warning.png?v=10" title=":warning:" class="emoji" alt=":warning:"> For anyone trying this: back up your database first! <img src="https://emoji.discourse-cdn.com/twitter/warning.png?v=10" title=":warning:" class="emoji" alt=":warning:"></p>
+<p>This is not something for non-technical users to attempt.</p>
+          <p><a href="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/4</link>
+        <pubDate>Wed, 10 Nov 2021 20:04:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9421-4</guid>
+        <source url="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421.rss">Keeping Query IDs when migrating from hosted to OSS</source>
+      </item>
+      <item>
+        <title>Keeping Query IDs when migrating from hosted to OSS</title>
+        <dc:creator><![CDATA[tonystrawberry]]></dc:creator>
+        <description><![CDATA[
+            <p>If you are still want to migrate the IDs as well, I have written a script that can do it for you! You should have already migrated all your queries in the new hosted Redash first. And then use the updated meta.json with the script below.</p>
+<aside class="onebox githubgist" data-onebox-src="https://gist.github.com/tonystrawberry/c19812df00f10facc87c21e0fb5463ad">
+  <header class="source">
+
+      <a href="https://gist.github.com/tonystrawberry/c19812df00f10facc87c21e0fb5463ad" target="_blank" rel="noopener nofollow ugc">gist.github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://gist.github.com/tonystrawberry/c19812df00f10facc87c21e0fb5463ad" target="_blank" rel="noopener nofollow ugc">https://gist.github.com/tonystrawberry/c19812df00f10facc87c21e0fb5463ad</a></h4>
+
+  <h5>redash_migration</h5>
+  <pre><code class="">module Scripts
+  class RedashMigration
+    API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # Your API key on redash.io
+    REDASH_URL = "https://app.redash.io/xxxxxxxxxxx" # Your Redash URL on redash.io 
+
+    def self.get_all_query_infos
+      infos = []
+      100.times do |i|
+        page = i + 1
+        uri = URI("#{REDASH_URL}/api/queries?api_key=#{API_KEY}&amp;page_size=100&amp;page=#{page}")</code></pre>
+    This file has been truncated. <a href="https://gist.github.com/tonystrawberry/c19812df00f10facc87c21e0fb5463ad" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+<p>
+</p>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Before that, you need to change the foreign key constraint on the <code>visualizations</code> table like this.</p>
+<pre><code class="lang-auto">ALTER TABLE visualizations
+DROP CONSTRAINT visualizations_query_id_fkey;
+
+ALTER TABLE visualizations
+ADD FOREIGN KEY (query_id) REFERENCES queries (id) ON UPDATE CASCADE;
+</code></pre>
+<p>Then with the script above, execute these three methods (you may need to do modifications since I executed them with the Rails framework) and you should get as a result a SQL file with all the necessary UPDATE statements for updating the IDs in the database.</p>
+<pre><code class="lang-auto">Scripts::RedashMigration.get_all_query_infos
+Scripts::RedashMigration.attach_original_id_to_old_id
+Scripts::RedashMigration.build_sql_file_from_correspondance_file
+</code></pre>
+<p>Finally, follow these steps.</p>
+<pre><code class="lang-auto">SSH into instance
+- ssh -i redash-sandbox.pem ubuntu@ec2-xxx-xxx-xxx-xxx.ap-northeast-1.compute.amazonaws.com
+
+Go to /opt/redash folder
+- cd /opt/redash
+
+Get the container ID of postgres container and launch PSQL
+- docker ps -a 
+- docker exec -it 9cff181b7315 bash 
+- psql -h localhost -p 5432 -U postgres -W # this should prompt a password that is visible inside the /opt/redash/env file
+
+Change foreign key constraint of `visualizations` table inside PSQL
+- ALTER TABLE visualizations
+  DROP CONSTRAINT visualizations_query_id_fkey;
+  ALTER TABLE visualizations
+  ADD FOREIGN KEY (query_id) REFERENCES queries (id) ON UPDATE CASCADE;
+
+Finally paste the contents of redash_migration_script.sql to update all IDs.
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/3</link>
+        <pubDate>Wed, 10 Nov 2021 09:32:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9421-3</guid>
+        <source url="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421.rss">Keeping Query IDs when migrating from hosted to OSS</source>
+      </item>
+      <item>
+        <title>Keeping Query IDs when migrating from hosted to OSS</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="YairC" data-post="1" data-topic="9421">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/yairc/40/3477_2.png" class="avatar"> YairC:</div>
+<blockquote>
+<p>query IDs are expected to change in this process</p>
+</blockquote>
+</aside>
+<p>This is correct.</p>
+<aside class="quote no-group" data-username="YairC" data-post="1" data-topic="9421">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/yairc/40/3477_2.png" class="avatar"> YairC:</div>
+<blockquote>
+<p>Is there a way to complete the migration in a manner that would be transparent to the end user (i.e - query IDs will not change)</p>
+</blockquote>
+</aside>
+<p>Not without a significant effort. You an of course update the metadata database to force a different ID. But you’ll need to do so on every single table that references those IDs. This leaves a lot of room for error. You could hose your entire instance if you’re not careful.</p>
+<p>Also, this change wouldn’t be entirely transparent since the URL would change, no?</p>
+          <p><a href="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/2</link>
+        <pubDate>Mon, 08 Nov 2021 15:48:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9421-2</guid>
+        <source url="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421.rss">Keeping Query IDs when migrating from hosted to OSS</source>
+      </item>
+      <item>
+        <title>Keeping Query IDs when migrating from hosted to OSS</title>
+        <dc:creator><![CDATA[YairC]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi there,<br>
+As hosted Redash about to reach EoL, we are working on migrating to the open source version of Redash. From what we understand, query IDs are expected to change in this process. This will create friction to our work as many users have bookmarks to dashboards/queries that contains the current query ID.</p>
+<p>Is there a way to complete the migration in a manner that would be transparent to the end user (i.e - query IDs will not change)?</p>
+<p>Thank you,<br>
+Yair</p>
+          <p><a href="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421/1</link>
+        <pubDate>Sun, 07 Nov 2021 14:41:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9421-1</guid>
+        <source url="https://discuss.redash.io/t/keeping-query-ids-when-migrating-from-hosted-to-oss/9421.rss">Keeping Query IDs when migrating from hosted to OSS</source>
+      </item>
+  </channel>
+</rss>

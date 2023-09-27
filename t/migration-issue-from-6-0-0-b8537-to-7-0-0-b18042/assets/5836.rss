@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Migration issue from 6.0.0.b8537 to 7.0.0.b18042</title>
+    <link>https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836</link>
+    <description>trying to upgrade redash from `6.0.0.b8537` -&gt; `7.0.0.b18042` -&gt; `8.0.0.b32245` but facing this error during `6.0.0.b8537` -&gt; `7.0.0.b18042`
+
+### Environment
+ - docker
+ - redis
+ - AWS RDS
+
+### Error
+
+```
+File &quot;/usr/local/lib/python2.7/dist-packages/blinker/base.py&quot;, line 267, in send
+    for receiver in self.receivers_for(sender)]
+  File &quot;/app/redash/models/users.py&quot;, line 54, in update_user_active_at
+    if current_user.is_authenticated and not current_user.is_api_user():
+  File &quot;/usr/local/lib/python2.7/dist-packages/werkzeug/local.py&quot;, line 343, in __getattr__
+    return getattr(self._get_current_object(), name)
+  File &quot;/usr/local/lib/python2.7/dist-packages/werkzeug/local.py&quot;, line 302, in _get_current_object
+    return self.__local()
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask_login/utils.py&quot;, line 26, in &lt;lambda&gt;
+    current_user = LocalProxy(lambda: _get_user())
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask_login/utils.py&quot;, line 302, in _get_user
+    current_app.login_manager._load_user()
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py&quot;, line 317, in _load_user
+    return self.reload_user()
+  File &quot;/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py&quot;, line 279, in reload_user
+    user = self.user_callback(user_id)
+  File &quot;/app/redash/authentication/__init__.py&quot;, line 63, in load_user
+    user = models.User.get_by_id_and_org(user_id, org)
+  File &quot;/app/redash/models/mixins.py&quot;, line 28, in get_by_id_and_org
+    return query.one()
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py&quot;, line 2954, in one
+    ret = self.one_or_none()
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py&quot;, line 2924, in one_or_none
+    ret = list(self)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py&quot;, line 2995, in __iter__
+    return self._execute_and_instances(context)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py&quot;, line 3018, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py&quot;, line 948, in execute
+    return meth(self, multiparams, params)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py&quot;, line 269, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py&quot;, line 1060, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py&quot;, line 1200, in _execute_context
+    context)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py&quot;, line 1413, in _handle_dbapi_exception
+    exc_info
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py&quot;, line 265, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py&quot;, line 1193, in _execute_context
+    context)
+  File &quot;/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py&quot;, line 509, in do_execute
+    cursor.execute(statement, parameters)
+ProgrammingError: (psycopg2.ProgrammingError) column users.details does not exist
+LINE 1: ..._api_key, users.disabled_at AS users_disabled_at, users.deta...
+                                                             ^
+HINT:  Perhaps you meant to reference the column &quot;users.email&quot;.
+ [SQL: &#39;SELECT users.profile_image_url AS users_profile_image_url, users.groups AS users_groups, users.updated_at AS users_updated_at, users.created_at AS users_created_at, users.id AS users_id, users.org_id AS users_org_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.api_key AS users_api_key, users.disabled_at AS users_disabled_at, users.details AS users_details \nFROM users \nWHERE users.id = %(id_1)s AND %(param_1)s = users.org_id&#39;] [parameters: {&#39;id_1&#39;: u&#39;56&#39;, &#39;param_1&#39;: 1}] (Background on this error at: http://sqlalche.me/e/f405)
+```</description>
+    
+    <lastBuildDate>Fri, 09 Sep 2022 05:17:22 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Migration issue from 6.0.0.b8537 to 7.0.0.b18042</title>
+        <dc:creator><![CDATA[ytyng]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/parekhparthesh">@parekhparthesh</a> Thanks. I solved.</p>
+<pre><code class="lang-auto">$ sudo docker-compose exec server /bin/bash
+</code></pre>
+<p>On docker container:</p>
+<pre><code class="lang-auto">$ /app/bin/docker-entrypoint manage db upgrade
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/5</link>
+        <pubDate>Fri, 09 Sep 2022 05:17:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5836-5</guid>
+        <source url="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836.rss">Migration issue from 6.0.0.b8537 to 7.0.0.b18042</source>
+      </item>
+      <item>
+        <title>Migration issue from 6.0.0.b8537 to 7.0.0.b18042</title>
+        <dc:creator><![CDATA[parekhparthesh]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> any fix for this issue?</p>
+          <p><a href="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/4</link>
+        <pubDate>Mon, 30 Mar 2020 05:49:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5836-4</guid>
+        <source url="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836.rss">Migration issue from 6.0.0.b8537 to 7.0.0.b18042</source>
+      </item>
+      <item>
+        <title>Migration issue from 6.0.0.b8537 to 7.0.0.b18042</title>
+        <dc:creator><![CDATA[parekhparthesh]]></dc:creator>
+        <description><![CDATA[
+            <p>Steps:</p>
+<ul>
+<li>
+<p>update docker image to <code>7.0.0.b18042</code></p>
+</li>
+<li>
+<p>migration step from docker image</p>
+<pre><code class="lang-auto">/app/bin/docker-entrypoint manage db migrate
+/app/bin/docker-entrypoint manage db upgrade
+</code></pre>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/3</link>
+        <pubDate>Fri, 27 Mar 2020 21:00:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5836-3</guid>
+        <source url="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836.rss">Migration issue from 6.0.0.b8537 to 7.0.0.b18042</source>
+      </item>
+      <item>
+        <title>Migration issue from 6.0.0.b8537 to 7.0.0.b18042</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It looks like one of your database migrations didn’t go through. What steps did you follow so far?</p>
+          <p><a href="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/2</link>
+        <pubDate>Fri, 27 Mar 2020 18:18:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5836-2</guid>
+        <source url="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836.rss">Migration issue from 6.0.0.b8537 to 7.0.0.b18042</source>
+      </item>
+      <item>
+        <title>Migration issue from 6.0.0.b8537 to 7.0.0.b18042</title>
+        <dc:creator><![CDATA[parekhparthesh]]></dc:creator>
+        <description><![CDATA[
+            <p>trying to upgrade redash from <code>6.0.0.b8537</code> -&gt; <code>7.0.0.b18042</code> -&gt; <code>8.0.0.b32245</code> but facing this error during <code>6.0.0.b8537</code> -&gt; <code>7.0.0.b18042</code></p>
+<h3>Environment</h3>
+<ul>
+<li>docker</li>
+<li>redis</li>
+<li>AWS RDS</li>
+</ul>
+<h3>Error</h3>
+<pre><code class="lang-auto">File "/usr/local/lib/python2.7/dist-packages/blinker/base.py", line 267, in send
+    for receiver in self.receivers_for(sender)]
+  File "/app/redash/models/users.py", line 54, in update_user_active_at
+    if current_user.is_authenticated and not current_user.is_api_user():
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/local.py", line 343, in __getattr__
+    return getattr(self._get_current_object(), name)
+  File "/usr/local/lib/python2.7/dist-packages/werkzeug/local.py", line 302, in _get_current_object
+    return self.__local()
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/utils.py", line 26, in &lt;lambda&gt;
+    current_user = LocalProxy(lambda: _get_user())
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/utils.py", line 302, in _get_user
+    current_app.login_manager._load_user()
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py", line 317, in _load_user
+    return self.reload_user()
+  File "/usr/local/lib/python2.7/dist-packages/flask_login/login_manager.py", line 279, in reload_user
+    user = self.user_callback(user_id)
+  File "/app/redash/authentication/__init__.py", line 63, in load_user
+    user = models.User.get_by_id_and_org(user_id, org)
+  File "/app/redash/models/mixins.py", line 28, in get_by_id_and_org
+    return query.one()
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2954, in one
+    ret = self.one_or_none()
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2924, in one_or_none
+    ret = list(self)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 2995, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/orm/query.py", line 3018, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 948, in execute
+    return meth(self, multiparams, params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/sql/elements.py", line 269, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1060, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1200, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1413, in _handle_dbapi_exception
+    exc_info
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/util/compat.py", line 265, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/base.py", line 1193, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py", line 509, in do_execute
+    cursor.execute(statement, parameters)
+ProgrammingError: (psycopg2.ProgrammingError) column users.details does not exist
+LINE 1: ..._api_key, users.disabled_at AS users_disabled_at, users.deta...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "users.email".
+ [SQL: 'SELECT users.profile_image_url AS users_profile_image_url, users.groups AS users_groups, users.updated_at AS users_updated_at, users.created_at AS users_created_at, users.id AS users_id, users.org_id AS users_org_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.api_key AS users_api_key, users.disabled_at AS users_disabled_at, users.details AS users_details \nFROM users \nWHERE users.id = %(id_1)s AND %(param_1)s = users.org_id'] [parameters: {'id_1': u'56', 'param_1': 1}] (Background on this error at: http://sqlalche.me/e/f405)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836/1</link>
+        <pubDate>Fri, 27 Mar 2020 17:56:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5836-1</guid>
+        <source url="https://discuss.redash.io/t/migration-issue-from-6-0-0-b8537-to-7-0-0-b18042/5836.rss">Migration issue from 6.0.0.b8537 to 7.0.0.b18042</source>
+      </item>
+  </channel>
+</rss>

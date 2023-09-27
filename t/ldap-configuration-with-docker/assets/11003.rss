@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>LDAP configuration with docker</title>
+    <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003</link>
+    <description>Hi !
+I&#39;m working on a self hosted instance of redash (v11, docker configuration) and I don&#39;t really understand how to create an image (https://redash.io/help/open-source/admin-guide/ldap-authentication) to add LDAP. Where can I add the following lines, according to the admin guide ? 
+
+```
+FROM redash/redash:latest
+RUN pip install ldap3
+```
+
+I tried two ways (as described here [#8294](http://discuss.redash.io/t/ad-authentication-500-error-caused-by-redash-ldap-email-key/8294/2)) but it doesn&#39;t work.
+
+The only working method for me was to install *ldap3* (with pip) in each container (worker, scheduler and server). But this is not a good and permanent way to fix this issue. Any other idea ?
+
+Thanks in advance for your help :slight_smile:</description>
+    
+    <lastBuildDate>Thu, 15 Sep 2022 04:01:49 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>LDAP configuration with docker</title>
+        <dc:creator><![CDATA[GymYJ]]></dc:creator>
+        <description><![CDATA[
+            <p>in my case, I added ‘build’ context in the <em>docker-compose.yml</em> file.<br>
+like this :</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:8.0.0.b32245
+  build:
+    context: .
+    dockerfile: Dockerfile
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+...
+</code></pre>
+<p>and wrote a <em>Dockerfile</em> in same directory with the <em>docker-compose.yml</em><br>
+Dockerfile as :</p>
+<pre><code class="lang-auto">FROM redash/redash:latest
+
+RUN pip install ldap3 --user
+</code></pre>
+<p>and then run docker-compose</p>
+<pre><code class="lang-auto">$ sudo docker-compose run --rm server create_db
+$ sudo docker-compose up -d
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003/6</link>
+        <pubDate>Thu, 15 Sep 2022 03:57:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11003-6</guid>
+        <source url="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss">LDAP configuration with docker</source>
+      </item>
+      <item>
+        <title>LDAP configuration with docker</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>I really don’t understand what happens with my configuration.<br>
+I wrote a <em>Dockerfile.ldap</em> as :</p>
+<pre><code class="lang-auto">FROM redash/redash:latest
+RUN pip install --user ldap3
+</code></pre>
+<p>And then, I tried : <code>docker build -f Dockerfile.ldap . --no-cache</code><br>
+Everything looked fine but… when I triy <code>docker-compose logs -f --tail 5</code>, this is the result :</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg" data-download-href="/uploads/short-url/yAmGNm8gZ7836N9eawKBCt7Jsx5.jpeg?dl=1" title="Capture" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db_2_690x50.jpeg" alt="Capture" data-base62-sha1="yAmGNm8gZ7836N9eawKBCt7Jsx5" width="690" height="50" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db_2_690x50.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f26648b2bc820304f3528e8c6df4059b52c7f7db_2_10x10.png"></a></div><p></p>
+<p>Any idea ?</p>
+<p>This is my docker-compose.yml configuration (concerning LDAP) :</p>
+<pre><code class="lang-auto">REDASH_LDAP_LOGIN_ENABLED: "true"
+REDASH_PASSWORD_LOGIN_ENABLED: "false"
+REDASH_LDAP_URL: "XXX.XXX.XX.XX:389"
+REDASH_LDAP_BIND_DN: "..."
+REDASH_LDAP_BIND_DN_PASSWORD: "..."
+REDASH_LDAP_DISPLAY_NAME_KEY: "..."
+REDASH_LDAP_DISPLAY_EMAIL_KEY: "..."
+REDASH_LDAP_CUSTOM_USERNAME_PROMPT: "..."
+</code></pre>
+<p>Thanks again <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003/5</link>
+        <pubDate>Wed, 07 Sep 2022 07:48:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11003-5</guid>
+        <source url="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss">LDAP configuration with docker</source>
+      </item>
+      <item>
+        <title>LDAP configuration with docker</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>According to the admin guide (<em>cf.</em> capture), I use docker-compose and I have a <em>docker-compose.yml</em> file in the same directory.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg" data-download-href="/uploads/short-url/bhmCELUYjI77J7UOuJ3Q1gZ5bpn.jpeg?dl=1" title="Capture" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39_2_690x242.jpeg" alt="Capture" data-base62-sha1="bhmCELUYjI77J7UOuJ3Q1gZ5bpn" width="690" height="242" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39_2_690x242.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4f0e6c8d5188efa6144a2d8e81144ed29cad5b39_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003/4</link>
+        <pubDate>Wed, 07 Sep 2022 04:59:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11003-4</guid>
+        <source url="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss">LDAP configuration with docker</source>
+      </item>
+      <item>
+        <title>LDAP configuration with docker</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your reply.<br>
+Unfortunately, if I’ve this file, I don’t have the line “FROM redash/redash:latest”.</p>
+<p>This is the file content :</p>
+<pre><code class="lang-auto"># PATH : /redash/Dockerfile
+
+FROM node:14.17 as frontend-builder
+
+RUN npm install --global --force yarn@1.22.10
+
+# Controls whether to build the frontend assets
+ARG skip_frontend_build
+
+ENV CYPRESS_INSTALL_BINARY=0
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+
+RUN useradd -m -d /frontend redash
+USER redash
+
+WORKDIR /frontend
+COPY --chown=redash package.json yarn.lock .yarnrc /frontend/
+COPY --chown=redash viz-lib /frontend/viz-lib
+
+# Controls whether to instrument code for coverage information
+ARG code_coverage
+ENV BABEL_ENV=${code_coverage:+test}
+
+RUN if [ "x$skip_frontend_build" = "x" ] ; then yarn --frozen-lockfile --network-concurrency 1; fi
+
+COPY --chown=redash client /frontend/client
+COPY --chown=redash webpack.config.js /frontend/
+RUN if [ "x$skip_frontend_build" = "x" ] ; then yarn build; else mkdir -p /frontend/client/dist &amp;&amp; touch /frontend/client/dist/multi_org.html &amp;&amp; touch /frontend/client/dist/index.html; fi
+
+FROM python:3.7-slim-buster
+
+EXPOSE 5000
+
+# Controls whether to install extra dependencies needed for all data sources.
+ARG skip_ds_deps
+# Controls whether to install dev dependencies.
+ARG skip_dev_deps
+
+RUN useradd --create-home redash
+
+# Ubuntu packages
+RUN apt-get update &amp;&amp; \
+  apt-get install -y --no-install-recommends \
+    curl \
+    gnupg \
+    build-essential \
+    pwgen \
+    libffi-dev \
+    sudo \
+    git-core \
+    # Postgres client
+    libpq-dev \
+    # ODBC support:
+    g++ unixodbc-dev \
+    # for SAML
+    xmlsec1 \
+    # Additional packages required for data sources:
+    libssl-dev \
+    default-libmysqlclient-dev \
+    freetds-dev \
+    libsasl2-dev \
+    unzip \
+    libsasl2-modules-gssapi-mit &amp;&amp; \
+    apt-get clean &amp;&amp; \
+     rm -rf /var/lib/apt/lists/*
+
+
+ARG TARGETPLATFORM
+ARG databricks_odbc_driver_url=https://databricks.com/wp-content/uploads/2.6.10.1010-2/SimbaSparkODBC-2.6.10.1010-2-Debian-64bit.zip
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    &amp;&amp; curl https://packages.microsoft.com/config/debian/10/prod.list &gt; /etc/apt/sources.list.d/mssql-release.list \
+    &amp;&amp; apt-get update \
+    &amp;&amp; ACCEPT_EULA=Y apt-get install  -y --no-install-recommends msodbcsql17 \
+    &amp;&amp; apt-get clean \
+    &amp;&amp; rm -rf /var/lib/apt/lists/* \
+    &amp;&amp; curl "$databricks_odbc_driver_url" --location --output /tmp/simba_odbc.zip \
+    &amp;&amp; chmod 600 /tmp/simba_odbc.zip \
+    &amp;&amp; unzip /tmp/simba_odbc.zip -d /tmp/ \
+    &amp;&amp; dpkg -i /tmp/SimbaSparkODBC-*/*.deb \
+    &amp;&amp; printf "[Simba]\nDriver = /opt/simba/spark/lib/64/libsparkodbc_sb64.so" &gt;&gt; /etc/odbcinst.ini \
+    &amp;&amp; rm /tmp/simba_odbc.zip \
+    &amp;&amp; rm -rf /tmp/SimbaSparkODBC*; fi
+
+WORKDIR /app
+
+# Disable PIP Cache and Version Check
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PIP_NO_CACHE_DIR=1
+
+# rollback pip version to avoid legacy resolver problem
+RUN pip install pip==20.2.4;
+
+# We first copy only the requirements file, to avoid rebuilding on every file change.
+COPY requirements_all_ds.txt ./
+RUN if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi
+
+COPY requirements_bundles.txt requirements_dev.txt ./
+RUN if [ "x$skip_dev_deps" = "x" ] ; then pip install -r requirements_dev.txt ; fi
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY --chown=redash . /app
+COPY --from=frontend-builder --chown=redash /frontend/client/dist /app/client/dist
+RUN chown redash /app
+USER redash
+
+ENTRYPOINT ["/app/bin/docker-entrypoint"]
+CMD ["server"]
+</code></pre>
+<p>Is it the good file ? Where can I insert the command <em>RUN pip install ldap3</em> ? Is it possible to rebuild the instance without redeployment ?</p>
+<p>Thanks again <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003/3</link>
+        <pubDate>Wed, 07 Sep 2022 04:55:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11003-3</guid>
+        <source url="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss">LDAP configuration with docker</source>
+      </item>
+      <item>
+        <title>LDAP configuration with docker</title>
+        <dc:creator><![CDATA[xavier-d]]></dc:creator>
+        <description><![CDATA[
+            <p>I don’t know how you have deployed your version, but I believe that you have used the lastest Docker image.<br>
+So in your setup you should have a <strong>Dockerfile</strong> where the following command is written.</p>
+<blockquote>
+<p>FROM redash/redash:latest</p>
+</blockquote>
+<p>you need to add in it, before your deployment</p>
+<blockquote>
+<p>RUN pip install ldap3</p>
+</blockquote>
+<p>It will avoid you to deploy manually the package on each node, and it will be persistant in case a new instance</p>
+          <p><a href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003/2</link>
+        <pubDate>Tue, 06 Sep 2022 12:50:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11003-2</guid>
+        <source url="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss">LDAP configuration with docker</source>
+      </item>
+      <item>
+        <title>LDAP configuration with docker</title>
+        <dc:creator><![CDATA[willy-dauphin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi !<br>
+I’m working on a self hosted instance of redash (v11, docker configuration) and I don’t really understand how to create an image (<a href="https://redash.io/help/open-source/admin-guide/ldap-authentication" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/ldap-authentication</a>) to add LDAP. Where can I add the following lines, according to the admin guide ?</p>
+<pre><code class="lang-auto">FROM redash/redash:latest
+RUN pip install ldap3
+</code></pre>
+<p>I tried two ways (as described here <a href="http://discuss.redash.io/t/ad-authentication-500-error-caused-by-redash-ldap-email-key/8294/2">#8294</a>) but it doesn’t work.</p>
+<p>The only working method for me was to install <em>ldap3</em> (with pip) in each container (worker, scheduler and server). But this is not a good and permanent way to fix this issue. Any other idea ?</p>
+<p>Thanks in advance for your help <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/ldap-configuration-with-docker/11003/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/ldap-configuration-with-docker/11003/1</link>
+        <pubDate>Tue, 06 Sep 2022 11:38:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11003-1</guid>
+        <source url="https://discuss.redash.io/t/ldap-configuration-with-docker/11003.rss">LDAP configuration with docker</source>
+      </item>
+  </channel>
+</rss>

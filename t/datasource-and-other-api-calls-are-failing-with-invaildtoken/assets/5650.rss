@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Datasource and other API calls are failing with InvaildToken</title>
+    <link>https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650</link>
+    <description>Hi,
+
+We want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed.
+
+1. Created a new vm in GCP using the prebuilt Image by referring the doc: https://redash.io/help/open-source/setup/
+2. Took the pg_dump from the existing v7* server and pushed it to the new vm with v8* created in step1
+3. We did pg_restore and got all the data into.
+4. I am able to see all the users, list of dashboards, list of queries etc.
+5. Now, I am unable to see the data sources and dashboards and queries. 
+6. Upon checking the logs, I see the following error message:
+
+```
+[2020-02-27 15:11:29,501] ERROR in app: Exception on /api/data_sources [GET]
+ Traceback (most recent call last):
+   File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1612, in full_dispatch_request
+     rv = self.dispatch_request()
+   File &quot;/usr/local/lib/python2.7/site-packages/flask/app.py&quot;, line 1598, in dispatch_request
+     return self.view_functions[rule.endpoint](**req.view_args)
+   File &quot;/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 477, in wrapper
+     resp = resource(*args, **kwargs)
+   File &quot;/usr/local/lib/python2.7/site-packages/flask_login/utils.py&quot;, line 228, in decorated_view
+     return func(*args, **kwargs)
+   File &quot;/usr/local/lib/python2.7/site-packages/flask/views.py&quot;, line 84, in view
+     return self.dispatch_request(*args, **kwargs)
+   File &quot;/app/redash/handlers/base.py&quot;, line 31, in dispatch_request
+     return super(BaseResource, self).dispatch_request(*args, **kwargs)
+   File &quot;/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 587, in dispatch_request
+     resp = meth(*args, **kwargs)
+   File &quot;/app/redash/permissions.py&quot;, line 67, in decorated
+     return fn(*args, **kwargs)
+   File &quot;/app/redash/handlers/data_sources.py&quot;, line 95, in get
+     for ds in data_sources:
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 98, in instances
+     util.raise_from_cause(err)
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py&quot;, line 265, in raise_from_cause
+     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 79, in instances
+     rows = [proc(row) for row in fetch]
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 511, in _instance
+     loaded_instance, populate_existing, populators)
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 611, in _populate_full
+     dict_[key] = getter(row)
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py&quot;, line 1226, in process
+     return process_value(impl_processor(value), dialect)
+   File &quot;/app/redash/models/types.py&quot;, line 28, in process_result_value
+     return ConfigurationContainer.from_json(super(EncryptedConfiguration, self).process_result_value(value, dialect))
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py&quot;, line 409, in 
+     decrypted_value = self.engine.decrypt(value)
+   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py&quot;, line 216, in decrypt
+     decrypted = self.fernet.decrypt(value)
+   File &quot;/usr/local/lib/python2.7/site-packages/cryptography/fernet.py&quot;, line 75, in decrypt
+     return self._decrypt_data(data, timestamp, ttl)
+   File &quot;/usr/local/lib/python2.7/site-packages/cryptography/fernet.py&quot;, line 119, in _decrypt_data
+     self._verify_signature(data)
+   File &quot;/usr/local/lib/python2.7/site-packages/cryptography/fernet.py&quot;, line 108, in _verify_signature
+     raise InvalidToken
+ InvalidToken
+ [2020-02-27 15:11:29,508][PID:11][INFO][metrics] method=GET path=/api/data_sources endpoint=data_sources status=500 content_type=application/json content_length=36 duration=21.21 query_count=5 query_duration=19.35
+```
+For this, we modified ```REDASH_COOKIE_SECRET ``` env variable with the default key and also with the existing v7* key. 
+
+None of them worked.
+
+This seems to be happening to most of the API calls.
+
+### Technical details:
+
+* Redash Version: Version: 8.0.0+b32245 (a16f551e)
+* Browser/OS: Ubuntu 18 / Chrome
+* How did you install Redash: using the preconfigured VM.
+
+Please let us know
+1. The steps we performed are correct? or did we miss any of the steps?
+2. If it&#39;s okay, then how to fix this API call issue.
+
+Many Thanks.
+Krishna</description>
+    
+    <lastBuildDate>Tue, 18 Jan 2022 20:06:51 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Datasource and other API calls are failing with InvaildToken</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Since this is an old thread and refers to a non-kubernetes deployment, would you mind making a fresh thread with details about your setup and the exact issue you face? Thanks!</p>
+          <p><a href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/4</link>
+        <pubDate>Tue, 18 Jan 2022 20:06:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5650-4</guid>
+        <source url="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650.rss">Datasource and other API calls are failing with InvaildToken</source>
+      </item>
+      <item>
+        <title>Datasource and other API calls are failing with InvaildToken</title>
+        <dc:creator><![CDATA[arunkuralla]]></dc:creator>
+        <description><![CDATA[
+            <p>I am also facing the same issue when I moved rehash from KOPS managed Kubernetes cluster to EKS. I am using the same database backend (RDS) and same cookie secret.</p>
+          <p><a href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/3</link>
+        <pubDate>Mon, 17 Jan 2022 17:33:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5650-3</guid>
+        <source url="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650.rss">Datasource and other API calls are failing with InvaildToken</source>
+      </item>
+      <item>
+        <title>Datasource and other API calls are failing with InvaildToken</title>
+        <dc:creator><![CDATA[heyuan]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/krishna.chaitanya">@krishna.chaitanya</a> Hi, have you ever figured this out ? We are facing very similar issues</p>
+          <p><a href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/2</link>
+        <pubDate>Thu, 25 Mar 2021 18:44:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5650-2</guid>
+        <source url="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650.rss">Datasource and other API calls are failing with InvaildToken</source>
+      </item>
+      <item>
+        <title>Datasource and other API calls are failing with InvaildToken</title>
+        <dc:creator><![CDATA[krishna.chaitanya]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>We want to migrate from v7* to dockerized v8* self-hosted. Below are the steps we performed.</p>
+<ol>
+<li>Created a new vm in GCP using the prebuilt Image by referring the doc: <a href="https://redash.io/help/open-source/setup/" rel="nofollow noopener">https://redash.io/help/open-source/setup/</a>
+</li>
+<li>Took the pg_dump from the existing v7* server and pushed it to the new vm with v8* created in step1</li>
+<li>We did pg_restore and got all the data into.</li>
+<li>I am able to see all the users, list of dashboards, list of queries etc.</li>
+<li>Now, I am unable to see the data sources and dashboards and queries.</li>
+<li>Upon checking the logs, I see the following error message:</li>
+</ol>
+<pre><code class="lang-auto">[2020-02-27 15:11:29,501] ERROR in app: Exception on /api/data_sources [GET]
+ Traceback (most recent call last):
+   File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+     rv = self.dispatch_request()
+   File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+     return self.view_functions[rule.endpoint](**req.view_args)
+   File "/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py", line 477, in wrapper
+     resp = resource(*args, **kwargs)
+   File "/usr/local/lib/python2.7/site-packages/flask_login/utils.py", line 228, in decorated_view
+     return func(*args, **kwargs)
+   File "/usr/local/lib/python2.7/site-packages/flask/views.py", line 84, in view
+     return self.dispatch_request(*args, **kwargs)
+   File "/app/redash/handlers/base.py", line 31, in dispatch_request
+     return super(BaseResource, self).dispatch_request(*args, **kwargs)
+   File "/usr/local/lib/python2.7/site-packages/flask_restful/__init__.py", line 587, in dispatch_request
+     resp = meth(*args, **kwargs)
+   File "/app/redash/permissions.py", line 67, in decorated
+     return fn(*args, **kwargs)
+   File "/app/redash/handlers/data_sources.py", line 95, in get
+     for ds in data_sources:
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 98, in instances
+     util.raise_from_cause(err)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 265, in raise_from_cause
+     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 79, in instances
+     rows = [proc(row) for row in fetch]
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 511, in _instance
+     loaded_instance, populate_existing, populators)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 611, in _populate_full
+     dict_[key] = getter(row)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py", line 1226, in process
+     return process_value(impl_processor(value), dialect)
+   File "/app/redash/models/types.py", line 28, in process_result_value
+     return ConfigurationContainer.from_json(super(EncryptedConfiguration, self).process_result_value(value, dialect))
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py", line 409, in 
+     decrypted_value = self.engine.decrypt(value)
+   File "/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py", line 216, in decrypt
+     decrypted = self.fernet.decrypt(value)
+   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 75, in decrypt
+     return self._decrypt_data(data, timestamp, ttl)
+   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 119, in _decrypt_data
+     self._verify_signature(data)
+   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 108, in _verify_signature
+     raise InvalidToken
+ InvalidToken
+ [2020-02-27 15:11:29,508][PID:11][INFO][metrics] method=GET path=/api/data_sources endpoint=data_sources status=500 content_type=application/json content_length=36 duration=21.21 query_count=5 query_duration=19.35
+</code></pre>
+<p>For this, we modified <code>REDASH_COOKIE_SECRET </code> env variable with the default key and also with the existing v7* key.</p>
+<p>None of them worked.</p>
+<p>This seems to be happening to most of the API calls.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: Version: 8.0.0+b32245 (a16f551e)</li>
+<li>Browser/OS: Ubuntu 18 / Chrome</li>
+<li>How did you install Redash: using the preconfigured VM.</li>
+</ul>
+<p>Please let us know</p>
+<ol>
+<li>The steps we performed are correct? or did we miss any of the steps?</li>
+<li>If it’s okay, then how to fix this API call issue.</li>
+</ol>
+<p>Many Thanks.<br>
+Krishna</p>
+          <p><a href="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650/1</link>
+        <pubDate>Thu, 27 Feb 2020 15:32:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5650-1</guid>
+        <source url="https://discuss.redash.io/t/datasource-and-other-api-calls-are-failing-with-invaildtoken/5650.rss">Datasource and other API calls are failing with InvaildToken</source>
+      </item>
+  </channel>
+</rss>

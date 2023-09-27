@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Docker-compose.yml</title>
+    <link>https://discuss.redash.io/t/docker-compose-yml/4952</link>
+    <description>Hi
+
+I want to make redash on Docker.
+
+Please tell me the contents of docker-compose.yml.
+
+※This is the yml file that was included from the beginning
+/# This configuration file is for the **development* setup.
+/# For a production example please refer to setup/docker-compose.yml.
+version: &#39;3.2&#39;
+services:
+  server:
+    build: .
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - &quot;5000:5000&quot;
+      - &quot;5678:5678&quot;
+    volumes:
+      - &quot;.:/app&quot;
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: &quot;INFO&quot;
+      REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+      REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+      REDASH_RATELIMIT_ENABLED: &quot;false&quot;
+  scheduler:
+    build: .
+    command: dev_scheduler
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - server
+    environment:
+      REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+      REDASH_MAIL_DEFAULT_SENDER: redash@example.com
+      REDASH_MAIL_SERVER: email
+  worker:
+    build: .
+    command: dev_worker
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - server
+    tty: true
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: &quot;INFO&quot;
+      REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+      REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+  celery-worker:
+    build: .
+    command: dev_celery_worker
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - server
+      - email
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: &quot;INFO&quot;
+      REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+      REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+      QUEUES: &quot;queries,scheduled_queries&quot;
+      WORKERS_COUNT: 2
+      REDASH_MAIL_DEFAULT_SENDER: redash@example.com
+      REDASH_MAIL_SERVER: email
+  redis:
+    image: redis:3-alpine
+    restart: unless-stopped
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - &quot;15432:5432&quot;
+    command: &quot;postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF&quot;
+    restart: unless-stopped
+  email:
+    image: djfarrelly/maildev
+    ports:
+      - &quot;1080:80&quot;
+    restart: unless-stopped
+
+
+I want to use redash V8.
+
+And What commands are required to display the redash management console?</description>
+    
+    <lastBuildDate>Mon, 21 Mar 2022 10:14:54 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/docker-compose-yml/4952.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[Michael]]></dc:creator>
+        <description><![CDATA[
+            <p>I got this working by removing the version tags from redash, redis and postgres images.</p>
+<p>Cheers, Mike</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash #:8.0.0.b32245
+  depends_on:
+    - postgres
+    - redis
+  env_file: ./env
+services:
+  create_db:
+    &lt;&lt;: *redash-service
+    command: create_db
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+    restart: always
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      QUEUES: "celery"
+      WORKERS_COUNT: 1
+    restart: always
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+    restart: always
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+    restart: always
+  redis:
+    image: redis #:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres #:9.6-alpine
+    env_file: ./env
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/10</link>
+        <pubDate>Mon, 21 Mar 2022 10:14:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-10</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[k4s1m]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your contribution and welcome to the forum <a class="mention" href="https://discuss.redash.io/u/max_streese">@max_streese</a>!</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/9</link>
+        <pubDate>Thu, 19 Nov 2020 20:58:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-9</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[max_streese]]></dc:creator>
+        <description><![CDATA[
+            <p>Just in case anyone stumbles across this as I just did earlier today, I have created a fully self-contained docker-compose file (well with the addition of one env file) <a href="https://github.com/maxstreese/docker-compose-selection/tree/master/redash" rel="noopener nofollow ugc">here</a>.</p>
+<p>Reason being that I found the existing resources a little lacking for just giving Redash a spin. In my believe one should not need to execute a shell script as is done <a href="https://github.com/getredash/setup" rel="noopener nofollow ugc">here</a>, nor should one need to perform some extra steps and also have the compose file build images from source as is done in the dev-guide. Ideally it should not even be required to run something like <code>docker-compose run ...</code> which is also required in at least some of the resources available currently.</p>
+<p>With the linked repository of mine you truly need to do <code>docker-compose up -d</code> and you are good to go.</p>
+<p>Maybe it will help someone some day. Cheers!</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/8</link>
+        <pubDate>Thu, 19 Nov 2020 19:19:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-8</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[yuuuuuuuuji]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/levko">@levko</a></p>
+<p>Thank you</p>
+<p>I try install this (<a href="https://redash.io/help/open-source/dev-guide/docker" rel="nofollow noopener">https://redash.io/help/open-source/dev-guide/docker</a>)<br>
+So inevitably using sources from GitHub.</p>
+<p>I don’t know which file, where, in what format, and version information should be entered.</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/7</link>
+        <pubDate>Wed, 13 Nov 2019 13:40:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-7</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[levko]]></dc:creator>
+        <description><![CDATA[
+            <p>It’s in a case you try to build Redash using sources from GitHub: <a href="https://github.com/getredash/redash/tree/v8.0.0">https://github.com/getredash/redash/tree/v8.0.0</a></p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/6</link>
+        <pubDate>Wed, 13 Nov 2019 13:33:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-6</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[yuuuuuuuuji]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/levko">@levko</a></p>
+<p>Thank you</p>
+<p>I try install this procedure.</p>
+<p><a href="https://redash.io/help/open-source/dev-guide/docker" class="onebox" target="_blank" rel="nofollow noopener">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>I’m sorry,Where is this( checkout the tag you need ( <code>v8.0.0</code> ) instead of  <code>master</code>  branch.)</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/5</link>
+        <pubDate>Wed, 13 Nov 2019 13:23:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-5</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[levko]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="yuuuuuuuuji" data-post="3" data-topic="4952">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/y/bc8723/40.png" class="avatar"> yuuuuuuuuji:</div>
+<blockquote>
+<p>How can I install the stable version of v8.0.0?</p>
+</blockquote>
+</aside>
+<p>The best way is to follow setup instructions: <a href="https://redash.io/help/open-source/setup#-Other">https://redash.io/help/open-source/setup#-Other</a></p>
+<p>Also, if you directly clone repo from github - checkout the tag you need (<code>v8.0.0</code>) instead of <code>master</code> branch.</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/4</link>
+        <pubDate>Wed, 13 Nov 2019 13:12:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-4</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[yuuuuuuuuji]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<p>Thank you reply.</p>
+<aside class="onebox githubblob">
+  <header class="source">
+      <a href="https://github.com/getredash/redash/blob/master/docker-compose.yml" target="_blank" rel="nofollow noopener">github.com</a>
+  </header>
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/master/docker-compose.yml" target="_blank" rel="nofollow noopener">getredash/redash/blob/master/docker-compose.yml</a></h4>
+<pre><code class="lang-yml"># This configuration file is for the **development** setup.
+# For a production example please refer to setup/docker-compose.yml.
+version: '3.2'
+services:
+  server:
+    build: .
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+      - "5678:5678"
+    volumes:
+      - ".:/app"
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+</code></pre>
+
+  This file has been truncated. <a href="https://github.com/getredash/redash/blob/master/docker-compose.yml" target="_blank" rel="nofollow noopener">show original</a>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p>You mean this content is 「no need to write your own」?</p>
+<p>If you build without changing this content, v9.0.0 will be installed.<br>
+How can I install the stable version of v8.0.0?</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/3</link>
+        <pubDate>Wed, 13 Nov 2019 13:03:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-3</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>The <code>docker-compose.yml</code> file you need is available in the Redash repo. There’s no need to write your own.</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/2</link>
+        <pubDate>Wed, 13 Nov 2019 12:58:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-2</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+      <item>
+        <title>Docker-compose.yml</title>
+        <dc:creator><![CDATA[yuuuuuuuuji]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi</p>
+<p>I want to make redash on Docker.</p>
+<p>Please tell me the contents of docker-compose.yml.</p>
+<p>※This is the yml file that was included from the beginning<br>
+/# This configuration file is for the *<em>development</em> setup.<br>
+/# For a production example please refer to setup/docker-compose.yml.<br>
+version: ‘3.2’<br>
+services:<br>
+server:<br>
+build: .<br>
+command: dev_server<br>
+depends_on:<br>
+- postgres<br>
+- redis<br>
+ports:<br>
+- “5000:5000”<br>
+- “5678:5678”<br>
+volumes:<br>
+- “.:/app”<br>
+environment:<br>
+PYTHONUNBUFFERED: 0<br>
+REDASH_LOG_LEVEL: “INFO”<br>
+REDASH_REDIS_URL: “redis://redis:6379/0”<br>
+REDASH_DATABASE_URL: “postgresql://postgres@postgres/postgres”<br>
+REDASH_RATELIMIT_ENABLED: “false”<br>
+scheduler:<br>
+build: .<br>
+command: dev_scheduler<br>
+volumes:<br>
+- type: bind<br>
+source: .<br>
+target: /app<br>
+depends_on:<br>
+- server<br>
+environment:<br>
+REDASH_REDIS_URL: “redis://redis:6379/0”<br>
+REDASH_MAIL_DEFAULT_SENDER: <a href="mailto:redash@example.com">redash@example.com</a><br>
+REDASH_MAIL_SERVER: email<br>
+worker:<br>
+build: .<br>
+command: dev_worker<br>
+volumes:<br>
+- type: bind<br>
+source: .<br>
+target: /app<br>
+depends_on:<br>
+- server<br>
+tty: true<br>
+environment:<br>
+PYTHONUNBUFFERED: 0<br>
+REDASH_LOG_LEVEL: “INFO”<br>
+REDASH_REDIS_URL: “redis://redis:6379/0”<br>
+REDASH_DATABASE_URL: “postgresql://postgres@postgres/postgres”<br>
+celery-worker:<br>
+build: .<br>
+command: dev_celery_worker<br>
+volumes:<br>
+- type: bind<br>
+source: .<br>
+target: /app<br>
+depends_on:<br>
+- server<br>
+- email<br>
+environment:<br>
+PYTHONUNBUFFERED: 0<br>
+REDASH_LOG_LEVEL: “INFO”<br>
+REDASH_REDIS_URL: “redis://redis:6379/0”<br>
+REDASH_DATABASE_URL: “postgresql://postgres@postgres/postgres”<br>
+QUEUES: “queries,scheduled_queries”<br>
+WORKERS_COUNT: 2<br>
+REDASH_MAIL_DEFAULT_SENDER: <a href="mailto:redash@example.com">redash@example.com</a><br>
+REDASH_MAIL_SERVER: email<br>
+redis:<br>
+image: redis:3-alpine<br>
+restart: unless-stopped<br>
+postgres:<br>
+image: postgres:9.5-alpine<br>
+# The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3<br>
+# improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for<br>
+# tests.<br>
+ports:<br>
+- “15432:5432”<br>
+command: “postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF”<br>
+restart: unless-stopped<br>
+email:<br>
+image: djfarrelly/maildev<br>
+ports:<br>
+- “1080:80”<br>
+restart: unless-stopped</p>
+<p>I want to use redash V8.</p>
+<p>And What commands are required to display the redash management console?</p>
+          <p><a href="https://discuss.redash.io/t/docker-compose-yml/4952/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/docker-compose-yml/4952/1</link>
+        <pubDate>Wed, 13 Nov 2019 11:17:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-4952-1</guid>
+        <source url="https://discuss.redash.io/t/docker-compose-yml/4952.rss">Docker-compose.yml</source>
+      </item>
+  </channel>
+</rss>

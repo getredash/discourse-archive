@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Installation: yarn build fails</title>
+    <link>https://discuss.redash.io/t/installation-yarn-build-fails/9039</link>
+    <description>### Issue Summary
+
+yarn build always fails. I had some problems which I resolved before, but maybe my changes are the reason yarn build fails. My knowledge about npm, yarn etc is basic. My best guess is that some of the dependencies are not working there. core-js? eslint-loader?
+
+**1 Unresolved issue:  yarn build fails**
+
+I get a very long list of errors, I just took a few out, see below. I guess something in my setup is not correct? 
+
+My understanding is that yarn build produces the static pages, without it, I cant work with redash. I manage to get to the login page of localhost:5000, but once I provide my orga details, the server crashes (due to missing index.html). 
+
+I encountered a few issues earlier, and &quot;fixed&quot; them, but maybe they are the source of my problem now? see below, please. 
+
+```
+ERROR in ./client/app/components/DynamicComponent.jsx
+Module not found: Error: Can&#39;t resolve &#39;core-js/modules/es6.array.iterator.js&#39; in &#39;/home/np/tools/redash/redash/client/app/components&#39;
+ @ ./client/app/components/DynamicComponent.jsx 11:0-47
+ @ ./client/app/components/ApplicationArea/ErrorMessage.jsx
+ @ ./client/app/components/ApplicationArea/index.jsx
+ @ ./client/app/index.js
+ @ multi ./client/app/index.js ./client/app/assets/less/main.less ./client/app/assets/less/ant.less
+
+ERROR in ./client/app/components/BeaconConsent.jsx
+Module not found: Error: Can&#39;t resolve &#39;core-js/modules/es6.array.iterator.js&#39; in &#39;/home/np/tools/redash/redash/client/app/components&#39;
+ @ ./client/app/components/BeaconConsent.jsx 4:0-47
+ @ ./client/app/pages/home/Home.jsx
+ @ ./client/app/pages/index.js
+ @ ./client/app/config/index.js
+ @ ./client/app/index.js
+ @ multi ./client/app/index.js ./client/app/assets/less/main.less ./client/app/assets/less/ant.less
+
+ERROR in ./client/app/components/TimeAgo.jsx
+Module not found: Error: Can&#39;t resolve &#39;core-js/modules/es6.array.iterator.js&#39; in &#39;/home/np/tools/redash/redash/client/app/components&#39;
+ @ ./client/app/components/TimeAgo.jsx 3:0-47
+ @ ./client/app/pages/admin/OutdatedQueries.jsx
+ @ ./client/app/pages/index.js
+ @ ./client/app/config/index.js
+ @ ./client/app/index.js
+ @ multi ./client/app/index.js ./client/app/assets/less/main.less ./client/app/assets/less/ant.less
+```
+
+------
+
+**2 Resolved issue by myself:  docker-compose fails**
+Error: 
+```
+The following packages have unmet dependencies:
+ odbcinst1debian2 : PreDepends: multiarch-support but it is not installable
+.... 
+```
+My solution, which I found on the internet, changing in the Dockerfile &quot;python:3.7-slim&quot; to &quot;python:3.7.10-slim&quot;. docker-compose up -d worked after that. Bad idea?
+
+**3 Resolved issue by myself:  yarn --frozen-lockfile fails** 
+Some kind of typescript error in: 
+
+`viz-lib/src/visualizations/table/Renderer.tsx`
+
+Error message: 
+
+`error TS2578: Unused &#39;@ts-expect-error&#39; directive`
+
+I just removed the &quot;@ts-expect-error&quot; from line 122 in the Renderer.tsx which was recommended on the internet. This way, yarn --frozen-lockfile worked (more). Bad idea? 
+
+**4 Resolved issue by myself:  yarn --frozen-lockfile fails** 
+Error was that version &quot;^12.0.0&quot; was expected, and I had 14.16.1 as described in the documentation. So I just changed it to it. Bad idea?
+
+### Technical details:
+
+* Redash Version: v10.0.0-beta (92e5d78dd)
+* Browser/OS: Firefox 91.0.2 / Ubuntu 20.04.3 LTS
+* Docker: 20.10.7
+* NPM: 6.14.12
+* yarn: 1.22.10
+* Node: v14.16.1
+* How did you install Redash:
+Following this tutorial: https://redash.io/help/open-source/dev-guide/docker
+
+
+Any help would be appreciated.</description>
+    
+    <lastBuildDate>Tue, 07 Sep 2021 08:10:36 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/installation-yarn-build-fails/9039.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Installation: yarn build fails</title>
+        <dc:creator><![CDATA[np00]]></dc:creator>
+        <description><![CDATA[
+            <p>ok, I managed to resolve it! redash seems to work now <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p>One change I did previously, editing /viz-lib/src/visualizations/table/Renderer.tsx did cause problems later. I reverted it to the original in the repository.</p>
+<p>After that, both these commands worked:</p>
+<p><code>npm install --no-optional</code><br>
+<code>yarn build</code></p>
+<p>Now the login page is properly formatted and I can get through the registrations to the normal landing page!</p>
+          <p><a href="https://discuss.redash.io/t/installation-yarn-build-fails/9039/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/installation-yarn-build-fails/9039/2</link>
+        <pubDate>Tue, 07 Sep 2021 08:10:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9039-2</guid>
+        <source url="https://discuss.redash.io/t/installation-yarn-build-fails/9039.rss">Installation: yarn build fails</source>
+      </item>
+      <item>
+        <title>Installation: yarn build fails</title>
+        <dc:creator><![CDATA[np00]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>yarn build always fails. I had some problems which I resolved before, but maybe my changes are the reason yarn build fails. My knowledge about npm, yarn etc is basic. My best guess is that some of the dependencies are not working there. core-js? eslint-loader?</p>
+<p><strong>1 Unresolved issue:  yarn build fails</strong></p>
+<p>I get a very long list of errors, I just took a few out, see below. I guess something in my setup is not correct?</p>
+<p>My understanding is that yarn build produces the static pages, without it, I cant work with redash. I manage to get to the login page of localhost:5000, but once I provide my orga details, the server crashes (due to missing index.html).</p>
+<p>I encountered a few issues earlier, and “fixed” them, but maybe they are the source of my problem now? see below, please.</p>
+<pre><code class="lang-auto">ERROR in ./client/app/components/DynamicComponent.jsx
+Module not found: Error: Can't resolve 'core-js/modules/es6.array.iterator.js' in '/home/np/tools/redash/redash/client/app/components'
+ @ ./client/app/components/DynamicComponent.jsx 11:0-47
+ @ ./client/app/components/ApplicationArea/ErrorMessage.jsx
+ @ ./client/app/components/ApplicationArea/index.jsx
+ @ ./client/app/index.js
+ @ multi ./client/app/index.js ./client/app/assets/less/main.less ./client/app/assets/less/ant.less
+
+ERROR in ./client/app/components/BeaconConsent.jsx
+Module not found: Error: Can't resolve 'core-js/modules/es6.array.iterator.js' in '/home/np/tools/redash/redash/client/app/components'
+ @ ./client/app/components/BeaconConsent.jsx 4:0-47
+ @ ./client/app/pages/home/Home.jsx
+ @ ./client/app/pages/index.js
+ @ ./client/app/config/index.js
+ @ ./client/app/index.js
+ @ multi ./client/app/index.js ./client/app/assets/less/main.less ./client/app/assets/less/ant.less
+
+ERROR in ./client/app/components/TimeAgo.jsx
+Module not found: Error: Can't resolve 'core-js/modules/es6.array.iterator.js' in '/home/np/tools/redash/redash/client/app/components'
+ @ ./client/app/components/TimeAgo.jsx 3:0-47
+ @ ./client/app/pages/admin/OutdatedQueries.jsx
+ @ ./client/app/pages/index.js
+ @ ./client/app/config/index.js
+ @ ./client/app/index.js
+ @ multi ./client/app/index.js ./client/app/assets/less/main.less ./client/app/assets/less/ant.less
+</code></pre>
+<hr>
+<p><strong>2 Resolved issue by myself:  docker-compose fails</strong><br>
+Error:</p>
+<pre><code class="lang-auto">The following packages have unmet dependencies:
+ odbcinst1debian2 : PreDepends: multiarch-support but it is not installable
+.... 
+</code></pre>
+<p>My solution, which I found on the internet, changing in the Dockerfile “python:3.7-slim” to “python:3.7.10-slim”. docker-compose up -d worked after that. Bad idea?</p>
+<p><strong>3 Resolved issue by myself:  yarn --frozen-lockfile fails</strong><br>
+Some kind of typescript error in:</p>
+<p><code>viz-lib/src/visualizations/table/Renderer.tsx</code></p>
+<p>Error message:</p>
+<p><code>error TS2578: Unused '@ts-expect-error' directive</code></p>
+<p>I just removed the “<span class="mention">@ts-expect-error</span>” from line 122 in the Renderer.tsx which was recommended on the internet. This way, yarn --frozen-lockfile worked (more). Bad idea?</p>
+<p><strong>4 Resolved issue by myself:  yarn --frozen-lockfile fails</strong><br>
+Error was that version “^12.0.0” was expected, and I had 14.16.1 as described in the documentation. So I just changed it to it. Bad idea?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v10.0.0-beta (92e5d78dd)</li>
+<li>Browser/OS: Firefox 91.0.2 / Ubuntu 20.04.3 LTS</li>
+<li>Docker: 20.10.7</li>
+<li>NPM: 6.14.12</li>
+<li>yarn: 1.22.10</li>
+<li>Node: v14.16.1</li>
+<li>How did you install Redash:<br>
+Following this tutorial: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a>
+</li>
+</ul>
+<p>Any help would be appreciated.</p>
+          <p><a href="https://discuss.redash.io/t/installation-yarn-build-fails/9039/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/installation-yarn-build-fails/9039/1</link>
+        <pubDate>Mon, 06 Sep 2021 15:29:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9039-1</guid>
+        <source url="https://discuss.redash.io/t/installation-yarn-build-fails/9039.rss">Installation: yarn build fails</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Query auto update does not work Redash v10</title>
+    <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353</link>
+    <description>### Issue Summary
+
+Hello, I have a problem with my self hostedRedash v10. After an update from v10, none of the scheduled queries worked automatically. 
+
+### Technical details:
+
+* Redash Version: 10.0.0
+* Browser/OS: Chrome
+* How did you install Redash: Docker on AWS</description>
+    
+    <lastBuildDate>Wed, 08 Dec 2021 21:39:10 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hmmm you’re right. I’ve tested this in a few iterations. I posted my findings here:</p>
+<aside class="quote quote-modified" data-post="30" data-topic="9612">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3428_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/scheduled-workers-in-self-hosted-redash-is-not-working/9612/30">Scheduled workers in self-hosted Redash is not working</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Yeah it can be confusing. Here’s an example that hopefully helps: 
+In my docker-compose.yml file I defined these three worker services: general_worker, adhoc_worker, and scheduled_worker. The first does not specify any queues to monitor so the default is used (all queues). The second only monitors the queries queue. The third only monitors the scheduled_queries and schemas queues. 
+  general_worker:
+    &lt;&lt;: *redash-service
+    command: dev_worker
+    depends_on:
+      - server
+    environment:
+ …
+  </blockquote>
+</aside>
+
+<p>I would not recommend removing the QUEUES environment variable from <code>scheduled_worker</code>. If this is removed, the worker will monitor <em>all queues</em> (including <code>scheduled_queries</code>) for jobs. But in general it’s best to use a dedicated worker for scheduled tasks so that scheduled executions don’t interfere with adhoc ones (which happen when a user clicks the Execute button).</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/21">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/21</link>
+        <pubDate>Wed, 08 Dec 2021 21:39:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-21</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[swaldman]]></dc:creator>
+        <description><![CDATA[
+            <p>But that was the workaround proposed in ahrussell’s post (<a href="http://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/14" class="inline-onebox">Query auto update does not work Redash v10 - #14 by ahrussell</a>). I’m confused, is that not recommended after all?</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/20">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/20</link>
+        <pubDate>Wed, 08 Dec 2021 18:53:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-20</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="swaldman" data-post="16" data-topic="9353">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/s/f19dbf/40.png" class="avatar"> swaldman:</div>
+<blockquote>
+<p>omitting lines from <code>scheduled_worker</code> )</p>
+</blockquote>
+</aside>
+<p>I didn’t read this carefully enough <img src="https://emoji.discourse-cdn.com/twitter/man_facepalming.png?v=10" title=":man_facepalming:" class="emoji" alt=":man_facepalming:"> . But there’s nothing to omit from <code>scheduled_worker</code> only from <code>scheduler</code>.</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/19</link>
+        <pubDate>Wed, 08 Dec 2021 18:51:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-19</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[swaldman]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you! I don’t see the change to <code>scheduled_worker</code> there either, though (either the one you linked or <a href="https://github.com/getredash/redash/releases/tag/v10.0.0" class="inline-onebox" rel="noopener nofollow ugc">Release v10.0.0 · getredash/redash · GitHub</a>).</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/18</link>
+        <pubDate>Wed, 08 Dec 2021 18:41:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-18</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>They’re on the releases page in Github.</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://github.com/getredash/redash/releases/tag/v10.1.0">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="16" height="16">
+
+      <a href="https://github.com/getredash/redash/releases/tag/v10.1.0" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/345;"><img src="https://opengraph.githubassets.com/a56f4738a1d2c585cff42845469e3bef7e50522c0984e7620926be22d61a1cac/getredash/redash/releases/tag/v10.1.0" class="thumbnail" width="690" height="345"></div>
+
+<h3><a href="https://github.com/getredash/redash/releases/tag/v10.1.0" target="_blank" rel="noopener">Release v10.1.0 · getredash/redash</a></h3>
+
+  <p>Docker Tag: redash/redash:10.1.0.b50633
+Summary
+This release includes fixes for three security vulnerabilities (click the links for complete details to see whether your installation is affected):
+
+...</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/17</link>
+        <pubDate>Wed, 08 Dec 2021 18:38:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-17</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[swaldman]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, where can I find the most up-to-date release instructions?<br>
+<a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="noopener nofollow ugc">https://redash.io/help/open-source/admin-guide/how-to-upgrade</a> only goes up to v8 and <a href="https://github.com/getredash/redash/blob/release/10.0.x/CHANGELOG.md" class="inline-onebox" rel="noopener nofollow ugc">redash/CHANGELOG.md at release/10.0.x · getredash/redash · GitHub</a> does not appear to have the new changes (omitting lines from <code>scheduled_worker</code>)</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/16</link>
+        <pubDate>Wed, 08 Dec 2021 18:36:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-16</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Great catch! Will update these today.</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/15</link>
+        <pubDate>Mon, 01 Nov 2021 14:30:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-15</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[ahrussell]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for letting me know. FYI, that’s not what the release upgrade instructions say to do. The release upgrade instructions only specify to remove these environment variables from the <code>scheduler</code>, not the <code>scheduled_worker</code> as well.</p>
+<p>“1. Under <code>services/scheduler/environment</code> , omit <code>QUEUES</code> and <code>WORKERS_COUNT</code> (and omit <code>environment</code> altogether if it is empty).”</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/14</link>
+        <pubDate>Mon, 01 Nov 2021 14:29:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-14</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="ahrussell" data-post="11" data-topic="9353">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/ahrussell/40/3441_2.png" class="avatar"> ahrussell:</div>
+<blockquote>
+<p>What I did to fix it was to remove the <code>QUEUES: "scheduled_queries,schemas"</code> line in the <code>docker-compose.yml</code> file.</p>
+</blockquote>
+</aside>
+<p>Yes this is the correct path. It’s exactly what the release upgrade instructions said to do.</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/13</link>
+        <pubDate>Mon, 01 Nov 2021 13:07:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-13</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/ahrussell">@ahrussell</a>  It worked for me as well! Thanks a lot!</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/12</link>
+        <pubDate>Mon, 01 Nov 2021 12:14:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-12</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[ahrussell]]></dc:creator>
+        <description><![CDATA[
+            <p>I encountered an issue with query auto updates not getting scheduled as well. I followed the migration steps <a href="http://discuss.redash.io/t/v10-beta-is-ready/8633">here</a>, but it still didn’t work, and I couldn’t find any errors in the logs for the scheduler or the scheduled worker.</p>
+<p>What I did to fix it was to remove the <code>QUEUES: "scheduled_queries,schemas"</code> line in the <code>docker-compose.yml</code> file. What I believe this did was set these queues to revert to the defaults defined <a href="https://github.com/getredash/redash/blob/master/redash/worker.py" rel="noopener nofollow ugc">here</a>. This worked, but I’m still unsure if this is the right way to solve this problem.</p>
+<p><a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> could you provide some additional context/guidance here?</p>
+<p>This is my docker-compose.yml file:</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    # environment:
+    #   QUEUES: "scheduled_queries,schemas"
+    #   WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: “periodic emails default”
+      WORKERS_COUNT: 1
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/11</link>
+        <pubDate>Mon, 01 Nov 2021 11:36:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-11</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I think we’re getting closer but we’re not there yet <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>Look at your docker compose file under the <code>services</code> tag. You have defined the following services:</p>
+<ul>
+<li>server</li>
+<li>scheduler</li>
+<li>scheduled_worker</li>
+<li>adhoc_worker</li>
+<li>redis</li>
+<li>postgres</li>
+<li>nginx</li>
+</ul>
+<p>You need to check the logs for <code>scheduled_worker</code>. You do this <em>from the host machine</em> with this command:</p>
+<pre><code class="lang-bash">$ docker-compose logs --tail 100 scheduled_worker
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/10</link>
+        <pubDate>Thu, 28 Oct 2021 16:18:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-10</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <p>But on UI id do have a low of queries. 99% of them are weekly or daily update, made this one for testing with 5 minute period</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4db3a1ead242ee4575eacb28e3a9a9d01b8f3c8e.png" alt="Service - Games List - Google Chrome 2021-10-28 19.17.37540j1" data-base62-sha1="b5nCOz9LrDAVDfSz72I5fXUsd3w" width="216" height="125"></p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/9</link>
+        <pubDate>Thu, 28 Oct 2021 16:18:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-9</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <p>Ok, checked worker. All log look like this</p>
+<pre><code class="lang-auto"> worker-0
+2021/10/28 15:22:01 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:8fa19270bf324a9f89f4a0a21d633b7f healthcheck: Is busy? False. Seen lately? False (337 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/10/28 15:22:01 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+RESULT 2
+OKREADY
+2021/10/28 15:23:02 [worker_healthcheck] Received TICK_60 event from supervisor
+2021/10/28 15:23:02 [worker_healthcheck] Performing `RQ Worker Healthcheck` check for process name worker-0
+2021/10/28 15:23:02 [worker_healthcheck] WorkerHealthcheck: Worker rq:worker:8fa19270bf324a9f89f4a0a21d633b7f healthcheck: Is busy? False. Seen lately? False (398 seconds ago). Has nothing to do? True (0 jobs in watched queues). ==&gt; Is healthy? True
+2021/10/28 15:23:02 [worker_healthcheck] `RQ Worker Healthcheck` check succeeded for process worker-0
+RESULT 2
+OKREADY
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/8</link>
+        <pubDate>Thu, 28 Oct 2021 16:17:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-8</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>We don’t care about your scheduler. We care about the <code>scheduler_worker</code> which actually <em>runs</em> the jobs that the <code>scheduler</code> enqueues.</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/7</link>
+        <pubDate>Thu, 28 Oct 2021 16:11:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-7</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <p>Here is what I have in logs</p>
+<pre><code class="lang-auto">root@server:/opt/redash# docker logs redash_scheduler_1
+Starting RQ scheduler...
+[2021-10-28 15:09:17,940][PID:1][INFO][rq_scheduler.scheduler] Registering birth
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/6</link>
+        <pubDate>Thu, 28 Oct 2021 16:08:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-6</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for sharing. You should fix the references to “celery” in your docker-compose. They aren’t hurting anything. But V10 doesn’t use celery (that was removed in V9).</p>
+<p>The next question is whether you see any activity in your logs from the scheduled_worker. That should be running queries for you but isn’t.</p>
+<p>Or maybe it is running queries, but because it has just one worker you don’t see it updating them all at once because it becomes backlogged?</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/5</link>
+        <pubDate>Thu, 28 Oct 2021 15:50:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-5</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="2" data-topic="9353">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3002_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>Do you have any worker services running?</p>
+</blockquote>
+</aside>
+<p>Can you please clarify this question? I am far from dev ops theme, and redash configured “from the box”</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/4</link>
+        <pubDate>Thu, 28 Oct 2021 15:36:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-4</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote group-Team" data-username="jesse" data-post="2" data-topic="9353">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/jesse/40/3002_2.png" class="avatar"> jesse:</div>
+<blockquote>
+<p>docker-compose.yml</p>
+</blockquote>
+</aside>
+<p>Hello jesse, thank you for quick reply</p>
+<p>Here is the text of my docker-compose file:</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+#  image: redash/redash:8.0.0.b32245
+  image: redash/redash:10.0.0.b50363
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      QUEUES: "celery"
+      WORKERS_COUNT: 1
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+    expose:
+      - "3306"
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+   image: nginx:latest
+   ports:
+     - "80:80"
+     - "443:443"
+   depends_on:
+     - server
+   links:
+     - server:redash
+   volumes:
+     - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+     - /opt/redash/nginx/certs:/etc/letsencrypt
+     - /opt/redash/nginx/certs-data:/data/letsencrypt
+   restart: always
+</code></pre>
+<p><a href="https://discuss.redash.io">Processing: docker-compose.yml…</a></p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/3</link>
+        <pubDate>Thu, 28 Oct 2021 15:35:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-3</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There is not enough information here to help you.</p>
+<p>Do you have any worker services running?</p>
+<p>Please share your docker-compose.yml file.</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/2</link>
+        <pubDate>Thu, 28 Oct 2021 12:33:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-2</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+      <item>
+        <title>Query auto update does not work Redash v10</title>
+        <dc:creator><![CDATA[o.shulzhenko]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hello, I have a problem with my self hostedRedash v10. After an update from v10, none of the scheduled queries worked automatically.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: Docker on AWS</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353/1</link>
+        <pubDate>Thu, 28 Oct 2021 06:31:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9353-1</guid>
+        <source url="https://discuss.redash.io/t/query-auto-update-does-not-work-redash-v10/9353.rss">Query auto update does not work Redash v10</source>
+      </item>
+  </channel>
+</rss>

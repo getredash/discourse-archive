@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>A simple way to obtain results restricted to logged user (aka: Row Level Security)</title>
+    <link>https://discuss.redash.io/t/a-simple-way-to-obtain-results-restricted-to-logged-user-aka-row-level-security/11670</link>
+    <description>After some tweaking I found a way (probably not the best) to achieve this in Redash
+
+The idea is to use username or its groups to filter data, so each user sees only the data marked for him. The same query and datasource could serve for all users. 
+
+Filtering data could be done easily with simple conditions ( i.e `select * from data where ….. and allowed_groups in (redash_user_groups)` )
+
+I tried some different options at client or backend, and finally the backend one seems best.
+
+For example, this could be a simple query to start trying to check values at execution time. (The values we want to be substituted should have some fixed specific names, not easy to be used some other way)
+
+```
+Select
+&#39;__REDASH_USER&#39;        as redash_connected_user, 
+&#39;__REDASH_USER_GROUPS&#39; as redash_user_groups, 
+from dual
+```
+The aim is to substitute __REDASH_USER with the actual user who retrieves data and __REDASH_USER_GROUPS with his redash groups at execution time.
+
+After some tests the easier way to do it is at backend, specifically at app/redash/handlers/query_results.py Adding some lines at run_query
+
+```
+    (...)
+    query_text = data_source.query_runner.apply_auto_limit(
+        query.text, should_apply_auto_limit
+    )
+
+    # RLS  Substitute username or groups.  Turn cache or previous results off with max_age=0
+
+    if &#39;__REDASH_USER&#39; in query_text or &#39;__REDASH_USER_GROUPS&#39; in query_text:
+        if hasattr(current_user, &#39;email&#39;):
+            query_text = query_text.replace(&#39;__REDASH_USER_GROUPS&#39;,&#39;,&#39;.join(str(v) for v in current_user.group_ids))
+            query_text = query_text.replace(&#39;__REDASH_USER&#39;,current_user.email)
+        else:
+            query_text = query_text.replace(&#39;__REDASH_USER_GROUPS&#39;,&#39; -1 &#39;)
+            query_text = query_text.replace(&#39;__REDASH_USER&#39;,&#39;guest@example.com&#39;)
+        max_age=0
+
+      # END RLS
+
+    if query.missing_params:
+   (...)
+```
+
+That way, at query execution time, __REDASH_USER would be substituted with user’s mail and __REDASH_USER_GROUPS would be substituted with a list of comma separated values of the redash groups ids the user belongs to.
+
+Then, the result is
+
+```
+REDASH_CONNECTED_USER  REDASH_USER_GROUPS
+somebody@mydomain.com           1,2
+```
+
+So we can use these values in any query we want to filter data depending on users or groups (preferably)
+
+One potential problem could be cached or previous results, but seems that setting max_age=0 when substitution is done no results are stored or cached (at least on my tests, probably needs deeper testing)
+
+It is important to note that public or using the api_key way of retrieving data have no username associated, so this substitution just returns &#39;[guest@example.com](mailto:guest@example.com)&#39; and -1 as group.
+
+(In [#3723](https://github.com/getredash/redash/pull/3723)  there is a similar discussion with other terms)</description>
+    
+    <lastBuildDate>Tue, 07 Mar 2023 18:30:05 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/a-simple-way-to-obtain-results-restricted-to-logged-user-aka-row-level-security/11670.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>A simple way to obtain results restricted to logged user (aka: Row Level Security)</title>
+        <dc:creator><![CDATA[Losalo]]></dc:creator>
+        <description><![CDATA[
+            <p>After some tweaking I found a way (probably not the best) to achieve this in Redash</p>
+<p>The idea is to use username or its groups to filter data, so each user sees only the data marked for him. The same query and datasource could serve for all users.</p>
+<p>Filtering data could be done easily with simple conditions ( i.e <code>select * from data where ….. and allowed_groups in (redash_user_groups)</code> )</p>
+<p>I tried some different options at client or backend, and finally the backend one seems best.</p>
+<p>For example, this could be a simple query to start trying to check values at execution time. (The values we want to be substituted should have some fixed specific names, not easy to be used some other way)</p>
+<pre><code class="lang-auto">Select
+'__REDASH_USER'        as redash_connected_user, 
+'__REDASH_USER_GROUPS' as redash_user_groups, 
+from dual
+</code></pre>
+<p>The aim is to substitute __REDASH_USER with the actual user who retrieves data and __REDASH_USER_GROUPS with his redash groups at execution time.</p>
+<p>After some tests the easier way to do it is at backend, specifically at app/redash/handlers/query_results.py Adding some lines at run_query</p>
+<pre><code class="lang-auto">    (...)
+    query_text = data_source.query_runner.apply_auto_limit(
+        query.text, should_apply_auto_limit
+    )
+
+    # RLS  Substitute username or groups.  Turn cache or previous results off with max_age=0
+
+    if '__REDASH_USER' in query_text or '__REDASH_USER_GROUPS' in query_text:
+        if hasattr(current_user, 'email'):
+            query_text = query_text.replace('__REDASH_USER_GROUPS',','.join(str(v) for v in current_user.group_ids))
+            query_text = query_text.replace('__REDASH_USER',current_user.email)
+        else:
+            query_text = query_text.replace('__REDASH_USER_GROUPS',' -1 ')
+            query_text = query_text.replace('__REDASH_USER','guest@example.com')
+        max_age=0
+
+      # END RLS
+
+    if query.missing_params:
+   (...)
+</code></pre>
+<p>That way, at query execution time, __REDASH_USER would be substituted with user’s mail and __REDASH_USER_GROUPS would be substituted with a list of comma separated values of the redash groups ids the user belongs to.</p>
+<p>Then, the result is</p>
+<pre><code class="lang-auto">REDASH_CONNECTED_USER  REDASH_USER_GROUPS
+somebody@mydomain.com           1,2
+</code></pre>
+<p>So we can use these values in any query we want to filter data depending on users or groups (preferably)</p>
+<p>One potential problem could be cached or previous results, but seems that setting max_age=0 when substitution is done no results are stored or cached (at least on my tests, probably needs deeper testing)</p>
+<p>It is important to note that public or using the api_key way of retrieving data have no username associated, so this substitution just returns ‘<a href="mailto:guest@example.com">guest@example.com</a>’ and -1 as group.</p>
+<p>(In <a href="https://github.com/getredash/redash/pull/3723" rel="noopener nofollow ugc">#3723</a>  there is a similar discussion with other terms)</p>
+          <p><a href="https://discuss.redash.io/t/a-simple-way-to-obtain-results-restricted-to-logged-user-aka-row-level-security/11670/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/a-simple-way-to-obtain-results-restricted-to-logged-user-aka-row-level-security/11670/1</link>
+        <pubDate>Tue, 07 Mar 2023 18:16:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11670-1</guid>
+        <source url="https://discuss.redash.io/t/a-simple-way-to-obtain-results-restricted-to-logged-user-aka-row-level-security/11670.rss">A simple way to obtain results restricted to logged user (aka: Row Level Security)</source>
+      </item>
+  </channel>
+</rss>

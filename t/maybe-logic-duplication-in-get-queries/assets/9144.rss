@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Maybe logic duplication in GET queries</title>
+    <link>https://discuss.redash.io/t/maybe-logic-duplication-in-get-queries/9144</link>
+    <description>I think there is some logic duplication:
+
+https://github.com/getredash/redash/blob/master/redash/handlers/queries.py#L151
+
+Method **get_queries** returns **filter_by_tags** results and on the next line returned data processed by **filter_by_tags** function too</description>
+    
+    <lastBuildDate>Mon, 27 Sep 2021 11:07:58 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/maybe-logic-duplication-in-get-queries/9144.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Maybe logic duplication in GET queries</title>
+        <dc:creator><![CDATA[SawlStone]]></dc:creator>
+        <description><![CDATA[
+            <p>I think there is some logic duplication:</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/master/redash/handlers/queries.py#L151">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/master/redash/handlers/queries.py#L151" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/master/redash/handlers/queries.py#L151" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/master/redash/handlers/queries.py#L151</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-py">
+      <ol class="start lines" start="141" style="counter-reset: li-counter 140 ;">
+          <li>:qparam number page_size: Number of queries to return per page</li>
+          <li>:qparam number page: Page number to retrieve</li>
+          <li>:qparam number order: Name of column to order by</li>
+          <li>:qparam number q: Full text search term</li>
+          <li>
+          </li>
+<li>Responds with an array of :ref:`query &lt;query-response-label&gt;` objects.</li>
+          <li>"""</li>
+          <li># See if we want to do full-text search or just regular queries</li>
+          <li>search_term = request.args.get("q", "")</li>
+          <li>
+          </li>
+<li class="selected">queries = self.get_queries(search_term)</li>
+          <li>
+          </li>
+<li>results = filter_by_tags(queries, models.Query.tags)</li>
+          <li>
+          </li>
+<li># order results according to passed order parameter,</li>
+          <li># special-casing search queries where the database</li>
+          <li># provides an order by search rank</li>
+          <li>ordered_results = order_results(results, fallback=not bool(search_term))</li>
+          <li>
+          </li>
+<li>page = request.args.get("page", 1, type=int)</li>
+          <li>page_size = request.args.get("page_size", 25, type=int)</li>
+      </ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Method <strong>get_queries</strong> returns <strong>filter_by_tags</strong> results and on the next line returned data processed by <strong>filter_by_tags</strong> function too</p>
+          <p><a href="https://discuss.redash.io/t/maybe-logic-duplication-in-get-queries/9144/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/maybe-logic-duplication-in-get-queries/9144/1</link>
+        <pubDate>Mon, 27 Sep 2021 11:07:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9144-1</guid>
+        <source url="https://discuss.redash.io/t/maybe-logic-duplication-in-get-queries/9144.rss">Maybe logic duplication in GET queries</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Failed after upgrading docker image</title>
+    <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189</link>
+    <description>Hi Redash Team! Hope you&#39;re all well.
+
+Info: 
+Docker version: 1.13.1
+Currently deployed: 
+Redash 3.0.0+b3134
+redis:3.0-alpine
+postgres:9.5.6-alpine
+
+Scenario:
+I have redash running in docker and wanted to upgrade it with the latest version.
+What I did is migrate my postgres data to new server and use docker-compose.yml and run docker-compose up
+Unfortunately I&#39;m stuck with this error in postgres;
+ERROR:  column queries.search_vector does not exist at character 792
+and in worker;
+ProgrammingError: (psycopg2.ProgrammingError) column queries.search_vector does not exist
+
+Tried searching complete guide to upgrade Redash docker image but found only a very basic setup which doesn&#39;t work for me.
+
+Please guide me how to do it properly; its been 1 week of searching guides to fix it but failed to find a thing.
+
+Hoping for your soonest response.</description>
+    
+    <lastBuildDate>Fri, 22 Oct 2021 14:00:59 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Failed after upgrading docker image</title>
+        <dc:creator><![CDATA[michimau]]></dc:creator>
+        <description><![CDATA[
+            <p>i have managed to upgrade the database as such:</p>
+<p>Stop worked and scheduler containers.<br>
+Update server to the desired version.</p>
+<p>Get into the server container and run</p>
+<pre><code class="lang-auto">python manage.py db upgrade
+</code></pre>
+<p>update scheduler and workers.</p>
+<p>other than this, follow the steps here: <a href="https://github.com/getredash/redash/releases" rel="noopener nofollow ugc">https://github.com/getredash/redash/releases</a></p>
+          <p><a href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/6</link>
+        <pubDate>Fri, 22 Oct 2021 14:00:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2189-6</guid>
+        <source url="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss">Failed after upgrading docker image</source>
+      </item>
+      <item>
+        <title>Failed after upgrading docker image</title>
+        <dc:creator><![CDATA[jrobes]]></dc:creator>
+        <description><![CDATA[
+            <p>Anybody please help. Does anyone encounter the same and solved it?</p>
+          <p><a href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/5</link>
+        <pubDate>Tue, 04 Sep 2018 02:04:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2189-5</guid>
+        <source url="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss">Failed after upgrading docker image</source>
+      </item>
+      <item>
+        <title>Failed after upgrading docker image</title>
+        <dc:creator><![CDATA[jrobes]]></dc:creator>
+        <description><![CDATA[
+            <p>Do you have something like this guide for Docker? <a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="nofollow noopener">https://redash.io/help/open-source/admin-guide/how-to-upgrade</a>.<br>
+Simply pulling the latest redash image and using existing postgres DB doesn’t work. <img src="https://emoji.discourse-cdn.com/twitter/disappointed.png?v=6" title=":disappointed:" class="emoji" alt=":disappointed:"><br>
+Even running “docker-compose run --rm server manage db upgrade” before and or after pulling latest docker image has no difference, still fails.</p>
+<p>Also have tried this process but still no avail;</p>
+<ol>
+<li>Update the image reference to redash/redash:4.0.0.b3948.</li>
+<li>Stop services.</li>
+<li>Apply migrations (docker-compose run --rm server manage db upgrade).</li>
+<li>Start everything with docker-compose up.</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/4</link>
+        <pubDate>Thu, 26 Jul 2018 03:54:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2189-4</guid>
+        <source url="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss">Failed after upgrading docker image</source>
+      </item>
+      <item>
+        <title>Failed after upgrading docker image</title>
+        <dc:creator><![CDATA[jrobes]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks a lot for you prompt response! <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=6" title=":slight_smile:" class="emoji" alt=":slight_smile:"><br>
+Already did that but still got the same result. <img src="https://emoji.discourse-cdn.com/twitter/cry.png?v=6" title=":cry:" class="emoji" alt=":cry:"></p>
+<p>ERROR:  column queries.search_vector does not exist at character 792</p>
+<p>Additional info about my existing redash, I just used the docker-compose.production.yml default to bring up the cluster, i just added google and cookie key that’s the only changes i made.</p>
+          <p><a href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/3</link>
+        <pubDate>Wed, 25 Jul 2018 04:47:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2189-3</guid>
+        <source url="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss">Failed after upgrading docker image</source>
+      </item>
+      <item>
+        <title>Failed after upgrading docker image</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>You need to apply migrations. You can do with something like:</p>
+<pre><code class="lang-bash">docker-compose run --rm server manage db upgrade
+</code></pre>
+<p>You might need to change the name of the service (server), depends on your configuration.</p>
+          <p><a href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/2</link>
+        <pubDate>Tue, 24 Jul 2018 11:52:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2189-2</guid>
+        <source url="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss">Failed after upgrading docker image</source>
+      </item>
+      <item>
+        <title>Failed after upgrading docker image</title>
+        <dc:creator><![CDATA[jrobes]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Redash Team! Hope you’re all well.</p>
+<p>Info:<br>
+Docker version: 1.13.1<br>
+Currently deployed:<br>
+Redash 3.0.0+b3134<br>
+redis:3.0-alpine<br>
+postgres:9.5.6-alpine</p>
+<p>Scenario:<br>
+I have redash running in docker and wanted to upgrade it with the latest version.<br>
+What I did is migrate my postgres data to new server and use docker-compose.yml and run docker-compose up<br>
+Unfortunately I’m stuck with this error in postgres;<br>
+ERROR:  column queries.search_vector does not exist at character 792<br>
+and in worker;<br>
+ProgrammingError: (psycopg2.ProgrammingError) column queries.search_vector does not exist</p>
+<p>Tried searching complete guide to upgrade Redash docker image but found only a very basic setup which doesn’t work for me.</p>
+<p>Please guide me how to do it properly; its been 1 week of searching guides to fix it but failed to find a thing.</p>
+<p>Hoping for your soonest response.</p>
+          <p><a href="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189/1</link>
+        <pubDate>Tue, 24 Jul 2018 07:41:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2189-1</guid>
+        <source url="https://discuss.redash.io/t/failed-after-upgrading-docker-image/2189.rss">Failed after upgrading docker image</source>
+      </item>
+  </channel>
+</rss>

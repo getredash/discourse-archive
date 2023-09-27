@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Need updated oracle connection setup guide - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+I’ve been trying to setup oracle connection with redash for some days, but I’m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to thi&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Need updated oracle connection setup guide&#39;" href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393" />
+<meta property="og:title" content="Need updated oracle connection setup guide" />
+<meta name="twitter:title" content="Need updated oracle connection setup guide" />
+<meta property="og:description" content="Issue Summary I’ve been trying to setup oracle connection with redash for some days, but I’m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to this topic are quite old and is even causing some errors if I follow the same steps. So any help is appreciated.  I’m using this method to setup the redash using docker: https://redash.io/help/open-source/dev-guide/docker  I followed this post http://discuss.redash.io/t/add-oracle-a..." />
+<meta name="twitter:description" content="Issue Summary I’ve been trying to setup oracle connection with redash for some days, but I’m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to this topic are quite old and is even causing some errors if I follow the same steps. So any help is appreciated.  I’m using this method to setup the redash using docker: https://redash.io/help/open-source/dev-guide/docker  I followed this post http://discuss.redash.io/t/add-oracle-a..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2021-05-05T05:39:32+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Need updated oracle connection setup guide","mainEntity":{"@type":"Question","name":"Need updated oracle connection setup guide","text":"<a name=\"issue-summary-1\" class=\"anchor\" href=\"#issue-summary-1\"><\/a>Issue Summary\n\nI’ve been trying to setup oracle connection with redash for some days, but I’m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to this topic are quite old and is even causing some errors if I follow the same steps&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-05-05T05:39:32.561Z","author":{"@type":"Person","name":"Akash Shrestha"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/need-updated-oracle-connection-setup-guide/8393">Need updated oracle connection setup guide</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Need updated oracle connection setup guide'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/akash1'><span itemprop='name'>akash1</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-05-05T05:39:32Z' class='post-time'>
+                    May 5, 2021,  5:39am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-05-05T10:29:02Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>
+<a name="issue-summary-1" class="anchor" href="#issue-summary-1"></a>Issue Summary</h3>
+<p>I’ve been trying to setup oracle connection with redash for some days, but I’m unable to do so. I think someone needs to post an updated guide on how to do this setup as of today since posts related to this topic are quite old and is even causing some errors if I follow the same steps. So any help is appreciated.</p>
+<p>I’m using this method to setup the redash using docker: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>I followed this post <a href="http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590</a> but encountered various errors when trying with different configurations by changing redash image tag, oracle instant client versions, and also the cx_oracle versions.</p>
+<p>Error encountered for different configs are as follows:</p>
+<p><strong>1. Config 1</strong></p>
+<p><strong>Turns out, this issue is not specific to oracle enabled build, but with the normal build, as described here: <a href="http://discuss.redash.io/t/problem-in-redash-deployment/8159/8">http://discuss.redash.io/t/problem-in-redash-deployment/8159/8</a></strong></p>
+<p>redash image tag: redash/redash:latest (8.0.0 as of this time)<br>
+oracle instant version: 12.2.0.1.0<br>
+cx_oracle version: 5.2.1</p>
+<p>Extended Dockerfile:</p>
+<pre><code>FROM redash/redash:latest
+
+USER root
+
+# Oracle instantclient
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+RUN apt-get update  -y
+RUN apt-get install -y unzip
+
+RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN apt-get install libaio-dev -y
+RUN apt-get clean -y
+
+ENV ORACLE_HOME=/usr/local/instantclient
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+RUN pip install cx_Oracle==5.2.1
+
+USER redash
+#Add REDASH ENV to add Oracle Query Runner 
+ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+</code></pre>
+<p>docker-compose.yaml (from 8.0.0 zip source)</p>
+<pre><code># This configuration file is for the **development** setup.
+# For a production example please refer to setup/docker-compose.yml.
+version: '3.2'
+services:
+  server:
+    image: redash/oracle521_latest
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+      - "5678:5678"
+    volumes:
+      - ".:/app"
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      REDASH_RATELIMIT_ENABLED: "false"
+  worker:
+    build: .
+    command: dev_worker
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - server
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      QUEUES: "queries,scheduled_queries,celery,schemas"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:3-alpine
+    restart: unless-stopped
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - "15432:5432"
+    command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
+    restart: unless-stopped
+</code></pre>
+<p>Error encountered:</p>
+<p>After running docker-compose up -d, I get following error:</p>
+<pre><code>Requirement already satisfied: PyAthena&gt;=1.5.0 in /usr/local/lib/python2.7/site-packages (from -r requirements_all_ds.txt (line 23)) (1.11.5)
+Collecting pymapd==0.7.1 (from -r requirements_all_ds.txt (line 24))
+  Downloading https://files.pythonhosted.org/packages/26/84/0d7fa3e4cfeaa12c128df1764863345f60859d04eb3086a78bbcc8e18c3b/pymapd-0.7.1.tar.gz (93kB)
+    ERROR: Command errored out with exit status 1:
+     command: /usr/local/bin/python -c 'import sys, setuptools, tokenize; sys.argv[0] = '"'"'/tmp/pip-install-1Aj8fl/pymapd/setup.py'"'"'; __file__='"'"'/tmp/pip-install-1Aj8fl/pymapd/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' egg_info --egg-base pip-egg-info
+         cwd: /tmp/pip-install-1Aj8fl/pymapd/
+    Complete output (60 lines):
+    /tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src
+    &lt;pkg_resources.WorkingSet object at 0x7fa91bc24f50&gt;
+    Traceback (most recent call last):
+      File "&lt;string&gt;", line 1, in &lt;module&gt;
+      File "/tmp/pip-install-1Aj8fl/pymapd/setup.py", line 65, in &lt;module&gt;
+        extras_require=extra_requires
+      File "/usr/local/lib/python2.7/site-packages/setuptools/__init__.py", line 144, in setup
+        _install_setup_requires(attrs)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/__init__.py", line 139, in _install_setup_requires
+        dist.fetch_build_eggs(dist.setup_requires)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/dist.py", line 719, in fetch_build_eggs
+        replace_conflicting=True,
+      File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 782, in resolve
+        replace_conflicting=replace_conflicting
+      File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 1065, in best_match
+        return self.obtain(req, installer)
+      File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 1077, in obtain
+        return installer(requirement)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/dist.py", line 786, in fetch_build_egg
+        return cmd.easy_install(req)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 679, in easy_install
+        return self.install_item(spec, dist.location, tmpdir, deps)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 705, in install_item
+        dists = self.install_eggs(spec, download, tmpdir)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 890, in install_eggs
+        return self.build_and_install(setup_script, setup_base)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 1158, in build_and_install
+        self.run_setup(setup_script, setup_base, args)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/command/easy_install.py", line 1144, in run_setup
+        run_setup(setup_script, args)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 253, in run_setup
+        raise
+      File "/usr/local/lib/python2.7/contextlib.py", line 35, in __exit__
+        self.gen.throw(type, value, traceback)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 195, in setup_context
+        yield
+      File "/usr/local/lib/python2.7/contextlib.py", line 35, in __exit__
+        self.gen.throw(type, value, traceback)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 166, in save_modules
+        saved_exc.resume()
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 141, in resume
+        six.reraise(type, exc, self._tb)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 154, in save_modules
+        yield saved
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 195, in setup_context
+        yield
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 250, in run_setup
+        _execfile(setup_script, ns)
+      File "/usr/local/lib/python2.7/site-packages/setuptools/sandbox.py", line 45, in _execfile
+        exec(code, globals, locals)
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/setup.py", line 52, in &lt;module&gt;
+        'Topic :: Scientific/Engineering',
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/setup.py", line 29, in scm_config
+        extra_requires = {
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/__init__.py", line 8, in &lt;module&gt;
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/config.py", line 6, in &lt;module&gt;
+      File "/tmp/easy_install-bBeclk/setuptools_scm-6.0.1/src/setuptools_scm/utils.py", line 41
+        print(*k)
+              ^
+    SyntaxError: invalid syntax
+    ----------------------------------------
+ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+WARNING: You are using pip version 19.2.2, however version 20.3.4 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+ERROR: Service 'worker' failed to build: The command '/bin/sh -c if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi' returned a non-zero code: 1
+</code></pre>
+<p><strong>2. Config 2</strong></p>
+<p>redash image tag: built image using Dockerfile from master branch<br>
+oracle instant version: 12.2.0.1.0<br>
+cx_oracle version: 7.3</p>
+<p>Extended Dockerfile:</p>
+<pre><code>FROM redash/redash_master_aks:latest
+
+USER root
+
+# Oracle instantclient
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+RUN apt-get update  -y
+RUN apt-get install -y unzip
+
+RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN apt-get install libaio-dev -y
+RUN apt-get clean -y
+
+ENV ORACLE_HOME=/usr/local/instantclient
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+RUN pip install cx_Oracle==7.3
+
+USER redash
+#Add REDASH ENV to add Oracle Query Runner 
+ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+</code></pre>
+<p>Error encountered:<br>
+The application runs fine. The database is successfully connected. Also, after clicking “Test Connection”, it does show “Success” which takes around 1 minute. Is that normal?</p>
+<p>But while creating query, I get “Schema refresh failed. Please try again later.” error.</p>
+<p>I’ve explained this issue in this post. Do have a look at it: <a href="http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/12">http://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/12</a></p>
+<h3>
+<a name="technical-details-2" class="anchor" href="#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0/Latest Master (as of this post’s date)</li>
+<li>Browser/OS: Ubuntu 18.04</li>
+<li>How did you install Redash: I’m using this method to setup the redash using docker: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a>
+</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/prowave'><span itemprop='name'>prowave</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-09-05T03:43:24Z' class='post-time'>
+                    September 5, 2022,  3:43am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-09-05T03:43:24Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>For those of you looking for Redash with Oracle ready to go:</p>
+<p><a href="https://hub.docker.com/r/prowave/redash-oracle" class="onebox" target="_blank" rel="noopener nofollow ugc">https://hub.docker.com/r/prowave/redash-oracle</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

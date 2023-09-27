@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Automatically reload widgets on dashboards when they refresh</title>
+    <link>https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185</link>
+    <description>For example, when you load a dashboard, you are presented with all the current table result data from the widgets there.
+
+If those widgets are queries with a scheduled refresh rate, even if that query refreshes on schedule, the widget contents does not update on the dashboard. To see the latest results, you must either reload the entire page, or refresh the dashboard causing every single widget to re-execute (potentially unnecessary load).
+
+It would be a nice feature if, upon a query updating especially through its own schedule, the dashboard client-side page automatically detected this and simply fetched the new result contents. This would enable us to have an updating dashboard view of various widgets including expensive to calculate but not often changing results.</description>
+    
+    <lastBuildDate>Fri, 25 Mar 2022 17:08:42 +0000</lastBuildDate>
+    <category>Feature Requests</category>
+    <atom:link href="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Automatically reload widgets on dashboards when they refresh</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s another way to do it, yes. Although it’s not deterministic in cases where a query execution takes longer than 5 minutes.</p>
+          <p><a href="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/5</link>
+        <pubDate>Fri, 25 Mar 2022 17:08:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10185-5</guid>
+        <source url="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185.rss">Automatically reload widgets on dashboards when they refresh</source>
+      </item>
+      <item>
+        <title>Automatically reload widgets on dashboards when they refresh</title>
+        <dc:creator><![CDATA[deed02392]]></dc:creator>
+        <description><![CDATA[
+            <p>Wouldn’t it make sense to use the <code>max_age</code> value on the query results API calls from the dashboard, so that if for example you want to refresh every 5 minutes, it only triggers re-execution of queries that have results which are more than 5 minutes old?</p>
+          <p><a href="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/4</link>
+        <pubDate>Fri, 25 Mar 2022 17:03:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10185-4</guid>
+        <source url="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185.rss">Automatically reload widgets on dashboards when they refresh</source>
+      </item>
+      <item>
+        <title>Automatically reload widgets on dashboards when they refresh</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This should be possible with the existing query results API. It supports a <code>max_age</code> parameter when fetching cached query results. If a cached result is available and is newer than <code>max_age</code> seconds, the cached result is returned.</p>
+<p>Today, when you click to refresh a widget, the web application sends a request to the query results API with <code>max_age</code> set to <code>0</code>. This guarantees that a new execution will commence.</p>
+<p>But if you set <code>max_age</code> on this request to <code>300</code> and a cached result was saved within the last five minutes, the cached result will be returned immediately.</p>
+<p>Today, there is no system for signalling the front-end when a fresh result is available for a query. But you could perhaps accomplish this behaviour by manipulating the <code>max_age</code> behaviour. Alternatively you could modify the back-end API to include a flag that says “give me the cached result no matter how old it is”.</p>
+          <p><a href="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/3</link>
+        <pubDate>Wed, 23 Mar 2022 16:41:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10185-3</guid>
+        <source url="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185.rss">Automatically reload widgets on dashboards when they refresh</source>
+      </item>
+      <item>
+        <title>Automatically reload widgets on dashboards when they refresh</title>
+        <dc:creator><![CDATA[deed02392]]></dc:creator>
+        <description><![CDATA[
+            <p>The other problem this feature would solve is when people leave a dashboard open in a browser tab, and they end up with stale information without realising it. Since we are already doing AJAX style reloading, this feels out-of-odds with Redash’s other features.</p>
+          <p><a href="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/2</link>
+        <pubDate>Wed, 23 Mar 2022 14:08:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10185-2</guid>
+        <source url="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185.rss">Automatically reload widgets on dashboards when they refresh</source>
+      </item>
+      <item>
+        <title>Automatically reload widgets on dashboards when they refresh</title>
+        <dc:creator><![CDATA[deed02392]]></dc:creator>
+        <description><![CDATA[
+            <p>For example, when you load a dashboard, you are presented with all the current table result data from the widgets there.</p>
+<p>If those widgets are queries with a scheduled refresh rate, even if that query refreshes on schedule, the widget contents does not update on the dashboard. To see the latest results, you must either reload the entire page, or refresh the dashboard causing every single widget to re-execute (potentially unnecessary load).</p>
+<p>It would be a nice feature if, upon a query updating especially through its own schedule, the dashboard client-side page automatically detected this and simply fetched the new result contents. This would enable us to have an updating dashboard view of various widgets including expensive to calculate but not often changing results.</p>
+          <p><a href="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185/1</link>
+        <pubDate>Wed, 23 Mar 2022 13:57:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10185-1</guid>
+        <source url="https://discuss.redash.io/t/automatically-reload-widgets-on-dashboards-when-they-refresh/10185.rss">Automatically reload widgets on dashboards when they refresh</source>
+      </item>
+  </channel>
+</rss>

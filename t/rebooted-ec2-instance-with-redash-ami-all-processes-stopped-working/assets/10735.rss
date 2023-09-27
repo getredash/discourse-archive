@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+    <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735</link>
+    <description>### Issue Summary
+
+Hi Team,
+
+I set up Redash on EC2 using the AWS AMI. I rebooted the instance, and all the processes stopped working. I tried to look for supervisorctl, but that too isn&#39;t installed in the AMI. Kindly help! We are using Redash in production. 
+
+### Technical details:
+
+* Redash Version: redash-8.0.0
+* Browser/OS:Chrome/Ubuntu 18.04.3 LTS
+* How did you install Redash: Through AWS AMI (redash-8.0.0-b32245-1-us-east-1
+ami-0d915a031cabac0e0)</description>
+    
+    <lastBuildDate>Mon, 11 Jul 2022 05:11:06 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Look at the output. Both your workers have crashed and two other services are stuck restarting. You need to figure out why.</p>
+<p>So run <code>sudo docker-compose logs scheduled_worker</code> and see why that container crashed. Do the same for the other containers.</p>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/8</link>
+        <pubDate>Mon, 11 Jul 2022 05:11:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-8</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[varsha]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<p>Am I good to go? Do I need to manually restart any containers? Here’s the output of docker-compose ps:</p>
+<pre><code class="lang-auto">sudo docker-compose ps
+          Name                         Command                 State                 Ports           
+-----------------------------------------------------------------------------------------------------
+redash_adhoc_worker_1       /app/bin/docker-entrypoint ...   Exit 1                                  
+redash_nginx_1              nginx -g daemon off;             Up           443/tcp, 0.0.0.0:80-&gt;80/tcp
+redash_postgres_1           docker-entrypoint.sh postgres    Up           5432/tcp                   
+redash_redis_1              docker-entrypoint.sh redis ...   Up           6379/tcp                   
+redash_scheduled_worker_1   /app/bin/docker-entrypoint ...   Exit 1                                  
+redash_scheduler_1          /app/bin/docker-entrypoint ...   Restarting                              
+redash_server_1             /app/bin/docker-entrypoint ...   Restarting
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/7</link>
+        <pubDate>Mon, 11 Jul 2022 05:07:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-7</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>There you see that’s progress. The error message is pretty clear. You need to be in the /opt/redash directory.</p>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/6</link>
+        <pubDate>Mon, 11 Jul 2022 05:03:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-6</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[varsha]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>sudo docker-compose ps<br>
+ERROR:<br>
+Can’t find a suitable configuration file in this directory or any<br>
+parent. Are you in the right directory?</p>
+<pre><code>    Supported filenames: docker-compose.yml, docker-compose.yaml
+</code></pre>
+</blockquote>
+<p>This is what I see.</p>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/5</link>
+        <pubDate>Mon, 11 Jul 2022 04:59:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-5</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Try prepending <code>sudo</code> to the command.</p>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/4</link>
+        <pubDate>Mon, 11 Jul 2022 04:57:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-4</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[varsha]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<p>When I run docker-compose ps, here’s what I see:</p>
+<blockquote>
+<p>docker-compose ps<br>
+ERROR: Couldn’t connect to Docker daemon at http+docker://localhost - is it running?</p>
+<p>If it’s at a non-standard location, specify the URL with the DOCKER_HOST environment variable.</p>
+</blockquote>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/3</link>
+        <pubDate>Mon, 11 Jul 2022 04:56:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-3</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum and sorry you’ve in pinch here <img src="https://emoji.discourse-cdn.com/twitter/confused.png?v=12" title=":confused:" class="emoji" alt=":confused:" loading="lazy" width="20" height="20"></p>
+<p>The AMI’s are configured to automatically launch <code>docker-compose</code> after reboot. The images are intentionally stripped quite thin so that only the necessary services are installed, which is why you don’t see <code>supervisorctl</code>.</p>
+<p>What do you see when you run <code>docker-compose ps</code>?</p>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/2</link>
+        <pubDate>Fri, 08 Jul 2022 17:52:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-2</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+      <item>
+        <title>Rebooted EC2 instance with Redash AMI - all processes stopped working</title>
+        <dc:creator><![CDATA[varsha]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hi Team,</p>
+<p>I set up Redash on EC2 using the AWS AMI. I rebooted the instance, and all the processes stopped working. I tried to look for supervisorctl, but that too isn’t installed in the AMI. Kindly help! We are using Redash in production.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: redash-8.0.0</li>
+<li>Browser/OS:Chrome/Ubuntu 18.04.3 LTS</li>
+<li>How did you install Redash: Through AWS AMI (redash-8.0.0-b32245-1-us-east-1<br>
+ami-0d915a031cabac0e0)</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735/1</link>
+        <pubDate>Thu, 07 Jul 2022 10:31:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10735-1</guid>
+        <source url="https://discuss.redash.io/t/rebooted-ec2-instance-with-redash-ami-all-processes-stopped-working/10735.rss">Rebooted EC2 instance with Redash AMI - all processes stopped working</source>
+      </item>
+  </channel>
+</rss>

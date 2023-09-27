@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Email sending settings using Amazon SES</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/email-sending-settings-using-amazon-ses/9211">Email sending settings using Amazon SES</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Email sending settings using Amazon SES" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-07T03:47:00Z" itemprop="datePublished">
+                    October 7, 2021,  3:47am
+                  </time>
+<meta content="2021-10-07T06:56:08Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<h3>
+<a class="anchor" href="#issue-summary-1" name="issue-summary-1"></a>Issue Summary</h3>
+<p>When I added a New User in Redash,<br/>
+it didn’t send email form redash with Amazon SES.<br/>
+Is there something missing in env?</p>
+<h3>
+<a class="anchor" href="#technical-details-2" name="technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.0.0.b50363</li>
+<li>Browser/OS: Ubuntu 20.04.1 LTS</li>
+<li>How did you install Redash:</li>
+</ul>
+<pre><code class="lang-auto"># mkdir /opt/redash/
+# cd /opt
+# git clone https://github.com/getredash/setup.git
+# cd setup
+# sh setup.sh
+. . .
+# vim /opt/redash/docker-compose.yml
+change :
+ --------------------------------------------------
+ image: redash/redash:10.0.0.b50363
+ --------------------------------------------------
+
+# vim /opt/redash/env
+add :
+--------------------------------------------------
+REDASH_MAIL_SERVER=email-smtp.xxxxxxxxxxxxxx
+REDASH_MAIL_PORT=25 (or 465, 587)
+REDASH_MAIL_USE_TLS=false (or true)
+REDASH_MAIL_USE_SSL=false (or ture)
+REDASH_MAIL_USERNAME=xxxxxxxxxxx (AWS creds smtp username)
+REDASH_MAIL_PASSWORD=xxxxxxxxxxx (AWS creds smtp password)
+REDASH_MAIL_DEFAULT_SENDER=myname1@mydomain1
+--------------------------------------------------
+
+# cd /opt/redash
+# docker-compose down &amp;&amp; docker-compose up -d
+</code></pre>
+<h2>
+<a class="anchor" href="#amazon-ses-3" name="amazon-ses-3"></a>Amazon SES</h2>
+<p>Verify a New Email Address &gt; Verified<br/>
+Send a Test Email</p>
+<pre><code class="lang-auto">--------------------------------------------------
+From : myname1@mydomain1
+To : myname1@mydomain1
+--------------------------------------------------
+&gt; OK (sent)
+</code></pre>
+<p>Create My SMTP Credentials &gt; OK (done)</p>
+<h2>
+<a class="anchor" href="#redash-4" name="redash-4"></a>Redash</h2>
+<p>Logged in Redash (<a href="http://192.168.x.x/login" rel="noopener nofollow ugc">http://192.168.x.x/login</a>)<br/>
+Settings &gt; Users &gt; +New User</p>
+<pre><code class="lang-auto">Name : hoge
+Email : myname1@mydomain1
+</code></pre>
+<p>Create &gt; [(v) Saved.]</p>
+<h2>
+<a class="anchor" href="#comment-5" name="comment-5"></a>comment</h2>
+<p>I haven’t received the email. There are no particular error messages in Redash. Is there a log file somewhere?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/cant-send-email-using-amazon-ses/9950" itemprop="url">Can't send email using Amazon SES</a>
+<meta content="2" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-07T04:15:00Z" itemprop="datePublished">
+                    October 7, 2021,  4:15am
+                  </time>
+<meta content="2021-10-07T04:15:00Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m away from my workstation. But FYI The setup script has not been updated to for V10 yet. I don’t think that would be the issue but it’s possible.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-07T04:16:10Z" itemprop="datePublished">
+                    October 7, 2021,  4:16am
+                  </time>
+<meta content="2021-10-07T04:16:10Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Rather than editing the env file within the container, try making those changes in the setup script itself and re-running.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-07T04:50:27Z" itemprop="datePublished">
+                    October 7, 2021,  4:50am
+                  </time>
+<meta content="2021-10-07T04:50:27Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>thank you.<br/>
+I will try redash v8. and edit setup.sh.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-07T14:24:49Z" itemprop="datePublished">
+                    October 7, 2021,  2:24pm
+                  </time>
+<meta content="2021-10-07T14:24:49Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Looking into this further I think there may be a compatibility issue specifically between Redash and SES. Investigating…</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ryan.qw.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ryan.qw_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ryan.qw</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-07T18:48:28Z" itemprop="datePublished">
+                    October 7, 2021,  6:48pm
+                  </time>
+<meta content="2021-10-07T18:48:28Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I am encountering this as well. Running <code>manage.py send_test_email</code> works, but sending an email from UI fails. An error message can be obtained with <code>manage.py users invite $email_to_invite $username $send_from_email</code>, which will return:<br/>
+RuntimeError: Application was not able to create a URL adapter for request independent URL generation. You might be able to fix this by setting the SERVER_NAME config variable.</p>
+<p>However, setting SERVER_NAME or REDASH_SERVER_NAME does not have an impact. The same issue is reported on 8.x here: <a class="inline-onebox" href="https://github.com/getredash/redash/issues/5266" rel="noopener nofollow ugc">Invitation etc emails not being sent on the account of the code failing to generate urls · Issue #5266 · getredash/redash · GitHub</a>. That solution did not work for v10.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-10-08T06:49:36Z" itemprop="datePublished">
+                    October 8, 2021,  6:49am
+                  </time>
+<meta content="2021-10-08T06:58:01Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi, thank you for everyone.</p>
+<p>I tried inviting new user with Redash v8.  It worked completry.</p>
+<p>But after update to v10, it does not work.<br/>
+Even if I added “SERVER_NAME or REDASH_SERVER_NAME”.</p>
+<pre><code class="lang-auto"># docker-compose run --rm server manage send_test_mail
+Starting redash_postgres_1 ... done
+Starting redash_redis_1    ... done
+(OK)
+
+・・・
+# docker-compose run --rm server manage users invite myname1@mydomain1 hoge myname1@mydomain1
+Starting redash_postgres_1 ... done
+Starting redash_redis_1    ... done
+The inviter [myname1@mydomain1] was not found.
+</code></pre>
+<p>I will use v8 for a while.<br/>
+I will search for the manual(documents) to update for v10.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<link href="assets/20af984d36fe9f0ee78e91714f187db9ed13571a.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-11-22T17:46:37Z" itemprop="datePublished">
+                    November 22, 2021,  5:46pm
+                  </time>
+<meta content="2021-11-22T18:58:26Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I successfully configured Amazon SES with an V8 AMI that I upgraded to V10 in EC2. It didn’t require anything fancy. Here were my settings in <code>/opt/redash/env</code></p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/4F9ulslKPgDgHD6bHQjMMH12i4W.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a.png" title="CleanShot 2021-11-22 at 10.51.25@2x"><img alt="CleanShot 2021-11-22 at 10.51.25@2x" data-base62-sha1="4F9ulslKPgDgHD6bHQjMMH12i4W" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_10x10.png" height="239" src="assets/20af984d36fe9f0ee78e91714f187db9ed13571a_2_690x239.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_690x239.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_1035x358.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20af984d36fe9f0ee78e91714f187db9ed13571a_2_1380x478.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">CleanShot 2021-11-22 at 10.51.25@2x</span><span class="informations">1512×524 235 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>I did not test the CLI functions. I just reproduced that users would receive invitations triggered in the web app, reset password emails went normally, and alerts worked as expected.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<link href="assets/8030fc021a0b1a192c329347fbb910b8591b6292.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-07T06:54:24Z" itemprop="datePublished">
+                    December 7, 2021,  6:54am
+                  </time>
+<meta content="2021-12-07T06:54:24Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I haven’t sent an email with the combination of redash v10 and amazon ses yet.</p>
+<p>What I did.<br/>
+・Email authentication.<br/>
+<img alt="email_verify_2021-12-07 135702" data-base62-sha1="ii241bKY1XBAj1PLQE0Iu6PXhxU" height="172" src="assets/8030fc021a0b1a192c329347fbb910b8591b6292.png" width="341"/></p>
+<p>env</p>
+<pre><code class="lang-auto">## email
+REDASH_SERVER_NAME=https://****.mydomain.com
+REDASH_MAIL_SERVER=email-smtp.ap-northeast-1.amazonaws.com
+REDASH_MAIL_PORT=587
+REDASH_MAIL_USE_TLS=true
+# REDASH_MAIL_PORT=465
+# REDASH_MAIL_USE_SSL=true
+REDASH_MAIL_USERNAME=AKIA***
+REDASH_MAIL_PASSWORD=****
+REDASH_MAIL_DEFAULT_SENDER=xxx@mydomain.com
+</code></pre>
+<p>Logs.</p>
+<pre><code class="lang-auto">redash-nginx-1             | 172.28.0.1 - - [07/Dec/2021:06:47:06 +0000] "GET /api/users?order=-created_at&amp;page=1&amp;page_size=20&amp;pending=true HTTP/1.0" 200 1994 "https://***.mydomain.com/users/pending?order=-created_at&amp;page=1&amp;page_size=20" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36" "ipaddress"
+redash-scheduler-1         | [2021-12-07 15:47:09,871][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:09,872][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:09,872][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:14,876][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:14,877][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:14,879][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:19,882][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:19,882][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:19,883][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 17dcw25bf3586a6a629110d27f788b05c0700233 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,885][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 18281a8657dcw25ef3586a6a62ed3d1a60f7dcw4 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,886][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 305c0cae0a196ae96915fd2b6f81001c435aad65 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,888][PID:1][DEBUG][rq_scheduler.scheduler] Pushing 59a84668e46f3386c5335565213686878e814b72 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,889][PID:1][DEBUG][rq_scheduler.scheduler] Pushing e527c427209009c17c575fc7d0957cb21756e661 to periodic
+redash-scheduler-1         | [2021-12-07 15:47:19,890][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 4.99 seconds
+redash-redis-1             | 1:M 07 Dec 2021 06:47:20.079 * 100 changes in 300 seconds. Saving...
+redash-redis-1             | 1:M 07 Dec 2021 06:47:20.079 * Background saving started by pid 23
+redash-redis-1             | 23:C 07 Dec 2021 06:47:20.085 * DB saved on disk
+redash-redis-1             | 23:C 07 Dec 2021 06:47:20.085 * RDB: 0 MB of memory used by copy-on-write
+redash-redis-1             | 1:M 07 Dec 2021 06:47:20.179 * Background saving terminated with success
+redash-scheduler-1         | [2021-12-07 15:47:24,884][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:24,885][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:24,886][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:29,890][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+redash-scheduler-1         | [2021-12-07 15:47:29,890][PID:1][DEBUG][rq_scheduler.scheduler] Checking for scheduled jobs
+redash-scheduler-1         | [2021-12-07 15:47:29,891][PID:1][DEBUG][rq_scheduler.scheduler] Sleeping 5.00 seconds
+redash-scheduler-1         | [2021-12-07 15:47:34,895][PID:1][DEBUG][rq_scheduler.scheduler] Entering run loop
+</code></pre>
+<p>Is the organization name relevant?</p>
+<pre><code class="lang-auto">(./manage.py org list)
+Id: 1
+Name: mydomain
+Slug: default
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-07T18:39:35Z" itemprop="datePublished">
+                    December 7, 2021,  6:39pm
+                  </time>
+<meta content="2021-12-07T18:39:35Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>The organisation name is irrelevant unless you enabled multi-org (which is off by default).</p>
+<p>Your logs don’t show any failures. Which means Redash thinks the email has gone out successfully (and SES did not return any exceptions).</p>
+<p>Have you verified that your sending address is no longer sandboxed with SES?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-08T08:09:19Z" itemprop="datePublished">
+                    December 8, 2021,  8:09am
+                  </time>
+<meta content="2021-12-08T08:09:19Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thank you reply.<br/>
+Production Access is Enabled.</p>
+<p>I was able to send an email to Gmail.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-08T08:39:27Z" itemprop="datePublished">
+                    December 8, 2021,  8:39am
+                  </time>
+<meta content="2021-12-08T08:39:27Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>and it was possible to send with version 8.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-08T15:49:58Z" itemprop="datePublished">
+                    December 8, 2021,  3:49pm
+                  </time>
+<meta content="2021-12-08T15:49:58Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Have you tried setting <code>REDASH_MAIL_USE_SSL=true</code> and <code>REDASH_MAIL_PORT=465</code>?</p>
+<p>Restart your services after making these changes to ensure they take effect.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/yui.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/yui_avatar.png" tabindex="-1" width="48"/><span itemprop="name">yui</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-09T11:34:47Z" itemprop="datePublished">
+                    December 9, 2021, 11:34am
+                  </time>
+<meta content="2021-12-09T11:52:26Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<blockquote>
+<p>REDASH_MAIL_USE_SSL=true<br/>
+REDASH_MAIL_PORT=465</p>
+</blockquote>
+<p>Yes, I tried it.</p>
+<blockquote>
+<p>Restart your services</p>
+</blockquote>
+<p>Yes, I did.</p>
+<p>I am trying various things. I will add comments here when I understand something.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ryan.qw.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ryan.qw_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ryan.qw</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-09T16:14:40Z" itemprop="datePublished">
+                    December 9, 2021,  4:14pm
+                  </time>
+<meta content="2021-12-09T16:14:40Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/jesse">@jesse</a> - I tried your recommended settings of:</p>
+<pre><code class="lang-auto">REDASH_MAIL_USE_SSL=true
+REDASH_MAIL_PORT=465
+</code></pre>
+<p>This resulted in the same error when inviting a user:</p>
+<pre><code class="lang-auto">  File "/usr/local/lib/python3.7/site-packages/flask/helpers.py", line 333, in url_for
+    "Application was not able to create a URL adapter for request"
+RuntimeError: Application was not able to create a URL adapter for request independent URL generation. You might be able to fix this by setting the SERVER_NAME config variable.
+</code></pre>
+<p>Unlike using port 587 and TLS, <code>send-test-email</code> also returns an error:</p>
+<pre><code class="lang-auto">  File "/app/redash/cli/__init__.py", line 73, in send_test_mail
+    subject="Test Message from Redash", recipients=[email], body="Test message."
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 491, in send
+    with self.connect() as connection:
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 144, in __enter__
+    self.host = self.configure_host()
+  File "/usr/local/lib/python3.7/site-packages/flask_mail.py", line 163, in configure_host
+    host.starttls()
+  File "/usr/local/lib/python3.7/smtplib.py", line 757, in starttls
+    "STARTTLS extension not supported by server.")
+smtplib.SMTPNotSupportedError: STARTTLS extension not supported by server.
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ryan.qw.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ryan.qw_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ryan.qw</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-09T19:22:23Z" itemprop="datePublished">
+                    December 9, 2021,  7:22pm
+                  </time>
+<meta content="2021-12-09T19:22:23Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I found the solution in a Github issue: <a class="inline-onebox" href="https://github.com/getredash/redash/issues/5640" rel="noopener nofollow ugc">Email invite doesn't send after update Redash to v10 · Issue #5640 · getredash/redash · GitHub</a></p>
+<p>You need to assign the <code>emails</code> queue to a worker in <code>docker-compose.yml</code>.</p>
+<pre><code class="lang-auto"># Old
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+# New
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "emails,queries,default,periodic"
+      WORKERS_COUNT: 2
+</code></pre>
+<p>This fixes emails from the front end, the CLI <code>users invite</code> still returns the error, but this solves the issue for me.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/9211" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2021-12-09T20:31:19Z" itemprop="datePublished">
+                    December 9, 2021,  8:31pm
+                  </time>
+<meta content="2021-12-09T20:31:19Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for posting your solution. We’ll update the docs for this ASAP. Also the CLI is definitely broken.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

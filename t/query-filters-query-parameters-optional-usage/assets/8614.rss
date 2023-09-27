@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Query Filters &amp; Query Parameters - Optional Usage?</title>
+    <link>https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614</link>
+    <description>I&#39;m making heavy use of query parameters and query filters with redash.  One issue I&#39;m stuck on though is ... how to make the parameter or filter OPTIONAL. 
+
+When working with some data sets, I want to display the entire results ... or optionally allow the entire dataset to be reduced by specific criteria.
+
+However, as soon as I introduce the query parameter or a query filter ... the dataset reduction is forced. I end up forking the original query so that I have two that are identical except for the query parameter or query filter portion.
+
+For example
+
+All customers, including type:
+```
+SELECT 
+  customer.id,
+  customer.name,
+  customer.type
+FROM customers
+```
+
+All customers, but with a query parameter ... the parameter forces a data set reduction ... and it has to be run over and over each time the you want to view differently:
+
+```
+SELECT 
+  customers.id,
+  customers.name,
+  customers.type
+FROM customers
+WHERE customers.type = &#39;{{ customer_type }}&#39;
+```
+
+All customers, but with a query filter ... the filter is automatically set and can&#39;t be removed to display the entire original dataset. 
+```
+SELECT 
+  customers.id,
+  customers.name,
+  customers.type AS &quot;type::filter&quot;
+FROM customers
+```
+
+All customers, but with a query multi-filter ... this actually works in this use case ... however ... it&#39;s super clunky for other uses cases ...
+```
+SELECT 
+  customers.id,
+  customers.name,
+  customers.type AS &quot;type::multi-filter&quot;
+FROM customers
+```
+
+
+All users by customers, but with a query multi-filter ... this works, but an example of how it&#39;s crazy counter-intuitive and clunky:
+```
+SELECT 
+  users.name,
+  customers.name AS &quot;type::multi-filter&quot;,
+FROM users
+LEFT JOIN customers ON users.customers.id = customers.id
+```
+
+... If you have say 250 customers, you have now the option of selecting from none, all, or any variation of 250 separate tags, when all I was hoping for was a dropdown that would let me select all customers, or one the the 250 customers ... 
+
+Is there anyway to do what I&#39;m asking?</description>
+    
+    <lastBuildDate>Tue, 15 Jun 2021 17:32:33 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Query Filters &amp; Query Parameters - Optional Usage?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Until “optional parameters” are supported in code, you can use <a href="http://discuss.redash.io/t/how-to-show-all-results-with-a-query-parameter/3654">this workaround</a>.</p>
+          <p><a href="https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614/2</link>
+        <pubDate>Tue, 15 Jun 2021 17:32:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8614-2</guid>
+        <source url="https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614.rss">Query Filters &amp; Query Parameters - Optional Usage?</source>
+      </item>
+      <item>
+        <title>Query Filters &amp; Query Parameters - Optional Usage?</title>
+        <dc:creator><![CDATA[nfarrar]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m making heavy use of query parameters and query filters with redash.  One issue I’m stuck on though is … how to make the parameter or filter OPTIONAL.</p>
+<p>When working with some data sets, I want to display the entire results … or optionally allow the entire dataset to be reduced by specific criteria.</p>
+<p>However, as soon as I introduce the query parameter or a query filter … the dataset reduction is forced. I end up forking the original query so that I have two that are identical except for the query parameter or query filter portion.</p>
+<p>For example</p>
+<p>All customers, including type:</p>
+<pre><code class="lang-auto">SELECT 
+  customer.id,
+  customer.name,
+  customer.type
+FROM customers
+</code></pre>
+<p>All customers, but with a query parameter … the parameter forces a data set reduction … and it has to be run over and over each time the you want to view differently:</p>
+<pre><code class="lang-auto">SELECT 
+  customers.id,
+  customers.name,
+  customers.type
+FROM customers
+WHERE customers.type = '{{ customer_type }}'
+</code></pre>
+<p>All customers, but with a query filter … the filter is automatically set and can’t be removed to display the entire original dataset.</p>
+<pre><code class="lang-auto">SELECT 
+  customers.id,
+  customers.name,
+  customers.type AS "type::filter"
+FROM customers
+</code></pre>
+<p>All customers, but with a query multi-filter … this actually works in this use case … however … it’s super clunky for other uses cases …</p>
+<pre><code class="lang-auto">SELECT 
+  customers.id,
+  customers.name,
+  customers.type AS "type::multi-filter"
+FROM customers
+</code></pre>
+<p>All users by customers, but with a query multi-filter … this works, but an example of how it’s crazy counter-intuitive and clunky:</p>
+<pre><code class="lang-auto">SELECT 
+  users.name,
+  customers.name AS "type::multi-filter",
+FROM users
+LEFT JOIN customers ON users.customers.id = customers.id
+</code></pre>
+<p>… If you have say 250 customers, you have now the option of selecting from none, all, or any variation of 250 separate tags, when all I was hoping for was a dropdown that would let me select all customers, or one the the 250 customers …</p>
+<p>Is there anyway to do what I’m asking?</p>
+          <p><a href="https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614/1</link>
+        <pubDate>Tue, 15 Jun 2021 15:43:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8614-1</guid>
+        <source url="https://discuss.redash.io/t/query-filters-query-parameters-optional-usage/8614.rss">Query Filters &amp; Query Parameters - Optional Usage?</source>
+      </item>
+  </channel>
+</rss>

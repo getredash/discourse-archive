@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash events table missing from version 9 beta</title>
+    <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929</link>
+    <description>Hi All,
+
+I&#39;m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc).
+
+I found evidence that this is or has been possible in the past: 
+
+`select * from events where object_type=&#39;dashboard&#39; and action=&#39;view&#39; order by created_at desc` 
+from [this thread](http://discuss.redash.io/t/dashboard-usage-tracking/4649). 
+
+I have tried querying the Query Results data source for an `events` table and found nothing (slightly related, I&#39;m unable to see what tables/schemas are even available in this data source; I tried SQLite&#39;s syntax to no avail: `.table` , `.ta` and `.tables` all failed).
+
+If I am looking in the wrong place or if having an `events` table depends on whether I&#39;m self-hosted or not, I would love to know. 
+
+Hope this yields insight and helps others. 
+
+Thanks!</description>
+    
+    <lastBuildDate>Fri, 29 Apr 2022 17:25:10 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[dgho6348]]></dc:creator>
+        <description><![CDATA[
+            <p>I was able to fix the issue, might not be the ideal solution, but want to share it here for everyone’s benefit.<br>
+Debugging steps:</p>
+<p>We are running V10 of Redash on ECS.<br>
+I issued a “query refresh” from IU, logged onto the redis container, and ran a :</p>
+<pre><code class="lang-auto"> docker exec &lt;container&gt; redis-cli monitor
+</code></pre>
+<p>The event queries were getting queued in the default queue: rs.queue.default - but stuck there and not picked by workers.<br>
+This might be related to the bug <a href="https://github.com/rq/rq/issues/758" class="inline-onebox" rel="noopener nofollow ugc">Job queued but not run · Issue #758 · rq/rq · GitHub</a></p>
+<p>Resolution:<br>
+Swapped the queue from default to queries(this is not ideal and I am going to create a dedicated queue for events, but for testing sake used the queries queue)<br>
+here : <a href="https://github.com/getredash/redash/blob/2589bef1f21b7c84e4ceacdf5cd2c620bdedb111/redash/tasks/general.py#L15" class="inline-onebox" rel="noopener nofollow ugc">redash/general.py at 2589bef1f21b7c84e4ceacdf5cd2c620bdedb111 · getredash/redash · GitHub</a><br>
+after building and verifying it was using the queries queue, I was able to see the events in the database.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e.png" data-download-href="/uploads/short-url/vBbD3BXWU83IaNGOnhzwDzxkaxE.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_690x114.png" alt="image" data-base62-sha1="vBbD3BXWU83IaNGOnhzwDzxkaxE" width="690" height="114" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_690x114.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_1035x171.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/dd7789baf261040018c7a4d91b0d0c92f012421e_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/13</link>
+        <pubDate>Fri, 29 Apr 2022 17:25:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-13</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>FYI <a class="mention" href="https://discuss.redash.io/u/lscapim">@lscapim</a> I did exactly what you recommended…and still not able to reproduce this at all.</p>
+<ol>
+<li>Deploy the v8 AMI</li>
+<li>Upgrade it to V10.1 (latest release)</li>
+<li>Click around, run some queries</li>
+<li>All events appear on the <code>events</code> table as expected</li>
+</ol>
+<p>I show no gaps or strange behaviour.</p>
+<p>Where exactly are you looking for <code>events</code>? Are you connecting to your metadata database? Or are you looking with QRDS?</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/12</link>
+        <pubDate>Fri, 22 Apr 2022 20:43:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-12</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[dgho6348]]></dc:creator>
+        <description><![CDATA[
+            <p>Bumping this, since we have the same issue when we upgraded from v8 to v10.0.1 and still running into this. Can you see if the clean install helps with repro?<br>
+Alternatively, what else can we use to audit events in redash?<br>
+TIA<br>
+Additional information:<br>
+When I look at the docker logs for server container, I see the POST to the api endpoint is returning a 200 reponse. Yet nothing in the DB table.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7877148dd9ba705826361ce875715b7138ad9262.png" data-download-href="/uploads/short-url/hbGqkV7ypK6O4PxIuaib5aWZZSy.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_690x37.png" alt="image" data-base62-sha1="hbGqkV7ypK6O4PxIuaib5aWZZSy" width="690" height="37" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_690x37.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_1035x55.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_1380x74.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7877148dd9ba705826361ce875715b7138ad9262_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/11</link>
+        <pubDate>Thu, 21 Apr 2022 16:35:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-11</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[lscapim]]></dc:creator>
+        <description><![CDATA[
+            <p>I understand, but we did a test… we took a clean image of Redash version 8.0.2.b37747 and another with version 10.1.0.b50633, in version 10 we have the problem, but in version 8 we don’t. Could you take an original version of 10, and deploy it in an environment, to check if the error occurs?</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/10</link>
+        <pubDate>Tue, 12 Apr 2022 12:33:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-10</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>We’re still without a reproduction on this. Until we can reproduce it there’s no way to debug / fix it <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=12" title=":frowning:" class="emoji" alt=":frowning:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/8</link>
+        <pubDate>Fri, 04 Mar 2022 21:40:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-8</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[lscapim]]></dc:creator>
+        <description><![CDATA[
+            <p>We have the same problem with version 8 and after the update from version 10.1.0, nothing in events table. We use this table for audit too.</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/7</link>
+        <pubDate>Fri, 04 Mar 2022 13:47:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-7</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for bumping this. The struggle here has been an inability to reproduce the problem by members of the core team. I will give it another try today. If not, we can’t do anything about it without a reproduction. But we are of course happy to merge a PR fixing it (and a 10.2 release) if someone in the community has better visibility into the issue than do we.</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/6</link>
+        <pubDate>Wed, 15 Dec 2021 19:28:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-6</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[gromnsk]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, have the same problem with v10.1.0, nothing in events table after update from V8, but we need this table for audit purposes</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/5</link>
+        <pubDate>Wed, 15 Dec 2021 06:24:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-5</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Interesting. We’ve had a few reports of this</p>
+<aside class="quote quote-modified" data-post="8" data-topic="4649">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/f/ecb155/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/dashboard-usage-tracking/4649/8">Dashboard Usage Tracking</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and using Redash.">Support</span></a>
+  </div>
+  <blockquote>
+    Hello! 
+I am trying to access Redash’s DB but the events table on Redash RDS seems empty for me. 
+ <a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7dd5feef5dd77f89203255403dbbc2ff9a981a95.png" data-download-href="/uploads/short-url/hXcaoWmxhp50boNjZJQ33D2xzY9.png?dl=1" title="image" rel="noopener nofollow ugc">[image]</a> 
+All the other tables have data in them except for this events table. I want to track the dashboard usage so would like to use this table. Do you know why this might be happening? 
+Let me know if I am missing something here. Thank you!
+  </blockquote>
+</aside>
+<aside class="quote quote-modified" data-post="8" data-topic="5122">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/f/ecb155/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/users-running-queries-or-query-history/5122/8">Users running queries or query history</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-usage/10"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Need help with using Redash? Not sure if something is possible or how to do it right? Here’s the place to ask.">Usage Support</span></a>
+  </div>
+  <blockquote>
+    Hey <a class="mention" href="https://discuss.redash.io/u/arikfr">@arikfr</a>! 
+Thank you for a great BI tool and these helpful forums. I am trying to access Redash’s DB but the events table on Redash RDS seems empty for me. 
+ <a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7dd5feef5dd77f89203255403dbbc2ff9a981a95.png" data-download-href="/uploads/short-url/hXcaoWmxhp50boNjZJQ33D2xzY9.png?dl=1" title="image" rel="noopener nofollow ugc">[image]</a> 
+All the other tables have data in them except for this events table. I want to track the dashboard usage so would like to use this table. Do you know why this might be happening? 
+Let me know if I am missing something here. Thank you!
+  </blockquote>
+</aside>
+
+<p>But no real conclusion to what caused it. I don’t observe this behaviour with the V10 beta, however. Can you try it?</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/4</link>
+        <pubDate>Sat, 14 Aug 2021 15:14:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-4</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[dataholic99]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<p>We are using the events table to do user level auditing in v8,  We are testing v10 right now and it has the same issue.</p>
+<p>Events table has no data in it. i have plenty of saved queries. Is there any particular reason behind this or it is a bug ?</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/3</link>
+        <pubDate>Sat, 14 Aug 2021 09:37:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-3</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>QRDS uses an in-memory SQLite database. It has no tables in it until you use it to query another query result.</p>
+<p>What you want is to connect with Redash’s internal metadata database. The exact method for this varies depending on your installation. But ultimately you’ll add it like any other Postgres data source.</p>
+<p>On the development Docker instance this is easy because the Postgres server is aliased as <code>postgres</code> within the containers. So you can create a data source with <code>postgres</code> as the host, user, pass, and db <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+<p>FYI: the events table <em>can</em> be used for this but it’s not designed for it. For page views it’s fine but it won’t help if you want to know every time a query is executed, for example.</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/2</link>
+        <pubDate>Fri, 13 Aug 2021 01:55:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-2</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+      <item>
+        <title>Redash events table missing from version 9 beta</title>
+        <dc:creator><![CDATA[dutch]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi All,</p>
+<p>I’m on version 9.0.0-beta and my main goal here is to query Redash usage data (what are the most viewed dashboards? which objects have not been used a long time and could probably be deprecated? etc).</p>
+<p>I found evidence that this is or has been possible in the past:</p>
+<p><code>select * from events where object_type='dashboard' and action='view' order by created_at desc</code><br>
+from <a href="http://discuss.redash.io/t/dashboard-usage-tracking/4649">this thread</a>.</p>
+<p>I have tried querying the Query Results data source for an <code>events</code> table and found nothing (slightly related, I’m unable to see what tables/schemas are even available in this data source; I tried SQLite’s syntax to no avail: <code>.table</code> , <code>.ta</code> and <code>.tables</code> all failed).</p>
+<p>If I am looking in the wrong place or if having an <code>events</code> table depends on whether I’m self-hosted or not, I would love to know.</p>
+<p>Hope this yields insight and helps others.</p>
+<p>Thanks!</p>
+          <p><a href="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/1</link>
+        <pubDate>Thu, 12 Aug 2021 18:36:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8929-1</guid>
+        <source url="https://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929.rss">Redash events table missing from version 9 beta</source>
+      </item>
+  </channel>
+</rss>

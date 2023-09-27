@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>VictoriaMetrics via prometheus api does not work</title>
+    <link>https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112</link>
+    <description>### Issue Summary
+
+Hello, I am trying to use redash to visualize data in my VictoriaMetrics DB.
+VictoriaMetrics provides Prometheus API  that I use. 
+
+curl example : 
+
+```
+curl -fs --data-urlencode &#39;query=hw_stat_cpu{machine_name=&quot;x8664server&quot;}[30s]&#39; http://192.168.1.10:8428/api/v1/query
+{&quot;status&quot;:&quot;success&quot;,&quot;data&quot;:{&quot;resultType&quot;:&quot;matrix&quot;,&quot;result&quot;:[{&quot;metric&quot;:{&quot;__name__&quot;:&quot;hw_stat_cpu&quot;,&quot;domain&quot;:&quot;hw_stat&quot;,&quot;machine_ip&quot;:&quot;192.168.1.10&quot;,&quot;machine_name&quot;:&quot;x8664server&quot;},&quot;values&quot;:[[1665340803.608,&quot;20.4&quot;],[1665340808.53,&quot;26&quot;],[1665340813.514,&quot;19.1&quot;],[1665340818.608,&quot;23.7&quot;],[1665340823.618,&quot;19.7&quot;],[1665340828.509,&quot;23.6&quot;]]}]}}
+```
+
+But when I add `hw_stat_cpu{machine_name=&quot;x8664server&quot;}[30s]` it does not show anything. 
+ 
+
+In redash logs I can see InvalidToken exception, but I am not sure that it is related to my query 
+
+```
+worker_1    | [2022-10-09 18:44:56,083][PID:34][ERROR][ForkPoolWorker-8] Task redash.tasks.execute_query[ee0b469c-985e-457f-bde9-7fc3cac358a0] raised unexpected: InvalidToken()
+worker_1    | Traceback (most recent call last):
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 385, in trace_task
+worker_1    |     R = retval = fun(*args, **kwargs)
+worker_1    |   File &quot;/app/redash/worker.py&quot;, line 84, in __call__
+worker_1    |     return TaskBase.__call__(self, *args, **kwargs)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/celery/app/trace.py&quot;, line 648, in __protected_call__
+worker_1    |     return self.run(*args, **kwargs)
+worker_1    |   File &quot;/app/redash/tasks/queries.py&quot;, line 436, in execute_query
+worker_1    |     scheduled_query).run()
+worker_1    |   File &quot;/app/redash/tasks/queries.py&quot;, line 339, in __init__
+worker_1    |     self.data_source = self._load_data_source()
+worker_1    |   File &quot;/app/redash/tasks/queries.py&quot;, line 422, in _load_data_source
+worker_1    |     return models.DataSource.query.get(self.data_source_id)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py&quot;, line 924, in get
+worker_1    |     ident, loading.load_on_pk_identity)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py&quot;, line 1007, in _get_impl
+worker_1    |     return db_load_fn(self, primary_key_identity)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 250, in load_on_pk_identity
+worker_1    |     return q.one()
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py&quot;, line 2954, in one
+worker_1    |     ret = self.one_or_none()
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py&quot;, line 2924, in one_or_none
+worker_1    |     ret = list(self)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 98, in instances
+worker_1    |     util.raise_from_cause(err)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py&quot;, line 265, in raise_from_cause
+worker_1    |     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 79, in instances
+worker_1    |     rows = [proc(row) for row in fetch]
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 511, in _instance
+worker_1    |     loaded_instance, populate_existing, populators)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py&quot;, line 611, in _populate_full
+worker_1    |     dict_[key] = getter(row)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py&quot;, line 1226, in process
+worker_1    |     return process_value(impl_processor(value), dialect)
+worker_1    |   File &quot;/app/redash/models/types.py&quot;, line 28, in process_result_value
+worker_1    |     return ConfigurationContainer.from_json(super(EncryptedConfiguration, self).process_result_value(value, dialect))
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py&quot;, line 409, in process_result_value
+worker_1    |     decrypted_value = self.engine.decrypt(value)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py&quot;, line 216, in decrypt
+worker_1    |     decrypted = self.fernet.decrypt(value)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/cryptography/fernet.py&quot;, line 75, in decrypt
+worker_1    |     return self._decrypt_data(data, timestamp, ttl)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/cryptography/fernet.py&quot;, line 119, in _decrypt_data
+worker_1    |     self._verify_signature(data)
+worker_1    |   File &quot;/usr/local/lib/python2.7/site-packages/cryptography/fernet.py&quot;, line 108, in _verify_signature
+worker_1    |     raise InvalidToken
+worker_1    | InvalidToken
+
+```
+### Technical details:
+
+* Redash Version: Version: 8.0.0+b32245 (a16f551e) 
+* Browser/OS:  Docker version 20.10.18. Firefox 105.0.2 (64-bit)
+* How did you install Redash: docker-compose from https://github.com/radioberry/docker-redash</description>
+    
+    <lastBuildDate>Wed, 14 Dec 2022 13:16:08 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>VictoriaMetrics via prometheus api does not work</title>
+        <dc:creator><![CDATA[gorkem]]></dc:creator>
+        <description><![CDATA[
+            <p>This is similar problem I faced and was hoping there is answer, prometheus range filter does not work (query{}[5m]), but using http <a href="https://prometheus.io/docs/prometheus/latest/querying/api/#range-queries" rel="noopener nofollow ugc">range query</a> works.</p>
+<pre><code class="lang-auto">
+( node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate
+{   namespace =~"(monitoring)",
+    pod =~"|(.*nvidia.*)",
+    container=~"(.*exporter.*)"
+}
+)&amp;start=2021-12-14T00:00:00.000Z&amp;end=2022-12-14T23:59:59.000Z&amp;step=3600s
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112/3</link>
+        <pubDate>Wed, 14 Dec 2022 13:16:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11112-3</guid>
+        <source url="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112.rss">VictoriaMetrics via prometheus api does not work</source>
+      </item>
+      <item>
+        <title>VictoriaMetrics via prometheus api does not work</title>
+        <dc:creator><![CDATA[alexkutsan]]></dc:creator>
+        <description><![CDATA[
+            <p>Well, look like docker-compose repo that was used is completely outdated.<br>
+I have tried with <a href="https://github.com/getredash/setup/blob/master/data/docker-compose.yml" class="inline-onebox" rel="noopener nofollow ugc">setup/docker-compose.yml at master · getredash/setup · GitHub</a><br>
+ANd Prometheus requests are executed,</p>
+<p>But now i have another error :<br>
+My request <code>hw_stat_cpu{machine_name="x8664server"}</code> works well, but I would like to have not a number but a graph - a history of values. when I setup request as <code>hw_stat_cpu{machine_name="x8664server"}[6h]</code> I have an error :</p>
+<pre><code class="lang-auto">adhoc_worker_1      | [2022-10-09 19:18:04,849][PID:29][WARNING][ForkPoolWorker-3] Unexpected error while running query:
+adhoc_worker_1      | Traceback (most recent call last):
+adhoc_worker_1      |   File "/app/redash/tasks/queries.py", line 361, in run
+adhoc_worker_1      |     data, error = query_runner.run_query(annotated_query, self.user)
+adhoc_worker_1      |   File "/app/redash/query_runner/prometheus.py", line 168, in run_query
+adhoc_worker_1      |     rows = get_instant_rows(metrics)
+adhoc_worker_1      |   File "/app/redash/query_runner/prometheus.py", line 16, in get_instant_rows
+adhoc_worker_1      |     timestamp, value = metric['value']
+adhoc_worker_1      | KeyError: 'value'
+adhoc_worker_1      | [2022-10-09 19:18:04,850][PID:29][INFO][ForkPoolWorker-3] task_name=redash.tasks.execute_query task_id=6c567fca-30fe-4e96-99fc-850342cd135d task=execute_query query_hash=bcee8e5e08439a970bc4d6e5effabc0a data_length=None error=['value']
+adhoc_worker_1      | [2022-10-09 19:18:04,851][PID:29][ERROR][ForkPoolWorker-3] Task redash.tasks.execute_query[6c567fca-30fe-4e96-99fc-850342cd135d] raised unexpected: QueryExecutionError(u"'value'",)
+adhoc_worker_1      | Traceback (most recent call last):
+adhoc_worker_1      |   File "/usr/local/lib/python2.7/site-packages/celery/app/trace.py", line 385, in trace_task
+adhoc_worker_1      |     R = retval = fun(*args, **kwargs)
+adhoc_worker_1      |   File "/app/redash/worker.py", line 84, in __call__
+adhoc_worker_1      |     return TaskBase.__call__(self, *args, **kwargs)
+adhoc_worker_1      |   File "/usr/local/lib/python2.7/site-packages/celery/app/trace.py", line 648, in __protected_call__
+adhoc_worker_1      |     return self.run(*args, **kwargs)
+adhoc_worker_1      |   File "/app/redash/tasks/queries.py", line 436, in execute_query
+adhoc_worker_1      |     scheduled_query).run()
+adhoc_worker_1      |   File "/app/redash/tasks/queries.py", line 382, in run
+adhoc_worker_1      |     raise result
+adhoc_worker_1      | QueryExecutionError: 'value'
+
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112/2</link>
+        <pubDate>Sun, 09 Oct 2022 19:18:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11112-2</guid>
+        <source url="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112.rss">VictoriaMetrics via prometheus api does not work</source>
+      </item>
+      <item>
+        <title>VictoriaMetrics via prometheus api does not work</title>
+        <dc:creator><![CDATA[alexkutsan]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hello, I am trying to use redash to visualize data in my VictoriaMetrics DB.<br>
+VictoriaMetrics provides Prometheus API  that I use.</p>
+<p>curl example :</p>
+<pre><code class="lang-auto">curl -fs --data-urlencode 'query=hw_stat_cpu{machine_name="x8664server"}[30s]' http://192.168.1.10:8428/api/v1/query
+{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"__name__":"hw_stat_cpu","domain":"hw_stat","machine_ip":"192.168.1.10","machine_name":"x8664server"},"values":[[1665340803.608,"20.4"],[1665340808.53,"26"],[1665340813.514,"19.1"],[1665340818.608,"23.7"],[1665340823.618,"19.7"],[1665340828.509,"23.6"]]}]}}
+</code></pre>
+<p>But when I add <code>hw_stat_cpu{machine_name="x8664server"}[30s]</code> it does not show anything.</p>
+<p>In redash logs I can see InvalidToken exception, but I am not sure that it is related to my query</p>
+<pre><code class="lang-auto">worker_1    | [2022-10-09 18:44:56,083][PID:34][ERROR][ForkPoolWorker-8] Task redash.tasks.execute_query[ee0b469c-985e-457f-bde9-7fc3cac358a0] raised unexpected: InvalidToken()
+worker_1    | Traceback (most recent call last):
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/celery/app/trace.py", line 385, in trace_task
+worker_1    |     R = retval = fun(*args, **kwargs)
+worker_1    |   File "/app/redash/worker.py", line 84, in __call__
+worker_1    |     return TaskBase.__call__(self, *args, **kwargs)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/celery/app/trace.py", line 648, in __protected_call__
+worker_1    |     return self.run(*args, **kwargs)
+worker_1    |   File "/app/redash/tasks/queries.py", line 436, in execute_query
+worker_1    |     scheduled_query).run()
+worker_1    |   File "/app/redash/tasks/queries.py", line 339, in __init__
+worker_1    |     self.data_source = self._load_data_source()
+worker_1    |   File "/app/redash/tasks/queries.py", line 422, in _load_data_source
+worker_1    |     return models.DataSource.query.get(self.data_source_id)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 924, in get
+worker_1    |     ident, loading.load_on_pk_identity)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 1007, in _get_impl
+worker_1    |     return db_load_fn(self, primary_key_identity)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 250, in load_on_pk_identity
+worker_1    |     return q.one()
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2954, in one
+worker_1    |     ret = self.one_or_none()
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2924, in one_or_none
+worker_1    |     ret = list(self)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 98, in instances
+worker_1    |     util.raise_from_cause(err)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 265, in raise_from_cause
+worker_1    |     reraise(type(exception), exception, tb=exc_tb, cause=cause)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 79, in instances
+worker_1    |     rows = [proc(row) for row in fetch]
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 511, in _instance
+worker_1    |     loaded_instance, populate_existing, populators)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/loading.py", line 611, in _populate_full
+worker_1    |     dict_[key] = getter(row)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/type_api.py", line 1226, in process
+worker_1    |     return process_value(impl_processor(value), dialect)
+worker_1    |   File "/app/redash/models/types.py", line 28, in process_result_value
+worker_1    |     return ConfigurationContainer.from_json(super(EncryptedConfiguration, self).process_result_value(value, dialect))
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py", line 409, in process_result_value
+worker_1    |     decrypted_value = self.engine.decrypt(value)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/sqlalchemy_utils/types/encrypted/encrypted_type.py", line 216, in decrypt
+worker_1    |     decrypted = self.fernet.decrypt(value)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 75, in decrypt
+worker_1    |     return self._decrypt_data(data, timestamp, ttl)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 119, in _decrypt_data
+worker_1    |     self._verify_signature(data)
+worker_1    |   File "/usr/local/lib/python2.7/site-packages/cryptography/fernet.py", line 108, in _verify_signature
+worker_1    |     raise InvalidToken
+worker_1    | InvalidToken
+
+</code></pre>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: Version: 8.0.0+b32245 (a16f551e)</li>
+<li>Browser/OS:  Docker version 20.10.18. Firefox 105.0.2 (64-bit)</li>
+<li>How did you install Redash: docker-compose from <a href="https://github.com/radioberry/docker-redash" class="inline-onebox" rel="noopener nofollow ugc">GitHub - radioberry/docker-redash: redash on docker</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112/1</link>
+        <pubDate>Sun, 09 Oct 2022 18:46:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11112-1</guid>
+        <source url="https://discuss.redash.io/t/victoriametrics-via-prometheus-api-does-not-work/11112.rss">VictoriaMetrics via prometheus api does not work</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Serialized Multi-Select with select All</title>
+    <link>https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587</link>
+    <description>### Serialized Multi-Select with select All
+
+Hi, 
+
+I&#39;ve set Query based dropdown list  (countries and medium) with Multi-Select and Single quotation marks for my main query:
+
+```
+select date, count(downloads)
+from reports
+where date between &#39;{{ date_start }}&#39; and &#39;{{ date_end }}&#39;
+and country in ({{ Country }}) 
+and medium in ({{ Medium }})
+group by date 
+```
+
+I&#39;ve reffered to
+```
+SELECT &#39;All&#39; as chart_type
+UNION ALL
+   (SELECT DISTINCT country AS chart_type 
+   FROM report
+   ORDER BY chart_type ASC)
+```
+
+for selection &#39;All&#39; (default) of these values, but I get an
+Error running query: **Code: 27, e.displayText() = DB::ParsingException: Cannot parse input: expected &#39;(&#39; before: &#39;All&#39;: while converting &#39;All&#39; to Tuple(String, String, String)**
+
+Are there possible ways/SQL query to toggle for All ?
+Any help would be greatly appreciated.
+
+### Technical details:
+
+* Redash Version:  Version: 8.0.0+b32245 (a16f551e)
+* Browser/OS: Chrome</description>
+    
+    <lastBuildDate>Tue, 07 Jun 2022 21:15:00 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Serialized Multi-Select with select All</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>For the select-all behaviour to work your query should look like this:</p>
+<pre><code class="lang-sql">select date, count(downloads)
+from reports
+where date between '{{ date_start }}' and '{{ date_end }}'
+and ('All' in ({{ Country }})  or country in ({{ Country }})) 
+and ('All' in ({{ Medium  }})  or medium  in ({{ Medium  }}))
+group by date
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587/2</link>
+        <pubDate>Tue, 07 Jun 2022 21:15:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10587-2</guid>
+        <source url="https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587.rss">Serialized Multi-Select with select All</source>
+      </item>
+      <item>
+        <title>Serialized Multi-Select with select All</title>
+        <dc:creator><![CDATA[Katerina]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="serialized-multi-select-with-select-all-1" class="anchor" href="https://discuss.redash.io#serialized-multi-select-with-select-all-1"></a>Serialized Multi-Select with select All</h3>
+<p>Hi,</p>
+<p>I’ve set Query based dropdown list  (countries and medium) with Multi-Select and Single quotation marks for my main query:</p>
+<pre><code class="lang-auto">select date, count(downloads)
+from reports
+where date between '{{ date_start }}' and '{{ date_end }}'
+and country in ({{ Country }}) 
+and medium in ({{ Medium }})
+group by date 
+</code></pre>
+<p>I’ve reffered to</p>
+<pre><code class="lang-auto">SELECT 'All' as chart_type
+UNION ALL
+   (SELECT DISTINCT country AS chart_type 
+   FROM report
+   ORDER BY chart_type ASC)
+</code></pre>
+<p>for selection ‘All’ (default) of these values, but I get an<br>
+Error running query: <strong>Code: 27, e.displayText() = DB::ParsingException: Cannot parse input: expected ‘(’ before: ‘All’: while converting ‘All’ to Tuple(String, String, String)</strong></p>
+<p>Are there possible ways/SQL query to toggle for All ?<br>
+Any help would be greatly appreciated.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version:  Version: 8.0.0+b32245 (a16f551e)</li>
+<li>Browser/OS: Chrome</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587/1</link>
+        <pubDate>Tue, 07 Jun 2022 19:20:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10587-1</guid>
+        <source url="https://discuss.redash.io/t/serialized-multi-select-with-select-all/10587.rss">Serialized Multi-Select with select All</source>
+      </item>
+  </channel>
+</rss>

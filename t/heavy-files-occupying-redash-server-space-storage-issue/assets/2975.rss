@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+    <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975</link>
+    <description>Guys,
+
+In the below folder, lot of heavy files are saved (with size more than 1 GB) occupying total of 40GB, 
+
+/var/lib/postgresql/9.3/main/base/
+
+Can you guys help me understand what is exactly getting  saved in the above path
+
+Thanks,
+Rohan</description>
+    
+    <lastBuildDate>Sat, 30 Oct 2021 03:09:31 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[vish]]></dc:creator>
+        <description><![CDATA[
+            <p>deployed via the newer one click - Container on AWS .</p>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/7</link>
+        <pubDate>Sat, 30 Oct 2021 03:09:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-7</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This will depend entirely on how you deployed Redash.</p>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/6</link>
+        <pubDate>Fri, 29 Oct 2021 21:10:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-6</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[vish]]></dc:creator>
+        <description><![CDATA[
+            <p>Could you elaborate on where to run it, and how to run it manually ?</p>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/5</link>
+        <pubDate>Fri, 29 Oct 2021 18:55:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-5</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[rohan.agg]]></dc:creator>
+        <description><![CDATA[
+            <p>this is currently how settings look like in Redash, can you please help us what need to be changed for periodical cleanup exercise</p>
+<p><span class="mention">@celery.task</span>(name=“redash.tasks.cleanup_query_results”)<br>
+def cleanup_query_results():<br>
+“”"<br>
+Job to cleanup unused query results – such that no query links to them anymore, and older than<br>
+settings.QUERY_RESULTS_MAX_AGE (a week by default, so it’s less likely to be open in someone’s browser and be used).</p>
+<pre><code>Each time the job deletes only settings.QUERY_RESULTS_CLEANUP_COUNT (100 by default) query results so it won't choke
+the database in case of many such results.
+"""
+
+logging.info("Running query results clean up (removing maximum of %d unused results, that are %d days old or more)",
+             settings.QUERY_RESULTS_CLEANUP_COUNT, settings.QUERY_RESULTS_CLEANUP_MAX_AGE)
+
+unused_query_results = models.QueryResult.unused(settings.QUERY_RESULTS_CLEANUP_MAX_AGE).limit(settings.QUERY_RESULTS_CLEANUP_COUNT)
+deleted_count = models.QueryResult.query.filter(
+    models.QueryResult.id.in_(unused_query_results.subquery())
+).delete(synchronize_session=False)
+models.db.session.commit()
+logger.info("Deleted %d unused query results.", deleted_count)</code></pre>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/4</link>
+        <pubDate>Fri, 11 Jan 2019 10:24:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-4</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>There is <a href="https://github.com/getredash/redash/blob/445f8e5c36e7f0cefd4b3f0dd754710b3a2e13e0/redash/tasks/queries.py#L355-L373" rel="nofollow noopener">a periodic method to clean unused query results</a>. You should probably change settings to run it more frequently.</p>
+<p>You would probably want to run it manually in a loop to cleanup the current backlog.</p>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/3</link>
+        <pubDate>Wed, 09 Jan 2019 19:10:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-3</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[rohan.agg]]></dc:creator>
+        <description><![CDATA[
+            <p>When we further debug, there is table query_results in the Redash PostgreSQL which is occupying all the space</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/98ed7b45d64e766e61705b48ec4a63bd6c9a13aa.png" data-download-href="/uploads/short-url/lORnowR2r60fPmzI95Dhst9DLnA.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/98ed7b45d64e766e61705b48ec4a63bd6c9a13aa_2_690x260.png" alt="image" data-base62-sha1="lORnowR2r60fPmzI95Dhst9DLnA" width="690" height="260" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/98ed7b45d64e766e61705b48ec4a63bd6c9a13aa_2_690x260.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/98ed7b45d64e766e61705b48ec4a63bd6c9a13aa_2_1035x390.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/98ed7b45d64e766e61705b48ec4a63bd6c9a13aa.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/98ed7b45d64e766e61705b48ec4a63bd6c9a13aa_2_10x10.png"></a></div><p></p>
+<p>Any idea how to clean it ? what will be impact ?</p>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/2</link>
+        <pubDate>Wed, 09 Jan 2019 06:31:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-2</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+      <item>
+        <title>Heavy files occupying Redash Server Space (Storage issue)</title>
+        <dc:creator><![CDATA[rohan.agg]]></dc:creator>
+        <description><![CDATA[
+            <p>Guys,</p>
+<p>In the below folder, lot of heavy files are saved (with size more than 1 GB) occupying total of 40GB,</p>
+<p>/var/lib/postgresql/9.3/main/base/</p>
+<p>Can you guys help me understand what is exactly getting  saved in the above path</p>
+<p>Thanks,<br>
+Rohan</p>
+          <p><a href="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975/1</link>
+        <pubDate>Wed, 09 Jan 2019 05:54:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-2975-1</guid>
+        <source url="https://discuss.redash.io/t/heavy-files-occupying-redash-server-space-storage-issue/2975.rss">Heavy files occupying Redash Server Space (Storage issue)</source>
+      </item>
+  </channel>
+</rss>

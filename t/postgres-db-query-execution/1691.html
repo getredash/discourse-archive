@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Postgres db Query execution</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/postgres-db-query-execution/1691">Postgres db Query execution</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Postgres db Query execution" itemprop="headline"/>
+<meta content="Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/meghana.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/meghana_avatar.png" tabindex="-1" width="48"/><span itemprop="name">meghana</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/dd9a5f522bed196ea9af9b13625f566a9ad72aac.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T09:51:07Z" itemprop="datePublished">
+                    March 21, 2018,  9:51am
+                  </time>
+<meta content="2018-03-21T09:51:07Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Hi all,<br/>
+I successfully connected data source in my local machine. When i’m trying to execute a simple query, i’m not able to get results. Please do a needful by solving this. Thanks in advance.</p>
+<p>for reference:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/vCogfTgqJ8Yx2WXU0ltklqRPRBG.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/dd9a5f522bed196ea9af9b13625f566a9ad72aac.png" rel="noopener nofollow ugc" title="query1"><img alt="query1" data-base62-sha1="vCogfTgqJ8Yx2WXU0ltklqRPRBG" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/dd9a5f522bed196ea9af9b13625f566a9ad72aac_2_10x10.png" height="373" src="assets/dd9a5f522bed196ea9af9b13625f566a9ad72aac.png" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">query1</span><span class="informations">1296×702 200 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/n7wrnY9t6reKy8ZGct0kGMbK726.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/a20bb61cb8fa173ecebd1f3279c380d6a980ab5e.png" rel="noopener nofollow ugc" title="query2"><img alt="query2" data-base62-sha1="n7wrnY9t6reKy8ZGct0kGMbK726" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/a20bb61cb8fa173ecebd1f3279c380d6a980ab5e_2_10x10.png" height="347" src="assets/a20bb61cb8fa173ecebd1f3279c380d6a980ab5e_2_690x347.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/a20bb61cb8fa173ecebd1f3279c380d6a980ab5e_2_690x347.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/a20bb61cb8fa173ecebd1f3279c380d6a980ab5e_2_1035x520.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/a20bb61cb8fa173ecebd1f3279c380d6a980ab5e.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">query2</span><span class="informations">1285×648 54 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T09:55:29Z" itemprop="datePublished">
+                    March 21, 2018,  9:55am
+                  </time>
+<meta content="2018-03-21T09:55:29Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Go to <a href="http://127.0.0.1:9001/" rel="nofollow noopener">http://127.0.0.1:9001/</a> and add the screenshot of that page. I am guessing all your services would be shown as stopped.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/meghana.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/meghana_avatar.png" tabindex="-1" width="48"/><span itemprop="name">meghana</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:08:32Z" itemprop="datePublished">
+                    March 21, 2018, 10:08am
+                  </time>
+<meta content="2018-03-21T10:08:32Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a href="http://127.0.0.1:9001/" rel="noopener nofollow ugc">http://127.0.0.1:9001/</a> 9001 is the port number you are running?<br/>
+because i’m getting this error page: <div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/s8lNjdYfu8JDb3uSnnfq73ePT0X.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf.png" rel="noopener nofollow ugc" title="query3"><img alt="query3" data-base62-sha1="s8lNjdYfu8JDb3uSnnfq73ePT0X" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf_2_10x10.png" height="387" src="assets/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf_2_690x387.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf_2_690x387.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf_2_1035x580.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c52e8ce324eafe7505aa8cfa6510ae8fa02d8fbf.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">query3</span><span class="informations">1366×768 125 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+if i run the same with 5000 i’m getting the redash login page.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:13:00Z" itemprop="datePublished">
+                    March 21, 2018, 10:13am
+                  </time>
+<meta content="2018-03-21T10:13:00Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Run <code>service nginx status</code> and send a screen shot</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/meghana.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/meghana_avatar.png" tabindex="-1" width="48"/><span itemprop="name">meghana</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:25:26Z" itemprop="datePublished">
+                    March 21, 2018, 10:25am
+                  </time>
+<meta content="2018-03-21T10:25:26Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/teHnlywiVXOr3rruEIDjUtfGM2R.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1.png" rel="noopener nofollow ugc" title="query4"><img alt="query4" data-base62-sha1="teHnlywiVXOr3rruEIDjUtfGM2R" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1_2_10x10.png" height="201" src="assets/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1_2_690x201.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1_2_690x201.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1_2_1035x301.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/cce86d517f8f52f247ac9a1680a0275f3b0dbaf1.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">query4</span><span class="informations">1296×378 69.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:27:18Z" itemprop="datePublished">
+                    March 21, 2018, 10:27am
+                  </time>
+<meta content="2018-03-21T10:27:18Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Run <code>service supervisor status</code></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/meghana.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/meghana_avatar.png" tabindex="-1" width="48"/><span itemprop="name">meghana</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/caec0bb538eb1359f1796ec0127757174a10ecc2.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:29:23Z" itemprop="datePublished">
+                    March 21, 2018, 10:29am
+                  </time>
+<meta content="2018-03-21T10:29:23Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m getting error:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/sX8aPtWpxAX9Mb60Q8aQnusIuNc.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/caec0bb538eb1359f1796ec0127757174a10ecc2.png" rel="noopener nofollow ugc" title="query6"><img alt="query6" data-base62-sha1="sX8aPtWpxAX9Mb60Q8aQnusIuNc" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/caec0bb538eb1359f1796ec0127757174a10ecc2_2_10x10.png" height="62" src="assets/caec0bb538eb1359f1796ec0127757174a10ecc2_2_690x62.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/caec0bb538eb1359f1796ec0127757174a10ecc2_2_690x62.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/caec0bb538eb1359f1796ec0127757174a10ecc2_2_1035x93.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/caec0bb538eb1359f1796ec0127757174a10ecc2.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">query6</span><span class="informations">1288×116 15.1 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:30:55Z" itemprop="datePublished">
+                    March 21, 2018, 10:30am
+                  </time>
+<meta content="2018-03-21T10:30:55Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>your service supervisor is not running. Run <code>service supervisor start</code></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/meghana.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/meghana_avatar.png" tabindex="-1" width="48"/><span itemprop="name">meghana</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/653cc3e1b2339797a425a98da1d4bb967f816284.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:32:08Z" itemprop="datePublished">
+                    March 21, 2018, 10:32am
+                  </time>
+<meta content="2018-03-21T10:32:08Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I’m getting error like this.<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/erApCDc45ZUygt5fVVTyTo4k40k.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/653cc3e1b2339797a425a98da1d4bb967f816284.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="erApCDc45ZUygt5fVVTyTo4k40k" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/653cc3e1b2339797a425a98da1d4bb967f816284_2_10x10.png" height="100" src="assets/653cc3e1b2339797a425a98da1d4bb967f816284.png" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">944×137 20.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:34:35Z" itemprop="datePublished">
+                    March 21, 2018, 10:34am
+                  </time>
+<meta content="2018-03-21T10:34:35Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="onebox stackexchange">
+<header class="source">
+<a href="https://unix.stackexchange.com/questions/281774/ubuntu-server-16-04-cannot-get-supervisor-to-start-automatically" rel="nofollow noopener" target="_blank">unix.stackexchange.com</a>
+</header>
+<article class="onebox-body">
+<a href="https://unix.stackexchange.com/users/169392/qinking126" rel="nofollow noopener" target="_blank">
+<img alt="qinking126" class="thumbnail onebox-avatar" height="128" src="assets/6eb8bfa4a9ae5d549a46cd4a708c5879" width="128"/>
+</a>
+<h4>
+<a href="https://unix.stackexchange.com/questions/281774/ubuntu-server-16-04-cannot-get-supervisor-to-start-automatically" rel="nofollow noopener" target="_blank">ubuntu server 16.04: cannot get supervisor to start automatically</a>
+</h4>
+<div class="tags">
+<strong>ubuntu, supervisord</strong>
+</div>
+<div class="date">
+  asked by
+  
+  <a href="https://unix.stackexchange.com/users/169392/qinking126" rel="nofollow noopener" target="_blank">
+    qinking126
+  </a>
+  on <a href="https://unix.stackexchange.com/questions/281774/ubuntu-server-16-04-cannot-get-supervisor-to-start-automatically" rel="nofollow noopener" target="_blank">12:04AM - 08 May 16 UTC</a>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/meghana.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/meghana_avatar.png" tabindex="-1" width="48"/><span itemprop="name">meghana</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/ecef1786905e17558119ca9f9e3aec68031f99d9.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:39:20Z" itemprop="datePublished">
+                    March 21, 2018, 10:39am
+                  </time>
+<meta content="2018-03-21T10:39:20Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thank you. i installed this is the status now.<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/xO0VYlhEpsQeIAL2sCDV6IirbAJ.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/ecef1786905e17558119ca9f9e3aec68031f99d9.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="xO0VYlhEpsQeIAL2sCDV6IirbAJ" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/ecef1786905e17558119ca9f9e3aec68031f99d9_2_10x10.png" height="152" src="assets/ecef1786905e17558119ca9f9e3aec68031f99d9_2_690x152.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/ecef1786905e17558119ca9f9e3aec68031f99d9_2_690x152.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/ecef1786905e17558119ca9f9e3aec68031f99d9_2_1035x228.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/ecef1786905e17558119ca9f9e3aec68031f99d9.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1306×288 78.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>What should i do next?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:41:15Z" itemprop="datePublished">
+                    March 21, 2018, 10:41am
+                  </time>
+<meta content="2018-03-21T10:41:15Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>do 127.0.0.1:9001 and check is all service is running</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/rgupta1.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/rgupta1_avatar.png" tabindex="-1" width="48"/><span itemprop="name">rgupta1</span></a>
+</span>
+<link href="https://discuss.redash.io/t/postgres-db-query-execution/1691" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/102f7b719d75736bafdec4065512c5b2db23dfa2.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-21T10:42:59Z" itemprop="datePublished">
+                    March 21, 2018, 10:42am
+                  </time>
+<meta content="2018-03-21T10:42:59Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/2jbmV2hKcdX6V6HcBnt1d14kQU2.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/102f7b719d75736bafdec4065512c5b2db23dfa2.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="2jbmV2hKcdX6V6HcBnt1d14kQU2" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/102f7b719d75736bafdec4065512c5b2db23dfa2_2_10x10.png" height="186" src="assets/102f7b719d75736bafdec4065512c5b2db23dfa2_2_690x186.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/102f7b719d75736bafdec4065512c5b2db23dfa2_2_690x186.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/102f7b719d75736bafdec4065512c5b2db23dfa2.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/102f7b719d75736bafdec4065512c5b2db23dfa2.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">847×229 21.5 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+if you get this, then all good</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

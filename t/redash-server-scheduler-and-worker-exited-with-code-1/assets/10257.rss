@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Server, Scheduler, and Worker exited with code 1</title>
+    <link>https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257</link>
+    <description>### Issue Summary
+Hi..
+ive been installing redash and always got this error, the redash server didnt run and cant access localhost:5000
+
+here is my installation step:
+1. *git clone https://github.com/getredash/redash.git*
+2. create .env and edit .yaml file
+3. *docker-compose run --rm server create_db*
+4. *docker-compose up*
+
+this is the error after i run *docker-compose run --rm server create_db*
+![3|690x272](upload://hpQ4c2PEvP3daz13obeGyPenDgJ.jpeg)
+
+this is the error after i run *docker-compose up*
+![1|690x198](upload://v79haS1gSgVrIpm9Kzvy1HWmu39.jpeg)
+
+my .env file
+```
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=
+REDASH_COOKIE_SECRET=redash-selfhosted
+REDASH_SECRET_KEY=redash-selfhosted
+REDASH_DATABASE_URL=postgresql://postgres@postgres/postgres
+```
+
+docker-compose.yml file
+```
+# This configuration file is for the **development** setup.
+# For a production example please refer to getredash/setup repository on GitHub.
+version: &quot;2.2&quot;
+x-redash-service:
+  &amp;redash-service
+  build:
+    context: .
+    args:
+      skip_frontend_build: &quot;true&quot;
+  volumes:
+    - .:/app
+  env_file:
+    - .env
+x-redash-environment:
+  &amp;redash-environment
+  REDASH_LOG_LEVEL: &quot;INFO&quot;
+  REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+  REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+  REDASH_RATELIMIT_ENABLED: &quot;false&quot;
+  REDASH_MAIL_DEFAULT_SENDER: &quot;redash@example.com&quot;
+  REDASH_MAIL_SERVER: &quot;email&quot;
+  REDASH_ENFORCE_CSRF: &quot;true&quot;
+  # Set secret keys in the .env file
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: dev_scheduler
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+  worker:
+    &lt;&lt;: *redash-service
+    command: dev_worker
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  redis:
+    image: redis:3-alpine
+    restart: always
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - &quot;15432:5432&quot;
+    command: &quot;postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF&quot;
+    restart: always
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: &quot;trust&quot;
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+```
+
+im wondering there is a mistake in my .env and .yml file, but i really dont have any idea bcs i have tried several different files and still didnt success..
+really need help for this..
+
+Thank You
+
+### Technical details:
+
+* Redash Version: v10.1.0
+* Browser/OS: firefox/ Win 10
+* How did you install Redash: https://redash.io/help/open-source/dev-guide/docker</description>
+    
+    <lastBuildDate>Tue, 05 Apr 2022 04:42:11 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Server, Scheduler, and Worker exited with code 1</title>
+        <dc:creator><![CDATA[SongJL]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Jesse,<br>
+Thank you for the suggestion.<br>
+i already follow your suggestion but still face the same problem after i run <code>docker-compose up -d</code><br>
+it showed error like this picture on the redash server, scheduler and worker<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ee3916d9e34f95c48d86d517c89f7c6788bbe9a.jpeg" data-download-href="/uploads/short-url/bfSNUDfwVKSZaVu3NIit34ArRzA.jpeg?dl=1" title="5 server" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4ee3916d9e34f95c48d86d517c89f7c6788bbe9a_2_690x131.jpeg" alt="5 server" data-base62-sha1="bfSNUDfwVKSZaVu3NIit34ArRzA" width="690" height="131" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4ee3916d9e34f95c48d86d517c89f7c6788bbe9a_2_690x131.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ee3916d9e34f95c48d86d517c89f7c6788bbe9a.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/4ee3916d9e34f95c48d86d517c89f7c6788bbe9a.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/4ee3916d9e34f95c48d86d517c89f7c6788bbe9a_2_10x10.png"></a></div><p></p>
+<p>only these three containers running after executing <code>docker-compose up -d</code><br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/99b77dea0142cd798e6450c82a5dfeb9ce354a52.jpeg" data-download-href="/uploads/short-url/lVQbjmUFUAIVCZPyiyRk1nYTZsK.jpeg?dl=1" title="4" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/99b77dea0142cd798e6450c82a5dfeb9ce354a52_2_690x55.jpeg" alt="4" data-base62-sha1="lVQbjmUFUAIVCZPyiyRk1nYTZsK" width="690" height="55" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/99b77dea0142cd798e6450c82a5dfeb9ce354a52_2_690x55.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/99b77dea0142cd798e6450c82a5dfeb9ce354a52_2_1035x82.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/99b77dea0142cd798e6450c82a5dfeb9ce354a52.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/99b77dea0142cd798e6450c82a5dfeb9ce354a52_2_10x10.png"></a></div><p></p>
+<p>this is my newest .env and yaml file</p>
+<pre><code class="lang-auto">POSTGRES_PASSWORD=
+REDASH_COOKIE_SECRET=redash-selfhosted
+REDASH_SECRET_KEY=redash-selfhosted
+</code></pre>
+<pre><code class="lang-auto"># This configuration file is for the **development** setup.
+# For a production example please refer to getredash/setup repository on GitHub.
+version: "2.2"
+x-redash-service:
+  &amp;redash-service
+  build:
+    context: .
+    args:
+      skip_frontend_build: "true"
+  volumes:
+    - .:/app
+  env_file:
+    - .env
+x-redash-environment:
+  &amp;redash-environment
+  REDASH_LOG_LEVEL: "INFO"
+  REDASH_REDIS_URL: "redis://redis:6379/0"
+  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+  REDASH_RATELIMIT_ENABLED: "false"
+  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
+  REDASH_MAIL_SERVER: "email"
+  REDASH_ENFORCE_CSRF: "true"
+  # Set secret keys in the .env file
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: dev_scheduler
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+  worker:
+    &lt;&lt;: *redash-service
+    command: dev_worker
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  redis:
+    image: redis:3-alpine
+    restart: always
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - "15432:5432"
+    command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
+    restart: always
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257/3</link>
+        <pubDate>Tue, 05 Apr 2022 04:42:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10257-3</guid>
+        <source url="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257.rss">Redash Server, Scheduler, and Worker exited with code 1</source>
+      </item>
+      <item>
+        <title>Redash Server, Scheduler, and Worker exited with code 1</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>is there a reason you ran the steps out of order?</p>
+<p><code>docker-compose up -d</code> needs to happen <em>before</em> you try to create the database.</p>
+<p>Your .env file doesn’t need anything other than <code>REDASH_SECRET_KEY</code>. Duplicating the values from <code>docker-compose.yaml</code> shouldn’t be necessary either.</p>
+          <p><a href="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257/2</link>
+        <pubDate>Mon, 04 Apr 2022 18:03:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10257-2</guid>
+        <source url="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257.rss">Redash Server, Scheduler, and Worker exited with code 1</source>
+      </item>
+      <item>
+        <title>Redash Server, Scheduler, and Worker exited with code 1</title>
+        <dc:creator><![CDATA[SongJL]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hi…<br>
+ive been installing redash and always got this error, the redash server didnt run and cant access localhost:5000</p>
+<p>here is my installation step:</p>
+<ol>
+<li><em>git clone <a href="https://github.com/getredash/redash.git" class="inline-onebox" rel="noopener nofollow ugc">GitHub - getredash/redash: Make Your Company Data Driven. Connect to any data source, easily visualize, dashboard and share your data.</a></em></li>
+<li>create .env and edit .yaml file</li>
+<li><em>docker-compose run --rm server create_db</em></li>
+<li><em>docker-compose up</em></li>
+</ol>
+<p>this is the error after i run <em>docker-compose run --rm server create_db</em><br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7a10b794e33d7c5f2ab25213a6ef0210ee5e1bf1.jpeg" data-download-href="/uploads/short-url/hpQ4c2PEvP3daz13obeGyPenDgJ.jpeg?dl=1" title="3" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a10b794e33d7c5f2ab25213a6ef0210ee5e1bf1_2_690x272.jpeg" alt="3" data-base62-sha1="hpQ4c2PEvP3daz13obeGyPenDgJ" width="690" height="272" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a10b794e33d7c5f2ab25213a6ef0210ee5e1bf1_2_690x272.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7a10b794e33d7c5f2ab25213a6ef0210ee5e1bf1.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7a10b794e33d7c5f2ab25213a6ef0210ee5e1bf1.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7a10b794e33d7c5f2ab25213a6ef0210ee5e1bf1_2_10x10.png"></a></div><p></p>
+<p>this is the error after i run <em>docker-compose up</em><br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da124a8463f9ae4412d67833cf84f9e66c2ab70b.jpeg" data-download-href="/uploads/short-url/v79haS1gSgVrIpm9Kzvy1HWmu39.jpeg?dl=1" title="1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da124a8463f9ae4412d67833cf84f9e66c2ab70b_2_690x198.jpeg" alt="1" data-base62-sha1="v79haS1gSgVrIpm9Kzvy1HWmu39" width="690" height="198" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da124a8463f9ae4412d67833cf84f9e66c2ab70b_2_690x198.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da124a8463f9ae4412d67833cf84f9e66c2ab70b_2_1035x297.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da124a8463f9ae4412d67833cf84f9e66c2ab70b.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da124a8463f9ae4412d67833cf84f9e66c2ab70b_2_10x10.png"></a></div><p></p>
+<p>my .env file</p>
+<pre><code class="lang-auto">PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=
+REDASH_COOKIE_SECRET=redash-selfhosted
+REDASH_SECRET_KEY=redash-selfhosted
+REDASH_DATABASE_URL=postgresql://postgres@postgres/postgres
+</code></pre>
+<p>docker-compose.yml file</p>
+<pre><code class="lang-auto"># This configuration file is for the **development** setup.
+# For a production example please refer to getredash/setup repository on GitHub.
+version: "2.2"
+x-redash-service:
+  &amp;redash-service
+  build:
+    context: .
+    args:
+      skip_frontend_build: "true"
+  volumes:
+    - .:/app
+  env_file:
+    - .env
+x-redash-environment:
+  &amp;redash-environment
+  REDASH_LOG_LEVEL: "INFO"
+  REDASH_REDIS_URL: "redis://redis:6379/0"
+  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+  REDASH_RATELIMIT_ENABLED: "false"
+  REDASH_MAIL_DEFAULT_SENDER: "redash@example.com"
+  REDASH_MAIL_SERVER: "email"
+  REDASH_ENFORCE_CSRF: "true"
+  # Set secret keys in the .env file
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: dev_server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "5000:5000"
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: dev_scheduler
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+  worker:
+    &lt;&lt;: *redash-service
+    command: dev_worker
+    depends_on:
+      - server
+    environment:
+      &lt;&lt;: *redash-environment
+      PYTHONUNBUFFERED: 0
+  redis:
+    image: redis:3-alpine
+    restart: always
+  postgres:
+    image: postgres:9.5-alpine
+    # The following turns the DB into less durable, but gains significant performance improvements for the tests run (x3
+    # improvement on my personal machine). We should consider moving this into a dedicated Docker Compose configuration for
+    # tests.
+    ports:
+      - "15432:5432"
+    command: "postgres -c fsync=off -c full_page_writes=off -c synchronous_commit=OFF"
+    restart: always
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+<p>im wondering there is a mistake in my .env and .yml file, but i really dont have any idea bcs i have tried several different files and still didnt success…<br>
+really need help for this…</p>
+<p>Thank You</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v10.1.0</li>
+<li>Browser/OS: firefox/ Win 10</li>
+<li>How did you install Redash: <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257/1</link>
+        <pubDate>Mon, 04 Apr 2022 09:29:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10257-1</guid>
+        <source url="https://discuss.redash.io/t/redash-server-scheduler-and-worker-exited-with-code-1/10257.rss">Redash Server, Scheduler, and Worker exited with code 1</source>
+      </item>
+  </channel>
+</rss>

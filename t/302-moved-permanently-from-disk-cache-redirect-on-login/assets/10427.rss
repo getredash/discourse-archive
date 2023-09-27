@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>302 moved permanently (from disk cache) redirect on login</title>
+    <link>https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427</link>
+    <description>I have HTTPS and Google OAuth set up but everytime I login I am taken back to the login page; however, if I change the url to say `https://&lt;mydomain&gt;/dashboards` I can get into redash just fine. Looking at the network attachment in chrome I can see I get a `302 moved permanently (from disk cache)` which redirects back to the login page. I saw there was a similar issue to this but I am using the AMI from us-east-1 so not able to configure the flask module</description>
+    
+    <lastBuildDate>Fri, 06 May 2022 16:29:01 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>302 moved permanently (from disk cache) redirect on login</title>
+        <dc:creator><![CDATA[jmmiz]]></dc:creator>
+        <description><![CDATA[
+            <p>Solution to everything above in this thread:</p>
+<p>Essentially using AWS CloudFront and Certificate Manager was causing a lot of 302 redirects since we were doing HTTP to HTTPS. When I would successfully login the redirect 302 would just take me back to the login page (due to cloudfront). The Google OAuth issue when a user would login from a different device and click “Sign in With Google” it would essentially store the cookies on the server so basically anyone could just sign in as me.</p>
+<p>To fix this, I set up our own NGINX server and built the config with docker. We used Letsencrypt with the docker build so we can renew every so often and also use a cron job to automate this. Everything works perfect and users can login as their own account with Google OAuth.</p>
+          <p><a href="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/4</link>
+        <pubDate>Fri, 06 May 2022 16:29:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10427-4</guid>
+        <source url="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427.rss">302 moved permanently (from disk cache) redirect on login</source>
+      </item>
+      <item>
+        <title>302 moved permanently (from disk cache) redirect on login</title>
+        <dc:creator><![CDATA[jmmiz]]></dc:creator>
+        <description><![CDATA[
+            <p>Oddly enough the redirect started working; however, I have a weird security issue now where I had a user try to login and every time they login it is logging in under me now. They are on a separate device in incognito mode and when “Sign in with google” is clicked and they use their google account it signs in as me. Not entirely sure what is going on but any help would be greatly appreciated</p>
+          <p><a href="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/3</link>
+        <pubDate>Thu, 05 May 2022 19:34:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10427-3</guid>
+        <source url="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427.rss">302 moved permanently (from disk cache) redirect on login</source>
+      </item>
+      <item>
+        <title>302 moved permanently (from disk cache) redirect on login</title>
+        <dc:creator><![CDATA[jmmiz]]></dc:creator>
+        <description><![CDATA[
+            <p>I dug into my logs and these are what I find. When I authenticate with google I get a redirect 302 but it just takes me back to the login page and not the application</p>
+<pre><code class="lang-auto">server_1            | [2022-05-05 13:40:38,362][PID:14][INFO][metrics] method=POST path=/ endpoint=unknown status=405 content_type=text/html content_length=178 duration=0.42 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 13:40:38,574][PID:9][INFO][metrics] method=GET path=/.env endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=297 duration=0.56 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 14:04:24,095][PID:10][INFO][metrics] method=GET path=/static/server.5cdfe7b4f652b665b03f.css endpoint=static status=304 content_type=text/css; charset=utf-8 content_length=187882 duration=0.57 query_count=2 query_duration=5.70
+server_1            | [2022-05-05 14:04:24,095][PID:9][INFO][metrics] method=GET path=/static/js/jquery.min.js endpoint=static status=304 content_type=application/javascript content_length=86927 duration=1.72 query_count=2 query_duration=4.55
+server_1            | [2022-05-05 14:04:25,654][PID:14][INFO][metrics] method=GET path=/oauth/google endpoint=google_oauth_authorize status=302 content_type=text/html; charset=utf-8 content_length=999 duration=0.66 query_count=2 query_duration=2.56
+server_1            | [2022-05-05 14:24:25,534][PID:14][INFO][metrics] method=GET path=/.env endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=297 duration=0.56 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 14:24:25,552][PID:12][INFO][metrics] method=POST path=/ endpoint=unknown status=405 content_type=text/html content_length=178 duration=0.41 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 14:32:10,448][PID:12][INFO][metrics] method=GET path=/.env endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=297 duration=0.62 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 14:32:10,481][PID:9][INFO][metrics] method=GET path=/login endpoint=redash_login status=200 content_type=text/html; charset=utf-8 content_length=2027 duration=4.93 query_count=1 query_duration=1.17
+server_1            | [2022-05-05 14:32:10,498][PID:10][INFO][metrics] method=GET path=/vendor/phpunit/phpunit/phpunit.xml endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=369 duration=0.58 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 14:32:10,559][PID:14][INFO][metrics] method=GET path=/login endpoint=redash_login status=200 content_type=text/html; charset=utf-8 content_length=2063 duration=4.31 query_count=1 query_duration=1.20
+server_1            | [2022-05-05 14:42:05,671][PID:10][INFO][metrics] method=GET path=/.env endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=297 duration=0.58 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 14:42:07,424][PID:14][INFO][metrics] method=POST path=/ endpoint=unknown status=405 content_type=text/html content_length=178 duration=0.42 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 15:21:00,737][PID:9][INFO][metrics] method=POST path=/ endpoint=unknown status=405 content_type=text/html content_length=178 duration=0.39 query_count=0 query_duration=0.00
+server_1            | [2022-05-05 15:21:00,933][PID:14][INFO][metrics] method=GET path=/.env endpoint=redash_index status=302 content_type=text/html; charset=utf-8 content_length=297 duration=0.58 query_count=0 query_duration=0.00
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/2</link>
+        <pubDate>Thu, 05 May 2022 16:52:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10427-2</guid>
+        <source url="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427.rss">302 moved permanently (from disk cache) redirect on login</source>
+      </item>
+      <item>
+        <title>302 moved permanently (from disk cache) redirect on login</title>
+        <dc:creator><![CDATA[jmmiz]]></dc:creator>
+        <description><![CDATA[
+            <p>I have HTTPS and Google OAuth set up but everytime I login I am taken back to the login page; however, if I change the url to say <code>https://&lt;mydomain&gt;/dashboards</code> I can get into redash just fine. Looking at the network attachment in chrome I can see I get a <code>302 moved permanently (from disk cache)</code> which redirects back to the login page. I saw there was a similar issue to this but I am using the AMI from us-east-1 so not able to configure the flask module</p>
+          <p><a href="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427/1</link>
+        <pubDate>Wed, 04 May 2022 20:56:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10427-1</guid>
+        <source url="https://discuss.redash.io/t/302-moved-permanently-from-disk-cache-redirect-on-login/10427.rss">302 moved permanently (from disk cache) redirect on login</source>
+      </item>
+  </channel>
+</rss>

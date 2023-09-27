@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+    <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359</link>
+    <description>I created a self-hosted redash instance on AWS and enabled SSL.
+I can already connect the instance via https.
+However, the URLs displayed in the example API call section begin with &quot;http://&quot; instead of &quot;https://&quot;.
+
+how can I replace &quot;http&quot; to &quot;https&quot; in Example API Calls?
+I want to prevent non-technical staff from making mistakes.</description>
+    
+    <lastBuildDate>Sat, 30 Apr 2022 09:46:02 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[piyoketa]]></dc:creator>
+        <description><![CDATA[
+            <p>I restarted the redash server after putting <code>REDASH_HOST</code> in the <code>/opt/redash/env</code>,<br>
+but there was no change in the display.</p>
+<p>It seems certain that the environment variable is reflected.</p>
+<pre><code class="lang-auto">/opt/redash$ sudo docker-compose exec server /bin/bash
+redash@xxxxx:/app$ echo $REDASH_HOST
+https://redash.my.domain
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/9</link>
+        <pubDate>Sat, 30 Apr 2022 09:46:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-9</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks. Can you try setting the <code>REDASH_HOST</code> environment variable to the base url for your instance?</p>
+<p>Something like:</p>
+<pre><code class="lang-bash">export REDASH_HOST=https://redash.some-domain.tld
+</code></pre>
+<p>You’ll need to restart your containers for this change to take effect.</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/8</link>
+        <pubDate>Wed, 27 Apr 2022 15:53:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-8</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[piyoketa]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>Regarding V8: you can upgrade your existing installation to V10 quite easily. We strongly recommend this as V8 is no longer supported and there are CVE’s which have been patched already in V10.</p>
+</blockquote>
+<p>Thank you, I have updated to v10.1.0.<br>
+I had just built the environment and forgot to update.</p>
+<blockquote>
+<p>After that, I wonder if modifying <a href="https://github.com/getredash/redash/blob/e6ebef1e5ab866ce1e706eaee6260edaffdc2bd7/redash/app.py#L20" rel="noopener nofollow ugc">this line 2</a> to include x_proto=1 will fix the issue.</p>
+</blockquote>
+<p>I have tried adding it, but the result seems to be the same.<br>
+I will post a screenshot.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5522671623fcd6fa3d70e9dea766e22f27c69b5d.png" data-download-href="/uploads/short-url/c98i7Xz9LrEJ0XzNANtc17hlEcd.png?dl=1" title="特集ページ一覧（外部公開用）" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5522671623fcd6fa3d70e9dea766e22f27c69b5d_2_690x220.png" alt="特集ページ一覧（外部公開用）" data-base62-sha1="c98i7Xz9LrEJ0XzNANtc17hlEcd" width="690" height="220" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5522671623fcd6fa3d70e9dea766e22f27c69b5d_2_690x220.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5522671623fcd6fa3d70e9dea766e22f27c69b5d_2_1035x330.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5522671623fcd6fa3d70e9dea766e22f27c69b5d_2_1380x440.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/5522671623fcd6fa3d70e9dea766e22f27c69b5d_2_10x10.png"></a></div><p></p>
+<p>Reading the <a href="https://werkzeug.palletsprojects.com/en/2.1.x/middleware/proxy_fix/" rel="noopener nofollow ugc">Werkzeug documentation for ProxyFix</a>, the default value of <code>x_proto</code> is 1.<br>
+I guess the behavior is the same without specifying it.</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/7</link>
+        <pubDate>Sun, 24 Apr 2022 14:02:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-7</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Regarding V8: you can upgrade your existing installation to V10 quite easily. We strongly recommend this as V8 is no longer supported and there are CVE’s which have been patched already in V10.</p>
+<p><a href="https://www.youtube.com/watch?v=PoOAra588dA">Upgrade from V8 to V10 Walkthrough</a></p>
+
+<hr>
+<p>After that, I wonder if modifying <a href="https://github.com/getredash/redash/blob/e6ebef1e5ab866ce1e706eaee6260edaffdc2bd7/redash/app.py#L20">this line</a> to include <code>x_proto=1</code> will fix the issue. I’m getting that by looking at the <a href="https://werkzeug.palletsprojects.com/en/2.1.x/middleware/proxy_fix/">Werkzeug documentation for ProxyFix</a>. By default, it won’t honour the <code>protocol</code> setting passed in from <code>nginx</code> which may be the root cause of the issue. Although it’s strange we haven’t seen this issue crop up in the past.</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/6</link>
+        <pubDate>Sat, 23 Apr 2022 15:58:31 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-6</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[piyoketa]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>When you see the <code>http</code> example calls on the query screen, are you visiting with <code>https</code> ?</p>
+</blockquote>
+<p>Yes, I am visiting via https. I have attached a screenshot.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bbb0985c8a1ec8c974ea36360202472e009505ef.png" data-download-href="/uploads/short-url/qMnDHyBb7GHcqD5eXav0n6rMslV.png?dl=1" title="特集ページ一覧（外部公開用）-2-2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bbb0985c8a1ec8c974ea36360202472e009505ef_2_690x220.png" alt="特集ページ一覧（外部公開用）-2-2" data-base62-sha1="qMnDHyBb7GHcqD5eXav0n6rMslV" width="690" height="220" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bbb0985c8a1ec8c974ea36360202472e009505ef_2_690x220.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bbb0985c8a1ec8c974ea36360202472e009505ef_2_1035x330.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bbb0985c8a1ec8c974ea36360202472e009505ef_2_1380x440.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bbb0985c8a1ec8c974ea36360202472e009505ef_2_10x10.png"></a></div><p></p>
+<blockquote>
+<p>Typically you’ll enforce an nginx rule that redirects all <code>http</code> traffic to <code>https</code> .</p>
+</blockquote>
+<p>Already set up.Some of the specifications in nginx.conf are as follows.</p>
+<pre><code class="lang-auto">server {
+    listen      80;
+    listen [::]:80;
+    server_name redash.my.domain;
+
+    location / {
+        rewrite ^ https://$host$request_uri? permanent;
+    }
+
+}
+</code></pre>
+<p>By the way, the version of redash is v8.0.0, as the AMI provided by AWS is still v8.</p><aside class="onebox allowlistedgeneric" data-onebox-src="https://redash.io/help/open-source/setup/">
+  <header class="source">
+      <img src="https://redash.io/assets/images/favicon.ico" class="site-icon" width="16" height="16">
+
+      <a href="https://redash.io/help/open-source/setup/" target="_blank" rel="noopener nofollow ugc">redash.io</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://redash.io/assets/images/social-facebook-1200x630.png" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://redash.io/help/open-source/setup/" target="_blank" rel="noopener nofollow ugc">Setting up a Redash Instance</a></h3>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/5</link>
+        <pubDate>Sat, 23 Apr 2022 07:48:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-5</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Got it thanks. When you see the <code>http</code> example calls on the query screen, are you visiting with <code>https</code>? Flask should automatically pick up the protocol scheme from the browser request. So if you visit <code>https</code> then all its URLs will be <code>https</code> also. But if you visit from <code>http</code> they will be <code>http</code>.</p>
+<p>Typically you’ll enforce an nginx rule that redirects all <code>http</code> traffic to <code>https</code>.</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/4</link>
+        <pubDate>Fri, 22 Apr 2022 15:58:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-4</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[piyoketa]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for your reply!</p>
+<p>【The steps I enabled SSL】<br>
+After creating an instance using the official AMI(<a href="https://console.aws.amazon.com/ec2/home?region=ap-northeast-1#LaunchInstanceWizard:ami=ami-060741a96307668be" rel="noopener nofollow ugc">ami-060741a96307668be</a>), I ran the following article.</p><aside class="onebox githubgist" data-onebox-src="https://gist.github.com/arikfr/64c9ff8d2f2b703d4e44fe9e45a7730e">
+  <header class="source">
+
+      <a href="https://gist.github.com/arikfr/64c9ff8d2f2b703d4e44fe9e45a7730e" target="_blank" rel="noopener nofollow ugc">gist.github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://gist.github.com/arikfr/64c9ff8d2f2b703d4e44fe9e45a7730e" target="_blank" rel="noopener nofollow ugc">https://gist.github.com/arikfr/64c9ff8d2f2b703d4e44fe9e45a7730e</a></h4>
+
+  <h5>README.md</h5>
+  <pre><code class="Markdown">1. Make sure the domain you picked points at the IP of your Redash server.
+2. Switch to the `root` user (`sudo su`).
+3. Create a folder named `nginx` in `/opt/redash`.
+4. Create in the nginx folder two additional folders: `certs` and `certs-data`.
+5. Create the file `/opt/redash/nginx/nginx.conf` and place the following in it: (replace `example.redashapp.com` with your domain name)
+   ```
+   upstream redash {
+       server redash:5000;
+   }
+</code></pre>
+    This file has been truncated. <a href="https://gist.github.com/arikfr/64c9ff8d2f2b703d4e44fe9e45a7730e" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+<p>
+</p>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>In brief, There are follows three steps.<br>
+step1. Create <code>nginx.conf</code><br>
+step2. Change nginx image configuration in <code>docker-compose.yml</code> to use nginx.conf of step1<br>
+step3. Run the <code>certbot</code> command</p>
+<p>Is there some environment variable that you forgot to change?</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/3</link>
+        <pubDate>Fri, 22 Apr 2022 03:18:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-3</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum! This ought to happen automatically, since the API call URL’s on the query screen are generated using Flask’s built-in <code>url_for</code> function. How did you enable SSL?</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/2</link>
+        <pubDate>Thu, 21 Apr 2022 22:14:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-2</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+      <item>
+        <title>Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</title>
+        <dc:creator><![CDATA[piyoketa]]></dc:creator>
+        <description><![CDATA[
+            <p>I created a self-hosted redash instance on AWS and enabled SSL.<br>
+I can already connect the instance via https.<br>
+However, the URLs displayed in the example API call section begin with “http://” instead of “https://”.</p>
+<p>how can I replace “http” to “https” in Example API Calls?<br>
+I want to prevent non-technical staff from making mistakes.</p>
+          <p><a href="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359/1</link>
+        <pubDate>Thu, 21 Apr 2022 08:24:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10359-1</guid>
+        <source url="https://discuss.redash.io/t/replace-http-to-https-in-example-api-calls/10359.rss">Replace &quot;http&quot; to &quot;https&quot; in Example API Calls</source>
+      </item>
+  </channel>
+</rss>

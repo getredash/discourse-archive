@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Add oracle as data souce to redash - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+Morning together 
+I tried the cloud hosted redash version which worked great and had every feature we need 
+in our company. So I started to set up the open source version of redash. 
+I was able to get it ru&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Add oracle as data souce to redash&#39;" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590" />
+<meta property="og:title" content="Add oracle as data souce to redash" />
+<meta name="twitter:title" content="Add oracle as data souce to redash" />
+<meta property="og:description" content="Issue Summary Morning together  I tried the cloud hosted redash version which worked great and had every feature we need  in our company. So I started to set up the open source version of redash.  I was able to get it running on Debian 10 (Buster) and was able to login. As I tried to connect our oracle Database, I saw there is no oracle data source available. After some research I found out, that this isn’t included out of the box in the self hosted version and needs to be added manually.  Sadly..." />
+<meta name="twitter:description" content="Issue Summary Morning together  I tried the cloud hosted redash version which worked great and had every feature we need  in our company. So I started to set up the open source version of redash.  I was able to get it running on Debian 10 (Buster) and was able to login. As I tried to connect our oracle Database, I saw there is no oracle data source available. After some research I found out, that this isn’t included out of the box in the self hosted version and needs to be added manually.  Sadly..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="3 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2019-09-26T07:35:54+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Add oracle as data souce to redash","mainEntity":{"@type":"Question","name":"Add oracle as data souce to redash","text":"Issue Summary\n\nMorning together\n\nI tried the cloud hosted redash version which worked great and had every feature we need\n\nin our company. So I started to set up the open source version of redash.\n\nI was able to get it running on Debian 10 (Buster) and was able to login. As I tried to connect our ora&hellip;","upvoteCount":0,"answerCount":1,"dateCreated":"2019-09-26T07:35:53.866Z","author":{"@type":"Person","name":""},"acceptedAnswer":{"@type":"Answer","text":"Yiipieee I finally got it working :slight_smile: .\n\nI tried everything to get it working but the mistake I did was that I forgot to use my custom built container in the docker-compose.yml. So everytime I started docker-compose run --rm server create_db and then docker-compose up -d I used the offici&hellip;","upvoteCount":1,"dateCreated":"2019-10-03T09:14:21.821Z","url":"https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590/6","author":{"@type":"Person","name":"DerBeton"}}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/add-oracle-as-data-souce-to-redash/4590">Add oracle as data souce to redash</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Add oracle as data souce to redash'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/DerBeton'><span itemprop='name'>DerBeton</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-09-26T07:35:54Z' class='post-time'>
+                    September 26, 2019,  7:35am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-09-26T07:35:54Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>Issue Summary</h3>
+<p>Morning together</p>
+<p>I tried the cloud hosted redash version which worked great and had every feature we need<br>
+in our company. So I started to set up the open source version of redash.</p>
+<p>I was able to get it running on Debian 10 (Buster) and was able to login. As I tried to connect our oracle Database, I saw there is no oracle data source available. After some research I found out, that this isn’t included out of the box in the self hosted version and needs to be added manually.</p>
+<p>Sadly I didn’t find any documentation, which were describing the installation step by step. There was always something missing. I used the following tutorial: <a href="https://gist.github.com/linhmtran168/ec0757a487a83a1fc5c5d3188af81874" rel="nofollow noopener">https://gist.github.com/linhmtran168/ec0757a487a83a1fc5c5d3188af81874</a></p>
+<p>The steps I did:</p>
+<ul>
+<li>I downloaded the newest version of redash and extracted zip to /opt/redash</li>
+<li>I unzipped everything in the same folder</li>
+<li>I made the new folder oracle/ and downloaded the newest Version of the oracle instant clienz zips to this folder (version 19.3.0.0.0, basic, sdk, sqlplus)</li>
+<li>I started the setup script, without the setup_compose() function (we use a proxy so I had to make some changes but it worked.</li>
+<li>next steps were the same as in the tutorial because the docker-compose.yml was not working, I used the official one from the redash github repo.</li>
+</ul>
+<p>Sadly there are a lot of errors while installing the docker build but I can’t understand what to to in the next<br>
+place.</p>
+<p>Can someone tell my, what steps to do, that I’m able to use the oracle data source on Debian 10?<br>
+I’m absolutely stuck but we would love to use redash in our company.</p>
+<p>Thanks a lot.</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 7.0.0</li>
+<li>Browser/OS: Debian 10</li>
+<li>How did you install Redash: Downloaded zip and started setup.sh</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393">Need updated oracle connection setup guide</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-09-26T13:09:21Z' class='post-time'>
+                    September 26, 2019,  1:09pm
+                  </time>
+                  <meta itemprop='dateModified' content='2019-09-26T13:09:21Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Welcome to the forum! Those are good instructions you linked. And it sounds like you almost have it. You just need to <code>pip install cx_oracle</code>.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/DerBeton'><span itemprop='name'>DerBeton</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6462a2c4dd7476b2e7b62f0be6b84e198d6c8933.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-10-01T09:06:56Z' class='post-time'>
+                    October 1, 2019,  9:06am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-10-01T09:06:56Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hello. Thanks for your quick respond.</p>
+<p>Yeah that’s a good point, but I am not able to run this command, because the command <code>docker build -t custom/redash .</code> fails.</p>
+<p>The problem occures at the execution of <code>RUN npm run build</code>.<br>
+There is a long list off WARNING’s and ERROR’s<br>
+<em>Error 1</em><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6462a2c4dd7476b2e7b62f0be6b84e198d6c8933.png" data-download-href="/uploads/short-url/ek34xN6kxZqb8nlT59zm9pA2wL1.png?dl=1" title="npm-error-1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6462a2c4dd7476b2e7b62f0be6b84e198d6c8933.png" alt="npm-error-1" data-base62-sha1="ek34xN6kxZqb8nlT59zm9pA2wL1" width="690" height="118" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6462a2c4dd7476b2e7b62f0be6b84e198d6c8933_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">npm-error-1</span><span class="informations">1503×259 11.6 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div><br>
+<em>Error 2</em><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e123b7cee279c036002a0adf9c94a1d67dca4259.png" data-download-href="/uploads/short-url/w7FXi4ttFne9N4ty2lMCapKi52p.png?dl=1" title="npm-error-2" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e123b7cee279c036002a0adf9c94a1d67dca4259.png" alt="npm-error-2" data-base62-sha1="w7FXi4ttFne9N4ty2lMCapKi52p" width="690" height="127" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e123b7cee279c036002a0adf9c94a1d67dca4259_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">npm-error-2</span><span class="informations">1501×277 12.8 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div><br>
+<em>Error 3</em><br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/60848769089a01ade91e61ded9fa5a608413f8da.png" data-download-href="/uploads/short-url/dLPMiWqqfRRs9mlJpJG6Q6dz63g.png?dl=1" title="grafik" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/60848769089a01ade91e61ded9fa5a608413f8da.png" alt="grafik" data-base62-sha1="dLPMiWqqfRRs9mlJpJG6Q6dz63g" width="690" height="208" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/60848769089a01ade91e61ded9fa5a608413f8da_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">grafik</span><span class="informations">1074×324 15.1 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div><br>
+Do you know what I can try to solve this? Do I even need to install npm in Docker if its already installed on the host system?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-10-01T14:34:50Z' class='post-time'>
+                    October 1, 2019,  2:34pm
+                  </time>
+                  <meta itemprop='dateModified' content='2019-10-01T14:34:50Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>You don’t need to install <code>npm</code> if you use our docker images <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=9" title=":slight_smile:" class="emoji" alt=":slight_smile:"> Part of the problem in your screenshots is that your version of NodeJS is quite old. Try Node v10 or newer.</p>
+<p>I wouldn’t expect problems, though, because you said earlier you installed Redash and could log in. What are you trying to achieve with that <code>docker build</code> command?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/DerBeton'><span itemprop='name'>DerBeton</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-10-02T05:53:36Z' class='post-time'>
+                    October 2, 2019,  5:53am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-10-02T05:53:36Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks again for your quick answer <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=9" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p>I got it working once but then I tried to install the oracle data source and my Redash wasn’t working anymore. So I followed the tutorial and reinstalled redash with the <code>docker build</code> command as described in the github tutorial I linked above.</p>
+<p>As I never used Docker before and I’m not that familiar with it.<br>
+So in this case, I can import the oracle data source without a rebuild of the container?</p>
+<p>How exactly can I execute the <code>pip install cx_oracle</code> command when I’m not running it inside the Dockerfile while building it the first time?</p>
+<p>Thanks a lot.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/add-oracle-as-data-source-to-self-hosted-version-of-redash/6509/2">Add Oracle as Data Source to Self hosted version of Redash</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/add-oracle-datasource-to-redash10/10809">Add oracle datasource to redash10</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/DerBeton'><span itemprop='name'>DerBeton</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e6c5f04e69aac152b74902a95d5bb96ddcdd1d6c.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-10-03T09:14:21Z' class='post-time'>
+                    October 3, 2019,  9:14am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-10-03T09:14:21Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yiipieee I finally got it working <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"> .</p>
+<p>I tried everything to get it working but the mistake I did was that I forgot to use my custom built container in the docker-compose.yml. So everytime I started <code>docker-compose run --rm server create_db</code> and then <code>docker-compose up -d</code> I used the official redash/redash container and not my custom built.</p>
+<p>Because of that my custom Dockerfile did nothing and the official one was used. <img src="https://emoji.discourse-cdn.com/twitter/man_facepalming.png?v=12" title=":man_facepalming:" class="emoji" alt=":man_facepalming:" loading="lazy" width="20" height="20"></p>
+<p>For everyone else who struggles with the oracle installation here a quick summary of the steps I did to get it working.</p>
+<ol>
+<li>I downloaded the latest zip file from the redash GitHub repository.</li>
+<li>Unzipped it to /opt/redash/</li>
+<li>Also I created a new Dockerfile in an other directory for example /opt/redash_oracle/ and copied the following content of the Dockerfile from the Dockerhub oracle <a href="https://hub.docker.com/r/joaoleite/redash_oracle/dockerfile" class="inline-onebox" rel="noopener nofollow ugc">Docker Hub</a>
+</li>
+<li>downloaded the version 11.2.0.4.0 from the oracle instantclient (sdk, sqlplus, basic) into the folder I just created /opt/redash_oracle/oracle/ and left the three files as zip there.</li>
+<li>Now we to build our image. Run <code>docker build -t redash/oracle</code> (you can give this image the name you want). Also make sure that you are in the same directory that we created before: /opt/redash_oracle/<br>
+5.1 With the command <code>docker images -a</code> your should now see the new image with our custom name.</li>
+<li>We can now go back to the directory we unzipped the redash files /opt/redash/. There we have to change the docker-compose.yml file to use our <strong>OWN</strong> image: redash/oracle and not the official one from redash, otherwise you will have the same issue I had and are not able to get the oracle data source.<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e6c5f04e69aac152b74902a95d5bb96ddcdd1d6c.png" alt="grafik" data-base62-sha1="wVvTNetxZqEs9Qyqs040dWlYXgM" width="276" height="171">
+</li>
+<li>We now should be able to start the database <code>docker-compose run --rm server create_db</code> and run docker-comose to start our container <code>docker-compose up -d</code>
+</li>
+</ol>
+<p>Now the new data source is visible in the admin site<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bd5627598c720d5e678922ad2c2405cae61699e3.png" alt="grafik" data-base62-sha1="r0WPaMYhD9NS87CgHq3DcEBzjk7" width="407" height="213"></p>
+<p><strong>Remarks:</strong></p>
+<ul>
+<li>As I understand you should also be able to use the Docker image joaoleite/redash_oracle from the official Docker Hub in the docker-compose.yml. Because I had to add our Proxy, I built my own container as mentioned in the steps above.</li>
+<li>Maybe it’s possible to use the newer instantclient from oracle but I didn’t want to mess arround with that.</li>
+</ul>
+<p>Hope I could help somebody out there when trying to add the oracle data source <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/how-to-add-oracle-datasource-in-redash/7243/2">How to add Oracle Datasource in Redash</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/unknown-error-occurred-while-performing-connection-test/9411/17">Unknown error occurred while performing connection test</a>
+                        <meta itemprop='position' content='3'>
+                      </div>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/oracle-data-source-adaptor-is-not-found-in-redash-using-virtual-machine-bitnami/5769/2">Oracle Data source adaptor is not found in Redash using Virtual Machine(Bitnami)</a>
+                        <meta itemprop='position' content='4'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/EffectiveOG'><span itemprop='name'>EffectiveOG</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-04-07T06:39:12Z' class='post-time'>
+                    April 7, 2020,  6:39am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-04-07T06:39:12Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hello <a class="mention" href="/u/derbeton">@DerBeton</a>, can you help install redash with oracle db without proxy part.  i have followed all your recommandation but cant make it work</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Andrew-1995'><span itemprop='name'>Andrew-1995</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-06-22T06:20:16Z' class='post-time'>
+                    June 22, 2020,  6:20am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-06-22T06:20:16Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hello <a class="mention" href="/u/derbeton">@DerBeton</a> , please provide me with Documentation about  this issue if it’s available now ,<br>
+thank you<br>
+best regard .</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/DerBeton'><span itemprop='name'>DerBeton</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-06-22T13:23:03Z' class='post-time'>
+                    June 22, 2020,  1:23pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-06-22T13:33:17Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hey <a class="mention" href="/u/andrew-1995">@Andrew-1995</a><br>
+Sorry <a class="mention" href="/u/effectiveog">@EffectiveOG</a> I didn’t get a notification for you request. Hope you managed to solve it yourself.</p>
+<p>Now that I’ve worked a little more with Docker I try to eplain my steps above a little simpler.<br>
+Assuming you are on an Linux operation system too.</p>
+<ol>
+<li>
+<p>Create a new folder ex. <code>/opt/redash_oracle</code></p>
+</li>
+<li>
+<p>Create a file named <strong>Dockerfile</strong> in this folder an copy paste the content of this Dockefile: <a href="https://hub.docker.com/r/joaoleite/redash_oracle/dockerfile" rel="nofollow noopener">https://hub.docker.com/r/joaoleite/redash_oracle/dockerfile</a></p>
+</li>
+<li>
+<p>Download the instant clients from oracle and save them in your created folder in a new one named oracle: <code>/opt/redash_oracle/oracle/</code><br>
+<strong>Attention</strong> Make sure to use the same versions and names as used in your Dockerfile. Otherwise it won’t find those files.</p>
+</li>
+<li>
+<p>Make sure to be in the same folder as your Dockerfile and build your image with <code>docker build -t redash/oracle</code>.</p>
+</li>
+</ol>
+<p>I didn’t had time to test these instructions. If there are some typos or other mistakes please forgive me.</p>
+<p>If it doesen’t work please tell me what the problem was so I can help you further.</p>
+<p>Dear regards<br>
+DerBeton</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/akash1'><span itemprop='name'>akash1</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-05-03T11:48:45Z' class='post-time'>
+                    May 3, 2021, 11:48am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-05-03T11:48:45Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>After running “docker-compose run --rm server create_db”, I’m getting the following error. May be due to python version mismatch. But I’m not able to resolve it. Any help is appreciated.</p>
+<pre><code>Creating redash_server_run ... done
+Traceback (most recent call last):
+  File "/app/manage.py", line 6, in &lt;module&gt;
+    from redash.cli import manager
+  File "/app/redash/__init__.py", line 13, in &lt;module&gt;
+    from . import settings
+  File "/app/redash/settings/__init__.py", line 7, in &lt;module&gt;
+    from .helpers import (
+  File "/app/redash/settings/helpers.py", line 2, in &lt;module&gt;
+    from urllib.parse import urlparse, urlunparse
+ImportError: No module named parse
+ERROR: 1</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/k4s1m'><span itemprop='name'>k4s1m</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-05-03T18:39:25Z' class='post-time'>
+                    May 3, 2021,  6:39pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-05-03T18:39:25Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Related? <a href="https://github.com/docker/compose/issues/1288" class="inline-onebox" rel="noopener nofollow ugc">ImportError: No module named urllib.parse · Issue #1288 · docker/compose · GitHub</a></p>
+<p>What OS are you running?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/how-to-setup-oracle-connection-docker-compose-python-version-issues-from-urllib-parse-import-urlparse-urlunparse-importerror-no-module-named-parse/8390">How to setup oracle connection - docker-compose/python version issues: from urllib.parse import urlparse, urlunparse, ImportError: No module named parse</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/akash1'><span itemprop='name'>akash1</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da10921bb19b8913eaea232029321d2c29684329.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-05-04T04:31:29Z' class='post-time'>
+                    May 4, 2021,  4:31am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-05-04T12:11:42Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/k4s1m">@k4s1m</a> Its Ubuntu. I solved it though. I set up my redash as described here <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a><br>
+Somehow my docker-compose is using python2 but the above-mentioned images use python3. That’s why it was causing “urllib.parse” not found issue. So I used the latest master branch to create a new image (which supports python2 I guess), and I used that image for the oracle-specific dockerfile.</p>
+<p><strong>However, now I have another issue:</strong><br>
+When creating a query using an oracle connection, I’m getting a “Schema refresh failed. Please try again later.” error.</p>
+<p>Screenshot of the error:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da10921bb19b8913eaea232029321d2c29684329.png" data-download-href="/uploads/short-url/v75AEy5XhPLFZwPNpSduWEsaXq1.png?dl=1" title="Screenshot from 2021-05-04 11-58-07" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da10921bb19b8913eaea232029321d2c29684329_2_690x406.png" alt="Screenshot from 2021-05-04 11-58-07" data-base62-sha1="v75AEy5XhPLFZwPNpSduWEsaXq1" width="690" height="406" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da10921bb19b8913eaea232029321d2c29684329_2_690x406.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da10921bb19b8913eaea232029321d2c29684329.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/d/da10921bb19b8913eaea232029321d2c29684329.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/d/da10921bb19b8913eaea232029321d2c29684329_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot from 2021-05-04 11-58-07</span><span class="informations">891×525 11.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>My oracle is running in another docker container. Following is my oracle connection settings:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/ce4095836eb4d3428003c8b804e73552c99b0355.png" data-download-href="/uploads/short-url/tqAJetH0KQEe6O40BWc2DR94Vk9.png?dl=1" title="Screenshot from 2021-05-04 12-01-25" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/ce4095836eb4d3428003c8b804e73552c99b0355_2_321x500.png" alt="Screenshot from 2021-05-04 12-01-25" data-base62-sha1="tqAJetH0KQEe6O40BWc2DR94Vk9" width="321" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/ce4095836eb4d3428003c8b804e73552c99b0355_2_321x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/ce4095836eb4d3428003c8b804e73552c99b0355.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/ce4095836eb4d3428003c8b804e73552c99b0355.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/ce4095836eb4d3428003c8b804e73552c99b0355_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot from 2021-05-04 12-01-25</span><span class="informations">436×678 13.6 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>The host here is the IPAddress of the oracle container in the docker. Also, after clicking “Test Connection”, it does show “Success” which takes around 1 minute. Is that normal?</p>
+<p>I’m not sure whether this is because I used the latest instantclient version. For the oracle specific dockerfile, I’m currently using instantclient-basic-linux.x64-12.2.0.1.0.zip, etc. and cx_Oracle==7.3. Which version should I actually use here?</p>
+<p>My oracle specific Dockerfile:</p>
+<pre><code>FROM redash/redash_master_aks:latest
+
+USER root
+
+# Oracle instantclient
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip
+
+RUN apt-get update  -y
+RUN apt-get install -y unzip
+
+RUN unzip /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN ln -f -s /usr/local/instantclient_12_2 /usr/local/instantclient
+RUN ln -f -s /usr/local/instantclient/libclntsh.so.12.1 /usr/local/instantclient/libclntsh.so
+RUN ln -f -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN apt-get install libaio-dev -y
+RUN apt-get clean -y
+
+ENV ORACLE_HOME=/usr/local/instantclient
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/instantclient
+
+RUN pip install cx_Oracle==7.3
+
+USER redash
+#Add REDASH ENV to add Oracle Query Runner 
+ENV REDASH_ADDITIONAL_QUERY_RUNNERS=redash.query_runner.oracle
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/need-updated-oracle-connection-setup-guide/8393">Need updated oracle connection setup guide</a>
+                        <meta itemprop='position' content='4'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/akash1'><span itemprop='name'>akash1</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-05-04T09:08:22Z' class='post-time'>
+                    May 4, 2021,  9:08am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-05-04T09:08:22Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/k4s1m">@k4s1m</a> I have created another post relating to this issue as well: <a href="http://discuss.redash.io/t/how-to-setup-oracle-connection-docker-compose-python-version-issues-from-urllib-parse-import-urlparse-urlunparse-importerror-no-module-named-parse/8390">http://discuss.redash.io/t/how-to-setup-oracle-connection-docker-compose-python-version-issues-from-urllib-parse-import-urlparse-urlunparse-importerror-no-module-named-parse/8390</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/debabratp'><span itemprop='name'>debabratp</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-05-13T14:42:25Z' class='post-time'>
+                    May 13, 2021,  2:42pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-05-13T14:42:25Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a href="http://discuss.redash.io/u/akash1">akash1</a><br>
+Can you please explain the solution to the problem a bit more?<br>
+I also have the same issue as yours.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Sureshkumar'><span itemprop='name'>Sureshkumar</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/add-oracle-as-data-souce-to-redash/4590">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-06-30T04:52:35Z' class='post-time'>
+                    June 30, 2021,  4:52am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-06-30T04:52:35Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>docker build -t redash/oracle command not working can you help</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

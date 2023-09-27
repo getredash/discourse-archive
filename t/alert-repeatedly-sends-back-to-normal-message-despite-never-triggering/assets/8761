@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alert repeatedly sends &quot;back to normal&quot; message despite never triggering - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hello all :). 
+I’ve got a scheduled query that runs every minute and produces a single scalar value. I’ve created an alert based on that query with the following settings: 
+
+trigger said value is &amp;lt; 65000
+
+notifications a&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Alert repeatedly sends &quot;back to normal&quot; message despite never triggering&#39;" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761" />
+<meta property="og:title" content="Alert repeatedly sends &quot;back to normal&quot; message despite never triggering" />
+<meta name="twitter:title" content="Alert repeatedly sends &quot;back to normal&quot; message despite never triggering" />
+<meta property="og:description" content="Hello all :).  I’ve got a scheduled query that runs every minute and produces a single scalar value. I’ve created an alert based on that query with the following settings:   trigger said value is &lt; 65000  notifications are sent “just once, until back to normal” slack channel set up as alert destination custom description that includes the {{ALERT_STATUS}} and {{QUERY_RESULT_VALUE}} macros (for debugging purposes).  I’m seeing two kinds of strange behavior:   Often (but unfortunately for our debu..." />
+<meta name="twitter:description" content="Hello all :).  I’ve got a scheduled query that runs every minute and produces a single scalar value. I’ve created an alert based on that query with the following settings:   trigger said value is &lt; 65000  notifications are sent “just once, until back to normal” slack channel set up as alert destination custom description that includes the {{ALERT_STATUS}} and {{QUERY_RESULT_VALUE}} macros (for debugging purposes).  I’m seeing two kinds of strange behavior:   Often (but unfortunately for our debu..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="og:article:tag" content="alerts" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2021-07-15T20:28:02+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Alert repeatedly sends \"back to normal\" message despite never triggering","mainEntity":{"@type":"Question","name":"Alert repeatedly sends \"back to normal\" message despite never triggering","text":"Hello all :).\n\nI’ve got a scheduled query that runs every minute and produces a single scalar value. I’ve created an alert based on that query with the following settings:\n\ntrigger said value is &lt; 65000\n\nnotifications are sent “just once, until back to normal”\n\nslack channel set up as alert destinat&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-07-15T20:28:01.902Z","author":{"@type":"Person","name":"Ben Barg (they/them)"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">Alert repeatedly sends &quot;back to normal&quot; message despite never triggering</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/alerts' class='discourse-tag' rel="tag">alerts</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Alert repeatedly sends &quot;back to normal&quot; message despite never triggering'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content='alerts'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bbarg'><span itemprop='name'>bbarg</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-15T20:28:02Z' class='post-time'>
+                    July 15, 2021,  8:28pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-15T20:28:02Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hello all :).</p>
+<p>I’ve got a scheduled query that runs every minute and produces a single scalar value. I’ve created an alert based on that query with the following settings:</p>
+<ul>
+<li>trigger said value is <code>&lt; 65000</code>
+</li>
+<li>notifications are sent “just once, until back to normal”</li>
+<li>slack channel set up as alert destination</li>
+<li>custom description that includes the {{ALERT_STATUS}} and {{QUERY_RESULT_VALUE}} macros (for debugging purposes).</li>
+</ul>
+<p>I’m seeing two kinds of strange behavior:</p>
+<ul>
+<li>Often (but unfortunately for our debugging purposes, not <em>always</em>) the slack channel will receive a message every minute saying “{{ALERT_NAME}} went back to normal}}”, coupled with an “OK” status and a value that is clearly above the 65000 alert threshold. These messages even when the alert was not recently in a “TRIGGERED” state. Put another way, the slack channel multiple “back to normal” messages for a single “triggered” message, if a “triggered” message appears at all.</li>
+<li>This behavior persists if I tell the alert to send notifications “at most every 5 minutes”. The only difference is that the green notifications are sent every 5 minutes instead of every minute when the underlying query refreshes.</li>
+</ul>
+<p>Other troubleshooting steps I’ve tried:</p>
+<ul>
+<li>I’ve debugged the underlying query to the point that I’m pretty confident it’s not returning values below the threshold for brief periods of time. The query computes rolling average anyways, so that kind of behavior shouldn’t happy given what I know about the underlying timeseries it’s pulling from. Plus, wouldn’t I see a red “triggered” message in slack if the alert entered the “triggered” state?</li>
+<li>I’ve tried creating a new query and alert with the same query text, refresh rate, and alert settings and the same problem exists.</li>
+</ul>
+<p>Questions:</p>
+<ul>
+<li>Any other troubleshooting steps I should try?</li>
+<li>Any other ways I could configure this alert to stop this behavior?</li>
+</ul>
+<p>Relevant platform information:</p>
+<ul>
+<li>self-hosted redash</li>
+<li>
+<code>redash/preview:9.0.0-beta.b49483</code> image</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-23T22:01:29Z' class='post-time'>
+                    July 23, 2021, 10:01pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-23T22:01:29Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="bbarg" data-post="1" data-topic="8761">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bbarg/40/3102_2.png" class="avatar"> bbarg:</div>
+<blockquote>
+<p>This behavior persists if I tell the alert to send notifications “at most every 5 minutes”.</p>
+</blockquote>
+</aside>
+<p>For clarification, this setting “at most every 5 minutes” only affects the frequency of TRIGGERED messages. You will always receive a notification when the alert is first triggered and you will always receive <strong>one</strong> notification when the value goes back to normal. You shouldn’t see multiple back-to-normal notifications, though, so this does look like a bug.</p>
+<p>Does this reproduce using the V10 beta?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bbarg'><span itemprop='name'>bbarg</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-26T13:52:21Z' class='post-time'>
+                    July 26, 2021,  1:52pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-26T13:52:21Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks for following up!</p>
+<blockquote>
+<p>For clarification, this setting “at most every 5 minutes” only affects the frequency of TRIGGERED messages.</p>
+</blockquote>
+<p>Good to know. For reference, upon subsequent testing of the “just once, until back to normal setting”, we saw both TRIGGERED <strong>AND</strong> OK messages delivering multiple times, each time the underlying query was evaluated.</p>
+<blockquote>
+<p>Does this reproduce using the V10 beta?</p>
+</blockquote>
+<p>Not sure, but I’m happy to try!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-26T14:16:35Z' class='post-time'>
+                    July 26, 2021,  2:16pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-26T14:16:35Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="bbarg" data-post="3" data-topic="8761">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bbarg/40/3102_2.png" class="avatar"> bbarg:</div>
+<blockquote>
+<p><strong>AND</strong> OK messages delivering multiple times</p>
+</blockquote>
+</aside>
+<p>Very interesting. I wonder if the jobs aren’t being updated in redis so the alert is picked up twice (or more).</p>
+<p>Very curious to hear the result of trying this with V10.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bbarg'><span itemprop='name'>bbarg</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-29T17:31:05Z' class='post-time'>
+                    July 29, 2021,  5:31pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-29T17:31:05Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>We upgraded to V10 and observed the same behavior (“triggered” and “ok” notifications deliver repeatedly every time the alert is evaluated instead of once when the state changes).</p>
+<p>One thing I am wondering though: we are actually running two redash instances. One is on v10 (as of today), and the other is on V8 (specifically <code>redash/redash:8.0.0.b32245</code>). They share the same backing postgres database. Do you think it’s possible that the two services are interfering with each other in some way?</p>
+<p>Happy to try any other debugging strategies you think might be helpful.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/alert-repeatedly-sends-back-to-normal-message-despite-never-triggering/8761">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-07-30T19:33:51Z' class='post-time'>
+                    July 30, 2021,  7:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-07-30T19:33:51Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yes absolutely this would cause that kind of issue.</p>
+<p>The postgres database contains <em>all</em> of Redash’s state. I’m actually surprised that this works with the same backing database. As there are significant database schema differences between those versions <img src="https://emoji.discourse-cdn.com/twitter/open_mouth.png?v=10" title=":open_mouth:" class="emoji" alt=":open_mouth:"></p>
+<p>Try disabling the alert on one of the instances and see if the issue resolves.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

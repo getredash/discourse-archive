@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Email Configuration with SES</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/email-configuration-with-ses/122">Email Configuration with SES</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Email Configuration with SES" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Ryan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Ryan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Ryan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-25T20:17:49Z" itemprop="datePublished">
+                    July 25, 2016,  8:17pm
+                  </time>
+<meta content="2016-07-25T20:17:49Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>I am looking for more specific information on using SES as my mail server.  I set it up as per the instructions, but it still is not working.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-27T14:18:10Z" itemprop="datePublished">
+                    July 27, 2016,  2:18pm
+                  </time>
+<meta content="2016-07-27T14:18:10Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Did you restart the services (workers &amp; web server) after changing configuration?<br/>
+Can you share the configuration you used? (just omit the sensitive parts)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Ryan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Ryan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Ryan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-27T15:11:01Z" itemprop="datePublished">
+                    July 27, 2016,  3:11pm
+                  </time>
+<meta content="2016-07-27T15:11:01Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Sure.  I used the one directly from the docs, but added my info as below(then rebooted, since it was a tiny instance).  I have also tried removing “export”.  I know I’m probably just overlooking something small.</p>
+<p>export REDASH_MAIL_SERVER=“server from SES on AWS console” # default: localhost<br/>
+export REDASH_MAIL_PORT=“25” # default: 25<br/>
+export REDASH_MAIL_USE_TLS=“True” # default: False<br/>
+export REDASH_MAIL_USE_SSL="" # default: False<br/>
+export REDASH_MAIL_USERNAME=“Creds from AIM SES creation” # default: None<br/>
+export REDASH_MAIL_PASSWORD=“password” # default: None<br/>
+export <a href="mailto:REDASH_MAIL_DEFAULT_SENDER=%22myemail@email.com">REDASH_MAIL_DEFAULT_SENDER="myemail@email.com</a>" # Email address to send from</p>
+<p>export REDASH_HOST=“FQDN listed in console” # base address of your Re:dash instance, for example: “<a href="https://demo.redash.io" rel="nofollow noopener">https://demo.redash.io</a>”</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Ryan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Ryan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Ryan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-27T18:52:12Z" itemprop="datePublished">
+                    July 27, 2016,  6:52pm
+                  </time>
+<meta content="2016-07-27T18:52:12Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>So, I scrapped the marketplace install and went with the AMI link from the manual.  Works like a charm.  <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+<span class="post-likes">2 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-07-27T18:59:42Z" itemprop="datePublished">
+                    July 27, 2016,  6:59pm
+                  </time>
+<meta content="2016-07-27T18:59:42Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Glad to hear that! <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/> If I ever get some time, I will figure out what’s needed to be done to submit ours to the marketplace…</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/mrholden.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/mrholden_avatar.png" tabindex="-1" width="48"/><span itemprop="name">mrholden</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-01T07:28:42Z" itemprop="datePublished">
+                    August 1, 2016,  7:28am
+                  </time>
+<meta content="2016-08-01T07:28:42Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I am also using SES and I have configured my server just like Ryan (with my own creds, of course).  When I use the test command to test my server…bin/run ./manage.py send_test_mail</p>
+<p>I get the following error:</p>
+<p>[2016-08-01 07:26:46,398][PID:3669][WARNING][redash.query_runner] Hive query runner enabled but not supported, not registering. Either disable or install missing dependencies.[2016-08-01 07:26:46,429][PID:3669][WARNING][redash.query_runner] Microsoft SQL Server query runner enabled but not supported, not registering. Either disable or install missing dependencies.</p>
+<p>and then the server just hang there…Any help will be appreciated.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-01T09:11:54Z" itemprop="datePublished">
+                    August 1, 2016,  9:11am
+                  </time>
+<meta content="2016-08-01T09:11:54Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>These messages are just warnings and can be ignored (unless you need to use Hive or SQL Server connectors).</p>
+<p>As for email problems – if it hangs and doesn’t return to the command line, it might be waiting on a timeout which means you have issues with connecting to SES. I can’t think of any other reason for it to hang.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Ryan.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Ryan_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Ryan</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-01T13:08:32Z" itemprop="datePublished">
+                    August 1, 2016,  1:08pm
+                  </time>
+<meta content="2016-08-01T13:08:32Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Did the email go thru though?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/mrholden.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/mrholden_avatar.png" tabindex="-1" width="48"/><span itemprop="name">mrholden</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-08-01T20:30:49Z" itemprop="datePublished">
+                    August 1, 2016,  8:30pm
+                  </time>
+<meta content="2016-08-01T20:30:49Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I used my Gmail account and it worked.  I will try the SES again later.  Thank you!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/tiltti.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/tiltti_avatar.png" tabindex="-1" width="48"/><span itemprop="name">tiltti</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-01-30T10:51:27Z" itemprop="datePublished">
+                    January 30, 2017, 10:51am
+                  </time>
+<meta content="2017-01-30T10:51:27Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,</p>
+<p>This is an old topic but just wanted to confirm that using SES seems to work. I have some weird errors during the send_test_mail and manage.py, which suddenly started saying. Errno 111: Connection refused, even telnetting to the mail server to port 25 for instance in this case seemed to work.</p>
+<p>Nevertheless the mail sending from the console works. I used the inputs below. Note that your mail server may vary depending on the AWS region and others of course by AWS SES setup.</p>
+<p>Remember to verify your sender email first or will not work. You’ll get a proper error message saying so as well though.</p>
+<p>export REDASH_MAIL_SERVER=“<a href="http://email-smtp.us-east-1.amazonaws.com" rel="nofollow noopener">email-smtp.us-east-1.amazonaws.com</a>” # default: localhost<br/>
+export REDASH_MAIL_PORT=“25” # default: 25<br/>
+export REDASH_MAIL_USE_TLS=“True” # default: False<br/>
+export REDASH_MAIL_USE_SSL=“False” # default: False<br/>
+export REDASH_MAIL_USERNAME=“smtp_username” # default: None<br/>
+export REDASH_MAIL_PASSWORD=“smtp_password” # default: None<br/>
+export REDASH_MAIL_DEFAULT_SENDER=“your_verified_sender@from_aws_ses” # Email address to send from</p>
+<p>export REDASH_HOST=“<a href="http://redash.your.domain" rel="nofollow noopener">http://redash.your.domain</a>” # base address of your Re:dash instance, for example: “<a href="https://demo.redash.io" rel="nofollow noopener">https://demo.redash.io</a>”</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/vagelim.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/vagelim_avatar.png" tabindex="-1" width="48"/><span itemprop="name">vagelim</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-21T16:33:06Z" itemprop="datePublished">
+                    July 21, 2017,  4:33pm
+                  </time>
+<meta content="2017-07-21T16:33:06Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>It’s worth noting that if you are self-hosting redash on EC2, you <strong>should not</strong> use port 25.</p>
+<p>From the <a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/smtp-connect.html" rel="nofollow noopener">SES documentation</a>:</p>
+<blockquote>
+<p>Amazon Elastic Compute Cloud (Amazon EC2) throttles email traffic over port 25 by default. To avoid timeouts when sending email through the SMTP endpoint from EC2, use a different port (587 or 2587) or fill out a Request to Remove Email Sending Limitations to remove the throttle.</p>
+</blockquote>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Sab.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Sab_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Sab</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-08-21T07:26:01Z" itemprop="datePublished">
+                    August 21, 2017,  7:26am
+                  </time>
+<meta content="2017-08-21T07:26:01Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi, I tried using Gmail account but getting “SMTP AUTH extension not supported by server.”</p>
+<p>I tried with the following config</p>
+<p>export REDASH_MAIL_SERVER=“<a href="http://smtp.gmail.com" rel="nofollow noopener">smtp.gmail.com</a>” # default: localhost<br/>
+export REDASH_MAIL_PORT=“587” # default: 25<br/>
+export <a href="mailto:REDASH_MAIL_USERNAME=%22testemail@xyz.com">REDASH_MAIL_USERNAME="testemail@xyz.com</a>" # default: None<br/>
+export REDASH_MAIL_PASSWORD=“test_email_password” # default: None<br/>
+export <a href="mailto:REDASH_MAIL_DEFAULT_SENDER=%22testemail@xyz.com">REDASH_MAIL_DEFAULT_SENDER="testemail@xyz.com</a>" # Email address to send from</p>
+<p>export REDASH_HOST=“<a href="http://testredash.com/" rel="nofollow noopener">http://testredash.com/</a>” # base address of your Redash instance, for example: “<a href="https://demo.redash.io" rel="nofollow noopener">https://demo.redash.io</a>”</p>
+<p>What I am missing</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/vagelim.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/vagelim_avatar.png" tabindex="-1" width="48"/><span itemprop="name">vagelim</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-09-19T17:06:13Z" itemprop="datePublished">
+                    September 19, 2017,  5:06pm
+                  </time>
+<meta content="2017-09-19T17:06:13Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Might be worth opening a new thread since this one is specifically about AWS SES, not email in general.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/vagelim.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/vagelim_avatar.png" tabindex="-1" width="48"/><span itemprop="name">vagelim</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-09-19T17:08:41Z" itemprop="datePublished">
+                    September 19, 2017,  5:08pm
+                  </time>
+<meta content="2017-09-19T17:08:41Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="12" data-topic="122" data-username="Sab">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/s/7c8e57/40.png" width="20"/> Sab:</div>
+<blockquote>
+<p>SMTP AUTH extension</p>
+</blockquote>
+</aside>
+<p>You’re likely being blocked by google. This seems to be a gmail-specific issue, completely unrelated to SES.</p>
+<aside class="onebox stackexchange" data-onebox-src="https://stackoverflow.com/questions/10147455/how-to-send-an-email-with-gmail-as-provider-using-python/27515833#27515833">
+<header class="source">
+<a href="https://stackoverflow.com/questions/10147455/how-to-send-an-email-with-gmail-as-provider-using-python/27515833#27515833" rel="noopener nofollow ugc" target="_blank">stackoverflow.com</a>
+</header>
+<article class="onebox-body">
+<a href="https://stackoverflow.com/users/2023392/radtek" rel="noopener nofollow ugc" target="_blank">
+<img alt="radtek" class="thumbnail onebox-avatar" height="256" src="assets/65e1ee6b43149bbfb6d80ce8edb6e425" width="256"/>
+</a>
+<h4>
+<a href="https://stackoverflow.com/questions/10147455/how-to-send-an-email-with-gmail-as-provider-using-python/27515833#27515833" rel="noopener nofollow ugc" target="_blank">How to send an email with Gmail as provider using Python?</a>
+</h4>
+<div class="tags">
+<strong>python, email, smtp, gmail</strong>
+</div>
+<div class="date">
+  
+  answered by
+  <a href="https://stackoverflow.com/users/2023392/radtek" rel="noopener nofollow ugc" target="_blank">
+    radtek
+  </a>
+  on <a href="https://stackoverflow.com/questions/10147455/how-to-send-an-email-with-gmail-as-provider-using-python/27515833#27515833" rel="noopener nofollow ugc" target="_blank">11:27PM - 16 Dec 14 UTC</a>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p><a class="onebox" href="https://support.google.com/accounts/answer/6010255" rel="noopener nofollow ugc" target="_blank">https://support.google.com/accounts/answer/6010255</a></p><aside class="onebox stackexchange" data-onebox-src="https://stackoverflow.com/questions/37224073/smtp-auth-extension-not-supported-by-server">
+<header class="source">
+<a href="https://stackoverflow.com/questions/37224073/smtp-auth-extension-not-supported-by-server" rel="noopener nofollow ugc" target="_blank">stackoverflow.com</a>
+</header>
+<article class="onebox-body">
+<a href="https://stackoverflow.com/users/5852177/kkd" rel="noopener nofollow ugc" target="_blank">
+<img alt="KKD" class="thumbnail onebox-avatar" height="256" src="assets/sktJV.jpg" width="256"/>
+</a>
+<h4>
+<a href="https://stackoverflow.com/questions/37224073/smtp-auth-extension-not-supported-by-server" rel="noopener nofollow ugc" target="_blank">SMTP AUTH extension not supported by server</a>
+</h4>
+<div class="tags">
+<strong>python, smtp, smtplib</strong>
+</div>
+<div class="date">
+  asked by
+  
+  <a href="https://stackoverflow.com/users/5852177/kkd" rel="noopener nofollow ugc" target="_blank">
+    KKD
+  </a>
+  on <a href="https://stackoverflow.com/questions/37224073/smtp-auth-extension-not-supported-by-server" rel="noopener nofollow ugc" target="_blank">07:44AM - 14 May 16 UTC</a>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Sab.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Sab_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Sab</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-09-20T04:59:48Z" itemprop="datePublished">
+                    September 20, 2017,  4:59am
+                  </time>
+<meta content="2017-09-20T04:59:48Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I missed the to set REDASH_MAIL_USE_TLS to true</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Attar.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Attar_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Attar</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-07-16T10:03:01Z" itemprop="datePublished">
+                    July 16, 2018, 10:03am
+                  </time>
+<meta content="2018-07-16T10:03:01Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>it is my question, too.<br/>
+I wonder if you can tell me how you use your gmail account as a mail server?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/srinivaspadala.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/srinivaspadala_avatar.png" tabindex="-1" width="48"/><span itemprop="name">srinivaspadala</span></a>
+</span>
+<link href="https://discuss.redash.io/t/email-configuration-with-ses/122" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-05-09T11:48:59Z" itemprop="datePublished">
+                    May 9, 2019, 11:48am
+                  </time>
+<meta content="2019-05-09T11:48:59Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,<br/>
+I am using redash using AWS redash AMI and able to configure the SES credentials( not able to see any errors in the UI). However when I try to send email (like password reset ), I am getting the below error</p>
+<p>e: Reset your password<br/>
+Traceback (most recent call last):<br/>
+File “/app/redash/tasks/general.py”, line 57, in send_mail<br/>
+mail.send(message)<br/>
+File “/usr/local/lib/python2.7/dist-packages/flask_mail.py”, line 491, in send<br/>
+with self.connect() as connection:<br/>
+File “/usr/local/lib/python2.7/dist-packages/flask_mail.py”, line 144, in <strong>enter</strong><br/>
+self.host = self.configure_host()<br/>
+File “/usr/local/lib/python2.7/dist-packages/flask_mail.py”, line 158, in configure_host<br/>
+host = smtplib.SMTP(self.mail.server, self.mail.port)<br/>
+File “/usr/lib/python2.7/smtplib.py”, line 256, in <strong>init</strong><br/>
+(code, msg) = self.connect(host, port)<br/>
+File “/usr/lib/python2.7/smtplib.py”, line 317, in connect<br/>
+(code, msg) = self.getreply()<br/>
+File “/usr/lib/python2.7/smtplib.py”, line 368, in getreply<br/>
+raise SMTPServerDisconnected(“Connection unexpectedly closed”)<br/>
+SMTPServerDisconnected: Connection unexpectedly closed</p>
+<p>Is it my Amazon SES terminating the connection ? I am using the port 465</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

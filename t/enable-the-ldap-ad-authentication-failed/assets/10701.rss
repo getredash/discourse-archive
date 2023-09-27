@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Enable the LDAP/AD authentication failed</title>
+    <link>https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701</link>
+    <description>I&#39;m trying to enable the AD authentication, but failed. use use the docker to run the stash.
+**here is the doocker-compose.yml**
+[root@localhost redash]# cat docker-compose.yml
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  build: .
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+      GUNICORN_CMD_ARGS: &quot;--timeout 300&quot;
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      QUEUES: &quot;celery&quot;
+      WORKERS_COUNT: 1
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 2
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    ports:
+      - &quot;5432:5432&quot;
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    restart: always
+
+
+**--  here is the Dockerfile.**
+[root@localhost redash]# cat Dockerfile
+FROM redash/redash:10.1.0.b50633
+COPY ./python-packages/*.whl /tmp/
+RUN pip install /tmp/pyasn1-0.4.8-py2.py3-none-any.whl
+RUN pip install /tmp/ldap3-2.9.1-py2.py3-none-any.whl
+
+I original use the RUN pip ldap3 in dockerfile as suggestion of document. but it always fail to download the ldap3, maybe my server network has issue, anyway, I download the ldap3, and install it from local.
+
+**-- here is the evn.**
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+POSTGRES_PASSWORD=xxxxxxxxxxxxxxxxxxxx
+REDASH_COOKIE_SECRET=xxxxxxxxxxxxxxxxx
+REDASH_SECRET_KEY=xxxxxxxxxxxxxxxxxxxx
+REDASH_DATABASE_URL=postgresql://postgres:xxxxx@xx/xx
+REDASH_MAIL_SERVER=&quot;xxxx&quot;
+REDASH_MAIL_DEFAULT_SENDER=&quot;xxxx&quot;
+REDASH_HOST=&quot;x.x.x.x&quot;
+REDASH_LDAP_LOGIN_ENABLED=&quot;true&quot;
+REDASH_PASSWORD_LOGIN_ENABLED=&quot;false&quot;
+REDASH_LDAP_URL=&quot;xxx:x&quot;
+REDASH_LDAP_BIND_DN=&quot;xx/xx/xx&quot;
+REDASH_LDAP_BIND_DN_PASSWORD=&quot;xxxx&quot;
+REDASH_LDAP_CUSTOM_USERNAME_PROMPT=&quot; Please enter login account&quot;
+REDASH_LDAP_SEARCH_TEMPLATE=&quot;(sAMAccountName=%(username)s)&quot;
+REDASH_LDAP_DN=&quot;cn=xx,dc=xx,dc=xx&quot;
+
+I rebuilt everything and start the container. 
+docker-compose down
+docker-compose up -d
+
+then opened the login page of redash. 
+when I click the login.  I got erros as below
+
+*# Internal Server Error*
+
+*The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.*
+
+checked the logs, I got **TypeError: cannot convert &#39;NoneType&#39; object to bytes.**
+docker-compose logs -f
+
+redash-server-1            | [2022-06-30 08:19:13,236][PID:12][ERROR][redash.app] Exception on /ldap/login [POST]
+redash-server-1            | Traceback (most recent call last):
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 2446, in wsgi_app
+redash-server-1            |     response = self.full_dispatch_request()
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1951, in full_dispatch_request
+redash-server-1            |     rv = self.handle_user_exception(e)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask_restful/__init__.py&quot;, line 269, in error_router
+redash-server-1            |     return original_handler(e)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1820, in handle_user_exception
+redash-server-1            |     reraise(exc_type, exc_value, tb)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/_compat.py&quot;, line 39, in reraise
+redash-server-1            |     raise value
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1949, in full_dispatch_request
+redash-server-1            |     rv = self.dispatch_request()
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/flask/app.py&quot;, line 1935, in dispatch_request
+redash-server-1            |     return self.view_functions[rule.endpoint](**req.view_args)
+redash-server-1            |   File &quot;/app/redash/authentication/ldap_auth.py&quot;, line 45, in login
+redash-server-1            |     ldap_user = auth_ldap_user(request.form[&quot;email&quot;], request.form[&quot;password&quot;])
+redash-server-1            |   File &quot;/app/redash/authentication/ldap_auth.py&quot;, line 87, in auth_ldap_user
+redash-server-1            |     attributes=[settings.LDAP_DISPLAY_NAME_KEY, settings.LDAP_EMAIL_KEY],
+redash-server-1            |   File &quot;/home/redash/.local/lib/python3.7/site-packages/ldap3/core/connection.py&quot;, line 850, in search
+redash-server-1            |     check_names=self.check_names)
+redash-server-1            |   File &quot;/home/redash/.local/lib/python3.7/site-packages/ldap3/operation/search.py&quot;, line 346, in search_operation
+redash-server-1            |     request[&#39;baseObject&#39;] = LDAPDN(search_base)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/pyasn1/type/univ.py&quot;, line 837, in __init__
+redash-server-1            |     base.SimpleAsn1Type.__init__(self, value, **kwargs)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/pyasn1/type/base.py&quot;, line 267, in __init__
+redash-server-1            |     value = self.prettyIn(value)
+redash-server-1            |   File &quot;/usr/local/lib/python3.7/site-packages/pyasn1/type/univ.py&quot;, line 912, in prettyIn
+redash-server-1            |     return bytes(value)
+**redash-server-1            | TypeError: cannot convert &#39;NoneType&#39; object to bytes**
+redash-server-1            | [2022-06-30 08:19:13,240][PID:12][INFO][metrics] method=POST path=/ldap/login endpoint=ldap_auth_login status=500 content_type=text/html content_length=290 duration=258.83 query_count=0 query_duration=0.00
+redash-server-1            | [2022-06-30 08:19:13,242][PID:12][INFO][metrics] method=POST path=/ldap/login endpoint=ldap_auth_login status=500 content_type=? content_length=-1 duration=261.34 query_count=0 query_duration=0.00</description>
+    
+    <lastBuildDate>Thu, 30 Jun 2022 10:50:22 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Enable the LDAP/AD authentication failed</title>
+        <dc:creator><![CDATA[williswyf]]></dc:creator>
+        <description><![CDATA[
+            <p>according to the document, I tried the ldap 2.2.4.<br>
+but I got syntax error in logs, I’m even not able to start the service.</p>
+          <p><a href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701/2</link>
+        <pubDate>Thu, 30 Jun 2022 10:50:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10701-2</guid>
+        <source url="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701.rss">Enable the LDAP/AD authentication failed</source>
+      </item>
+      <item>
+        <title>Enable the LDAP/AD authentication failed</title>
+        <dc:creator><![CDATA[williswyf]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m trying to enable the AD authentication, but failed. use use the docker to run the stash.<br>
+<strong>here is the doocker-compose.yml</strong><br>
+[root@localhost redash]# cat docker-compose.yml<br>
+version: “2”<br>
+x-redash-service: &amp;redash-service<br>
+build: .<br>
+depends_on:<br>
+- postgres<br>
+- redis<br>
+env_file: /opt/redash/env<br>
+restart: always<br>
+services:<br>
+server:<br>
+&lt;&lt;: *redash-service<br>
+command: server<br>
+ports:<br>
+- “5000:5000”<br>
+environment:<br>
+REDASH_WEB_WORKERS: 4<br>
+GUNICORN_CMD_ARGS: “–timeout 300”<br>
+scheduler:<br>
+&lt;&lt;: *redash-service<br>
+command: scheduler<br>
+environment:<br>
+QUEUES: “celery”<br>
+WORKERS_COUNT: 1<br>
+scheduled_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “scheduled_queries,schemas”<br>
+WORKERS_COUNT: 1<br>
+adhoc_worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “queries”<br>
+WORKERS_COUNT: 2<br>
+worker:<br>
+&lt;&lt;: *redash-service<br>
+command: worker<br>
+environment:<br>
+QUEUES: “periodic emails default”<br>
+WORKERS_COUNT: 1<br>
+redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+ports:<br>
+- “5432:5432”<br>
+env_file: /opt/redash/env<br>
+volumes:<br>
+- /opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest<br>
+ports:<br>
+- “80:80”<br>
+depends_on:<br>
+- server<br>
+links:<br>
+- server:redash<br>
+volumes:<br>
+- ./nginx/html:/usr/share/nginx/html<br>
+- ./nginx/nginx.conf:/etc/nginx/nginx.conf<br>
+- ./nginx/conf.d:/etc/nginx/conf.d<br>
+restart: always</p>
+<p><strong>–  here is the Dockerfile.</strong><br>
+[root@localhost redash]# cat Dockerfile<br>
+FROM redash/redash:10.1.0.b50633<br>
+COPY ./python-packages/*.whl /tmp/<br>
+RUN pip install /tmp/pyasn1-0.4.8-py2.py3-none-any.whl<br>
+RUN pip install /tmp/ldap3-2.9.1-py2.py3-none-any.whl</p>
+<p>I original use the RUN pip ldap3 in dockerfile as suggestion of document. but it always fail to download the ldap3, maybe my server network has issue, anyway, I download the ldap3, and install it from local.</p>
+<p><strong>– here is the evn.</strong><br>
+PYTHONUNBUFFERED=0<br>
+REDASH_LOG_LEVEL=INFO<br>
+REDASH_REDIS_URL=redis://redis:6379/0<br>
+POSTGRES_PASSWORD=xxxxxxxxxxxxxxxxxxxx<br>
+REDASH_COOKIE_SECRET=xxxxxxxxxxxxxxxxx<br>
+REDASH_SECRET_KEY=xxxxxxxxxxxxxxxxxxxx<br>
+REDASH_DATABASE_URL=postgresql://postgres:xxxxx@xx/xx<br>
+REDASH_MAIL_SERVER=“xxxx”<br>
+REDASH_MAIL_DEFAULT_SENDER=“xxxx”<br>
+REDASH_HOST=“x.x.x.x”<br>
+REDASH_LDAP_LOGIN_ENABLED=“true”<br>
+REDASH_PASSWORD_LOGIN_ENABLED=“false”<br>
+REDASH_LDAP_URL=“xxx:x”<br>
+REDASH_LDAP_BIND_DN=“xx/xx/xx”<br>
+REDASH_LDAP_BIND_DN_PASSWORD=“xxxx”<br>
+REDASH_LDAP_CUSTOM_USERNAME_PROMPT=" Please enter login account"<br>
+REDASH_LDAP_SEARCH_TEMPLATE=“(sAMAccountName=%(username)s)”<br>
+REDASH_LDAP_DN=“cn=xx,dc=xx,dc=xx”</p>
+<p>I rebuilt everything and start the container.<br>
+docker-compose down<br>
+docker-compose up -d</p>
+<p>then opened the login page of redash.<br>
+when I click the login.  I got erros as below</p>
+<p><em># Internal Server Error</em></p>
+<p><em>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</em></p>
+<p>checked the logs, I got <strong>TypeError: cannot convert ‘NoneType’ object to bytes.</strong><br>
+docker-compose logs -f</p>
+<p>redash-server-1            | [2022-06-30 08:19:13,236][PID:12][ERROR][redash.app] Exception on /ldap/login [POST]<br>
+redash-server-1            | Traceback (most recent call last):<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 2446, in wsgi_app<br>
+redash-server-1            |     response = self.full_dispatch_request()<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1951, in full_dispatch_request<br>
+redash-server-1            |     rv = self.handle_user_exception(e)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask_restful/<strong>init</strong>.py”, line 269, in error_router<br>
+redash-server-1            |     return original_handler(e)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1820, in handle_user_exception<br>
+redash-server-1            |     reraise(exc_type, exc_value, tb)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/_compat.py”, line 39, in reraise<br>
+redash-server-1            |     raise value<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1949, in full_dispatch_request<br>
+redash-server-1            |     rv = self.dispatch_request()<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/flask/app.py”, line 1935, in dispatch_request<br>
+redash-server-1            |     return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a><br>
+redash-server-1            |   File “/app/redash/authentication/ldap_auth.py”, line 45, in login<br>
+redash-server-1            |     ldap_user = auth_ldap_user(request.form[“email”], request.form[“password”])<br>
+redash-server-1            |   File “/app/redash/authentication/ldap_auth.py”, line 87, in auth_ldap_user<br>
+redash-server-1            |     attributes=[settings.LDAP_DISPLAY_NAME_KEY, settings.LDAP_EMAIL_KEY],<br>
+redash-server-1            |   File “/home/redash/.local/lib/python3.7/site-packages/ldap3/core/connection.py”, line 850, in search<br>
+redash-server-1            |     check_names=self.check_names)<br>
+redash-server-1            |   File “/home/redash/.local/lib/python3.7/site-packages/ldap3/operation/search.py”, line 346, in search_operation<br>
+redash-server-1            |     request[‘baseObject’] = LDAPDN(search_base)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/pyasn1/type/univ.py”, line 837, in <strong>init</strong><br>
+redash-server-1            |     base.SimpleAsn1Type.<strong>init</strong>(self, value, **kwargs)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/pyasn1/type/base.py”, line 267, in <strong>init</strong><br>
+redash-server-1            |     value = self.prettyIn(value)<br>
+redash-server-1            |   File “/usr/local/lib/python3.7/site-packages/pyasn1/type/univ.py”, line 912, in prettyIn<br>
+redash-server-1            |     return bytes(value)<br>
+<strong>redash-server-1            | TypeError: cannot convert ‘NoneType’ object to bytes</strong><br>
+redash-server-1            | [2022-06-30 08:19:13,240][PID:12][INFO][metrics] method=POST path=/ldap/login endpoint=ldap_auth_login status=500 content_type=text/html content_length=290 duration=258.83 query_count=0 query_duration=0.00<br>
+redash-server-1            | [2022-06-30 08:19:13,242][PID:12][INFO][metrics] method=POST path=/ldap/login endpoint=ldap_auth_login status=500 content_type=? content_length=-1 duration=261.34 query_count=0 query_duration=0.00</p>
+          <p><a href="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701/1</link>
+        <pubDate>Thu, 30 Jun 2022 10:40:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10701-1</guid>
+        <source url="https://discuss.redash.io/t/enable-the-ldap-ad-authentication-failed/10701.rss">Enable the LDAP/AD authentication failed</source>
+      </item>
+  </channel>
+</rss>

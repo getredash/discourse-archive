@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Documentation not correct, almost impossible to setup for testing</title>
+    <link>https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011</link>
+    <description>Hi,
+
+I was trying to setup `redash` for testing purposes, to check how can I use this in my environment. I was following documentation `Docker Based Developer Installation Guide` which is at this link [https://redash.io/help/open-source/dev-guide/docker](https://redash.io/help/open-source/dev-guide/docker)
+
+The 2nd point in the which tells the nodejs requirement and its version, where is clearly mentions `Install Node.js (14.16.1 or newer, can be installed with Homebrew on OS/X)`, so ideally new version should work. I am getting below error with node version 17.3.1.
+
+I am getting this error when I run `yarn --frozen-lockfile`
+
+&gt; error redash-client@11.0.0-dev: The engine &quot;node&quot; is incompatible with this module. Expected version &quot;^14.16.1&quot;. Got &quot;17.3.1&quot;
+
+To overcome this, I modified the `package.json` file and changed the `engines.version`.
+
+Now I moved to the step where we need to create docker services. Now I ran `docker-compose up -d` and immediately I get error saying `we are missing .env file`. No where in this page it is mentioned about the `.env` file and what has to be in this file. After almost an hour of trying to figure out what are the minimum environment variables required, I got it `REDASH_COOKIE_SECRET` and `REDASH_SECRET_KEY`.
+Please update the documentation.
+
+Another error I faced was something related to `tsc missing`, to resolve this I have to run `npm install typescript -g`. Not mentioned anywhere in the documentation.
+
+The create database part I think is the only step which did not give any error.
+Just to be on the safe side, I created the database for tests.
+
+Just as clarification, please mention full command to run `ping`. The command is simply `curl http://localhost:5000/ping`
+
+Rest of the steps worked fine.
+
+After these changes and testing out a few things here and there. I was finally able to run `redash` and test it.
+
+It will be great it we can have the documentation updated
+
+Regards,
+Mudasir Mirza.</description>
+    
+    <lastBuildDate>Fri, 11 Mar 2022 20:15:39 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Documentation not correct, almost impossible to setup for testing</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="mudasirmirza" data-post="1" data-topic="10011">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/mudasirmirza/40/3790_2.png" class="avatar"> mudasirmirza:</div>
+<blockquote>
+<p>Now I moved to the step where we need to create docker services. Now I ran <code>docker-compose up -d</code> and immediately I get error saying <code>we are missing .env file</code> . No where in this page it is mentioned about the <code>.env</code> file and what has to be in this file. After almost an hour of trying to figure out what are the minimum environment variables required, I got it <code>REDASH_COOKIE_SECRET</code> and <code>REDASH_SECRET_KEY</code> .<br>
+Please update the documentation.</p>
+</blockquote>
+</aside>
+<p>Good catch! Sorry for your frustration here. I opened a pull request with this documentation change back in December and failed to merge it. Those details are now included:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/77f558b6e978428d002ecf56243a06f4c5f18def.jpeg" data-download-href="/uploads/short-url/h7ctexcpo4j4czf2YeCYgMkohOf.jpeg?dl=1" title="CleanShot 2022-03-11 at 14.13.33@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/77f558b6e978428d002ecf56243a06f4c5f18def_2_690x264.jpeg" alt="CleanShot 2022-03-11 at 14.13.33@2x" data-base62-sha1="h7ctexcpo4j4czf2YeCYgMkohOf" width="690" height="264" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/77f558b6e978428d002ecf56243a06f4c5f18def_2_690x264.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/77f558b6e978428d002ecf56243a06f4c5f18def_2_1035x396.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/77f558b6e978428d002ecf56243a06f4c5f18def.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/77f558b6e978428d002ecf56243a06f4c5f18def_2_10x10.png"></a></div><p></p>
+<aside class="quote no-group" data-username="adamzwakk" data-post="4" data-topic="10011" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/adamzwakk/40/2816_2.png" class="avatar"> adamzwakk:</div>
+<blockquote>
+<p>Just wanted to say thanks for this <a class="mention" href="https://discuss.redash.io/u/mudasirmirza">@mudasirmirza</a>, was trying to get my docker env up and found that the docs were outdated for the same reasons you stated.</p>
+</blockquote>
+</aside>
+<p>Will give these instructions a full once-over to make sure they’re accurate. I run through this devloop pretty frequently and haven’t had these issues. So it would be helpful to know if you ran into specific hurdles apart from the <code>.env</code> file requirements (which are now documented).</p>
+          <p><a href="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/5</link>
+        <pubDate>Fri, 11 Mar 2022 20:15:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10011-5</guid>
+        <source url="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011.rss">Documentation not correct, almost impossible to setup for testing</source>
+      </item>
+      <item>
+        <title>Documentation not correct, almost impossible to setup for testing</title>
+        <dc:creator><![CDATA[adamzwakk]]></dc:creator>
+        <description><![CDATA[
+            <p>Just wanted to say thanks for this <a class="mention" href="https://discuss.redash.io/u/mudasirmirza">@mudasirmirza</a>, was trying to get my docker env up and found that the docs were outdated for the same reasons you stated.</p>
+          <p><a href="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/4</link>
+        <pubDate>Wed, 09 Mar 2022 16:25:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10011-4</guid>
+        <source url="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011.rss">Documentation not correct, almost impossible to setup for testing</source>
+      </item>
+      <item>
+        <title>Documentation not correct, almost impossible to setup for testing</title>
+        <dc:creator><![CDATA[mudasirmirza]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Justin,</p>
+<p>Initially I just wanted to “try out Redash” but ended up setting up proper development environment and almost finishing up writing query runner for NewRelic and most probably in a week for OpsGenie also.</p>
+<p>Regards,<br>
+Mudasir Mirza</p>
+          <p><a href="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/3</link>
+        <pubDate>Wed, 16 Feb 2022 11:55:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10011-3</guid>
+        <source url="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011.rss">Documentation not correct, almost impossible to setup for testing</source>
+      </item>
+      <item>
+        <title>Documentation not correct, almost impossible to setup for testing</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Mudasir,</p>
+<p>Out of curiosity, when you say you’re doing this “for testing purposes”, are you meaning “I just want to try out Redash”, or are you meaning “I want to build Redash from source code, for testing that”?</p>
+<p>Asking because if you just want to test out Redash itself, it’s a different (much easier) guide to follow:</p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://redash.io/help/open-source/setup/">
+  <header class="source">
+      <img src="https://redash.io/assets/images/favicon.ico" class="site-icon" width="16" height="16">
+
+      <a href="https://redash.io/help/open-source/setup/" target="_blank" rel="noopener nofollow ugc">redash.io</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://redash.io/assets/images/social-facebook-1200x630.png" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://redash.io/help/open-source/setup/" target="_blank" rel="noopener nofollow ugc">Setting up a Redash Instance</a></h3>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Hopefully that helps. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"></p>
+          <p><a href="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/2</link>
+        <pubDate>Wed, 16 Feb 2022 07:10:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10011-2</guid>
+        <source url="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011.rss">Documentation not correct, almost impossible to setup for testing</source>
+      </item>
+      <item>
+        <title>Documentation not correct, almost impossible to setup for testing</title>
+        <dc:creator><![CDATA[mudasirmirza]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>I was trying to setup <code>redash</code> for testing purposes, to check how can I use this in my environment. I was following documentation <code>Docker Based Developer Installation Guide</code> which is at this link <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a></p>
+<p>The 2nd point in the which tells the nodejs requirement and its version, where is clearly mentions <code>Install Node.js (14.16.1 or newer, can be installed with Homebrew on OS/X)</code>, so ideally new version should work. I am getting below error with node version 17.3.1.</p>
+<p>I am getting this error when I run <code>yarn --frozen-lockfile</code></p>
+<blockquote>
+<p>error redash-client@11.0.0-dev: The engine “node” is incompatible with this module. Expected version “^14.16.1”. Got “17.3.1”</p>
+</blockquote>
+<p>To overcome this, I modified the <code>package.json</code> file and changed the <code>engines.version</code>.</p>
+<p>Now I moved to the step where we need to create docker services. Now I ran <code>docker-compose up -d</code> and immediately I get error saying <code>we are missing .env file</code>. No where in this page it is mentioned about the <code>.env</code> file and what has to be in this file. After almost an hour of trying to figure out what are the minimum environment variables required, I got it <code>REDASH_COOKIE_SECRET</code> and <code>REDASH_SECRET_KEY</code>.<br>
+Please update the documentation.</p>
+<p>Another error I faced was something related to <code>tsc missing</code>, to resolve this I have to run <code>npm install typescript -g</code>. Not mentioned anywhere in the documentation.</p>
+<p>The create database part I think is the only step which did not give any error.<br>
+Just to be on the safe side, I created the database for tests.</p>
+<p>Just as clarification, please mention full command to run <code>ping</code>. The command is simply <code>curl http://localhost:5000/ping</code></p>
+<p>Rest of the steps worked fine.</p>
+<p>After these changes and testing out a few things here and there. I was finally able to run <code>redash</code> and test it.</p>
+<p>It will be great it we can have the documentation updated</p>
+<p>Regards,<br>
+Mudasir Mirza.</p>
+          <p><a href="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011/1</link>
+        <pubDate>Tue, 15 Feb 2022 02:22:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10011-1</guid>
+        <source url="https://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011.rss">Documentation not correct, almost impossible to setup for testing</source>
+      </item>
+  </channel>
+</rss>

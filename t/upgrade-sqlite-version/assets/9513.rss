@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Upgrade sqlite version</title>
+    <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513</link>
+    <description>I use Redash&#39;s Query Results datasource (which is really neat), but the sqlite that my Redash is using doesn&#39;t support `sqrt` and related math functions. It seems that support for that was added in sqlite 3.35. My sqlite came from the V8 AMIs upgraded to V10.
+
+Is it possible to upgrade sqlite in place in my self-hosted Redash?</description>
+    
+    <lastBuildDate>Mon, 06 Dec 2021 15:31:04 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Upgrade sqlite version</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="ilyaminati" data-post="5" data-topic="9513">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/ilyaminati/40/3351_2.png" class="avatar"> ilyaminati:</div>
+<blockquote>
+<p>So (I think) whenever Redash changes its base image to Bookworm or later, everyone will get the new fancy sqlite with no other changes to the Dockerfile.</p>
+</blockquote>
+</aside>
+<p>That’s true. But we’re not likely to change the base image any time soon.</p>
+<p>You can port these instructions to the Dockerfile to upgrade SQLite on your instance of Redash.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-sqlite-version/9513/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513/6</link>
+        <pubDate>Mon, 06 Dec 2021 15:31:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9513-6</guid>
+        <source url="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss">Upgrade sqlite version</source>
+      </item>
+      <item>
+        <title>Upgrade sqlite version</title>
+        <dc:creator><![CDATA[ilyaminati]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks. I don’t know if Python 3.7 specifies a version for sqlite, but Debian does.</p>
+<p>Buster (current base image) is on sqlite 3.27.2 - <a href="https://packages.debian.org/buster/libsqlite3-0" class="inline-onebox" rel="noopener nofollow ugc">Debian -- Details of package libsqlite3-0 in buster</a></p>
+<p>Bullseye (latest Debian stable) is on sqlite 3.34.1, which is still below the version 3.35 where <code>power()</code> was introduced - <a href="https://packages.debian.org/stable/libs/libsqlite3-0" class="inline-onebox" rel="noopener nofollow ugc">Debian -- Details of package libsqlite3-0 in bullseye</a></p>
+<p>Bookworm (Debian testing) is our winner with sqlite 3.36.0 - <a href="https://packages.debian.org/bookworm/libsqlite3-0" class="inline-onebox" rel="noopener nofollow ugc">Debian -- Details of package libsqlite3-0 in bookworm</a></p>
+<p>So (I think) whenever Redash changes its base image to Bookworm or later, everyone will get the new  fancy sqlite with no other changes to the Dockerfile.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-sqlite-version/9513/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513/5</link>
+        <pubDate>Thu, 02 Dec 2021 15:24:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9513-5</guid>
+        <source url="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss">Upgrade sqlite version</source>
+      </item>
+      <item>
+        <title>Upgrade sqlite version</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I believe sqlite is included as part of the Python3 installation, which is taken from our base image (currently <code>python:3.7-slim-buster</code>). However you can explicitly install a specific version of sqlite as needed.</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-sqlite-version/9513/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513/4</link>
+        <pubDate>Tue, 30 Nov 2021 12:52:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9513-4</guid>
+        <source url="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss">Upgrade sqlite version</source>
+      </item>
+      <item>
+        <title>Upgrade sqlite version</title>
+        <dc:creator><![CDATA[ilyaminati]]></dc:creator>
+        <description><![CDATA[
+            <p>As far as a PR against the Dockerfile:</p>
+<ol>
+<li>
+<p>There’s no reference to <code>sqlite3</code> or <code>libsqlite3</code> in getredash/redash/blob/master/Dockerfile . Does it get pulled in as a dep of something else? Should it be installed explicitly?</p>
+</li>
+<li>
+<p>No other packages refer to minimum version numbers in the Dockerfile, and it’s not obvious to me how and where to specify a minimum version, or even if it’s good policy.</p>
+</li>
+</ol>
+<p>Thoughts?</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-sqlite-version/9513/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513/3</link>
+        <pubDate>Sun, 28 Nov 2021 02:54:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9513-3</guid>
+        <source url="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss">Upgrade sqlite version</source>
+      </item>
+      <item>
+        <title>Upgrade sqlite version</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes you can do this by writing your own Dockerfile to extend our image and upgrade the version.</p>
+<p>Or if you’re feeling extra charitable, you can open a PR against getredash/redash that we can merge into master so everyone can benefit after we rebuild the cloud images <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=10" title=":wink:" class="emoji" alt=":wink:"></p>
+          <p><a href="https://discuss.redash.io/t/upgrade-sqlite-version/9513/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513/2</link>
+        <pubDate>Tue, 23 Nov 2021 16:53:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9513-2</guid>
+        <source url="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss">Upgrade sqlite version</source>
+      </item>
+      <item>
+        <title>Upgrade sqlite version</title>
+        <dc:creator><![CDATA[ilyaminati]]></dc:creator>
+        <description><![CDATA[
+            <p>I use Redash’s Query Results datasource (which is really neat), but the sqlite that my Redash is using doesn’t support <code>sqrt</code> and related math functions. It seems that support for that was added in sqlite 3.35. My sqlite came from the V8 AMIs upgraded to V10.</p>
+<p>Is it possible to upgrade sqlite in place in my self-hosted Redash?</p>
+          <p><a href="https://discuss.redash.io/t/upgrade-sqlite-version/9513/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/upgrade-sqlite-version/9513/1</link>
+        <pubDate>Tue, 23 Nov 2021 03:20:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9513-1</guid>
+        <source url="https://discuss.redash.io/t/upgrade-sqlite-version/9513.rss">Upgrade sqlite version</source>
+      </item>
+  </channel>
+</rss>

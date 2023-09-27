@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+    <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774</link>
+    <description>Hi Redash Community!
+
+We (RecoLabs, a stealth startup) are building a golang SDK for Redash, and we&#39;re planning to open-source it. We&#39;d love to coordinate with the community before just publishing it, so here goes :rocket: 
+
+## What is it?
+
+From the documentation of the go package:
+
+```golang
+// redashclient is a go wrapper to Redash&#39;s REST API.
+// redashclient provides a go API to set up and manage a remote redash client programmatically.
+```
+
+And from the README:
+
+&gt; This is a simple SDK for the programmatic management of Redash. We created this client based on the python code of version 10.1.0 of Redash.
+
+### What&#39;s included?
+
+1. Easy to use Go client that covers some parts of the API.
+1. **Swagger definition of the Redash API** - we would love to coordinate with the community here and contribute this to the main project in the future.
+1. Documentation and examples.
+1. [Earthly](https://earthly.dev/)-based build pipeline (lint and test).
+1. Many linters with [golangci-lint](https://golangci-lint.run/) and good test coverage.
+
+## Which parts of the API are covered?
+
+* Data Sources
+* Queries
+* Visualizations
+* Users
+
+&gt; Some of these resources might only be partially covered.
+
+## Why do this?
+
+We needed a way to programmatically control our self-hosted Redash instance from our backend services - we developed a custom dashboard screen in our product and Redash solved many issues for us, so we decided to use it as both the backend and the visualization engine (with embedded visualizations).
+
+## Examples
+
+### Subsection of the Swagger file
+
+![2021-12-30_10-44|295x500](upload://q51PHf8N23RFYgxose9C1X98USy.png)
+
+### Client usage 
+
+#### List all queries
+
+```golang
+import (
+    redashclient &quot;github.com/[REDACTED]/redashClient&quot;
+    &quot;github.com/[REDACTED]/gen/client&quot;
+)
+
+redashClient := redashclient.NewClient(
+	 &quot;{API_KEY}&quot;,
+	 &amp;client.TransportConfig{
+		 Host: &quot;{HOST_ADDRESS}&quot;,
+	 })
+
+// Calls in the client are of the form:
+//  client.&lt;Queries/Visualizations/Users/DataSources&gt;.&lt;Method&gt;(...)
+// For example:
+// List the current queries in Redash
+allQueries, err := redashClient.Queries.List()
+```
+
+#### Get a visualization&#39;s embed URL
+
+```golang
+queryID := 1
+visualizationID := 1
+queryAPIKey := &quot;{API_KEY}&quot;
+visualizationUrl, err := redashClient.Visualizations.GetURL(visualizationID, queryID, queryAPIKey)
+`
+```
+
+## What&#39;s next? 
+
+Once we collect a bit more feedback about the package internally and from y&#39;all here in the community, we plan to release it under BSD 2-Clause &quot;Simplified&quot; License. Hopefully, we&#39;ll be able to make this happen very soon.</description>
+    
+    <lastBuildDate>Thu, 03 Mar 2022 09:54:50 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[darwin]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/shaynehmad-recolabs">@ShayNehmad-RecoLabs</a> is there any functionality in your sdk to extract the list of dashboards , similar to redash api <code>/api/dashboards</code> ?</p>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/8</link>
+        <pubDate>Thu, 03 Mar 2022 09:54:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-8</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Excellent.  I’ll have a go with that over the next few days. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/7</link>
+        <pubDate>Tue, 18 Jan 2022 18:24:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-7</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[ShayNehmad-RecoLabs]]></dc:creator>
+        <description><![CDATA[
+            <p><img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji only-emoji" alt=":rocket:"> <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji only-emoji" alt=":rocket:"> <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji only-emoji" alt=":rocket:"></p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://github.com/RecoLabs/redash-go-sdk">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="32" height="32">
+
+      <a href="https://github.com/RecoLabs/redash-go-sdk" target="_blank" rel="noopener nofollow ugc">GitHub</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/345;"><img src="https://opengraph.githubassets.com/a8321c94f48c9e814a4259170ebc6a391a4fcd3afefb3a16c3c6831f8152f0de/RecoLabs/redash-go-sdk" class="thumbnail" width="690" height="345"></div>
+
+<h3><a href="https://github.com/RecoLabs/redash-go-sdk" target="_blank" rel="noopener nofollow ugc">GitHub - RecoLabs/redash-go-sdk: An SDK for the programmatic management of...</a></h3>
+
+  <p>An SDK for the programmatic management of Redash, in Go. - GitHub - RecoLabs/redash-go-sdk: An SDK for the programmatic management of Redash, in Go.</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/6</link>
+        <pubDate>Tue, 18 Jan 2022 09:32:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-6</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[ShayNehmad-RecoLabs]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="justinclift" data-post="4" data-topic="9774" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/justinclift/40/811_2.png" class="avatar"> justinclift:</div>
+<blockquote>
+<p><a class="mention" href="https://discuss.redash.io/u/shaynehmad-recolabs">@ShayNehmad-RecoLabs</a> Anything publicly available to try yet? <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:"></p>
+</blockquote>
+</aside>
+<p>We’re actually aiming to publicly release today! So stay tuned <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji" alt=":rocket:"></p>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/5</link>
+        <pubDate>Tue, 18 Jan 2022 08:00:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-5</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/shaynehmad-recolabs">@ShayNehmad-RecoLabs</a> Anything publicly available to try yet? <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=11" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>Asking because I’m writing some internal-use Redash utilities now (in Go), so figured that if your library has something able to be tried out then I might as well give it a go.</p>
+<p>If not, I’ll just use the initial bits I was working on a while ago as the foundation piece.  That’ll work too. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=11" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/4</link>
+        <pubDate>Sat, 15 Jan 2022 06:09:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-4</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>On that note this is the initial Redash end points list I threw together when looking over the API code.</p>
+<p>May or may not be useful, depending on how far you’ve progressed already. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>(tried attaching this as a file, but Discourse only seems to allow for pictures. <img src="https://emoji.discourse-cdn.com/twitter/man_facepalming.png?v=10" title=":man_facepalming:" class="emoji" alt=":man_facepalming:"></p>
+<pre><code class="lang-auto">const (
+	EndpointAdminQueriesOutdated = "/api/admin/queries/outdated"
+	EndpointAdminQueriesRqStatus = "/api/admin/queries/rq_status"
+	EndpointAlerts               = "/api/alerts"
+	EndpointConfig               = "/api/config"
+	EndpointDashboards           = "/api/dashboards"
+	EndpointDashboardsFavorites  = "/api/dashboards/favorites"
+	EndpointDashboardsTags       = "/api/dashboards/tags"
+	EndpointDashboardsMy         = "/api/dashboards/my"
+	EndpointDataSources          = "/api/data_sources"
+	EndpointDataSourcesTypes     = "/api/data_sources/types"
+	EndpointDestinations         = "/api/destinations"
+	EndpointDestinationsTypes    = "/api/destinations/types"
+	EndpointEvents               = "/api/events"
+	EndpointForgot               = "/api/forgot"
+	EndpointGroups               = "/api/groups"
+	EndpointOrgStatus            = "/api/organization/status"
+	EndpointPing                 = "/api/ping"
+	EndpointQueryResults         = "/api/query_results"
+	EndpointQueries              = "/api/queries"
+	EndpointQueriesArchive       = "/api/queries/archive"
+	EndpointQueriesFavorites     = "/api/queries/favorites"
+	EndpointQueriesFormat        = "/api/queries/format"
+	EndpointQueriesMy            = "/api/queries/my"
+	EndpointQueriesRecent        = "/api/queries/recent"
+	EndpointQueriesSearch        = "/api/queries/search"
+	EndpointQueriesTags          = "/api/queries/tags"
+	EndpointQuerySnippets        = "/api/query_snippets"
+	EndpointSession              = "/api/session"
+	EndpointSettingsOrg          = "/api/settings/organization"
+	EndpointUsers                = "/api/users"
+	EndpointVisualizations       = "/api/visualizations"
+	EndpointWidgets              = "/api/widgets"
+)
+
+// Not sure how to represent these in Go.  Probably need special handling for each one
+const (
+	// Alert
+	EndpointAlertId      = "/api/alerts/&lt;alert_id&gt;"
+	EndpointAlertIdMute  = "/api/alerts/&lt;alert_id&gt;/mute"
+	EndpointAlertIdSubs  = "/api/alerts/&lt;alert_id&gt;/subscriptions"
+	EndpointAlertIdSubId = "/api/alerts/&lt;alert_id&gt;/subscriptions/&lt;subscriber_id&gt;"
+
+	// Dashboard
+	EndpointDashboardId       = "/api/dashboards/&lt;dashboard_id&gt;"
+	EndpointDashboardFavorite = "/api/dashboards/&lt;object_id&gt;/favorite"
+	EndpointDashboardIdShare  = "/api/dashboards/&lt;dashboard_id&gt;/share"
+	EndpointDashboardPubToken = "/api/dashboards/public/&lt;token&gt;"
+
+	// Databricks
+	EndpointDatabricksDbId        = "/api/databricks/databases/&lt;data_source_id&gt;"
+	EndpointDatabricksDbTables    = "/api/databricks/databases/&lt;data_source_id&gt;/&lt;database_name&gt;/tables"
+	EndpointDatabricksDbTableCols = "/api/databricks/databases/&lt;data_source_id&gt;/&lt;database_name&gt;/columns/&lt;table_name&gt;"
+
+	// Data source
+	EndpointDataSourceId       = "/api/data_sources/&lt;data_source_id&gt;"
+	EndpointDataSourceIdSchema = "/api/data_sources/&lt;data_source_id&gt;/schema"
+	EndpointDataSourceIdPause  = "/api/data_sources/&lt;data_source_id&gt;/pause"
+	EndpointDataSourceIdTest   = "/api/data_sources/&lt;data_source_id&gt;/test"
+
+	// Destination
+	EndpointDestinationId = "/api/destinations/&lt;destination_id&gt;"
+
+	// Group
+	EndpointGroupId             = "/api/groups/&lt;group_id&gt;"
+	EndpointGroupIdMembers      = "/api/groups/&lt;group_id&gt;/members"
+	EndpointGroupIdMemberId     = "/api/groups/&lt;group_id&gt;/members/&lt;user_id&gt;"
+	EndpointGroupIdDataSources  = "/api/groups/&lt;group_id&gt;/data_sources"
+	EndpointGroupIdDataSourceId = "/api/groups/&lt;group_id&gt;/data_sources/&lt;data_source_id&gt;"
+
+	// Job
+	EndpointJobId = "/api/jobs/&lt;job_id&gt;"
+
+	// Query
+	EndpointQueryId                       = "/api/queries/&lt;query_id&gt;"
+	EndpointQueryIdAcl                    = "/api/&lt;object_type&gt;/&lt;object_id&gt;/acl"
+	EndpointQueryIdAclAccessType          = "/api/&lt;object_type&gt;/&lt;object_id&gt;/acl/&lt;access_type&gt;"
+	EndpointQueryIdDropdown               = "/api/queries/&lt;query_id&gt;/dropdown"
+	EndpointQueryIdDropdownId             = "/api/queries/&lt;query_id&gt;/dropdowns/&lt;dropdown_query_id&gt;"
+	EndpointQueryIdFavorite               = "/api/queries/&lt;query_id&gt;/favorite"
+	EndpointQueryIdFork                   = "/api/queries/&lt;query_id&gt;/fork"
+	EndpointQueryIdJobId                  = "/api/queries/&lt;query_id&gt;/jobs/&lt;job_id&gt;"
+	EndpointQueryIdRefresh                = "/api/queries/&lt;query_id&gt;/refresh"
+	EndpointQueryIdRegenApiKey            = "/api/queries/&lt;query_id&gt;/regenerate_api_key"
+	EndpointQueryIdResults                = "/api/queries/&lt;query_id&gt;/results"
+	EndpointQueryIdResultsFileType        = "/api/queries/&lt;query_id&gt;/results.&lt;filetype&gt;"
+	EndpointQueryIdResultsQueryIdFileType = "/api/queries/&lt;query_id&gt;/results/&lt;query_result_id&gt;.&lt;filetype&gt;"
+
+	// Query Result
+	EndpointQueryResultQueryId         = "/api/query_results/&lt;query_result_id&gt;"
+	EndpointQueryResultQueryIdFileType = "/api/query_results/&lt;query_result_id&gt;.&lt;filetype&gt;"
+
+	// Query Snippet
+	EndpointQuerySnippetId = "/api/query_snippets/&lt;snippet_id&gt;"
+
+	// User
+	EndpointUserId            = "/api/users/&lt;user_id&gt;"
+	EndpointUserIdDisable     = "/api/users/&lt;user_id&gt;/disable"
+	EndpointUserIdInvite      = "/api/users/&lt;user_id&gt;/invite"
+	EndpointUserIdResetPw     = "/api/users/&lt;user_id&gt;/reset_password"
+	EndpointUserIdRegenApiKey = "/api/users/&lt;user_id&gt;/regenerate_api_key"
+
+	// Widget
+	EndpointWidgetId = "/api/widgets/&lt;int:widget_id&gt;"
+)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/3</link>
+        <pubDate>Thu, 30 Dec 2021 17:04:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-3</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>That’ll be pretty welcome.  I started down this track a while back, but ran out of time.</p>
+<p>One of the weird things I found with the Redash API, was that <em>sometimes</em> the JSON that’s returned changes field types depending on part of the returned data.</p>
+<p>That made my initial Go efforts (with Go being a strongly typed language) more of a hassle that it needed to be.  Wasn’t impossible to work around, just an unfortunate inconvenience.</p>
+<p>Hopefully that strangeness doesn’t get exposed through your Go SDK. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/2</link>
+        <pubDate>Thu, 30 Dec 2021 16:58:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-2</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+      <item>
+        <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</title>
+        <dc:creator><![CDATA[ShayNehmad-RecoLabs]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi Redash Community!</p>
+<p>We (RecoLabs, a stealth startup) are building a golang SDK for Redash, and we’re planning to open-source it. We’d love to coordinate with the community before just publishing it, so here goes <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji" alt=":rocket:" loading="lazy" width="20" height="20"></p>
+<h2>
+<a name="what-is-it-1" class="anchor" href="https://discuss.redash.io#what-is-it-1"></a>What is it?</h2>
+<p>From the documentation of the go package:</p>
+<pre data-code-wrap="golang"><code class="lang-nohighlight">// redashclient is a go wrapper to Redash's REST API.
+// redashclient provides a go API to set up and manage a remote redash client programmatically.
+</code></pre>
+<p>And from the README:</p>
+<blockquote>
+<p>This is a simple SDK for the programmatic management of Redash. We created this client based on the python code of version 10.1.0 of Redash.</p>
+</blockquote>
+<h3>
+<a name="whats-included-2" class="anchor" href="https://discuss.redash.io#whats-included-2"></a>What’s included?</h3>
+<ol>
+<li>Easy to use Go client that covers some parts of the API.</li>
+<li>
+<strong>Swagger definition of the Redash API</strong> - we would love to coordinate with the community here and contribute this to the main project in the future.</li>
+<li>Documentation and examples.</li>
+<li>
+<a href="https://earthly.dev/" rel="noopener nofollow ugc">Earthly</a>-based build pipeline (lint and test).</li>
+<li>Many linters with <a href="https://golangci-lint.run/" rel="noopener nofollow ugc">golangci-lint</a> and good test coverage.</li>
+</ol>
+<h2>
+<a name="which-parts-of-the-api-are-covered-3" class="anchor" href="https://discuss.redash.io#which-parts-of-the-api-are-covered-3"></a>Which parts of the API are covered?</h2>
+<ul>
+<li>Data Sources</li>
+<li>Queries</li>
+<li>Visualizations</li>
+<li>Users</li>
+</ul>
+<blockquote>
+<p>Some of these resources might only be partially covered.</p>
+</blockquote>
+<h2>
+<a name="why-do-this-4" class="anchor" href="https://discuss.redash.io#why-do-this-4"></a>Why do this?</h2>
+<p>We needed a way to programmatically control our self-hosted Redash instance from our backend services - we developed a custom dashboard screen in our product and Redash solved many issues for us, so we decided to use it as both the backend and the visualization engine (with embedded visualizations).</p>
+<h2>
+<a name="examples-5" class="anchor" href="https://discuss.redash.io#examples-5"></a>Examples</h2>
+<h3>
+<a name="subsection-of-the-swagger-file-6" class="anchor" href="https://discuss.redash.io#subsection-of-the-swagger-file-6"></a>Subsection of the Swagger file</h3>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png" data-download-href="/uploads/short-url/q51PHf8N23RFYgxose9C1X98USy.png?dl=1" title="2021-12-30_10-44" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_295x500.png" alt="2021-12-30_10-44" data-base62-sha1="q51PHf8N23RFYgxose9C1X98USy" width="295" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_295x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_442x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_10x10.png"></a></div><p></p>
+<h3>
+<a name="client-usage-7" class="anchor" href="https://discuss.redash.io#client-usage-7"></a>Client usage</h3>
+<h4>
+<a name="list-all-queries-8" class="anchor" href="https://discuss.redash.io#list-all-queries-8"></a>List all queries</h4>
+<pre data-code-wrap="golang"><code class="lang-nohighlight">import (
+    redashclient "github.com/[REDACTED]/redashClient"
+    "github.com/[REDACTED]/gen/client"
+)
+
+redashClient := redashclient.NewClient(
+	 "{API_KEY}",
+	 &amp;client.TransportConfig{
+		 Host: "{HOST_ADDRESS}",
+	 })
+
+// Calls in the client are of the form:
+//  client.&lt;Queries/Visualizations/Users/DataSources&gt;.&lt;Method&gt;(...)
+// For example:
+// List the current queries in Redash
+allQueries, err := redashClient.Queries.List()
+</code></pre>
+<h4>
+<a name="get-a-visualizations-embed-url-9" class="anchor" href="https://discuss.redash.io#get-a-visualizations-embed-url-9"></a>Get a visualization’s embed URL</h4>
+<pre data-code-wrap="golang"><code class="lang-nohighlight">queryID := 1
+visualizationID := 1
+queryAPIKey := "{API_KEY}"
+visualizationUrl, err := redashClient.Visualizations.GetURL(visualizationID, queryID, queryAPIKey)
+`
+</code></pre>
+<h2>
+<a name="whats-next-10" class="anchor" href="https://discuss.redash.io#whats-next-10"></a>What’s next?</h2>
+<p>Once we collect a bit more feedback about the package internally and from y’all here in the community, we plan to release it under BSD 2-Clause “Simplified” License. Hopefully, we’ll be able to make this happen very soon.</p>
+          <p><a href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774/1</link>
+        <pubDate>Thu, 30 Dec 2021 10:06:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9774-1</guid>
+        <source url="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</source>
+      </item>
+  </channel>
+</rss>

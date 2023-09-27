@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cannot upgrade/migrate database from Redash 4 to 7 - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+I’m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I’d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042). 
+I dumped the DB and tested loca&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Cannot upgrade/migrate database from Redash 4 to 7&#39;" href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259" />
+<meta property="og:title" content="Cannot upgrade/migrate database from Redash 4 to 7" />
+<meta name="twitter:title" content="Cannot upgrade/migrate database from Redash 4 to 7" />
+<meta property="og:description" content="Issue Summary I’m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I’d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042).  I dumped the DB and tested locally with Docker which was when I realized that you had to do a migration. I found a suggestion to run /app/manage.py db upgrade from inside the Redash server container then restart the services which seemed to work.  When I tried the same thing with the Kubernetes install, it fai..." />
+<meta name="twitter:description" content="Issue Summary I’m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I’d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042).  I dumped the DB and tested locally with Docker which was when I realized that you had to do a migration. I found a suggestion to run /app/manage.py db upgrade from inside the Redash server container then restart the services which seemed to work.  When I tried the same thing with the Kubernetes install, it fai..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2019-07-30T20:54:42+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Cannot upgrade/migrate database from Redash 4 to 7","mainEntity":{"@type":"Question","name":"Cannot upgrade/migrate database from Redash 4 to 7","text":"Issue Summary\n\nI’m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I’d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042).\n\nI dumped the DB and tested locally with Docker which was when I realized that you had to do a migration. I foun&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2019-07-30T20:54:42.070Z","author":{"@type":"Person","name":"Philip Hutchins"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259">Cannot upgrade/migrate database from Redash 4 to 7</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Cannot upgrade/migrate database from Redash 4 to 7'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/phutchins'><span itemprop='name'>phutchins</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-07-30T20:54:42Z' class='post-time'>
+                    July 30, 2019,  8:54pm
+                  </time>
+                  <meta itemprop='dateModified' content='2019-07-30T21:01:03Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>Issue Summary</h3>
+<p>I’m currently running Redash 4 in Kubernetes. It is a single node running against a single node Postgres DB. I’d like to upgrade it to Redash 7 (redash/redash:7.0.0.b18042).</p>
+<p>I dumped the DB and tested locally with Docker which was when I realized that you had to do a migration. I found a suggestion to run <code>/app/manage.py db upgrade</code> from inside the Redash server container then restart the services which seemed to work.</p>
+<p>When I tried the same thing with the Kubernetes install, it failed to migrate. I additionally found that I needed to run <code>. /config/dynamicenv.sh</code> prior to running the upgrade command. Also I tried running manage.py migrate which felt like it got me closer but no luck…</p>
+<p>What is the correct process for upgrading??? I’m stuck…</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: redash/redash:7.0.0.b18042</li>
+<li>Browser/OS: n/a</li>
+<li>How did you install Redash: Helm &amp; Kubernetes</li>
+</ul>
+<h3>Logs</h3>
+<pre><code class="lang-auto">redash@dap-redash-5cbfff44fc-7qm9h:/app$ . /config/dynamicenv.sh
+Using external database
+Using Redis: redis://:******@dap-redash-redis-master:6379/0
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db upgrade
+[2019-07-30 20:07:33,082][PID:34][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:33,104][PID:34][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:35,445][PID:34][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:35,446][PID:34][INFO][alembic.runtime.migration] Will assume transactional DDL.
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db migrate
+[2019-07-30 20:07:43,639][PID:138][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:43,662][PID:138][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:45,859][PID:138][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:45,860][PID:138][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2019-07-30 20:07:45,878][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'query_snippets_id_seq' as owned by integer column 'query_snippets(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,917][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'queries_id_seq' as owned by integer column 'queries(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,951][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'dashboards_id_seq' as owned by integer column 'dashboards(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,965][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'groups_id_seq' as owned by integer column 'groups(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,979][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'visualizations_id_seq' as owned by integer column 'visualizations(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:45,992][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'api_keys_id_seq' as owned by integer column 'api_keys(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,005][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'widgets_id_seq' as owned by integer column 'widgets(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,022][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'data_source_groups_id_seq' as owned by integer column 'data_source_groups(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,039][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'notification_destinations_id_seq' as owned by integer column 'notification_destinations(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,052][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'events_id_seq' as owned by integer column 'events(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,065][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'favorites_id_seq' as owned by integer column 'favorites(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,079][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'changes_id_seq' as owned by integer column 'changes(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,091][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'access_permissions_id_seq' as owned by integer column 'access_permissions(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,105][PID:138][INFO][alembic.ddl.postgresql] Detected sequence named 'alert_subscriptions_id_seq' as owned by integer column 'alert_subscriptions(id)', assuming SERIAL and omitting
+[2019-07-30 20:07:46,132][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'dashboards.tags'
+[2019-07-30 20:07:46,135][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'data_sources.encrypted_options'
+[2019-07-30 20:07:46,141][PID:138][INFO][alembic.autogenerate.compare] Detected removed column 'data_sources.options'
+[2019-07-30 20:07:46,149][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'queries.tags'
+[2019-07-30 20:07:46,156][PID:138][INFO][alembic.autogenerate.compare] Detected added column 'users.details'
+  Generating /app/migrations/versions/d52397c65e9f_.py ... done
+redash@dap-redash-5cbfff44fc-7qm9h:/app$ ./manage.py db upgrade
+[2019-07-30 20:07:55,327][PID:242][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/Grammar.txt
+[2019-07-30 20:07:55,348][PID:242][INFO][root] Generating grammar tables from /usr/lib/python2.7/lib2to3/PatternGrammar.txt
+[2019-07-30 20:07:57,439][PID:242][INFO][alembic.runtime.migration] Context impl PostgresqlImpl.
+[2019-07-30 20:07:57,440][PID:242][INFO][alembic.runtime.migration] Will assume transactional DDL.
+[2019-07-30 20:07:57,447][PID:242][INFO][alembic.runtime.migration] Running upgrade e5c7a4e2df4d -&gt; d52397c65e9f, empty message
+Traceback (most recent call last):
+  File "./manage.py", line 9, in &lt;module&gt;
+    manager()
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 716, in __call__
+    return self.main(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/cli.py", line 345, in main
+    return AppGroup.main(self, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 696, in main
+    rv = self.invoke(ctx)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 1060, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 889, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 534, in invoke
+    return callback(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask/cli.py", line 229, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/click/core.py", line 534, in invoke
+    return callback(*args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/flask_migrate/cli.py", line 132, in upgrade
+    _upgrade(directory, revision, sql, tag, x_arg)
+  File "/usr/local/lib/python2.7/dist-packages/flask_migrate/__init__.py", line 239, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/command.py", line 276, in upgrade
+    script.run_env()
+  File "/usr/local/lib/python2.7/dist-packages/alembic/script/base.py", line 475, in run_env
+    util.load_python_file(self.dir, "env.py")
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/pyfiles.py", line 90, in load_python_file
+    module = load_module_py(module_id, path)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/util/compat.py", line 216, in load_module_py
+    mod = imp.load_source(module_id, path, fp)
+  File "migrations/env.py", line 87, in &lt;module&gt;
+    run_migrations_online()
+  File "migrations/env.py", line 80, in run_migrations_online
+    context.run_migrations()
+  File "&lt;string&gt;", line 8, in run_migrations
+  File "/usr/local/lib/python2.7/dist-packages/alembic/runtime/environment.py", line 839, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File "/usr/local/lib/python2.7/dist-packages/alembic/runtime/migration.py", line 361, in run_migrations
+    step.migration_fn(**kw)
+  File "/app/migrations/versions/d52397c65e9f_.py", line 22, in upgrade
+    op.add_column('data_sources', sa.Column('encrypted_options', redash.models.types.EncryptedConfiguration(), nullable=False))
+NameError: global name 'redash' is not defined
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/problems-with-db-migration-when-upgrading-to-7-0/3551/7">Problems with DB migration when upgrading to 7.0</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ytyng'><span itemprop='name'>ytyng</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/cannot-upgrade-migrate-database-from-redash-4-to-7/4259">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-09-09T05:22:27Z' class='post-time'>
+                    September 9, 2022,  5:22am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-09-09T05:22:27Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I solved.</p>
+<pre><code class="lang-auto">cd /opt/redash
+sudo docker-compose exec server /bin/bash
+</code></pre>
+<p>or…</p>
+<pre><code class="lang-auto">kubectl exec -it ${podname} -- /bin/bash
+</code></pre>
+<p>In container:</p>
+<pre><code class="lang-auto">/app/bin/docker-entrypoint manage db upgrade
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

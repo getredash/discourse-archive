@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Advanced Query Results Data Source usage question: combining MySQL and Postgres with dynamic table names</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659">Advanced Query Results Data Source usage question: combining MySQL and Postgres with dynamic table names</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-usage/10.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Usage Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Advanced Query Results Data Source usage question: combining MySQL and Postgres with dynamic table names" itemprop="headline"/>
+<meta content="Usage Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-03T13:01:39Z" itemprop="datePublished">
+                    October 3, 2019,  1:01pm
+                  </time>
+<meta content="2019-10-07T12:13:09Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>how to build one big Query which contains query to 1DataSourse and with result from first DataSourse  need to be filtered second Query from 2 DataSourse</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/how-to-concatenate-two-or-more-strings-mysql-in-redash/4675/2" itemprop="url">How to concatenate two or more strings MySql in Redash</a>
+<meta content="1" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/error-running-query-no-cached-result-available-for-query-456/4666/2" itemprop="url">Error running query: No cached result available for query_456</a>
+<meta content="2" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-03T13:17:00Z" itemprop="datePublished">
+                    October 3, 2019,  1:17pm
+                  </time>
+<meta content="2019-10-03T13:17:00Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Welcome to the forum! It sounds like you need a <a href="https://redash.io/help/user-guide/querying/query-parameters#Query-Based-Dropdown-List" rel="nofollow noopener">Query Based Dropdown List Parameter</a>.</p>
+<p>Or if you need something like a drill-down then this post my be more useful:</p>
+<aside class="quote" data-post="2" data-topic="4549">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" width="20"/>
+<a href="http://discuss.redash.io/t/dropdown-lists-synchronized/4549/2">Dropdown lists synchronized</a> <a class="badge-wrapper bullet" href="/c/support/support-usage"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span class="badge-category clear-badge" data-drop-close="true" style="" title="Need help with using Redash? Not sure if something is possible or how to do it right? Here’s the place to ask.">Usage Support</span></a>
+</div>
+<blockquote>
+    Not directly. The query that powers a Query Based Dropdown List Parameter cannot itself use parameters. But you can do the same thing with a Query Parameter and a <a href="https://redash.io/help/user-guide/querying/query-filters" rel="nofollow noopener">Query Filter</a>. Use the the parameter for dropdown A, and the filter for field B.
+  </blockquote>
+</aside>
+<p>Do you have a more specific example for forum readers to work with?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-03T13:25:28Z" itemprop="datePublished">
+                    October 3, 2019,  1:25pm
+                  </time>
+<meta content="2019-10-03T13:27:22Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<pre><code class="lang-auto">SELECT
+  id1,
+  total_sum,
+  total_count, 
+FROM DataSource1 a1
+LEFT JOIN ( SELECT id2, total_sum, total_count FROM DATASourse2) a2 
+  ON a1.id1 = a2.id2
+WHERE
+  id1&gt;200
+</code></pre>
+<p>list of id2 includes itself list of id1, i wanna bring rest data from DataSourse2 only for short list id1, i am not interested in proceed all long list id2</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-03T13:28:31Z" itemprop="datePublished">
+                    October 3, 2019,  1:28pm
+                  </time>
+<meta content="2019-10-03T13:28:31Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>In that case, I would recommend the <a href="https://redash.io/help/user-guide/querying/query-results-data-source" rel="nofollow noopener">Query Results Data Source</a>. Make a query of <code>Datasource 1</code> and <code>Datasource 2</code> and then reference them from a third query against the QRDS.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-03T13:31:56Z" itemprop="datePublished">
+                    October 3, 2019,  1:31pm
+                  </time>
+<meta content="2019-10-03T13:31:56Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Could you send me simple example regarding to my case?What i should do?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-04T11:08:33Z" itemprop="datePublished">
+                    October 4, 2019, 11:08am
+                  </time>
+<meta content="2019-10-04T11:28:22Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>my Big Query use two queries first query_123 and second query_456 , i made something like this</p>
+<pre><code class="lang-auto">select 
+a, b
+from query_123 
+left join
+     query_456
+where conditions.
+</code></pre>
+<p>Query 456 contains itself parameter which changes every time when we run  Query 456. For example we need every time write previose date and current date.</p>
+<p>i changed all on</p>
+<pre><code class="lang-auto">select 
+      a, b
+from query_123 
+left join 
+    cached_query_456
+where conditions.
+</code></pre>
+<p>to save the last updated version of this query in cache to use it afterwards in Big Query<br/>
+but have this error. Could you help me?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-04T11:41:14Z" itemprop="datePublished">
+                    October 4, 2019, 11:41am
+                  </time>
+<meta content="2019-10-04T11:41:14Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I merged your two topics since they’re part of the same issue.</p>
+<p>QRDS doesn’t work on queries with parameters. That’s why you see the <code>no cached query result found</code> error. But you don’t need a parameter for these queries. Set them up like this instead:</p>
+<p><strong>Query 1</strong><br/>
+Uses a regular data source like postgres, mysql, redshift, etc.</p>
+<pre><code class="lang-auto">SELECT field1, field2, field3
+FROM DS1
+WHERE ...
+</code></pre>
+<p><strong>Query 2</strong><br/>
+Uses QRDS to examine <code>query_1</code></p>
+<pre><code class="lang-auto">WITH LimitedVersionOfQuery1 as (  
+
+SELECT field1, field2, field3
+FROM query_1
+WHERE ... 
+  AND someDate &gt; {{ window.start }}
+  AND someDate &lt; {{ window.end   }}
+)
+
+SELECT    q1.field1,    q1.field2,    q1.field3
+       lvoq1.field1, lvoq1.field2, lvoq1.field3
+FROM query_1 q1
+LEFT JOIN LimitedVersionOfQuery1 lvoq1
+  ON q1.field1 = lvoq1.field1
+WHERE ...
+</code></pre>
+<p>I think you can do the same thing with the original data source without using the QRDS. But the above example would work.</p>
+<p>It’s difficult to give concrete examples without knowing your exact use case. But nothing you’ve said so far suggests that Redash can’t do what you need <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-04T12:28:41Z" itemprop="datePublished">
+                    October 4, 2019, 12:28pm
+                  </time>
+<meta content="2019-10-04T12:28:41Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Unfortunately, this case can’t describe my situation. I would be very grateful you if you suggest something that are useful in my case. Problem that i don’t need parameter for making filter of sample, i need parameter for every day changing tables from which i need bring data. Just imagine that every day created new table with name table_(current _date), and in big query i need to join  data of first table from dataSourse1(it is stable) and from second query(which contains itself two tables information: from table with end name of current date and from table with ending name of yesterday date) from DataSourse2 and i want that every day if i run this second query i would run today table and yesterday, for it i created parameter where someone who don’t need to rewrite code of second sql query could give ending of this tables, and after that run code of Big Query cause i would save cache of this second query  for running big query</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3e01377716683256e72ecb34d1fe34180aeaa675.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-04T23:56:06Z" itemprop="datePublished">
+                    October 4, 2019, 11:56pm
+                  </time>
+<meta content="2019-10-04T23:56:06Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>If I understood correctly, you need a query that looks like this:</p>
+<pre><code class="lang-sql">WITH oneDayAgo  as ( SELECT * FROM data_oneDayAgo ), 
+     twoDaysAgo as ( SELECT * FROM data_twoDaysAgo)
+
+SELECT  field1, field2, field3
+FROM    stableData
+JOIN    oneDayAgo  one ON stableData.id = one.id
+JOIN    twoDaysAgo two ON stableData.id = two.id
+</code></pre>
+<p>Where <code>data_oneDayAgo</code> and <code>data_twoDaysAgo</code> are passed as parameters. This way you see a fresh result each day.</p>
+<p>I see two ways to do this in Redash.</p>
+<h2>
+<a class="anchor" href="#use-a-query-based-dropdown-list-parameter-1" name="use-a-query-based-dropdown-list-parameter-1"></a>Use a Query Based Dropdown List Parameter</h2>
+<p>Write a query to return string table names based on dates. This example uses Postgres.</p>
+<pre><code class="lang-auto">SELECT 'yesterday' "key", 'data_' || TO_CHAR(DATE_TRUNC('day', NOW()::timestamp) - interval '1 day', 'YYYYMMDD')  "value"
+UNION ALL
+SELECT 'two days ago' "key", 'data_' || TO_CHAR(DATE_TRUNC('day', NOW()::timestamp) - interval '2 days', 'YYYYMMDD') "value"
+</code></pre>
+<p>Any time you run this query, it will return two rows. Since today is 2019-10-04 it returns:</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yesterday</td>
+<td>data_20191003</td>
+</tr>
+<tr>
+<td>two days ago</td>
+<td>data_20191002</td>
+</tr>
+</tbody>
+</table>
+</div><p>You can use a different format string if your daily data tables don’t follow ISO8601.</p>
+<p>Then your main query would look like this:</p>
+<p><img alt="image" data-base62-sha1="8Qwd0Fy5gZOcU0QtenLHaj4ZU2x" height="400" src="assets/3e01377716683256e72ecb34d1fe34180aeaa675.png" width="475"/></p>
+<p><code>{{ First Param }}</code> and <code>{{ Second Param }}</code> are <a href="https://redash.io/help/user-guide/querying/query-parameters#Query-Based-Dropdown-List">Query Based Dropdown List Parameters</a> pointed at the query above. If you execute this query it will pull data from yesterday and two days ago, then join that data against your stable data source.</p>
+<p>I tested this on Redash V7 and V8 and it worked as expected.</p>
+<h2>
+<a class="anchor" href="#write-a-database-function-to-return-daily-data-2" name="write-a-database-function-to-return-daily-data-2"></a>Write a Database Function to return daily data</h2>
+<p>This approach makes more sense, I think. Since it doesn’t rely on features of Redash. It leverages the power of your database. In this case, you would write a function for your database that returns data from the correct table.</p>
+<p>Consult the documentation for your database for the proper function syntax. Your resulting SQL would look somewhat like this:</p>
+<pre><code class="lang-sql">WITH oneDayAgo  as ( SELECT * FROM FUNC_THAT_RETURNS_YESTERDAY ), 
+     twoDaysAgo as ( SELECT * FROM FUNC_THAT_RETURNS_TWO_DAYS_AGO)
+
+SELECT  field1, field2, field3
+FROM    stableData
+JOIN    oneDayAgo  one ON stableData.id = one.id
+JOIN    twoDaysAgo two ON stableData.id = two.id
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-07T09:17:56Z" itemprop="datePublished">
+                    October 7, 2019,  9:17am
+                  </time>
+<meta content="2019-10-07T09:17:56Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<pre><code class="lang-auto">select * from CONCAT( 'cc' ,'_report_20120813') limit 5; does't work
+select * from 'cc' || '_report_20120813') limit 5; does't work
+select * from CONCAT_WS( _, 'cc','report_20120813') limit 5; does't work
+select * from GROUP_CONCAT('cc','report_20120813' SEPARATOR '_'`) limit 5;
+</code></pre>
+<p>Does’t work</p>
+<pre><code class="lang-auto">Error running query: **You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''cc' ||'_report_20120813' limit 5' at line 1**
+</code></pre>
+<pre><code class="lang-auto"> select *
+ FROM 
+     (select CONCAT(cc_report_, CONVERT((subdate((CURDATE()), 1)-1), CHAR))) as k
+     limit 5;  works but return not all columns and data of existing table cc_report_20120813 but only name the table cc_report_20120813( select * from CONCAT(cc_report_, CONVERT((subdate((CURDATE()), 1)-1), CHAR))
+</code></pre>
+<p>doesn’t work). How i could bring data from table with this name? Please, i am very grateful you that you help me</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-07T11:05:02Z" itemprop="datePublished">
+                    October 7, 2019, 11:05am
+                  </time>
+<meta content="2019-10-07T11:05:02Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I merged your two topics again since they’re part of the same issue.</p>
+<p>You need dynamic SQL to do this in MySQL. I’ve not used dynamic statements in MySQL, but <a href="https://dba.stackexchange.com/questions/14397/creating-a-table-from-variable-names" rel="nofollow noopener">here</a> is a related stack exchange article.</p>
+<p>Have you tried the Query Based Dropdown List Parameter solution I wrote above? It would be much easier (and safer) than a dynamic SQL option. And shouldn’t take more than a few minutes to test.</p>
+<aside class="quote quote-modified" data-post="9" data-topic="4659">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" width="20"/>
+<a href="http://discuss.redash.io/t/how-to-build-1-query-which-contains-query-to-1datasource-and-with-result-from-first-query-need-to-be-filtered-second-query-from-2-datasoursc/4659/9">How to build 1 Query which contains query to 1DataSource and with result from first query need to be filtered second Query from 2 DataSoursc</a> <a class="badge-wrapper bullet" href="/c/support/support-usage"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span class="badge-category clear-badge" data-drop-close="true" style="" title="Need help with using Redash? Not sure if something is possible or how to do it right? Here’s the place to ask.">Usage Support</span></a>
+</div>
+<blockquote>
+    If I understood correctly, you need a query that looks like this: 
+WITH oneDayAgo  as ( SELECT * FROM data_oneDayAgo ), 
+     twoDaysAgo as ( SELECT * FROM data_twoDaysAgo)
+
+SELECT  field1, field2, field3
+FROM    stableData
+JOIN    oneDayAgo  one ON stableData.id = one.id
+JOIN    twoDaysAgo two ON stableData.id = two.id
+
+Where data_oneDayAgo and data_twoDaysAgo are passed as parameters. This way you see a fresh result each day. 
+I see two ways to do this in Redash. 
+Use a Query Based Dropdown Li…
+  </blockquote>
+</aside>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-07T11:09:59Z" itemprop="datePublished">
+                    October 7, 2019, 11:09am
+                  </time>
+<meta content="2019-10-07T11:09:59Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>An if i will made this  Query Based Dropdown List Parameter it would be saved like cached_query or not? Cause i cannot make query with stable sourse cause it is in different DataSourse cause it i need have two queries : first with 1 datasourse(Postgres), second with joining two tables with this Query Based Dropdown List Parameter(MySql), and last which would proceed all two previouse queries</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-07T11:17:37Z" itemprop="datePublished">
+                    October 7, 2019, 11:17am
+                  </time>
+<meta content="2019-10-07T11:17:37Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="12" data-topic="4659" data-username="viktoria">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/v/df705f/40.png" width="20"/> viktoria:</div>
+<blockquote>
+<p>An if i will made this Query Based Dropdown List Parameter it would be saved like cached_query or not?</p>
+</blockquote>
+</aside>
+<p>If you schedule the Query Based Dropdown List query to run each day then it will remain fresh.</p>
+<aside class="quote no-group" data-post="12" data-topic="4659" data-username="viktoria">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/v/df705f/40.png" width="20"/> viktoria:</div>
+<blockquote>
+<p>first with 1 datasourse(Postgres), second with joining two tables with this Query Based Dropdown List Parameter(MySql),</p>
+</blockquote>
+</aside>
+<p>That’s new information.  It wasn’t clear before that you are joining data from MySQL and Postgres. Still, a version of the solution above could work assuming the amount of data is not too big.</p>
+<p>The only difference is that each of your primary data sources will be joined using the QRDS. So the main query would change to be like this:</p>
+<pre><code class="lang-auto">WITH oneDayAgo  as ( SELECT * FROM query_xxxx ), --data_oneDayAgo
+     twoDaysAgo as ( SELECT * FROM query_xxxx) --data_twoDaysAgo
+
+SELECT  field1, field2, field3
+FROM    query_xxxx --stableData
+JOIN    oneDayAgo  one ON stableData.id = one.id
+JOIN    twoDaysAgo two ON stableData.id = two.id
+</code></pre>
+<p>Try this. If you have too much data then the queries might fail. In which case you will need a proper ETL tool like Stitch (with which we also integrate <img alt=":innocent:" class="emoji" src="assets/innocent.png" title=":innocent:"/>).</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-07T11:20:39Z" itemprop="datePublished">
+                    October 7, 2019, 11:20am
+                  </time>
+<meta content="2019-10-07T11:20:39Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thank you very much! I will try)))</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-07T14:04:11Z" itemprop="datePublished">
+                    October 7, 2019,  2:04pm
+                  </time>
+<meta content="2019-10-07T14:04:11Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I tried Query Based Dropdown List Parameter  for second query but it still didn’t save cache. My third queries could contains just numbers of queries like query_23456, but in my case i can not write WITH statement cause i am at third DataSourse (QueryResult), second query must bring data from second DataSourse(Mysql), otherwise error. i don’t know what to do</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-16T12:26:43Z" itemprop="datePublished">
+                    October 16, 2019, 12:26pm
+                  </time>
+<meta content="2019-10-16T12:26:43Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="15" data-topic="4659" data-username="viktoria">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/v/df705f/40.png" width="20"/> viktoria:</div>
+<blockquote>
+<p>second query must bring data from second DataSourse(Mysql),</p>
+</blockquote>
+</aside>
+<p>To join data from two or more data sources you can use the QRDS. Or consider using a tool like Stitch if you have a lot of data and then point Redash at Stitch.</p>
+<p>What you’ve said so far sounds feasible in Redash. But I’m struggling to understand your precise issue without a well-written example.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/viktoria.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/viktoria_avatar.png" tabindex="-1" width="48"/><span itemprop="name">viktoria</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-16T15:11:43Z" itemprop="datePublished">
+                    October 16, 2019,  3:11pm
+                  </time>
+<meta content="2019-10-16T15:11:43Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote group-Team" data-post="16" data-topic="4659">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" width="20"/> jesse:</div>
+<blockquote>
+<p>What you’ve said so far sounds feasible in Redash. But I’m struggling to understand your precise issue without a well-written example.</p>
+</blockquote>
+</aside>
+<p>Thank you very much! i found way how to solve my problem)</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="https://discuss.redash.io/t/advanced-query-results-data-source-usage-question-combining-mysql-and-postgres-with-dynamic-table-names/4659" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2019-10-17T11:26:59Z" itemprop="datePublished">
+                    October 17, 2019, 11:26am
+                  </time>
+<meta content="2019-10-17T11:26:59Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="17" data-topic="4659" data-username="viktoria">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="https://avatars.discourse-cdn.com/v4/letter/v/df705f/40.png" width="20"/> viktoria:</div>
+<blockquote>
+<p>i found way how to solve my problem)</p>
+</blockquote>
+</aside>
+<p>Would you mind sharing a little info about your solution? Readers in the future may thank you <img alt=":wink:" class="emoji" src="assets/wink.png" title=":wink:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

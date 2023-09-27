@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</title>
+    <link>https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688</link>
+    <description>I followed all instructions and have everything working on my Redash Docker image on aws, but I have no idea how to debug. Everything seems to work but the query refresh schedules.
+
+Any specific step by step details on how to debug on an AWS docker image is much appreciated.
+
+Thanks!
+Aaron</description>
+    
+    <lastBuildDate>Wed, 02 Feb 2022 18:27:14 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</title>
+        <dc:creator><![CDATA[ckljohn]]></dc:creator>
+        <description><![CDATA[
+            <p>Have you update the QUERY env?</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/master/CHANGELOG.md#upgrading">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/master/CHANGELOG.md#upgrading" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/master/CHANGELOG.md#upgrading" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/master/CHANGELOG.md#upgrading</a></h4>
+
+
+      <pre><code class="lang-md"># Change Log
+
+## V10.1.0 - 2021-11-23
+
+This release includes patches for three security vulnerabilities:
+
+- Insecure default configuration affects installations where REDASH_COOKIE_SECRET is not set explicitly (CVE-2021-41192)
+- SSRF vulnerability affects installations that enabled URL-loading data sources (CVE-2021-43780)
+- Incorrect usage of state parameter in OAuth client code affects installations where Google Login is enabled (CVE-2021-43777)
+
+And a couple features that didn't merge in time for 10.0.0
+
+- Big Query: Speed up schema loading (#5632)
+- Add support for Firebolt data source (#5606)
+- Fix: Loading schema for Sqlite DB with "Order" column name fails (#5623)
+
+## v10.0.0 - 2021-10-01
+
+A few changes were merged during the V10 beta period.
+
+</code></pre>
+
+
+
+  This file has been truncated. <a href="https://github.com/getredash/redash/blob/master/CHANGELOG.md#upgrading" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688/3</link>
+        <pubDate>Wed, 02 Feb 2022 18:27:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9688-3</guid>
+        <source url="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688.rss">Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</source>
+      </item>
+      <item>
+        <title>Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>If you have ssh access to your redash instance (I don’t use the AWS instances, so I don’t know), then in general you’ll probably want to run the docker compose “log tail” command + trigger the behaviour.</p>
+<p>So, on a (non AWS) Redash instance here, I’d log in to ssh, change to the Redash installation directory, and run the log tail:</p>
+<pre><code class="lang-auto">$ cd /opt/redash
+$ docker-compose logs --tail 2 -f
+</code></pre>
+<p>The <code>2</code> number there means it’ll display the last two lines of each container log, and the <code>-f</code> tells it to wait around for new log lines and display them.</p>
+<p>With that running, trigger the behaviour that <strong>should</strong> be working, but isn’t.  If an error of some kind with the backend shows up, it should be printed out there.</p>
+<p>Btw, if you know (or figure out) the name of the container that’s having the problem, you can put the container name on the end of the “log tail” line so only that is shown.  eg:</p>
+<pre><code class="lang-auto">$ docker-compose logs --tail 2 -f worker
+</code></pre>
+<p>To stop the log tail running, just press Control-C in the window.  That should return you back to the ssh shell.</p>
+<p>Hopefully that helps. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688/2</link>
+        <pubDate>Sun, 12 Dec 2021 07:12:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9688-2</guid>
+        <source url="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688.rss">Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</source>
+      </item>
+      <item>
+        <title>Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</title>
+        <dc:creator><![CDATA[a_a_ron]]></dc:creator>
+        <description><![CDATA[
+            <p>I followed all instructions and have everything working on my Redash Docker image on aws, but I have no idea how to debug. Everything seems to work but the query refresh schedules.</p>
+<p>Any specific step by step details on how to debug on an AWS docker image is much appreciated.</p>
+<p>Thanks!<br>
+Aaron</p>
+          <p><a href="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688/1</link>
+        <pubDate>Sun, 12 Dec 2021 05:53:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9688-1</guid>
+        <source url="https://discuss.redash.io/t/query-auto-refresh-schedule-not-working-on-10-0-0-docker-image/9688.rss">Query Auto Refresh Schedule Not Working on 10.0.0 Docker Image</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash has access to all Databricks databases</title>
+    <link>https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589</link>
+    <description>Hello,
+I’m trying to integrate Redash with Databricks.
+One of the things that are very important for me is databases access limitation (for example, people in the “accounts” user group in redash would have access only to the accounts database in Databricks)
+Unfortunately, it doesn’t matter how I configure the Databricks data source on Redash, people who have access to Databricks have access to all its databases.
+How can I fix this problem?
+The attached images show the redash data source configuration, the tables the user has access to on Redash and the tables in Databricks.
+![datasource_configuration|690x424](upload://muZONZ0FrsL05fLNoZSDQZ6mfpo.png)
+![databricks_tables|531x332](upload://7t0gRuY6GUxnFJAMmQkI9iFGUh5.png)
+![image|447x343](upload://ebBqEpFTYCJkY2M3hEyfTMbLAjv.png)</description>
+    
+    <lastBuildDate>Mon, 27 Jun 2022 06:02:59 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash has access to all Databricks databases</title>
+        <dc:creator><![CDATA[BUNNY-1269]]></dc:creator>
+        <description><![CDATA[
+            <p>hey, shahar did you solve the above issue you mentioned. If yes, could you please give insights how to solve.</p>
+<p>Thank in advance.</p>
+          <p><a href="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/5</link>
+        <pubDate>Mon, 27 Jun 2022 06:02:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9589-5</guid>
+        <source url="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589.rss">Redash has access to all Databricks databases</source>
+      </item>
+      <item>
+        <title>Redash has access to all Databricks databases</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>DBSQL is coming to GCP, thankfully <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>I’d speak with someone at databricks about how to obtain such a token. Or search their documentation.</p>
+          <p><a href="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/4</link>
+        <pubDate>Mon, 06 Dec 2021 15:14:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9589-4</guid>
+        <source url="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589.rss">Redash has access to all Databricks databases</source>
+      </item>
+      <item>
+        <title>Redash has access to all Databricks databases</title>
+        <dc:creator><![CDATA[shahar]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for the response.<br>
+Maybe it is because I’m new to Databricks, but I don’t see any way to create token with specific database permissions. When I’m generating a token it’s automatically has permission to all of the databases.<br>
+How can I create a token with specific access rights?<br>
+I’m using the standard version of Databricks on gcp (from what I understand Databricks SQL is not supported by google cloud)<br>
+thank you,</p>
+          <p><a href="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/3</link>
+        <pubDate>Wed, 01 Dec 2021 12:11:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9589-3</guid>
+        <source url="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589.rss">Redash has access to all Databricks databases</source>
+      </item>
+      <item>
+        <title>Redash has access to all Databricks databases</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Regardless what database you connect with, Redash doesn’t limit which parts of the connected schema may be queried. The idea is to use your databases’s permissions controls instead.</p>
+<p>An example for a way to do this in OSS Redash is as follows:</p>
+<ul>
+<li>Create multiple access tokens for Databricks. Grant each token specific access rights on the cluster. Perhaps one token has access to the <code>accounts</code> database while another can only access <code>customers</code> or similar.</li>
+<li>Create one Redash data source for each token. If you have three tokens there will be three data sources in Redash. They can all connect to the same endpoint, but they’ll use different tokens.</li>
+<li>Use Redash Group membership to control which Redash groups can query which data sources</li>
+<li>Add users to the appropriate groups based on their required permissions level.</li>
+</ul>
+<p>FWIW this is a strong use-case to move from OSS Redash to Databricks SQL, which includes a heavily customised version of Redash that is directly tied-in with Databrick’s authentication APIs (and a lot of other improvements that aren’t possible on the OSS version).</p>
+          <p><a href="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/2</link>
+        <pubDate>Tue, 30 Nov 2021 20:09:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9589-2</guid>
+        <source url="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589.rss">Redash has access to all Databricks databases</source>
+      </item>
+      <item>
+        <title>Redash has access to all Databricks databases</title>
+        <dc:creator><![CDATA[shahar]]></dc:creator>
+        <description><![CDATA[
+            <p>Hello,<br>
+I’m trying to integrate Redash with Databricks.<br>
+One of the things that are very important for me is databases access limitation (for example, people in the “accounts” user group in redash would have access only to the accounts database in Databricks)<br>
+Unfortunately, it doesn’t matter how I configure the Databricks data source on Redash, people who have access to Databricks have access to all its databases.<br>
+How can I fix this problem?<br>
+The attached images show the redash data source configuration, the tables the user has access to on Redash and the tables in Databricks.<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9db0d47cea1ee0724a6ccd90bc9a998cb2c0e2f2.png" data-download-href="/uploads/short-url/muZONZ0FrsL05fLNoZSDQZ6mfpo.png?dl=1" title="datasource_configuration" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9db0d47cea1ee0724a6ccd90bc9a998cb2c0e2f2_2_690x424.png" alt="datasource_configuration" data-base62-sha1="muZONZ0FrsL05fLNoZSDQZ6mfpo" width="690" height="424" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9db0d47cea1ee0724a6ccd90bc9a998cb2c0e2f2_2_690x424.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9db0d47cea1ee0724a6ccd90bc9a998cb2c0e2f2_2_1035x636.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9db0d47cea1ee0724a6ccd90bc9a998cb2c0e2f2.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9db0d47cea1ee0724a6ccd90bc9a998cb2c0e2f2_2_10x10.png"></a></div><br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/34568e1d3f0dcb5e9e6e710486989c76886a0a43.png" alt="databricks_tables" data-base62-sha1="7t0gRuY6GUxnFJAMmQkI9iFGUh5" width="531" height="332"><br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/636e3a1dc2d2ff7faedabfa52d8c5fe2087cf3c1.png" alt="image" data-base62-sha1="ebBqEpFTYCJkY2M3hEyfTMbLAjv" width="447" height="343"><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589/1</link>
+        <pubDate>Tue, 30 Nov 2021 15:15:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9589-1</guid>
+        <source url="https://discuss.redash.io/t/redash-has-access-to-all-databricks-databases/9589.rss">Redash has access to all Databricks databases</source>
+      </item>
+  </channel>
+</rss>

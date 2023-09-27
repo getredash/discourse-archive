@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>QRDS is not available in published Docker image</title>
+    <link>https://discuss.redash.io/t/qrds-is-not-available-in-published-docker-image/11425</link>
+    <description>### Issue Summary
+
+We deployed a docker-based redash install some time ago, but we realized that QRDS was not available as a data source.
+I recreated it locally on my machine (MacOS) using this docker-compose file:
+
+```
+version: &quot;3&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  restart: always
+x-redash-environment: &amp;redash-environment
+  REDASH_LOG_LEVEL: &quot;DEBUG&quot;
+  REDASH_REDIS_URL: &quot;redis://redis:6379/0&quot;
+  REDASH_DATABASE_URL: &quot;postgresql://postgres@postgres/postgres&quot;
+  REDASH_RATELIMIT_ENABLED: &quot;false&quot;
+  REDASH_ENABLED_QUERY_RUNNERS: &quot;redash.query_runner.mysql,redash.query_runner.pg&quot;
+  REDASH_COOKIE_SECRET: &quot;123&quot;
+services:
+  redash:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+      - &quot;5678:5678&quot;
+    environment:
+      &lt;&lt;: *redash-environment
+      REDASH_WEB_WORKERS: 4
+      PYTHONUNBUFFERED: 0
+    networks:
+      - redash-network
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      &lt;&lt;: *redash-environment
+    networks:
+      - redash-network
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      &lt;&lt;: *redash-environment
+    networks:
+      - redash-network
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+    networks:
+      - redash-network
+  postgres:
+    image: postgres:9.6-alpine
+    ports:
+      - &quot;15432:5432&quot;
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: &quot;trust&quot;
+    volumes:
+      - data-volume:/var/lib/postgresql
+    networks:
+      - redash-network
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - &quot;80:80&quot;
+    depends_on:
+      - redash
+    networks:
+      - redash-network
+    restart: always
+networks:
+  redash-network:
+    driver: bridge
+    name: redash-network
+volumes:
+  data-volume:
+```
+
+This is what the UI shows:
+
+![Screenshot 2022-12-26 at 12.23.22|434x500](upload://qYBgbRkos1yjfceW6KHF2QdfH9l.png)
+
+
+### Technical details:
+
+* Redash Version: 10.1.0.b50633
+* Browser/OS: MacOS
+* How did you install Redash: Published docker image</description>
+    
+    <lastBuildDate>Mon, 26 Dec 2022 15:23:58 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/qrds-is-not-available-in-published-docker-image/11425.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>QRDS is not available in published Docker image</title>
+        <dc:creator><![CDATA[juanstiza]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>We deployed a docker-based redash install some time ago, but we realized that QRDS was not available as a data source.<br>
+I recreated it locally on my machine (MacOS) using this docker-compose file:</p>
+<pre><code class="lang-auto">version: "3"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  restart: always
+x-redash-environment: &amp;redash-environment
+  REDASH_LOG_LEVEL: "DEBUG"
+  REDASH_REDIS_URL: "redis://redis:6379/0"
+  REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+  REDASH_RATELIMIT_ENABLED: "false"
+  REDASH_ENABLED_QUERY_RUNNERS: "redash.query_runner.mysql,redash.query_runner.pg"
+  REDASH_COOKIE_SECRET: "123"
+services:
+  redash:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+      - "5678:5678"
+    environment:
+      &lt;&lt;: *redash-environment
+      REDASH_WEB_WORKERS: 4
+      PYTHONUNBUFFERED: 0
+    networks:
+      - redash-network
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+      &lt;&lt;: *redash-environment
+    networks:
+      - redash-network
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      &lt;&lt;: *redash-environment
+    networks:
+      - redash-network
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+    networks:
+      - redash-network
+  postgres:
+    image: postgres:9.6-alpine
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    volumes:
+      - data-volume:/var/lib/postgresql
+    networks:
+      - redash-network
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - redash
+    networks:
+      - redash-network
+    restart: always
+networks:
+  redash-network:
+    driver: bridge
+    name: redash-network
+volumes:
+  data-volume:
+</code></pre>
+<p>This is what the UI shows:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bd12364be6cebacbae47f325663c4ff8d6f5e9c7.png" data-download-href="/uploads/short-url/qYBgbRkos1yjfceW6KHF2QdfH9l.png?dl=1" title="Screenshot 2022-12-26 at 12.23.22" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bd12364be6cebacbae47f325663c4ff8d6f5e9c7_2_434x500.png" alt="Screenshot 2022-12-26 at 12.23.22" data-base62-sha1="qYBgbRkos1yjfceW6KHF2QdfH9l" width="434" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bd12364be6cebacbae47f325663c4ff8d6f5e9c7_2_434x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bd12364be6cebacbae47f325663c4ff8d6f5e9c7.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bd12364be6cebacbae47f325663c4ff8d6f5e9c7.png 2x" data-dominant-color="FAFBFB"></a></div><p></p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10.1.0.b50633</li>
+<li>Browser/OS: MacOS</li>
+<li>How did you install Redash: Published docker image</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/qrds-is-not-available-in-published-docker-image/11425/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/qrds-is-not-available-in-published-docker-image/11425/1</link>
+        <pubDate>Mon, 26 Dec 2022 15:23:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-11425-1</guid>
+        <source url="https://discuss.redash.io/t/qrds-is-not-available-in-published-docker-image/11425.rss">QRDS is not available in published Docker image</source>
+      </item>
+  </channel>
+</rss>

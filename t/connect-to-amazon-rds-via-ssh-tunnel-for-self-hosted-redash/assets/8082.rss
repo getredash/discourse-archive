@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+    <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082</link>
+    <description>Hey everyone,
+
+I&#39;m trying to connect my self-hosted Redash instance (on AWS EC2) to a MYSQL Amazon RDS DB in a private VPC network behind a bastion (My RDS DB &amp; EC2 instance running Redash are in separate networks). 
+
+I&#39;ve read the instructions here:
+https://redash.io/help/user-guide/integrations-and-api/ssh-tunnel-api
+
+The part that was confusing is that it asks you to download the Redash public key and put it in the home of your bastion. For self-hosted Redash, should I generate my own private/public key pair, and then ssh into my EC2 server that is hosting Redash and copy that private key into the file under ssh_tunnel_auth here: https://github.com/getredash/redash/pull/4797/files#diff-2b8c3360e32eb15eab426c242f90a24312923304700b324c4a0cdcfa3d51473fR30
+What&#39;s the best way to do this?
+
+Then I take the corresponding public key I generated (as opposed to the Redash public key) and put it in the home of my user for the bastion?
+
+Thank you!</description>
+    
+    <lastBuildDate>Sun, 28 Nov 2021 18:48:53 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Probably not for SSH tunnels specifically. But we do need to document an easier solution for overriding files in installations based on the official cloud images. This could be for dynamic settings, custom query runners, and other customizations.</p>
+<p>The answer is a custom dockerfile that handles this automatically and won’t require manual fixes every upgrade.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/32">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/32</link>
+        <pubDate>Sun, 28 Nov 2021 18:48:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-32</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks!  Can this be included in a release as a default configuration so that users can simply create the key if they choose to use the feature?</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/31">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/31</link>
+        <pubDate>Sun, 28 Nov 2021 13:35:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-31</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Cool. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>Keep in mind that each time you upgrade Redash (eg to 10.2, or 11, or whatever’s next, etc), you’ll need to grab its dynamic_settings.py file from the container and apply the override.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/30">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/30</link>
+        <pubDate>Sat, 27 Nov 2021 17:31:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-30</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>Creating the Redash droplet, upgrading to V10 redash, migrating data from hosted Redash, and overriding the tunnel ssh auth python is working for me.  I can’t thank you all enough for your community spirit on this.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/29">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/29</link>
+        <pubDate>Sat, 27 Nov 2021 13:02:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-29</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>Curiously, the dynamic_settings.py in the container (unmodified) doesn’t look like the dynamic_settings.py from the redash repo. I believe that could be the source of the problem but then I’m wondering what is the correct source. The container dynamic_settings.py does not define ssh_tunnel_auth.<br>
+(with follow up note about running Redash v8)</p>
+</blockquote>
+<p>Yeah, that sounds like the problem.  When you’re overriding a file inside the container, you definitely need to make sure you grab the file from the container itself first so you have the right thing to modify. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+<p>With a situation where you’re not running a version of Redash that supports it’s own SSH tunnels, then you can use the persistent tunnel approach (I should probably write up a guide somewhere - we could really use a wiki for this kind of thing).</p>
+<p>Alternatively, as Jesse pointed out, upgrading to version 10.1 of Redash would be a good idea.  Of course, backup your data for safety, etc. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/28">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/28</link>
+        <pubDate>Sat, 27 Nov 2021 04:52:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-28</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Sounds good. Let me know if you have any issues with this. I’ve been doing a lot of these this week <img src="https://emoji.discourse-cdn.com/twitter/+1.png?v=10" title=":+1:" class="emoji" alt=":+1:"></p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/27">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/27</link>
+        <pubDate>Sat, 27 Nov 2021 00:13:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-27</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>I will - didn’t quite catch the significance of the version upgrade previously.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/26">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/26</link>
+        <pubDate>Fri, 26 Nov 2021 22:13:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-26</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey there- you should really upgrade. The migration script was never meant to move data to V8. It’s designed exclusively for moving to V10.</p>
+<p>Be sure to read the github release notes and upgrade to V10.1.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/24">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/24</link>
+        <pubDate>Fri, 26 Nov 2021 21:24:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-24</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>I am using Docker image redash/redash:8.0.0.b32245 which definitely won’t be compatible with the latest dynamic_settings.py.  Can I go ahead and use image redash/redash:10.1.0.b50633 ?</p>
+<p>Will that work in place with the data I have already transferred from hosted Redash?<br>
+If not will it migrate data from hosted Redash?</p>
+<p>Thanks So Much !!</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/23">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/23</link>
+        <pubDate>Fri, 26 Nov 2021 21:18:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-23</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>Curiously, the dynamic_settings.py in the container (unmodified) doesn’t look like the dynamic_settings.py from the redash repo.  I believe that could be the source of the problem but then I’m wondering what is the correct source.  The container dynamic_settings.py does not define ssh_tunnel_auth.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/22">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/22</link>
+        <pubDate>Fri, 26 Nov 2021 20:16:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-22</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>I just found that after the key parameter change override, the service_worker and ad_hoc_worker are restarting every 6 seconds.  The override broke them.</p>
+<p>Traceback (most recent call last):<br>
+adhoc_worker_1      |   File “/usr/local/bin/celery”, line 10, in <br>
+adhoc_worker_1      |     sys.exit(main())<br>
+adhoc_worker_1      |   File “/usr/local/lib/python2.7/site-packages/celery/<strong>main</strong>.py”, line 16, in main<br>
+adhoc_worker_1      |     _main()<br>
+adhoc_worker_1      |   File “/usr/local/lib/python2.7/site-packages/celery/bin/celery.py”, line 322, in main<br>
+adhoc_worker_1      |     cmd.execute_from_commandline(argv)<br>
+adhoc_worker_1      |   File “/usr/local/lib/python2.7/site-packages/celery/bin/celery.py”, line 496, in execute_from_commandline<br>
+adhoc_worker_1      |     super(CeleryCommand, self).execute_from_commandline(argv)))<br>
+adhoc_worker_1      |   File “/usr/local/lib/python2.7/site-packages/celery/bin/base.py”, line 290, in execute_from_commandline<br>
+adhoc_worker_1      |     self.on_error(UNABLE_TO_LOAD_APP_MODULE_NOT_FOUND.format(e.name))<br>
+adhoc_worker_1      | AttributeError: ‘exceptions.ImportError’ object has no attribute ‘name’</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/21">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/21</link>
+        <pubDate>Fri, 26 Nov 2021 19:52:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-21</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes the ssh connection works.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/20">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/20</link>
+        <pubDate>Fri, 26 Nov 2021 19:13:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-20</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="louisn" data-post="18" data-topic="8082">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/louisn/40/1707_2.png" class="avatar"> louisn:</div>
+<blockquote>
+<p>“message”: “could not send SSL negotiation packet: Resource temporarily unavailable\n”,</p>
+</blockquote>
+</aside>
+<p>Hmmm, if you manually run SSH (using that key) from the host your Redash is on, does the connection succeed? eg:</p>
+<pre><code class="lang-auto">$ ssh -i path_to_key someuser@your_bastion_host
+</code></pre>
+<p>Note that a simple ssh like above will try creating a remote login session for your user (eg in order to run commands remotely).  That capability can be disabled on the bastion server, and isn’t needed for tunnels.  So, it’s very possible you’ll connect successfully when testing, then ssh will just close the connection without further message.</p>
+<p>The thing to look for is whether the attempted connection times out, generates an error, or something similar.  A timeout or “No route to host” will generally mean there’s a network layer problem that needs fixing (maybe a firewall needs updating?), whereas other things are more obvious.  eg if ssh prompts for acceptance of a host key, then it means the connection is getting to the server and it might be a public key problem after all</p>
+<p>So, try the connection, and let us know what happens with it… <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/19</link>
+        <pubDate>Tue, 23 Nov 2021 02:30:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-19</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>I configured the volume mapping with the key and placed the public key on the ssh tunnel host in the same manner as the hosted Redash configuration.  I’m getting an ssh negotiation error, most likely not picking up the key or something along those lines.  Any idea how to troubleshoot on the self hosted redash with Docker implementation?</p>
+<p>{<br>
+“message”: “could not send SSL negotiation packet: Resource temporarily unavailable\n”,<br>
+“ok”: false<br>
+}</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/18</link>
+        <pubDate>Mon, 22 Nov 2021 22:38:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-18</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>That helps tremendously!  Is there a way to see that the key is getting picked up correctly. A log file or similar?</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/17</link>
+        <pubDate>Mon, 22 Nov 2021 19:27:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-17</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="louisn" data-post="15" data-topic="8082">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/louisn/40/1707_2.png" class="avatar"> louisn:</div>
+<blockquote>
+<p>but it appears the <code>overrides</code> folder is a mechanism built in to Redash to allow setting customization</p>
+</blockquote>
+</aside>
+<p>Almost.  Docker (Redash uses it for management) allows sharing files and folders from the host server with it’s containers.  So, in this case, it’s a way of both making SSH keys available to the worker containers + a way of persistently replacing specific Docker files.</p>
+<p>Without an override like that, people would need to build their own custom Redash docker images (possible, but a bunch of effort).  Or they’d need to manually log into their Docker containers and update files inside them.  Which would then lose the changes any time the Docker container is rebuilt (can be pretty often, depending on what’s happening).</p>
+<p>Does that help? <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/16</link>
+        <pubDate>Mon, 15 Nov 2021 14:12:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-16</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>Beauty!  Setting up the volume mapping looks great!  I am not familiar enough with open source Redash but it appears the <code>overrides</code> folder is a mechanism built in to Redash to allow setting customization, right?</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/15</link>
+        <pubDate>Mon, 15 Nov 2021 12:08:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-15</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>There’s also another approach - using persistent ssh tunnels - which doesn’t need using modified python scripts, instead having the ssh tunnel be set up externally to Redash.  eg using a container to manage the tunnel.</p>
+<p>Both ways seem to work fine, but have different strengths and weaknesses:</p>
+<ul>
+<li>
+<p>Redash managed SSH tunnel</p>
+<ul>
+<li>Slow to run queries due to tunnel creation each time
+<ul>
+<li>For long running queries, this extra time isn’t really noticeable</li>
+</ul>
+</li>
+<li>But, doesn’t really need separate monitoring</li>
+</ul>
+</li>
+<li>
+<p>Persistent SSH tunnel</p>
+<ul>
+<li>Quick to run queries, as the tunnel is already existing and ready to go
+<ul>
+<li>Better for fast queries, where faster GUI responsiveness is noticeable</li>
+</ul>
+</li>
+<li>Needs separate monitoring</li>
+<li>Each SSH tunnel needs manually setting up/configuring</li>
+</ul>
+</li>
+</ul>
+<p>Hopefully that helps. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/14</link>
+        <pubDate>Sun, 14 Nov 2021 03:54:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-14</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>One working approach for doing this with Docker based installs, is adding the keys and customised python into the containers using volumes:</p>
+<pre><code class="lang-auto">    volumes:
+      - /some/path/to/the/ssh/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+</code></pre>
+<p>That <code>/opt/redash/overrides/</code> directory is something you’d need to manually create, then put the modified <code>dynamic_settings.py</code> in.  The modified <code>dynamic_settings.py</code> has an updated <code>ssh_tunnel_auth()</code> function:</p>
+<pre><code class="lang-auto">def ssh_tunnel_auth():
+    """
+    To enable data source connections via SSH tunnels, provide your SSH authentication
+    pkey here. Return a string pointing at your **private** key's path (which will be used
+    to extract the public key), or a `paramiko.pkey.PKey` instance holding your **public** key.
+    """
+    return {
+        'ssh_pkey': '/keys/id_rsa'
+    }
+</code></pre>
+<p>Note that the <code>/keys/</code> directory there matches up with the <code>/keys</code> directory given in the volume clause above.  So, the <code>/keys/id_rsa</code> file is really just an <code>id_rsa</code> file that needs to exist in your actual keys directory.  The file needs to be readable by the <code>ubuntu</code> user inside the container too (uid 1000), which is probably easiest to do by <code>chown</code>-ing it.  eg <code>chown 1000: id_rsa</code>.</p>
+<p>As Jesse mentions above, only the <code>scheduled_worker</code>, <code>adhoc_worker</code>, and <code>worker</code> containers need the volume piece added, and they can all use the exact same keys.</p>
+<p>eg:</p>
+<pre><code class="lang-auto">  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: some_number_here
+    volumes:
+      - /opt/redash/keys:/keys:ro
+      - /opt/redash/overrides/dynamic_settings.py:/app/redash/settings/dynamic_settings.py:ro
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/13</link>
+        <pubDate>Sun, 14 Nov 2021 03:48:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-13</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>We won’t reopen that issue because we’re not going to make ssh tunnels the default behavior. But we could certainly use some documentation for setting one up. I’d love to review a PR adding those docs (along with many others <img src="https://emoji.discourse-cdn.com/twitter/sweat_smile.png?v=10" title=":sweat_smile:" class="emoji" alt=":sweat_smile:">)</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/12</link>
+        <pubDate>Thu, 11 Nov 2021 17:59:32 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-12</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>I recall seeing this issue.  <a href="https://github.com/getredash/redash/issues/2013" class="inline-onebox" rel="noopener nofollow ugc">[Feature] Tunnel support in default Docker image · Issue #2013 · getredash/redash · GitHub</a>.  Perhaps that can be re-opened?</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/11</link>
+        <pubDate>Thu, 11 Nov 2021 16:15:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-11</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can of course modify anything on the image itself. Will need to consider how we can update the defaults going forward (we’re getting ready to build the V10 images so this is topical <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=10" title=":smiley:" class="emoji" alt=":smiley:"> )</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/10</link>
+        <pubDate>Thu, 11 Nov 2021 14:22:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-10</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>Possibly a script that copies the python code into the container.  Although it would be better to have that as a mapped volume on the container so it doesn’t get removed if the container is re-created. Even better,  could the source be modified with a default key configured to a mapped volume?  That’d be best I think.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/9</link>
+        <pubDate>Thu, 11 Nov 2021 14:17:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-9</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I haven’t done this before, but I think only the worker containers really need the change. They are the containers that actually connect and run queries. The others (server, scheduler, nginx, redis, postgres) never communicate outside the local network.</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/8</link>
+        <pubDate>Mon, 08 Nov 2021 15:40:22 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-8</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+      <item>
+        <title>Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</title>
+        <dc:creator><![CDATA[louisn]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s great to hear.  I’m eager to get it set up to avoid a last minute rush.  Which container would that change be part of?</p>
+          <p><a href="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082/7</link>
+        <pubDate>Mon, 08 Nov 2021 02:57:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8082-7</guid>
+        <source url="https://discuss.redash.io/t/connect-to-amazon-rds-via-ssh-tunnel-for-self-hosted-redash/8082.rss">Connect to Amazon RDS via SSH Tunnel for Self-hosted Redash</source>
+      </item>
+  </channel>
+</rss>

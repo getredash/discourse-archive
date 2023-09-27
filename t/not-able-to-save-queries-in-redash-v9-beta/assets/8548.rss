@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Not able to save queries in Redash V9-Beta</title>
+    <link>https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548</link>
+    <description>### Issue Summary
+
+* Redash V9 beta is deployed on AWS as ECS service 
+* Users Able to create Reports and Dashboards and queries. 
+* Facing issue  with particular query type. 
+
+```
+select * from schema_test.products 
+where brand_name = &#39;{{ param }}&#39;
+
+``
+
+* Created query with parameters 
+* By selecting the Gear icon above parameters name in query result section,
+* I am selecting type as query based dropdown 
+* Selecting a query that we already have saved 
+* Errors out with Query cannot be saved 
+
+```
+2021-06-03T12:54:06.635-07:00	raise self.error
+2021-06-03T12:54:06.635-07:00
+Copy
+sqlalchemy.exc.ProgrammingError: (pg8000.exceptions.ProgrammingError) {&#39;S&#39;: &#39;ERROR&#39;, &#39;V&#39;: &#39;ERROR&#39;, &#39;C&#39;: &#39;42601&#39;, &#39;M&#39;: &#39;syntax error at or near &quot;$1&quot;&#39;, &#39;P&#39;: &#39;204&#39;, &#39;F&#39;: &#39;scan.l&#39;, &#39;L&#39;: &#39;1128&#39;, &#39;R&#39;: &#39;scanner_yyerror&#39;}
+sqlalchemy.exc.ProgrammingError: (pg8000.exceptions.ProgrammingError) {&#39;S&#39;: &#39;ERROR&#39;, &#39;V&#39;: &#39;ERROR&#39;, &#39;C&#39;: &#39;42601&#39;, &#39;M&#39;: &#39;syntax error at or near &quot;$1&quot;&#39;, &#39;P&#39;: &#39;204&#39;, &#39;F&#39;: &#39;scan.l&#39;, &#39;L&#39;: &#39;1128&#39;, &#39;R&#39;: &#39;scanner_yyerror&#39;}
+2021-06-03T12:54:06.635-07:00	[SQL: SELECT group_id, view_only
+2021-06-03T12:54:06.635-07:00	FROM queries
+2021-06-03T12:54:06.635-07:00	JOIN data_source_groups ON queries.data_source_id = data_source_groups.data_source_id
+2021-06-03T12:54:06.635-07:00	WHERE queries.id in %s]
+2021-06-03T12:54:06.635-07:00	[parameters: ((&#39;637&#39;,),)]
+2021-06-03T12:54:06.635-07:00	(Background on this error at: http://sqlalche.me/e/13/f405)
+```
+
+
+
+### Technical details:
+
+* Redash Version: V9 Beta 
+* Browser/OS: Chrome 
+* How did you install Redash: Deployed on AWS using Docker and ECS service</description>
+    
+    <lastBuildDate>Thu, 08 Dec 2022 00:54:54 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Not able to save queries in Redash V9-Beta</title>
+        <dc:creator><![CDATA[dataengineerno1000]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/bhagvant">@Bhagvant</a>, did you ever resolve this issue? We’re having a similar issue.</p>
+          <p><a href="https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548/2</link>
+        <pubDate>Thu, 08 Dec 2022 00:54:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8548-2</guid>
+        <source url="https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548.rss">Not able to save queries in Redash V9-Beta</source>
+      </item>
+      <item>
+        <title>Not able to save queries in Redash V9-Beta</title>
+        <dc:creator><![CDATA[Bhagvant]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<ul>
+<li>Redash V9 beta is deployed on AWS as ECS service</li>
+<li>Users Able to create Reports and Dashboards and queries.</li>
+<li>Facing issue  with particular query type.</li>
+</ul>
+<pre><code class="lang-auto">select * from schema_test.products 
+where brand_name = '{{ param }}'
+
+``
+
+* Created query with parameters 
+* By selecting the Gear icon above parameters name in query result section,
+* I am selecting type as query based dropdown 
+* Selecting a query that we already have saved 
+* Errors out with Query cannot be saved 
+
+</code></pre>
+<p>2021-06-03T12:54:06.635-07:00	raise self.error<br>
+2021-06-03T12:54:06.635-07:00<br>
+Copy<br>
+sqlalchemy.exc.ProgrammingError: (pg8000.exceptions.ProgrammingError) {‘S’: ‘ERROR’, ‘V’: ‘ERROR’, ‘C’: ‘42601’, ‘M’: ‘syntax error at or near “$1”’, ‘P’: ‘204’, ‘F’: ‘scan.l’, ‘L’: ‘1128’, ‘R’: ‘scanner_yyerror’}<br>
+sqlalchemy.exc.ProgrammingError: (pg8000.exceptions.ProgrammingError) {‘S’: ‘ERROR’, ‘V’: ‘ERROR’, ‘C’: ‘42601’, ‘M’: ‘syntax error at or near “$1”’, ‘P’: ‘204’, ‘F’: ‘scan.l’, ‘L’: ‘1128’, ‘R’: ‘scanner_yyerror’}<br>
+2021-06-03T12:54:06.635-07:00	[SQL: SELECT group_id, view_only<br>
+2021-06-03T12:54:06.635-07:00	FROM queries<br>
+2021-06-03T12:54:06.635-07:00	JOIN data_source_groups ON queries.data_source_id = data_source_groups.data_source_id<br>
+2021-06-03T12:54:06.635-07:00	WHERE queries.id in %s]<br>
+2021-06-03T12:54:06.635-07:00	[parameters: ((‘637’,),)]<br>
+2021-06-03T12:54:06.635-07:00	(Background on this error at: <a href="http://sqlalche.me/e/13/f405" rel="noopener nofollow ugc">http://sqlalche.me/e/13/f405</a>)</p>
+<pre><code class="lang-auto">
+
+
+### Technical details:
+
+* Redash Version: V9 Beta 
+* Browser/OS: Chrome 
+* How did you install Redash: Deployed on AWS using Docker and ECS service</code></pre>
+          <p><a href="https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548/1</link>
+        <pubDate>Thu, 03 Jun 2021 21:27:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8548-1</guid>
+        <source url="https://discuss.redash.io/t/not-able-to-save-queries-in-redash-v9-beta/8548.rss">Not able to save queries in Redash V9-Beta</source>
+      </item>
+  </channel>
+</rss>

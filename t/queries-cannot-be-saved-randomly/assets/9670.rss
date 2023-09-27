@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Queries cannot be saved randomly</title>
+    <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670</link>
+    <description>### Issue Summary
+
+A query cannot be saved with very small and seemingly innocuous changes, for example:
+1. This query can be saved
+![image|690x266](upload://cBIqckr8XvQWrqhJQPm7z3Ajngo.png)
+
+2. Adding a space between &quot;ROUND&quot; and &quot;CAST&quot; on line 6 and the query can no longer be saved
+![image|690x266](upload://k3KWstdJv7MwelvKcQoeNYnU7uy.png)
+
+### Technical details:
+
+* Redash Version: V10
+* Browser/OS: Chrome/ MAC
+* How did you install Redash: DigitalOcean v8, then upgraded to v10
+
+The docker-compose.yml:
+```
+version: &quot;2&quot;
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - &quot;5000:5000&quot;
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;scheduled_queries,schemas&quot;
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;queries&quot;
+      WORKERS_COUNT: 12
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: &quot;periodic emails default&quot;
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: nginx:latest
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+    depends_on:
+      - server
+    links:
+      - server:redash
+    volumes:
+      - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /opt/redash/nginx/certs:/etc/letsencrypt
+      - /opt/redash/nginx/certs-data:/data/letsencrypt
+    restart: always
+```</description>
+    
+    <lastBuildDate>Fri, 10 Dec 2021 17:24:09 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Queries cannot be saved randomly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for posting your solution! Please continue posting questions if you have them <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"> Love to see the community engagement.</p>
+          <p><a href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/6</link>
+        <pubDate>Fri, 10 Dec 2021 17:24:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9670-6</guid>
+        <source url="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss">Queries cannot be saved randomly</source>
+      </item>
+      <item>
+        <title>Queries cannot be saved randomly</title>
+        <dc:creator><![CDATA[ngohgia]]></dc:creator>
+        <description><![CDATA[
+            <p>I think I figured it out. I can specify firewall rules specific to each subdomain. Thanks! You can close this topic.</p>
+          <p><a href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/5</link>
+        <pubDate>Fri, 10 Dec 2021 16:16:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9670-5</guid>
+        <source url="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss">Queries cannot be saved randomly</source>
+      </item>
+      <item>
+        <title>Queries cannot be saved randomly</title>
+        <dc:creator><![CDATA[ngohgia]]></dc:creator>
+        <description><![CDATA[
+            <p>Do you have any tips for this scenario besides moving the Digital Ocean instance outside of Cloudflare firewall?</p>
+          <p><a href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/4</link>
+        <pubDate>Fri, 10 Dec 2021 15:53:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9670-4</guid>
+        <source url="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss">Queries cannot be saved randomly</source>
+      </item>
+      <item>
+        <title>Queries cannot be saved randomly</title>
+        <dc:creator><![CDATA[ngohgia]]></dc:creator>
+        <description><![CDATA[
+            <p>Oh thanks for your pointer! Upon checking the browser’s network inspector, I think the error is because I set the DO instance hosting redash as a subdomain of another website protected by Cloudflare. The error from the network inspector is from cloudflare blocking the POST request sent to that subdomain</p>
+          <p><a href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/3</link>
+        <pubDate>Fri, 10 Dec 2021 15:52:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9670-3</guid>
+        <source url="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss">Queries cannot be saved randomly</source>
+      </item>
+      <item>
+        <title>Queries cannot be saved randomly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Your docker-compose file looks good <img src="https://emoji.discourse-cdn.com/twitter/+1.png?v=10" title=":+1:" class="emoji" alt=":+1:"></p>
+<p>A few questions for you:</p>
+<ol>
+<li>Please open your browser’s network inspector. When you click the save button, what does the network response look like when the save operation fails?</li>
+<li>On your droplet, run the following and then click the save button in your browser: <code>cd /opt/redash &amp;&amp; sudo docker-compose logs -f --tail 100</code>. You should see a more precise error about what went wrong.</li>
+<li>What kind of data source does this query use?</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/2</link>
+        <pubDate>Thu, 09 Dec 2021 17:50:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9670-2</guid>
+        <source url="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss">Queries cannot be saved randomly</source>
+      </item>
+      <item>
+        <title>Queries cannot be saved randomly</title>
+        <dc:creator><![CDATA[ngohgia]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>A query cannot be saved with very small and seemingly innocuous changes, for example:</p>
+<ol>
+<li>
+<p>This query can be saved<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/585d89d692bec83ffb46f1cd30e122e8031080dc.png" data-download-href="/uploads/short-url/cBIqckr8XvQWrqhJQPm7z3Ajngo.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/585d89d692bec83ffb46f1cd30e122e8031080dc_2_690x266.png" alt="image" data-base62-sha1="cBIqckr8XvQWrqhJQPm7z3Ajngo" width="690" height="266" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/585d89d692bec83ffb46f1cd30e122e8031080dc_2_690x266.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/585d89d692bec83ffb46f1cd30e122e8031080dc_2_1035x399.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/585d89d692bec83ffb46f1cd30e122e8031080dc_2_1380x532.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/585d89d692bec83ffb46f1cd30e122e8031080dc_2_10x10.png"></a></div><p></p>
+</li>
+<li>
+<p>Adding a space between “ROUND” and “CAST” on line 6 and the query can no longer be saved<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8c9834660da92e726a357555df66608e7564bdf2.png" data-download-href="/uploads/short-url/k3KWstdJv7MwelvKcQoeNYnU7uy.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9834660da92e726a357555df66608e7564bdf2_2_690x266.png" alt="image" data-base62-sha1="k3KWstdJv7MwelvKcQoeNYnU7uy" width="690" height="266" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9834660da92e726a357555df66608e7564bdf2_2_690x266.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9834660da92e726a357555df66608e7564bdf2_2_1035x399.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9834660da92e726a357555df66608e7564bdf2_2_1380x532.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8c9834660da92e726a357555df66608e7564bdf2_2_10x10.png"></a></div><p></p>
+</li>
+</ol>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V10</li>
+<li>Browser/OS: Chrome/ MAC</li>
+<li>How did you install Redash: DigitalOcean v8, then upgraded to v10</li>
+</ul>
+<p>The docker-compose.yml:</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.1.0.b50633
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 12
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    volumes:
+      - /opt/redash/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /opt/redash/nginx/certs:/etc/letsencrypt
+      - /opt/redash/nginx/certs-data:/data/letsencrypt
+    restart: always
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670/1</link>
+        <pubDate>Thu, 09 Dec 2021 15:25:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9670-1</guid>
+        <source url="https://discuss.redash.io/t/queries-cannot-be-saved-randomly/9670.rss">Queries cannot be saved randomly</source>
+      </item>
+  </channel>
+</rss>

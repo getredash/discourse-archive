@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</title>
+    <link>https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887</link>
+    <description>I&#39;ve been using the AWS AMI (Redash 8.0.0 ami-0527e82bae7c51958) in Singapore region on a `t2.small` EC2 instance successfully for almost a year.
+
+Yesterday I got an `Internal Server Error` message when I tried to access the Redash front-end.
+
+In the past when I&#39;ve had any issues I&#39;ve been able to reboot the instance and it would start working again. This time however it&#39;s not working. I already tried upgrading to larger EC2 instances (`t2.medium` and `t2.large`).
+
+I also can&#39;t connect using the `EC2 Instance Connect (browser-based SSH connection)` using the recommended `ubuntu` user name specified in the Redash AWS setup documentation (I also tried the default `root` user name and that also failed. The error message I&#39;m seeing is:
+```
+There was a problem setting up the instance connection
+Log in failed. If this instance has just started up, try again in a minute or two.
+```
+
+I&#39;m guessing since the original instance was `t2.small` I must have hit a resource limit that&#39;s causing it to crash. But since I can&#39;t login to the server to check I&#39;m not sure how to fix it. 
+
+Has anyone had this issue before and can advise on:
+
+- (1) how to login to the instance or 
+- (2) how to fix it some other way
+
+Thanks. I&#39;ve been a happy Redash user for many years.</description>
+    
+    <lastBuildDate>Thu, 18 Aug 2022 08:49:56 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</title>
+        <dc:creator><![CDATA[dmarcos89]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey there, I am facing this same issue.<br>
+I was able to solve it by increasing disk in the EC2 instance but few hours later ended up on the same problem <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=12" title=":frowning:" class="emoji" alt=":frowning:" loading="lazy" width="20" height="20"> … Were you able to find the root cause of those overlay2 massive folders piling up in size?</p>
+          <p><a href="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/4</link>
+        <pubDate>Thu, 18 Aug 2022 08:49:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6887-4</guid>
+        <source url="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887.rss">Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</source>
+      </item>
+      <item>
+        <title>Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</title>
+        <dc:creator><![CDATA[njachowski]]></dc:creator>
+        <description><![CDATA[
+            <p>Solved it. I’ll leave the solution here in case it helps anyone else in the future:</p>
+<p>Basically what happened is the disk was 100% full. To avoid this catching you by surprise you should set an alarm to alert you before it gets too full.</p>
+<p>The way to fix this in AWS is to find the EBS (Elastic Block Store) Volume and select <code>Modify Volume</code> and increase the size, e.g. 8GB --&gt; 16GB.</p>
+<p>This won’t automatically fix it the next time you try to start your instance, you’ll still get the <code>No space left on device</code> error, which you can see in the <code>Instances</code> &gt; <code>Instance Settings</code> &gt; <code>Get System Log</code>.</p>
+<p>Because of this error you won’t be able to <code>ssh</code> or connect to this box in any way to fix it, so you’ll need to detach the EBS and attach it to another EC2 that you can <code>ssh</code> into.</p>
+<p>Once you do this and can access the volume you need to give it access to the additional disk and verify that it’s no longer at 100% used capacity.</p>
+<p>Then you can detach it again and restart your Redash instance with this fixed EBS volume.</p>
+          <p><a href="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/3</link>
+        <pubDate>Sat, 01 Aug 2020 09:07:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6887-3</guid>
+        <source url="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887.rss">Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</source>
+      </item>
+      <item>
+        <title>Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</title>
+        <dc:creator><![CDATA[njachowski]]></dc:creator>
+        <description><![CDATA[
+            <p>Update:<br>
+When I check the system log I see<br>
+<code>OSError: [Errno 28] No space left on device</code></p>
+<p>I tried doubling the EBS volume from 8to 16 GB and I still get this error.</p>
+          <p><a href="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/2</link>
+        <pubDate>Fri, 31 Jul 2020 16:43:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6887-2</guid>
+        <source url="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887.rss">Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</source>
+      </item>
+      <item>
+        <title>Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</title>
+        <dc:creator><![CDATA[njachowski]]></dc:creator>
+        <description><![CDATA[
+            <p>I’ve been using the AWS AMI (Redash 8.0.0 ami-0527e82bae7c51958) in Singapore region on a <code>t2.small</code> EC2 instance successfully for almost a year.</p>
+<p>Yesterday I got an <code>Internal Server Error</code> message when I tried to access the Redash front-end.</p>
+<p>In the past when I’ve had any issues I’ve been able to reboot the instance and it would start working again. This time however it’s not working. I already tried upgrading to larger EC2 instances (<code>t2.medium</code> and <code>t2.large</code>).</p>
+<p>I also can’t connect using the <code>EC2 Instance Connect (browser-based SSH connection)</code> using the recommended <code>ubuntu</code> user name specified in the Redash AWS setup documentation (I also tried the default <code>root</code> user name and that also failed. The error message I’m seeing is:</p>
+<pre><code class="lang-auto">There was a problem setting up the instance connection
+Log in failed. If this instance has just started up, try again in a minute or two.
+</code></pre>
+<p>I’m guessing since the original instance was <code>t2.small</code> I must have hit a resource limit that’s causing it to crash. But since I can’t login to the server to check I’m not sure how to fix it.</p>
+<p>Has anyone had this issue before and can advise on:</p>
+<ul>
+<li>(1) how to login to the instance or</li>
+<li>(2) how to fix it some other way</li>
+</ul>
+<p>Thanks. I’ve been a happy Redash user for many years.</p>
+          <p><a href="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887/1</link>
+        <pubDate>Fri, 31 Jul 2020 05:44:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6887-1</guid>
+        <source url="https://discuss.redash.io/t/redash-aws-ami-internal-server-error-cant-restart-or-login-to-instance/6887.rss">Redash AWS AMI `Internal Server Error` can&#39;t restart or login to instance</source>
+      </item>
+  </channel>
+</rss>

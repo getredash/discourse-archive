@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+    <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475</link>
+    <description>I am trying to monitor query level refreshes on redash but am not able to find any data for the following:
+1. Number of times a query has been refreshed and whether it was manual or automatic?
+2. If there&#39;s any dashboard level refresh that has been setup for a dashboard and the corresponding refresh window?
+
+Can someone please help with this? The auto-refresh of queries is failing so this dashboard is needed for monitoring</description>
+    
+    <lastBuildDate>Wed, 18 May 2022 05:57:39 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+        <dc:creator><![CDATA[rk04]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the clarification Jesse!</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/6</link>
+        <pubDate>Wed, 18 May 2022 05:57:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10475-6</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss">How can I get how many times a query has been refreshed (manually or automatically) on redash?</source>
+      </item>
+      <item>
+        <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I think we’ve discussed a few times in the past on the forum that the events table isn’t really meant to make these distinctions. We would absolutely review and merge a PR implementing a more robust separation between different kinds of executions.</p>
+<p>With that out of the way:</p>
+<aside class="quote no-group" data-username="xavier-d" data-post="4" data-topic="10475">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/x/ac91a4/40.png" class="avatar"> xavier-d:</div>
+<blockquote>
+<p>I don’t find any event so far for the automatic refresh</p>
+</blockquote>
+</aside>
+<p>Yep this is normal. The <code>events</code> table records actions which occur as a result of user interaction. Scheduled query executions are kicked-off by Redash itself and don’t appear here. They aren’t preserved anywhere.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/5</link>
+        <pubDate>Tue, 17 May 2022 17:59:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10475-5</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss">How can I get how many times a query has been refreshed (manually or automatically) on redash?</source>
+      </item>
+      <item>
+        <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+        <dc:creator><![CDATA[xavier-d]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m seeing the same on my side.<br>
+I don’t find any event so far for the automatic refresh</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/4</link>
+        <pubDate>Mon, 16 May 2022 09:59:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10475-4</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss">How can I get how many times a query has been refreshed (manually or automatically) on redash?</source>
+      </item>
+      <item>
+        <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+        <dc:creator><![CDATA[rk04]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi <a class="mention" href="https://discuss.redash.io/u/xavier-d">@xavier-d</a>,<br>
+Thanks for your response!<br>
+I have connected the PostgresSQL and I manually checked how events are recorded in the events table. Below are my observations:</p>
+<ol>
+<li>When you write any query and click on the “execute” button specifically, data is recorded in the events table under ‘execute’ action and another row is added under ‘execute query’ as data source is refreshed.</li>
+<li>When you manually refresh a query, data source is refreshed so a row is added in the events table under ‘execute query’ action.</li>
+</ol>
+<p>I could not find any entry for auto refresh or even how to separate ‘execute’ from manual refresh. Please let me know if your observations are different or you have found a pattern for recording refreshes.</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/3</link>
+        <pubDate>Mon, 16 May 2022 09:34:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10475-3</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss">How can I get how many times a query has been refreshed (manually or automatically) on redash?</source>
+      </item>
+      <item>
+        <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+        <dc:creator><![CDATA[xavier-d]]></dc:creator>
+        <description><![CDATA[
+            <p>On my side, I’ve connected the PostgreSQL to redash and I’m performing the following query</p>
+<pre><code class="lang-auto">SELECT *
+from events
+where object_type = 'query' and action = 'execute' and object_id = '445'
+order by id
+limit 10
+</code></pre>
+<p>445 is the queryId I want to monitor. But it seems that an entry is created only for manual refresh.</p>
+<p>Hope it helps</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/2</link>
+        <pubDate>Mon, 16 May 2022 08:50:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10475-2</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss">How can I get how many times a query has been refreshed (manually or automatically) on redash?</source>
+      </item>
+      <item>
+        <title>How can I get how many times a query has been refreshed (manually or automatically) on redash?</title>
+        <dc:creator><![CDATA[rk04]]></dc:creator>
+        <description><![CDATA[
+            <p>I am trying to monitor query level refreshes on redash but am not able to find any data for the following:</p>
+<ol>
+<li>Number of times a query has been refreshed and whether it was manual or automatic?</li>
+<li>If there’s any dashboard level refresh that has been setup for a dashboard and the corresponding refresh window?</li>
+</ol>
+<p>Can someone please help with this? The auto-refresh of queries is failing so this dashboard is needed for monitoring</p>
+          <p><a href="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475/1</link>
+        <pubDate>Mon, 16 May 2022 06:42:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10475-1</guid>
+        <source url="https://discuss.redash.io/t/how-can-i-get-how-many-times-a-query-has-been-refreshed-manually-or-automatically-on-redash/10475.rss">How can I get how many times a query has been refreshed (manually or automatically) on redash?</source>
+      </item>
+  </channel>
+</rss>

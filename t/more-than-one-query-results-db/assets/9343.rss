@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>More than one query results db</title>
+    <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343</link>
+    <description>Hi All,
+We already have a query result db but I need to limit access to other queries/dashboards using the same data source.  Therefore I was thinking about creating another query result db and using that specifically for the dashboard I want to expose. Is this a recommended approach? Please advise. 
+
+I looked for dashboard level permissions but that doesn&#39;t seem to be a feature in Redash...yet. 
+
+Version: 8.0.0+b32245 (a16f551e)</description>
+    
+    <lastBuildDate>Tue, 26 Oct 2021 19:13:16 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>From the <a href="https://redash.io/help/user-guide/querying/query-results-data-source">docs</a>:</p>
+<blockquote>
+<h3>Query Results Permissions</h3>
+<p>Access to the <strong>Query Results Data Source</strong> is governed by the groups it’s associated with <a href="https://redash.io/help/user-guide/users/permissions-groups">like any other Data Source</a>. But Redash will also check if a user has permission to execute queries on the Data Sources the original queries use.</p>
+<p>As an example, a user with access to the QRDS cannot execute <code>SELECT * FROM query_123</code> if query <code>123</code> uses a data source to which that user does not have access. They will see the most recently cached QRDS query result from the query screen in Redash. But they will not be able to execute the query again.</p>
+</blockquote>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/7</link>
+        <pubDate>Tue, 26 Oct 2021 19:13:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-7</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s the point! QRDS still checks the permissions of the underlying queries…</p>
+<p>You can’t use QRDS as a proxy to grant access to data that users don’t have access to explicitly via other data source permissions.</p>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/6</link>
+        <pubDate>Tue, 26 Oct 2021 19:12:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-6</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[etadelta222]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for the heads up. I actually created a new group and gave access to query_results data source and 1 out of the 3 dashboards gave an error. Looks like it’s hitting non-QRDS data source <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=10" title=":frowning:" class="emoji" alt=":frowning:"></p>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/5</link>
+        <pubDate>Tue, 26 Oct 2021 18:02:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-5</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Right. You can have multiple QRDS. They don’t affect each other.</p>
+<p>Mind you: the users will still need access to the other non-QRDS data sources. Otherwise they won’t see any data in the dashboards.</p>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/4</link>
+        <pubDate>Tue, 26 Oct 2021 17:35:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-4</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[etadelta222]]></dc:creator>
+        <description><![CDATA[
+            <p>You’re absolutely right <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a>. It won’t be straight forward for sure but better than recreating the dashboards in Superset. I realized that since I can only limit a new user group to query result data source the end users would be able to see all queries hitting the query result data source, that’s why I opted for a 2nd query result db. Just to confirm my understanding, but the new query result (named something different) shouldn’t interfere/impact the existing one correct?</p>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/3</link>
+        <pubDate>Tue, 26 Oct 2021 16:56:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-3</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This can work but it’s not going to be as clean as you think. Dashboards don’t use data sources. It’s the queries that use them. So you’ll need to create <em>queries</em> against this new QRDS and then assemble a dashboard.</p>
+<p>Redash doesn’t have the best permissions model for this. Hoping to see this change in the next year or so.</p>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/2</link>
+        <pubDate>Tue, 26 Oct 2021 15:45:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-2</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+      <item>
+        <title>More than one query results db</title>
+        <dc:creator><![CDATA[etadelta222]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi All,<br>
+We already have a query result db but I need to limit access to other queries/dashboards using the same data source.  Therefore I was thinking about creating another query result db and using that specifically for the dashboard I want to expose. Is this a recommended approach? Please advise.</p>
+<p>I looked for dashboard level permissions but that doesn’t seem to be a feature in Redash…yet.</p>
+<p>Version: 8.0.0+b32245 (a16f551e)</p>
+          <p><a href="https://discuss.redash.io/t/more-than-one-query-results-db/9343/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/more-than-one-query-results-db/9343/1</link>
+        <pubDate>Tue, 26 Oct 2021 15:08:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9343-1</guid>
+        <source url="https://discuss.redash.io/t/more-than-one-query-results-db/9343.rss">More than one query results db</source>
+      </item>
+  </channel>
+</rss>

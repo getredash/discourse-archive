@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Internal Server Error while loading redash UI(http://localhost:5000/)</title>
+    <link>https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229</link>
+    <description>Hi All,
+
+I have installed Docker(Docker version 17.06.2-ee-5, build 508bb92),docker-compose(docker-compose version 1.8.0, build unknown), nodejs (v7.10.1),npm(4.2.0).
+For the docker-compose i am using below docker-compose.yml file
+
+     version: &#39;2&#39;
+     services:
+     zookeeper:
+      image: wurstmeister/zookeeper
+
+when i start the docker using docker-compose up i will get below message displayed in my command prompt.
+    WARNING: The Docker Engine you&#39;re using is running in swarm mode.
+
+    Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+    To deploy your application across the swarm, use the bundle feature of the Docker experimental build.
+
+    More info:
+    https://docs.docker.com/compose/bundles
+
+    WARNING: Found orphan containers (ubuntu_worker_1, ubuntu_postgres_1, ubuntu_redis_1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
+    Pulling zookeeper (wurstmeister/zookeeper:latest)...
+    latest: Pulling from wurstmeister/zookeeper
+    a3ed95caeb02: Pull complete
+    ef38b711a50f: Pull complete
+    e057c74597c7: Pull complete
+    666c214f6385: Pull complete
+    c3d6a96f1ffc: Pull complete
+    3fe26a83e0ca: Pull complete
+    3d3a7dd3a3b1: Pull complete
+    f8cc938abe5f: Pull complete
+    9978b75f7a58: Pull complete
+    4d4dbcc8f8cc: Pull complete
+    6e2141080cee: Pull complete
+    7b01624d9a37: Pull complete
+    438e659516b8: Pull complete
+    504083860edf: Pull complete
+    9e313884ca1b: Pull complete
+    7f32922adacf: Pull complete
+    Digest: sha256:2d71f9e0cb3440d552ee31769a00eb813be87397bf535995aca0bd4eadc151fc
+    Status: Downloaded newer image for wurstmeister/zookeeper:latest
+    Creating ubuntu_zookeeper_1
+    Attaching to ubuntu_zookeeper_1
+    zookeeper_1  | ZooKeeper JMX enabled by default
+    zookeeper_1  | Using config: /opt/zookeeper-3.4.9/bin/../conf/zoo.cfg
+    zookeeper_1  | 2017-11-10 12:05:52,361 [myid:] - INFO  [main:QuorumPeerConfig@124] - Reading configuration from: /opt/zookeeper-3.4.9/bin/../conf/zoo.cfg
+    zookeeper_1  | 2017-11-10 12:05:52,366 [myid:] - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+    zookeeper_1  | 2017-11-10 12:05:52,366 [myid:] - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 1
+    zookeeper_1  | 2017-11-10 12:05:52,367 [myid:] - WARN  [main:QuorumPeerMain@113] - Either no config or no quorum defined in config, running  in standalone mode
+    zookeeper_1  | 2017-11-10 12:05:52,367 [myid:] - INFO  [PurgeTask:DatadirCleanupManager$PurgeTask@138] - Purge task started.
+    zookeeper_1  | 2017-11-10 12:05:52,377 [myid:] - INFO  [PurgeTask:DatadirCleanupManager$PurgeTask@144] - Purge task completed.
+    zookeeper_1  | 2017-11-10 12:05:52,380 [myid:] - INFO  [main:QuorumPeerConfig@124] - Reading configuration from: /opt/zookeeper-3.4.9/bin/../conf/zoo.cfg
+    zookeeper_1  | 2017-11-10 12:05:52,383 [myid:] - INFO  [main:ZooKeeperServerMain@96] - Starting server
+    zookeeper_1  | 2017-11-10 12:05:52,390 [myid:] - INFO  [main:Environment@100] - Server environment:zookeeper.version=3.4.9-1757313, built on 08/23/2016 06:50 GMT
+    zookeeper_1  | 2017-11-10 12:05:52,390 [myid:] - INFO  [main:Environment@100] - Server environment:host.name=1543450f508c
+    zookeeper_1  | 2017-11-10 12:05:52,390 [myid:] - INFO  [main:Environment@100] - Server environment:java.version=1.7.0_65
+    zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.vendor=Oracle Corporation
+    zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.home=/usr/lib/jvm/java-7-openjdk-amd64/jre
+    zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.class.path=/opt/zookeeper-3.4.9/bin/../build/classes:/opt/zookeeper-3.4.9/bin/../build/lib/*.jar:/opt/zookeeper-3.4.9/bin/../lib/slf4j-log4j12-1.6.1.jar:/opt/zookeeper-3.4.9/bin/../lib/slf4j-api-1.6.1.jar:/opt/zookeeper-3.4.9/bin/../lib/netty-3.10.5.Final.jar:/opt/zookeeper-3.4.9/bin/../lib/log4j-1.2.16.jar:/opt/zookeeper-3.4.9/bin/../lib/jline-0.9.94.jar:/opt/zookeeper-3.4.9/bin/../zookeeper-3.4.9.jar:/opt/zookeeper-3.4.9/bin/../src/java/lib/*.jar:/opt/zookeeper-3.4.9/bin/../conf:
+    zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+    zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.io.tmpdir=/tmp
+    zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:java.compiler=&lt;NA&gt;
+    zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:os.name=Linux
+    zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:os.arch=amd64
+    zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:os.version=4.4.0-1039-aws
+    zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:user.name=root
+    zookeeper_1  | 2017-11-10 12:05:52,394 [myid:] - INFO  [main:Environment@100] - Server environment:user.home=/root
+    zookeeper_1  | 2017-11-10 12:05:52,394 [myid:] - INFO  [main:Environment@100] - Server environment:user.dir=/opt/zookeeper-3.4.9
+    zookeeper_1  | 2017-11-10 12:05:52,396 [myid:] - INFO  [main:ZooKeeperServer@815] - tickTime set to 2000
+    zookeeper_1  | 2017-11-10 12:05:52,396 [myid:] - INFO  [main:ZooKeeperServer@824] - minSessionTimeout set to -1
+    zookeeper_1  | 2017-11-10 12:05:52,396 [myid:] - INFO  [main:ZooKeeperServer@833] - maxSessionTimeout set to -1
+    zookeeper_1  | 2017-11-10 12:05:52,407 [myid:] - INFO  [main:NIOServerCnxnFactory@89] - binding to port 0.0.0.0/0.0.0.0:2181
+
+
+
+please suggest me the proper docker-compose.yml file of version 2(correct yml file) and i am getting internal server error while loading the UI
+
+Below is the screenshot..
+
+![image|690x387](upload://wM0BL3LRawFjm6iHAKrYVE7YEmu.png)</description>
+    
+    <lastBuildDate>Thu, 28 Oct 2021 12:39:12 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Internal Server Error while loading redash UI(http://localhost:5000/)</title>
+        <dc:creator><![CDATA[kyoshidajp]]></dc:creator>
+        <description><![CDATA[
+            <p>Have you already done <code>docker-compose run --rm server create_db</code> ?</p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229/3</link>
+        <pubDate>Mon, 13 Nov 2017 14:53:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1229-3</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229.rss">Internal Server Error while loading redash UI(http://localhost:5000/)</source>
+      </item>
+      <item>
+        <title>Internal Server Error while loading redash UI(http://localhost:5000/)</title>
+        <dc:creator><![CDATA[sandesh]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi all,</p>
+<p>Please help me out to resolve this error…</p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229/2</link>
+        <pubDate>Mon, 13 Nov 2017 06:03:19 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1229-2</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229.rss">Internal Server Error while loading redash UI(http://localhost:5000/)</source>
+      </item>
+      <item>
+        <title>Internal Server Error while loading redash UI(http://localhost:5000/)</title>
+        <dc:creator><![CDATA[sandesh]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi All,</p>
+<p>I have installed Docker(Docker version 17.06.2-ee-5, build 508bb92),docker-compose(docker-compose version 1.8.0, build unknown), nodejs (v7.10.1),npm(4.2.0).<br>
+For the docker-compose i am using below docker-compose.yml file</p>
+<pre><code> version: '2'
+ services:
+ zookeeper:
+  image: wurstmeister/zookeeper
+</code></pre>
+<p>when i start the docker using docker-compose up i will get below message displayed in my command prompt.<br>
+WARNING: The Docker Engine you’re using is running in swarm mode.</p>
+<pre><code>Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use the bundle feature of the Docker experimental build.
+
+More info:
+https://docs.docker.com/compose/bundles
+
+WARNING: Found orphan containers (ubuntu_worker_1, ubuntu_postgres_1, ubuntu_redis_1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
+Pulling zookeeper (wurstmeister/zookeeper:latest)...
+latest: Pulling from wurstmeister/zookeeper
+a3ed95caeb02: Pull complete
+ef38b711a50f: Pull complete
+e057c74597c7: Pull complete
+666c214f6385: Pull complete
+c3d6a96f1ffc: Pull complete
+3fe26a83e0ca: Pull complete
+3d3a7dd3a3b1: Pull complete
+f8cc938abe5f: Pull complete
+9978b75f7a58: Pull complete
+4d4dbcc8f8cc: Pull complete
+6e2141080cee: Pull complete
+7b01624d9a37: Pull complete
+438e659516b8: Pull complete
+504083860edf: Pull complete
+9e313884ca1b: Pull complete
+7f32922adacf: Pull complete
+Digest: sha256:2d71f9e0cb3440d552ee31769a00eb813be87397bf535995aca0bd4eadc151fc
+Status: Downloaded newer image for wurstmeister/zookeeper:latest
+Creating ubuntu_zookeeper_1
+Attaching to ubuntu_zookeeper_1
+zookeeper_1  | ZooKeeper JMX enabled by default
+zookeeper_1  | Using config: /opt/zookeeper-3.4.9/bin/../conf/zoo.cfg
+zookeeper_1  | 2017-11-10 12:05:52,361 [myid:] - INFO  [main:QuorumPeerConfig@124] - Reading configuration from: /opt/zookeeper-3.4.9/bin/../conf/zoo.cfg
+zookeeper_1  | 2017-11-10 12:05:52,366 [myid:] - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+zookeeper_1  | 2017-11-10 12:05:52,366 [myid:] - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 1
+zookeeper_1  | 2017-11-10 12:05:52,367 [myid:] - WARN  [main:QuorumPeerMain@113] - Either no config or no quorum defined in config, running  in standalone mode
+zookeeper_1  | 2017-11-10 12:05:52,367 [myid:] - INFO  [PurgeTask:DatadirCleanupManager$PurgeTask@138] - Purge task started.
+zookeeper_1  | 2017-11-10 12:05:52,377 [myid:] - INFO  [PurgeTask:DatadirCleanupManager$PurgeTask@144] - Purge task completed.
+zookeeper_1  | 2017-11-10 12:05:52,380 [myid:] - INFO  [main:QuorumPeerConfig@124] - Reading configuration from: /opt/zookeeper-3.4.9/bin/../conf/zoo.cfg
+zookeeper_1  | 2017-11-10 12:05:52,383 [myid:] - INFO  [main:ZooKeeperServerMain@96] - Starting server
+zookeeper_1  | 2017-11-10 12:05:52,390 [myid:] - INFO  [main:Environment@100] - Server environment:zookeeper.version=3.4.9-1757313, built on 08/23/2016 06:50 GMT
+zookeeper_1  | 2017-11-10 12:05:52,390 [myid:] - INFO  [main:Environment@100] - Server environment:host.name=1543450f508c
+zookeeper_1  | 2017-11-10 12:05:52,390 [myid:] - INFO  [main:Environment@100] - Server environment:java.version=1.7.0_65
+zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.vendor=Oracle Corporation
+zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.home=/usr/lib/jvm/java-7-openjdk-amd64/jre
+zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.class.path=/opt/zookeeper-3.4.9/bin/../build/classes:/opt/zookeeper-3.4.9/bin/../build/lib/*.jar:/opt/zookeeper-3.4.9/bin/../lib/slf4j-log4j12-1.6.1.jar:/opt/zookeeper-3.4.9/bin/../lib/slf4j-api-1.6.1.jar:/opt/zookeeper-3.4.9/bin/../lib/netty-3.10.5.Final.jar:/opt/zookeeper-3.4.9/bin/../lib/log4j-1.2.16.jar:/opt/zookeeper-3.4.9/bin/../lib/jline-0.9.94.jar:/opt/zookeeper-3.4.9/bin/../zookeeper-3.4.9.jar:/opt/zookeeper-3.4.9/bin/../src/java/lib/*.jar:/opt/zookeeper-3.4.9/bin/../conf:
+zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+zookeeper_1  | 2017-11-10 12:05:52,391 [myid:] - INFO  [main:Environment@100] - Server environment:java.io.tmpdir=/tmp
+zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:java.compiler=&lt;NA&gt;
+zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:os.name=Linux
+zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:os.arch=amd64
+zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:os.version=4.4.0-1039-aws
+zookeeper_1  | 2017-11-10 12:05:52,393 [myid:] - INFO  [main:Environment@100] - Server environment:user.name=root
+zookeeper_1  | 2017-11-10 12:05:52,394 [myid:] - INFO  [main:Environment@100] - Server environment:user.home=/root
+zookeeper_1  | 2017-11-10 12:05:52,394 [myid:] - INFO  [main:Environment@100] - Server environment:user.dir=/opt/zookeeper-3.4.9
+zookeeper_1  | 2017-11-10 12:05:52,396 [myid:] - INFO  [main:ZooKeeperServer@815] - tickTime set to 2000
+zookeeper_1  | 2017-11-10 12:05:52,396 [myid:] - INFO  [main:ZooKeeperServer@824] - minSessionTimeout set to -1
+zookeeper_1  | 2017-11-10 12:05:52,396 [myid:] - INFO  [main:ZooKeeperServer@833] - maxSessionTimeout set to -1
+zookeeper_1  | 2017-11-10 12:05:52,407 [myid:] - INFO  [main:NIOServerCnxnFactory@89] - binding to port 0.0.0.0/0.0.0.0:2181
+</code></pre>
+<p>please suggest me the proper docker-compose.yml file of version 2(correct yml file) and i am getting internal server error while loading the UI</p>
+<p>Below is the screenshot…</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e5b2e3a0cbb4247fc7c9b9e58fb4b67c865e4ae2.png" data-download-href="/uploads/short-url/wM0BL3LRawFjm6iHAKrYVE7YEmu.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e5b2e3a0cbb4247fc7c9b9e58fb4b67c865e4ae2_2_690x387.png" alt="image" data-base62-sha1="wM0BL3LRawFjm6iHAKrYVE7YEmu" width="690" height="387" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e5b2e3a0cbb4247fc7c9b9e58fb4b67c865e4ae2_2_690x387.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e5b2e3a0cbb4247fc7c9b9e58fb4b67c865e4ae2_2_1035x580.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e5b2e3a0cbb4247fc7c9b9e58fb4b67c865e4ae2.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e5b2e3a0cbb4247fc7c9b9e58fb4b67c865e4ae2_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229/1</link>
+        <pubDate>Fri, 10 Nov 2017 11:58:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-1229-1</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-loading-redash-ui-http-localhost-5000/1229.rss">Internal Server Error while loading redash UI(http://localhost:5000/)</source>
+      </item>
+  </channel>
+</rss>

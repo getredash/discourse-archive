@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Export of large CSV via API</title>
+    <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624</link>
+    <description>Hi there,
+is there any way how I can export the results of the query for a quite large dataset (~200MB)? 
+I have tried to download via UI and API -  in both cases, it fails with error 502.
+I saw that there is the API client (redash-toolbelt), is it possible to set up export there in chunks?
+
+Regards,
+izdryk</description>
+    
+    <lastBuildDate>Tue, 07 Dec 2021 20:38:36 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>How did you obtain those logs? It shows the 500 error, but you should be able to see the actual stack trace of the error.</p>
+<p>To show all the logs:</p>
+<ol>
+<li>change the <code>REDASH_LOG_LEVEL</code> environment variable to <code>DEBUG</code>
+</li>
+<li>Restart Redash</li>
+<li>Run <code>docker-compose logs -f --tail</code>
+</li>
+<li>In your browser, attempt the download</li>
+</ol>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/7</link>
+        <pubDate>Tue, 07 Dec 2021 20:38:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-7</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[iho01]]></dc:creator>
+        <description><![CDATA[
+            <p>hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a><br>
+here is the debug log:<br>
+[2021-12-07 09:37:52,192][PID:37][DEBUG][metrics] table=users query=select duration=2.55<br>
+[2021-12-07 09:37:52,195][PID:37][DEBUG][metrics] table=api_keys query=select duration=1.81<br>
+[2021-12-07 09:37:52,201][PID:37][DEBUG][metrics] table=queries query=select duration=4.14<br>
+[2021-12-07 09:37:52,205][PID:37][DEBUG][metrics] table=data_sources query=select duration=1.94<br>
+[2021-12-07 09:37:52,209][PID:37][DEBUG][metrics] table=data_source_groups query=select duration=1.61<br>
+[2021-12-07 09:37:52,213][PID:37][DEBUG][metrics] table=queries query=select duration=1.71<br>
+[2021-12-07 09:37:53,304][PID:37][DEBUG][metrics] table=query_results query=select duration=1089.27<br>
+[2021-12-07 09:37:54,156][PID:37][DEBUG][metrics] table=data_sources query=select duration=1.29<br>
+[2021-12-07 09:37:54,158][PID:37][DEBUG][metrics] table=data_source_groups query=select duration=0.84<br>
+[2021-12-07 09:37:54,160][PID:37][DEBUG][metrics] table=data_source_groups query=select duration=0.77<br>
+[2021-12-07 09:38:22 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:37)<br>
+[2021-12-07 09:38:22,051][PID:37][INFO][metrics] method=GET path=/api/queries/167/results.csv endpoint=query_result status=500 content_type=? content_length=-1 duration=29841.68 query_count=11 query_duration=1108.74<br>
+[2021-12-07 09:38:22 +0000] [37] [INFO] Worker exiting (pid: 37)<br>
+[2021-12-07 09:38:22 +0000] [44] [INFO] Booting worker with pid: 44</p>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/6</link>
+        <pubDate>Tue, 07 Dec 2021 09:41:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-6</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Try increasing your redash debug level using the <code>REDASH_LOG_LEVEL=DEBUG</code> environment variable and try again.</p>
+<p>My best guess is this is an nginx thing…</p>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/5</link>
+        <pubDate>Mon, 06 Dec 2021 17:01:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-5</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[iho01]]></dc:creator>
+        <description><![CDATA[
+            <p>hi <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a><br>
+I see only this error in the log:<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7.png" data-download-href="/uploads/short-url/liFkC3oDFXTO5ldusaylkCyDvIb.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_690x32.png" alt="image" data-base62-sha1="liFkC3oDFXTO5ldusaylkCyDvIb" width="690" height="32" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_690x32.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_1035x48.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_1380x64.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9549d59884cc2e7bdc1cca03b6c5a7b6fd877dd7_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/4</link>
+        <pubDate>Mon, 06 Dec 2021 15:42:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-4</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/iho01">@iho01</a> thanks for your question. The code doesn’t explicitly limit the size of exports. The 502 error means something went wrong during the export process. It may have run out of memory.</p>
+<p>Can you check your docker logs for a stack trace?</p>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/3</link>
+        <pubDate>Mon, 06 Dec 2021 15:01:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-3</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[iho01]]></dc:creator>
+        <description><![CDATA[
+            <p>Interesting that export in JSON format works fine. Only export to CSV fails</p>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/2</link>
+        <pubDate>Mon, 06 Dec 2021 09:23:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-2</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+      <item>
+        <title>Export of large CSV via API</title>
+        <dc:creator><![CDATA[iho01]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi there,<br>
+is there any way how I can export the results of the query for a quite large dataset (~200MB)?<br>
+I have tried to download via UI and API -  in both cases, it fails with error 502.<br>
+I saw that there is the API client (redash-toolbelt), is it possible to set up export there in chunks?</p>
+<p>Regards,<br>
+izdryk</p>
+          <p><a href="https://discuss.redash.io/t/export-of-large-csv-via-api/9624/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/export-of-large-csv-via-api/9624/1</link>
+        <pubDate>Fri, 03 Dec 2021 17:29:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9624-1</guid>
+        <source url="https://discuss.redash.io/t/export-of-large-csv-via-api/9624.rss">Export of large CSV via API</source>
+      </item>
+  </channel>
+</rss>

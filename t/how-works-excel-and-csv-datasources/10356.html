@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>How works Excel and CSV datasources?</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/how-works-excel-and-csv-datasources/10356">How works Excel and CSV datasources?</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/support-self-hosted/9.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Self Hosted Redash Support</span>
+</span>
+</a>
+<meta content="2" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="How works Excel and CSV datasources?" itemprop="headline"/>
+<meta content="Self Hosted Redash Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<link href="assets/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-21T07:38:03Z" itemprop="datePublished">
+                    April 21, 2022,  7:38am
+                  </time>
+<meta content="2022-04-21T07:38:03Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<h3>
+<a class="anchor" href="#issue-summary-1" name="issue-summary-1"></a>Issue Summary</h3>
+<p>Hello (again) !<br/>
+According to <a href="http://discuss.redash.io/t/redash-10-excel-data-source/9207">9207</a>, I’m looking to query an Excel file. Unfortunately something wrong append and I don’t really understand why as I follow the tutoriel.</p>
+<p>Here’s some captures about my problem :</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/m0nwUgfMAD40QzMKP2VvOuVS1o8.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc.jpeg" rel="noopener nofollow ugc" title="c1"><img alt="c1" data-base62-sha1="m0nwUgfMAD40QzMKP2VvOuVS1o8" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc_2_10x10.png" height="175" src="assets/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc_2_690x175.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc_2_690x175.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc_2_1035x262.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9a3acf6a9bbf4e505a4489ae3a0906d2ff4462fc_2_1380x350.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">c1</span><span class="informations">1803×458 26.4 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<img alt="c2" data-base62-sha1="26KDMgzzMriqoPfTVnGr9E0gGUE" height="140" src="assets/0ec7bf5adbf12e50b860159cc502e778ed8f5ba0.jpeg" width="387"/><br/>
+<img alt="c3" data-base62-sha1="bvgWMIPwDczrOPe9HXcGVlC9qPa" height="395" src="assets/50a0e94055e244db8b2d7f6941dd1a0f828ea484.jpeg" width="639"/></p>
+<p>Any idea to solve it ? How works Excel data-sources ? May I have to install the <em>requirements_all_ds.txt</em> dependencies ?</p>
+<p>Thank you again !</p>
+<p>William</p>
+<h3>
+<a class="anchor" href="#technical-details-2" name="technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v.10.0.1</li>
+<li>Browser/OS: Firefox Browser v.99.0.1</li>
+<li>How did you install Redash: Docker</li>
+</ul>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-21T08:10:39Z" itemprop="datePublished">
+                    April 21, 2022,  8:10am
+                  </time>
+<meta content="2022-04-21T08:10:39Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Unfortunately, we’ve some troubles to install all the dependencies from <em>requirements_all_ds.txt</em>. A lot of conflits with python 3.8 and others applications working with it.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-21T14:12:48Z" itemprop="datePublished">
+                    April 21, 2022,  2:12pm
+                  </time>
+<meta content="2022-04-21T14:12:48Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>How are you installing these requirements? I’ve not seen any reports of conflicts during installation…</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-22T07:08:41Z" itemprop="datePublished">
+                    April 22, 2022,  7:08am
+                  </time>
+<meta content="2022-04-22T08:21:45Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Here’s what we did :</p>
+<pre><code class="lang-auto">git clone https://github.com/getredash/redash.git
+cd redash/
+touch .env
+nano .env /*inscription de : REDASH_COOKIE_SECRET = X*/
+
+nano docker-compose.yml /*change port 5000:5000 to 5050:5000*/
+pip install -r requirements.txt -r requirements_dev.txt
+npm install --global yarn@1.22.10
+sudo npm install --global yarn@1.22.10
+
+yarn --frozen-lockfile
+yarn build
+docker compose up -d
+
+docker compose run --rm server create_db
+</code></pre>
+<p>At this point, everything was fine. We just had to reencrypt datasources and it worked.<br/>
+But then, we try this :</p>
+<pre><code class="lang-auto">pip install -r requirements_all_ds.txt
+</code></pre>
+<p>And impossible to follow the installation due to errors :</p>
+<pre><code class="lang-auto">ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+</code></pre>
+<p>There is some troubles with pymssql :</p>
+<pre><code class="lang-auto">ERROR: Could not find a version that satisfies the requirement pymssql==2.1.4 (from versions: 
+</code></pre>
+<p>But also with others depencies I had to install :</p>
+<pre><code class="lang-auto">apt-get install libmysqlclient-dev
+pip install pymssql-linux
+pip install Cython
+</code></pre>
+<p>LAST ERROR :</p>
+<pre><code class="lang-auto">Collecting pymssql==2.1.4
+  Using cached pymssql-2.1.4.tar.gz (691 kB)
+  Preparing metadata (setup.py) ... error
+  error: subprocess-exited-with-error
+
+  × python setup.py egg_info did not run successfully.
+  │ exit code: 1
+  ╰─&gt; [10 lines of output]
+      /usr/local/lib/python3.8/dist-packages/setuptools/dist.py:51: DistDeprecationWarning: Do not call this function
+        warnings.warn("Do not call this function", DistDeprecationWarning)
+      Traceback (most recent call last):
+        File "&lt;string&gt;", line 2, in &lt;module&gt;
+        File "&lt;pip-setuptools-caller&gt;", line 34, in &lt;module&gt;
+        File "/tmp/pip-install-uzk7tq3b/pymssql_9ce41034d18347d0aa036a72c65d8d0c/setup.py", line 160, in &lt;module&gt;
+          print("setup.py: platform.linux_distribution() =&gt; %r" % (platform.linux_distribution(),))
+      AttributeError: module 'platform' has no attribute 'linux_distribution'
+      setup.py: platform.system() =&gt; 'Linux'
+      setup.py: platform.architecture() =&gt; ('64bit', 'ELF')
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+WARNING: Discarding https://files.pythonhosted.org/packages/2e/81/99562b93d75f3fc5956fa65decfb35b38a4ee97cf93c1d0d3cb799fffb99/pymssql-2.1.4.tar.gz#sha256=3201eb1b1263ad55b555d727ed8bed0b12b7b9de3ce5e529206e36d4be1a7afb (from https://pypi.org/simple/pymssql/) due to build failure: metadata generation failed
+ERROR: Could not find a version that satisfies the requirement pymssql==2.1.4 (from versions: 1.0.0, 1.0.1, 1.0.2, 1.0.3, 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.1.2, 2.1.3, 2.1.4rc1, 2.1.4, 2.1.5, 2.2.0, 2.2.1.dev0, 2.2.1, 2.2.2, 2.2.3, 2.2.4, 2.2.5)
+ERROR: No matching distribution found for pymssql==2.1.4
+</code></pre>
+<p>Something is wrong with our configuration. Any idea ?</p>
+<p>Our configuration :</p>
+<pre><code class="lang-auto">node -v /*return : 14.19.1*/
+yarn -v /*return : 1.22.10*/
+python3 --version /*return : Python 3.8.10*/
+pip --version /*return : pip 20.0.2*/
+npm version /*return : 6.14.16*/
+</code></pre>
+<p>Thanks for your help!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-22T16:08:02Z" itemprop="datePublished">
+                    April 22, 2022,  4:08pm
+                  </time>
+<meta content="2022-04-22T16:08:02Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for providing your detailed setup steps. I think that’s your problem.</p>
+<p>You’re trying to blend a <a href="https://redash.io/help/open-source/dev-guide/setup">local python development</a> setup with a <a href="https://redash.io/help/open-source/dev-guide/docker">Docker development setup.</a> All of the Python dependencies will be installed when you run <code>docker-compose up -d</code>. You don’t need to install these on your local machine. If you <em>do</em> install them locally, there’s a bunch of additional setup steps you’ll need to configure your postgres and redis instances.</p>
+<p>Likely the installation problem is because you’re trying to install Python deps on your <em>system python</em> installation. It would be best to use a virtualenv instead. I suggest you abandon this path until you’re more familiar with how Redash works. Stick to the Docker Development setup. It’s much simpler.</p>
+<p>For good measure: the excel and csv data sources aren’t working because your installation is broken. Once you install Redash properly they’ll work just fine.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<link href="assets/39857e1caadb12e3c8224b074b0ed09bfbbfcda9.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-26T08:34:41Z" itemprop="datePublished">
+                    April 26, 2022,  8:34am
+                  </time>
+<meta content="2022-04-26T08:34:41Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi Jesse ! Thanks for your help ! It helped us a lot !<br/>
+We reinstalled everything under Docker (according to <a href="https://redash.io/help/open-source/dev-guide/docker/" rel="noopener nofollow ugc">this</a>). Now we’re close but there are still some mistakes.</p>
+<p><strong>CONFIGURATION</strong><br/>
+Docker : 20.10.14<br/>
+Node : 14.19.1<br/>
+Yarn : 1.22.10</p>
+<p><strong>ERRORS</strong><br/>
+<strong>FIRST STEP : <em>docker-compose up -d</em></strong><br/>
+<em>C1</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/8cRdN4YR7TwmHgWD74TXIWsPd0d.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/39857e1caadb12e3c8224b074b0ed09bfbbfcda9.jpeg" rel="noopener nofollow ugc" title="c1"><img alt="c1" data-base62-sha1="8cRdN4YR7TwmHgWD74TXIWsPd0d" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/39857e1caadb12e3c8224b074b0ed09bfbbfcda9_2_10x10.png" height="23" src="assets/39857e1caadb12e3c8224b074b0ed09bfbbfcda9_2_690x23.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/39857e1caadb12e3c8224b074b0ed09bfbbfcda9_2_690x23.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/39857e1caadb12e3c8224b074b0ed09bfbbfcda9.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/39857e1caadb12e3c8224b074b0ed09bfbbfcda9.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">c1</span><span class="informations">897×31 8.29 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<em>C2</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/4V8DBLUunIUUZPbOOv8WCdXc6os.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/227e35e6d2a870d6483bb8c8d41b64f20f713034.jpeg" rel="noopener nofollow ugc" title="c2"><img alt="c2" data-base62-sha1="4V8DBLUunIUUZPbOOv8WCdXc6os" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/227e35e6d2a870d6483bb8c8d41b64f20f713034_2_10x10.png" height="17" src="assets/227e35e6d2a870d6483bb8c8d41b64f20f713034_2_690x17.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/227e35e6d2a870d6483bb8c8d41b64f20f713034_2_690x17.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/227e35e6d2a870d6483bb8c8d41b64f20f713034_2_1035x25.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/227e35e6d2a870d6483bb8c8d41b64f20f713034_2_1380x34.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">c2</span><span class="informations">1748×44 16.4 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<em>C3</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/hN3Tvuskd59aLXExyb2iaHlOaUb.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/7cb0c074ff82ea1f27eec3328827da1a69a1ada3.jpeg" rel="noopener nofollow ugc" title="c3"><img alt="c3" data-base62-sha1="hN3Tvuskd59aLXExyb2iaHlOaUb" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7cb0c074ff82ea1f27eec3328827da1a69a1ada3_2_10x10.png" height="123" src="assets/7cb0c074ff82ea1f27eec3328827da1a69a1ada3_2_690x123.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7cb0c074ff82ea1f27eec3328827da1a69a1ada3_2_690x123.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7cb0c074ff82ea1f27eec3328827da1a69a1ada3_2_1035x184.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/7cb0c074ff82ea1f27eec3328827da1a69a1ada3_2_1380x246.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">c3</span><span class="informations">1699×304 119 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<em>C4</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/r4nnrjujBb0lgiPNG8XSRl2eMP4.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/bdb95ca92174aa8aebc7d286e84031d6479db56e.jpeg" rel="noopener nofollow ugc" title="c4"><img alt="c4" data-base62-sha1="r4nnrjujBb0lgiPNG8XSRl2eMP4" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bdb95ca92174aa8aebc7d286e84031d6479db56e_2_10x10.png" height="59" src="assets/bdb95ca92174aa8aebc7d286e84031d6479db56e_2_690x59.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bdb95ca92174aa8aebc7d286e84031d6479db56e_2_690x59.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bdb95ca92174aa8aebc7d286e84031d6479db56e_2_1035x88.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/bdb95ca92174aa8aebc7d286e84031d6479db56e_2_1380x118.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">c4</span><span class="informations">1695×147 49.6 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<em>C5</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/wLPjzXscsQbOgGfoennLJMNfnN.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/03b4594308a794c69b6b8860f2d64299f6815d17.jpeg" rel="noopener nofollow ugc" title="c5"><img alt="c5" data-base62-sha1="wLPjzXscsQbOgGfoennLJMNfnN" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03b4594308a794c69b6b8860f2d64299f6815d17_2_10x10.png" height="114" src="assets/03b4594308a794c69b6b8860f2d64299f6815d17_2_690x114.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03b4594308a794c69b6b8860f2d64299f6815d17_2_690x114.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03b4594308a794c69b6b8860f2d64299f6815d17_2_1035x171.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/03b4594308a794c69b6b8860f2d64299f6815d17_2_1380x228.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">c5</span><span class="informations">1713×285 98.8 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>I think nothing was very wrong because docker start well at this step !<br/>
+<em>C6</em><br/>
+<img alt="c6" data-base62-sha1="koBX7cHYe5sVffVy9cMifvuSVzm" height="125" src="assets/8ef3b686d5dc42d2452ab73439dee68b99476184.jpeg" width="390"/></p>
+<p><strong>SECOND STEP : <em>yarn --frozen-lockfile</em></strong><br/>
+<em>C7</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/zowxpOqQQWkZ3bIjvp686s9FMaI.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f811cb9a3c2822f2631352748d3cd0cf734f47a0.jpeg" rel="noopener nofollow ugc" title="A1"><img alt="A1" data-base62-sha1="zowxpOqQQWkZ3bIjvp686s9FMaI" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f811cb9a3c2822f2631352748d3cd0cf734f47a0_2_10x10.png" height="109" src="assets/f811cb9a3c2822f2631352748d3cd0cf734f47a0_2_690x109.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f811cb9a3c2822f2631352748d3cd0cf734f47a0_2_690x109.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f811cb9a3c2822f2631352748d3cd0cf734f47a0_2_1035x163.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f811cb9a3c2822f2631352748d3cd0cf734f47a0.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">A1</span><span class="informations">1296×205 32.2 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<em>C8</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/aeZGlemljcAyBwJHGdsB60ZDIXe.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/47c7aa824d08d42134e0ff7187acebe7fd87b3a0.jpeg" rel="noopener nofollow ugc" title="A2"><img alt="A2" data-base62-sha1="aeZGlemljcAyBwJHGdsB60ZDIXe" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/47c7aa824d08d42134e0ff7187acebe7fd87b3a0_2_10x10.png" height="40" src="assets/47c7aa824d08d42134e0ff7187acebe7fd87b3a0_2_689x40.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/47c7aa824d08d42134e0ff7187acebe7fd87b3a0_2_689x40.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/47c7aa824d08d42134e0ff7187acebe7fd87b3a0_2_1033x60.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/47c7aa824d08d42134e0ff7187acebe7fd87b3a0.jpeg 2x" width="689"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">A2</span><span class="informations">1148×68 19.3 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div><br/>
+<em>C9</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/mQ0wVi6liWkXrQ92LeDbtq1XdIT.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a010ddc22d46d43e0c727ad947ec5c020bbcc2cb.jpeg" rel="noopener nofollow ugc" title="A3"><img alt="A3" data-base62-sha1="mQ0wVi6liWkXrQ92LeDbtq1XdIT" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a010ddc22d46d43e0c727ad947ec5c020bbcc2cb_2_10x10.png" height="151" src="assets/a010ddc22d46d43e0c727ad947ec5c020bbcc2cb_2_690x151.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a010ddc22d46d43e0c727ad947ec5c020bbcc2cb_2_690x151.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a010ddc22d46d43e0c727ad947ec5c020bbcc2cb_2_1035x226.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a010ddc22d46d43e0c727ad947ec5c020bbcc2cb_2_1380x302.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">A3</span><span class="informations">1747×384 112 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>At this step, after creating the database with</p>
+<pre><code class="lang-auto">docker-compose run --rm server create_db
+</code></pre>
+<p>we had this :</p>
+<p><em>C10</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/17ZQX7shrSBPbLj461GkHicUw8x.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/07e99cb81b59e6f0d4a235b55646fcac01703011.jpeg" rel="noopener nofollow ugc" title="D2"><img alt="D2" data-base62-sha1="17ZQX7shrSBPbLj461GkHicUw8x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/07e99cb81b59e6f0d4a235b55646fcac01703011_2_10x10.png" height="500" src="assets/07e99cb81b59e6f0d4a235b55646fcac01703011_2_615x500.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/07e99cb81b59e6f0d4a235b55646fcac01703011_2_615x500.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/07e99cb81b59e6f0d4a235b55646fcac01703011.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/07e99cb81b59e6f0d4a235b55646fcac01703011.jpeg 2x" width="615"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">D2</span><span class="informations">683×555 35.5 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p><strong>THIRD (AND LAST) STEP : <em>yarn build</em></strong><br/>
+Unfortunately, we can’t build the frontend part with <em>yarn build</em> and <em>yarn start</em> due to this error :<br/>
+<em>C11</em><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/zeAHz6aA7Jdz9wEdQSWhza1c4fz.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f6f25b16ff7508a975bd480ad9fff37e5588f885.jpeg" rel="noopener nofollow ugc" title="D1"><img alt="D1" data-base62-sha1="zeAHz6aA7Jdz9wEdQSWhza1c4fz" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f6f25b16ff7508a975bd480ad9fff37e5588f885_2_10x10.png" height="84" src="assets/f6f25b16ff7508a975bd480ad9fff37e5588f885_2_690x84.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f6f25b16ff7508a975bd480ad9fff37e5588f885_2_690x84.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f6f25b16ff7508a975bd480ad9fff37e5588f885_2_1035x126.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f6f25b16ff7508a975bd480ad9fff37e5588f885.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">D1</span><span class="informations">1235×151 36.5 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Any idea ? How can we solve this issue ?<br/>
+Thanks again for everything <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-26T13:37:49Z" itemprop="datePublished">
+                    April 26, 2022,  1:37pm
+                  </time>
+<meta content="2022-04-26T13:37:49Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>About the <code>fsevents</code> errors: these aren’t an issue. <code>fsevents</code> only works on MacOS but it’s not required for linux.</p>
+<p>That is a strange error. I wonder: did you completely wipe this system before starting over on the Docker development setup? I wonder if your previous attempts created some conflicting dependency installation on the machine. Otherwise your commands look fine.</p>
+<p>Also, what operating system are you using?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-27T04:38:58Z" itemprop="datePublished">
+                    April 27, 2022,  4:38am
+                  </time>
+<meta content="2022-04-27T04:38:58Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>I think so !<br/>
+We wipe the system as we’re working on a Virtual Machine with Ubuntu 20.04. We used an old snapshot to do it.<br/>
+For you, the problem only comes from the build of frontend with <em>yarn build</em> ? We can try to update manualy all depencies like <em>typescript</em>. We’re not the only ones (<a href="http://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011">#10011</a>).</p>
+<p>Thanks again, We’ll try again. If you have others ideas about what we can do… feel free to share, we’re lost <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-27T12:45:36Z" itemprop="datePublished">
+                    April 27, 2022, 12:45pm
+                  </time>
+<meta content="2022-04-27T12:45:36Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>We only have 2GB of memory on our VM. Do you think it could be the problem ?</p>
+<p>We have this error during yarn build :</p>
+<pre><code class="lang-auto">error Command failed with exit code 137.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+</code></pre>
+<p>Thanks.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/jesse.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/jesse_avatar.png" tabindex="-1" width="48"/><span itemprop="name">jesse</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-27T13:11:58Z" itemprop="datePublished">
+                    April 27, 2022,  1:11pm
+                  </time>
+<meta content="2022-04-27T13:11:58Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<aside class="quote no-group" data-post="9" data-topic="10356" data-username="willy-dauphin">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="assets/3965_2.png" width="20"/> willy-dauphin:</div>
+<blockquote>
+<p>We only have 2GB of memory on our VM. Do you think it could be the problem ?</p>
+</blockquote>
+</aside>
+<p>Yeah, this is specifically mentioned in the Docker setup <a href="https://redash.io/help/open-source/dev-guide/docker">instructions</a>:</p>
+<blockquote>
+<p>If you hit an <code>errno 137</code> or <code>errno 134</code> particularly at <code>RUN yarn build</code> , make sure you give your Docker VM enough memory (4GB or more).</p>
+</blockquote>
+<aside class="quote no-group" data-post="8" data-topic="10356" data-username="willy-dauphin">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" loading="lazy" src="assets/3965_2.png" width="20"/> willy-dauphin:</div>
+<blockquote>
+<p>We’re not the only ones (<a href="http://discuss.redash.io/t/documentation-not-correct-almost-impossible-to-setup-for-testing/10011">#10011</a>).</p>
+</blockquote>
+</aside>
+<p>This is a fair point. Very strange that it doesn’t reproduce for almost anyone. i.e. nobody on the core team is able to reproduce this error…</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-28T07:49:35Z" itemprop="datePublished">
+                    April 28, 2022,  7:49am
+                  </time>
+<meta content="2022-04-28T07:49:35Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Thanks for your answer. There is no way to install Redash on a 2G memory VM ?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<link href="assets/3438e168c665ad7b20cea30f9c44caa04d519aef.jpeg" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-04-29T07:47:07Z" itemprop="datePublished">
+                    April 29, 2022,  7:47am
+                  </time>
+<meta content="2022-04-29T07:47:07Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Well, thanksful to your advices, we have now an instance of Redash working fine <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/><br/>
+Thanks a lot Jesse !</p>
+<p><strong>We still have two questions :</strong></p>
+<ol>
+<li>Is it possible to install Redash on a 2GB memory VM ?</li>
+<li>Is it possible to specify a sheet inside an Excel document as Spreadsheets with ‘|0’ or ‘|1’?</li>
+</ol>
+<p><strong>About Redash ft. Nextcloud (XLS or XLSX) :</strong></p>
+<ol>
+<li>
+<p>create an Excel datasource (you’ll use the same datasource for all your xls/xlsx documents !).<br/>
+<img alt="C" data-base62-sha1="7rYH3cYeibCiyW2LvDGhC2tzCof" height="395" src="assets/3438e168c665ad7b20cea30f9c44caa04d519aef.jpeg" width="629"/></p>
+</li>
+<li>
+<p>Inside Nextcloud, share and copy the link<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/gprpqi6h1j9PANz8HtRN4M4Ugzn.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/730308c8128ed53fbba33fbb34cd5209ace108d1.png" rel="noopener nofollow ugc" title="Capture1"><img alt="Capture1" data-base62-sha1="gprpqi6h1j9PANz8HtRN4M4Ugzn" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/730308c8128ed53fbba33fbb34cd5209ace108d1_2_10x10.png" height="162" src="assets/730308c8128ed53fbba33fbb34cd5209ace108d1_2_690x162.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/730308c8128ed53fbba33fbb34cd5209ace108d1_2_690x162.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/730308c8128ed53fbba33fbb34cd5209ace108d1_2_1035x243.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/730308c8128ed53fbba33fbb34cd5209ace108d1_2_1380x324.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">Capture1</span><span class="informations">1906×449 33 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</li>
+<li>
+<p>Open a new tab with the link and right click on “Download” to copy the targetlink<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/iu54XSAaKutHpErArBtJW52nWno.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/818da6b8646b0bc5d1f348095cd71ae18516fb5a.png" rel="noopener nofollow ugc" title="Capture2"><img alt="Capture2" data-base62-sha1="iu54XSAaKutHpErArBtJW52nWno" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/818da6b8646b0bc5d1f348095cd71ae18516fb5a_2_10x10.png" height="250" src="assets/818da6b8646b0bc5d1f348095cd71ae18516fb5a_2_690x250.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/818da6b8646b0bc5d1f348095cd71ae18516fb5a_2_690x250.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/818da6b8646b0bc5d1f348095cd71ae18516fb5a_2_1035x375.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/818da6b8646b0bc5d1f348095cd71ae18516fb5a_2_1380x500.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">Capture2</span><span class="informations">1898×689 85.8 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</li>
+<li>
+<p>Go back to redash, create a query with your excel datasource and paste the link preffixed with “url:”<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/mwBsTKRGExAnX41U69bytNCNxYq.jpeg?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9ddf56fb5ee40ed922ff84050505662c5ba1971e.jpeg" rel="noopener nofollow ugc" title="capture3"><img alt="capture3" data-base62-sha1="mwBsTKRGExAnX41U69bytNCNxYq" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9ddf56fb5ee40ed922ff84050505662c5ba1971e_2_10x10.png" height="316" src="assets/9ddf56fb5ee40ed922ff84050505662c5ba1971e_2_690x316.jpeg" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9ddf56fb5ee40ed922ff84050505662c5ba1971e_2_690x316.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9ddf56fb5ee40ed922ff84050505662c5ba1971e_2_1035x474.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/9ddf56fb5ee40ed922ff84050505662c5ba1971e_2_1380x632.jpeg 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">capture3</span><span class="informations">1920×880 60.6 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+</li>
+<li>
+<p>Refresh and enjoy <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+</li>
+</ol>
+<p>Thanks again for your help ! <img alt=":sunflower:" class="emoji" height="20" loading="lazy" src="assets/sunflower.png" title=":sunflower:" width="20"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/willy-dauphin.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/willy-dauphin_avatar.png" tabindex="-1" width="48"/><span itemprop="name">willy-dauphin</span></a>
+</span>
+<link href="assets/10356" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2022-05-12T06:35:15Z" itemprop="datePublished">
+                    May 12, 2022,  6:35am
+                  </time>
+<meta content="2022-05-12T06:35:15Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>UPDATE<br/>
+<strong>1. Is it possible to install Redash on a 2GB memory VM ?</strong><br/>
+→ yes, I wrote a trick here : <a href="http://discuss.redash.io/t/error-137-docker-memory-leak/10426">#10426</a></p>
+<p><strong>2. Is it possible to specify a sheet inside an Excel document as Spreadsheets with ‘|0’ or ‘|1’?</strong><br/>
+→ yes : <a href="http://discuss.redash.io/t/redash-10-excel-data-source/9207/9">#9207</a></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

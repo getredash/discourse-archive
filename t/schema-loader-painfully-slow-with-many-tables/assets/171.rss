@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Schema loader painfully slow with many tables</title>
+    <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171</link>
+    <description>We are wondering a good way to disable to schema viewer in the query window. 
+
+Our database has hundreds of tables, which causes ~ 5-10 second lag when opening any query URL :(
+
+Perhaps a way to disable the javascript for that section? Would be fine with a hacky solution for now. 
+
+Cheers.</description>
+    
+    <lastBuildDate>Tue, 14 Jun 2022 07:48:54 +0000</lastBuildDate>
+    <category>Feature Requests</category>
+    <atom:link href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[yishikawa]]></dc:creator>
+        <description><![CDATA[
+            <p>Let me share my walk around.</p>
+<ol>
+<li>create new service account</li>
+<li>upload JSON Key File to your data source setting</li>
+<li>go to <a href="https://console.cloud.google.com/bigquery" rel="noopener nofollow ugc">BQ console</a><br>
+a. add “BigQuery Data Viewer”  to Dataset Permissions if the schema doesn’t contain “suffix-table”<br>
+b. add “BigQuery Data Viewer”  to Table Permissions if the schema contain “suffix-table”</li>
+<li>go “new query” and reflesh schema, then you see what you want</li>
+</ol>
+<p>In case b, you can query table but schema loader doesn’t waste tokens for these tables and columns</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/10</link>
+        <pubDate>Tue, 14 Jun 2022 07:48:54 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-10</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>A table name is a token.  A column name is a token. The total number of tokens is the sum of all the table names + the sum of all the column names. If you have 3k tables with 100 columns each that totals 303k tokens. The <a href="https://redash.io/help/data-sources/querying/bigquery">documentation</a> advises that if your database has more than 5k tokens, you should disable schema loading entirely from the data source settings screen.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/9</link>
+        <pubDate>Thu, 09 Jun 2022 21:49:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-9</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[yishikawa]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a></p>
+<p>What do you mean by “token”, and how can I check the amount of tokens?</p>
+<p>Yes, we have tables with near 100 columns.<br>
+These tables also have _table_suffix of date, at the same time,<br>
+and 1000 tables are there with the same schema.</p>
+<p>example 1)<br>
+Google Analytics 4’ exported table</p>
+<ul>
+<li>analytics_*****.events_20220609</li>
+<li>analytics_*****.events_20220608<br>
+…</li>
+</ul>
+<p>example 2)<br>
+Google App Engine’s lof<br>
+appengine_log.appengine_googleapis_com_request_log_20220609<br>
+appengine_log.appengine_googleapis_com_request_log_20220608<br>
+…</p>
+<p>If I can skip loading these suffix tables,<br>
+under  500 tables are in these schemas.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/8</link>
+        <pubDate>Thu, 09 Jun 2022 00:58:03 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-8</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>How many tokens are there in this schema? The number of tables isn’t the complete picture since one table could have 3k columns e.g.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/7</link>
+        <pubDate>Wed, 08 Jun 2022 14:16:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-7</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[yishikawa]]></dc:creator>
+        <description><![CDATA[
+            <p>I cannot load schema of 3979 tables from BigQuery.<br>
+It stopped loading without an error, everytime in 5 minutes from starting.<br>
+As another connection with 1000 tables works well, loading in 3 minites,<br>
+I dought some timeout setting is within 300 sec, but couldn’t find in document,<br>
+I’ve already set env following</p>
+<blockquote>
+<p>REDASH_BIGQUERY_HTTP_TIMEOUT=1800<br>
+REDASH_SCHEMAS_REFRESH_SCHEDULE=360</p>
+</blockquote>
+<p>Are there another timeout setting around schema loading?</p>
+<p>I’m using Redash V10, in Ubuntu docker enviroment.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/6</link>
+        <pubDate>Wed, 08 Jun 2022 08:57:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-6</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>I think it should be OK even with 3500 tables.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/5</link>
+        <pubDate>Tue, 30 Aug 2016 15:59:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-5</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[ryank]]></dc:creator>
+        <description><![CDATA[
+            <p>~3500 tables, probably around that many columns. <img src="https://emoji.discourse-cdn.com/twitter/sob.png?v=6" title=":sob:" class="emoji" alt=":sob:"></p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/4</link>
+        <pubDate>Fri, 19 Aug 2016 20:45:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-4</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>Update: next version is going to have better handling of large schemas: <a href="https://github.com/getredash/redash/pull/1246">https://github.com/getredash/redash/pull/1246</a>.</p>
+<p>I tested it with 1669 tables and 38K columns. Do you know how many you have?</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/3</link>
+        <pubDate>Fri, 19 Aug 2016 20:43:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-3</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[arikfr]]></dc:creator>
+        <description><![CDATA[
+            <p>I think the easiest way for you will be to disable schema fetching in the server code as it’s easier to tinker with as you can change it “in place”.</p>
+<p>There are two places where you can disable schema loading:</p>
+<ol>
+<li>
+<a href="https://github.com/getredash/redash/blob/master/redash/handlers/data_sources.py#L101-L107">The API handler</a>: the code is very obvious. Just change it to return an empty array (<code>[]</code>). If you have multiple data sources in your instance and you want to disable it only for one of them, you can add some logic there to return empty array only for specific requests.</li>
+<li>In the <em>query runner</em>: each query runner has a <code>get_schema</code> or <code>_get_tables</code> method (depends on which class it inherits). You can change it to return an empty array. The benefit of doing this at the query runner level is that you won’t needlessly query your database for the schema.</li>
+</ol>
+<p>If you don’t mind Redash querying for the schema in the background, then go for option <span class="hashtag">#1</span>.<br>
+If you go for option <span class="hashtag">#2</span>, then make sure to make the change in the correct query runner and delete the Redis cache key for the schema (<code>data_source:schema:&lt;data source id&gt;</code>).</p>
+<p>We’re planning to improve the handling of large schemas by avoiding loading all the schema in the frontend, but this will be only in a release or two from now.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/2</link>
+        <pubDate>Thu, 18 Aug 2016 19:31:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-2</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+      <item>
+        <title>Schema loader painfully slow with many tables</title>
+        <dc:creator><![CDATA[ryank]]></dc:creator>
+        <description><![CDATA[
+            <p>We are wondering a good way to disable to schema viewer in the query window.</p>
+<p>Our database has hundreds of tables, which causes ~ 5-10 second lag when opening any query URL <img src="https://emoji.discourse-cdn.com/twitter/frowning.png?v=6" title=":frowning:" class="emoji" alt=":frowning:"></p>
+<p>Perhaps a way to disable the javascript for that section? Would be fine with a hacky solution for now.</p>
+<p>Cheers.</p>
+          <p><a href="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171/1</link>
+        <pubDate>Thu, 18 Aug 2016 16:41:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-171-1</guid>
+        <source url="https://discuss.redash.io/t/schema-loader-painfully-slow-with-many-tables/171.rss">Schema loader painfully slow with many tables</source>
+      </item>
+  </channel>
+</rss>

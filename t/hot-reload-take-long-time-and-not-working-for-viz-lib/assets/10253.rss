@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Hot reload take long time and not working for viz-lib</title>
+    <link>https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253</link>
+    <description>### Issue Summary
+Hey there,
+I&#39;m trying to work on a local env using docker and work on the frontend from a separate container using this image:
+```
+FROM node:14.17
+
+# Install global dependencies
+RUN npm install --global --force yarn@1.22.10
+
+# Copy app files
+WORKDIR /frontend
+COPY --chown=redash package.json yarn.lock .yarnrc /frontend/
+COPY --chown=redash ./client /frontend/client
+COPY --chown=redash ./viz-lib /frontend/viz-lib
+
+# Install dependencies
+RUN yarn install
+RUN cd viz-lib &amp;&amp; yarn install
+RUN yarn build:viz
+ENV PATH /usr/node_modules/.bin:/frontend/node_modules/.bin:$PATH
+
+# Start the main process.
+CMD yarn build
+```
+
+ and docker-compose config:
+```
+frontend-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile path
+    volumes:
+      - ./package.json:/frontend/package.json
+      - ./yarn.lock:/frontend/yarn.lock
+      - ./.yarnrc:/frontend/.yarnrc
+      - ./.yarn:/frontend/.yarn
+      - ./webpack.config.js:/frontend/webpack.config.js
+      - ./client:/frontend/client
+      - ./viz-lib:/frontend/viz-lib
+    env_file:
+      - .env
+    command: yarn start
+    ports:
+      - &quot;8080:8080&quot;
+```
+
+package.json is same as in master branch.
+
+After encountering many errors, I&#39;ve managed to build the env and am able to start working on the client.
+
+The issues I currently face:
+1. Hot reload works on file in `Client` but not on files in `viz-lib`.
+2. It takes Webpack to compile about 2-3 minutes with vendors~app.js at around 30-40MiB and app.js about 6MiB
+
+Any idea how I can improve this so I can work on the client and the viz-lib files? :)
+Thanks!
+
+### Technical details:
+
+* Redash Version: 11.0.0-dev
+* Browser/OS: Chrome, Win 11
+* How did you install Redash: With docker by this [guide](https://redash.io/help/open-source/dev-guide/docker)</description>
+    
+    <lastBuildDate>Mon, 11 Apr 2022 09:27:20 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Hot reload take long time and not working for viz-lib</title>
+        <dc:creator><![CDATA[NitroClank]]></dc:creator>
+        <description><![CDATA[
+            <p>Solved.<br>
+To anyone that comes across this issue, make sure your not installing or running with WSL.</p>
+<p>That seemed to have cause the issue and when re installing and running with bash, everything works smoothly.</p>
+          <p><a href="https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253/2</link>
+        <pubDate>Mon, 11 Apr 2022 09:27:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10253-2</guid>
+        <source url="https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253.rss">Hot reload take long time and not working for viz-lib</source>
+      </item>
+      <item>
+        <title>Hot reload take long time and not working for viz-lib</title>
+        <dc:creator><![CDATA[NitroClank]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hey there,<br>
+I’m trying to work on a local env using docker and work on the frontend from a separate container using this image:</p>
+<pre><code class="lang-auto">FROM node:14.17
+
+# Install global dependencies
+RUN npm install --global --force yarn@1.22.10
+
+# Copy app files
+WORKDIR /frontend
+COPY --chown=redash package.json yarn.lock .yarnrc /frontend/
+COPY --chown=redash ./client /frontend/client
+COPY --chown=redash ./viz-lib /frontend/viz-lib
+
+# Install dependencies
+RUN yarn install
+RUN cd viz-lib &amp;&amp; yarn install
+RUN yarn build:viz
+ENV PATH /usr/node_modules/.bin:/frontend/node_modules/.bin:$PATH
+
+# Start the main process.
+CMD yarn build
+</code></pre>
+<p>and docker-compose config:</p>
+<pre><code class="lang-auto">frontend-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile path
+    volumes:
+      - ./package.json:/frontend/package.json
+      - ./yarn.lock:/frontend/yarn.lock
+      - ./.yarnrc:/frontend/.yarnrc
+      - ./.yarn:/frontend/.yarn
+      - ./webpack.config.js:/frontend/webpack.config.js
+      - ./client:/frontend/client
+      - ./viz-lib:/frontend/viz-lib
+    env_file:
+      - .env
+    command: yarn start
+    ports:
+      - "8080:8080"
+</code></pre>
+<p>package.json is same as in master branch.</p>
+<p>After encountering many errors, I’ve managed to build the env and am able to start working on the client.</p>
+<p>The issues I currently face:</p>
+<ol>
+<li>Hot reload works on file in <code>Client</code> but not on files in <code>viz-lib</code>.</li>
+<li>It takes Webpack to compile about 2-3 minutes with vendors~app.js at around 30-40MiB and app.js about 6MiB</li>
+</ol>
+<p>Any idea how I can improve this so I can work on the client and the viz-lib files? <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=12" title=":slight_smile:" class="emoji" alt=":slight_smile:" loading="lazy" width="20" height="20"><br>
+Thanks!</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 11.0.0-dev</li>
+<li>Browser/OS: Chrome, Win 11</li>
+<li>How did you install Redash: With docker by this <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">guide</a>
+</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253/1</link>
+        <pubDate>Sun, 03 Apr 2022 08:37:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10253-1</guid>
+        <source url="https://discuss.redash.io/t/hot-reload-take-long-time-and-not-working-for-viz-lib/10253.rss">Hot reload take long time and not working for viz-lib</source>
+      </item>
+  </channel>
+</rss>

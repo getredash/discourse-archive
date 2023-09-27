@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>クエリの同時実行数を２より上げたい</title>
+    <link>https://discuss.redash.io/t/topic/10259</link>
+    <description>redash 11.0.0-dev をECS Fargate で実行しています。
+Redashへの同時接続数が１００件以上になりそうなので、
+クエリの同時実行数を２より上げたいのですが、
+環境変数等、どこで設定したらよろしいのでしょうか。
+ご存知の方いらっしゃれば、お願い致します。
+![image|690x204](upload://6H6vlrjCCgbkPMMe2IYdQWt9PwM.png)</description>
+    
+    <lastBuildDate>Thu, 14 Apr 2022 15:26:00 +0000</lastBuildDate>
+    <category>Japanese</category>
+    <atom:link href="https://discuss.redash.io/t/topic/10259.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>設定したはずのない 3 という値は気になりますね。<br>
+現時点で私が知る限り <code>WORKERS_COUNT</code> の変更のみでワーカー数は変更される理解でおりますが、<br>
+11.0.0-dev をお使いで、Fargate 上で動作されているとのことですので、環境に依存するなにか要因があるのかもしれません。</p>
+<p>お力になれずすみませんが、解決方法がわかったらぜひ共有いただけますとうれしいです。</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/11</link>
+        <pubDate>Thu, 14 Apr 2022 15:26:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-11</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[kaori]]></dc:creator>
+        <description><![CDATA[
+            <p>ありがとうございます。<br>
+3 workers, 6 queues<br>
+で、増えていたのですが、どこから３が来たのかが謎です・・</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/10</link>
+        <pubDate>Thu, 14 Apr 2022 02:29:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-10</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p><code>WORKERS_COUNT</code> の設定だけでは実行数が変わらなかったのですね。</p>
+<p><code>QUEUES</code> の設定を変更してみる前に、worker のコンテナで環境変数 <code>WORKERS_COUNT</code> の値が4になっているか、また、可能であれば以下のコマンドでワーカー数がいくつになっているか確認してみてください。<br>
+(Redis の URL は環境にあわせて変更してみてください。</p>
+<pre><code class="lang-auto">rq info -u redis://redis
+</code></pre>
+<p>を実行すると、<code>4 workers, 5 queues</code> のようにワーカー数が表示されるはずです。</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/9</link>
+        <pubDate>Tue, 12 Apr 2022 23:59:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-9</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[kaori]]></dc:creator>
+        <description><![CDATA[
+            <p>Continuing the discussion from <a href="http://discuss.redash.io/t/topic/10259/7">クエリの同時実行数を２より上げたい</a>:</p>
+<p>ありがとうございます。<br>
+WORKERS_COUNT=4<br>
+を追加しただけじゃ変わらかったので、QUEUESの設定も何か必要ということでしょうか？<br>
+よろしくおねがいします。</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/8</link>
+        <pubDate>Tue, 12 Apr 2022 08:06:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-8</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>確認ありがとうございます。</p>
+<p>11.0.0 とのことなので以下を参考に <code>WORKERS_COUNT</code> で指定してみてはいかがでしょうか？</p>
+<p><code>REDASH_WEB_WORKERS</code> はおそらく gunicorn のワーカー数ですね。</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint#L19">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint#L19" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/master/bin/docker-entrypoint#L19" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/master/bin/docker-entrypoint#L19</a></h4>
+
+
+
+    <pre class="onebox">      <code class="lang-">
+        <ol class="start lines" start="9" style="counter-reset: li-counter 8 ;">
+            <li>
+            </li>
+<li>dev_scheduler() {</li>
+            <li>  echo "Starting dev RQ scheduler..."</li>
+            <li>
+            </li>
+<li>  exec watchmedo auto-restart --directory=./redash/ --pattern=*.py --recursive -- ./manage.py rq scheduler</li>
+            <li>}</li>
+            <li>
+            </li>
+<li>worker() {</li>
+            <li>  echo "Starting RQ worker..."</li>
+            <li>
+            </li>
+<li class="selected">  export WORKERS_COUNT=${WORKERS_COUNT:-2}</li>
+            <li>  export QUEUES=${QUEUES:-}</li>
+            <li>
+            </li>
+<li>  exec supervisord -c worker.conf</li>
+            <li>}</li>
+            <li>
+            </li>
+<li>dev_worker() {</li>
+            <li>  echo "Starting dev RQ worker..."</li>
+            <li>
+            </li>
+<li>  exec watchmedo auto-restart --directory=./redash/ --pattern=*.py --recursive -- ./manage.py rq worker $QUEUES</li>
+            <li>}</li>
+        </ol>
+      </code>
+    </pre>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/topic/10259/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/7</link>
+        <pubDate>Tue, 12 Apr 2022 05:21:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-7</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[kaori]]></dc:creator>
+        <description><![CDATA[
+            <p>返信ありがとうございます。</p>
+<h1>
+<a name="printenv-more-1" class="anchor" href="https://discuss.redash.io#printenv-more-1"></a>printenv | more</h1>
+<h1>
+<a name="redash_web_workers4-2" class="anchor" href="https://discuss.redash.io#redash_web_workers4-2"></a>REDASH_WEB_WORKERS=4</h1>
+<p>で見ると、設定はされているようには見えます。<br>
+再起動とは、JenkinsからRedashデプロイしなおしてます。<br>
+よろしくおねがいします。</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/6</link>
+        <pubDate>Tue, 12 Apr 2022 05:02:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-6</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>Redash の再起動はどのように実行されていますか？</p>
+<p>また、Docker を使用されている場合、worker のコンテナに exec で入って、環境変数 <code>REDASH_WEB_WORKERS </code> が反映されているか確認してみてください。</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/5</link>
+        <pubDate>Tue, 12 Apr 2022 04:02:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-5</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[kaori]]></dc:creator>
+        <description><![CDATA[
+            <p>RQになると、celeryと書き方が違うとか、あるのでしょうか？？？</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/4</link>
+        <pubDate>Tue, 12 Apr 2022 02:19:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-4</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[kaori]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="loco-diwamoto" data-post="2" data-topic="10259">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/loco-diwamoto/40/3242_2.png" class="avatar"> loco-diwamoto:</div>
+<blockquote>
+<p><code>REDASH_WEB_WORKERS: 4</code></p>
+</blockquote>
+</aside>
+<p>ありがとうございます。<br>
+REDASH_WEB_WORKERS: 4<br>
+に設定してRedash再起動しても、“Started Jobs  2” のままで、Queued Jobs が増えていくだけなのです。<br>
+何か見方が違うのでしょうか？<br>
+もしくは、ほかに設定する箇所があるのでしょうか？<br>
+よろしくおねがいします。</p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/3</link>
+        <pubDate>Tue, 12 Apr 2022 01:41:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-3</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[loco-diwamoto]]></dc:creator>
+        <description><![CDATA[
+            <p><code>WORKERS_COUNT </code>を上げることにより、同時実行数が増えます。<br>
+ご存知かとは思いますが、あげすぎるとRDSへの負荷が増えるはずなので、ご注意下さい。</p><aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml">
+  <header class="source">
+
+      <a href="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml" target="_blank" rel="noopener nofollow ugc">getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml</a></h4>
+
+
+      <pre><code class="lang-yml">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:8.0.0.b32245
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+    environment:
+</code></pre>
+
+
+
+  This file has been truncated. <a href="https://github.com/getredash/setup/blob/cb47626b6823cbafac407b3e8991e97f53121f6e/data/docker-compose.yml" target="_blank" rel="noopener nofollow ugc">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/topic/10259/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/2</link>
+        <pubDate>Tue, 05 Apr 2022 04:09:52 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-2</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+      <item>
+        <title>クエリの同時実行数を２より上げたい</title>
+        <dc:creator><![CDATA[kaori]]></dc:creator>
+        <description><![CDATA[
+            <p>redash 11.0.0-dev をECS Fargate で実行しています。<br>
+Redashへの同時接続数が１００件以上になりそうなので、<br>
+クエリの同時実行数を２より上げたいのですが、<br>
+環境変数等、どこで設定したらよろしいのでしょうか。<br>
+ご存知の方いらっしゃれば、お願い致します。<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png" data-download-href="/uploads/short-url/6H6vlrjCCgbkPMMe2IYdQWt9PwM.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84_2_690x204.png" alt="image" data-base62-sha1="6H6vlrjCCgbkPMMe2IYdQWt9PwM" width="690" height="204" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84_2_690x204.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2eec6d3e4dd06b12d9565f61419494ebf3e00d84_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/topic/10259/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/topic/10259/1</link>
+        <pubDate>Mon, 04 Apr 2022 11:43:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10259-1</guid>
+        <source url="https://discuss.redash.io/t/topic/10259.rss">クエリの同時実行数を２より上げたい</source>
+      </item>
+  </channel>
+</rss>

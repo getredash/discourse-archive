@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Memory maxing out then 504 - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Self hosted on AWS using the eu-west-1 AMI. 
+Version 8 
+We are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error. &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Memory maxing out then 504&#39;" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/memory-maxing-out-then-504/9308" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/memory-maxing-out-then-504/9308" />
+<meta property="og:title" content="Memory maxing out then 504" />
+<meta name="twitter:title" content="Memory maxing out then 504" />
+<meta property="og:description" content="Self hosted on AWS using the eu-west-1 AMI.  Version 8  We are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error.  From the metrics we have, it looks like the memory is maxing out.  It looks like it might be related to this issue:   I am thinking our problem might be that people are running large queries, redash doesn’t limit it in any way, the memory is maxing out and then it crashes. We h..." />
+<meta name="twitter:description" content="Self hosted on AWS using the eu-west-1 AMI.  Version 8  We are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error.  From the metrics we have, it looks like the memory is maxing out.  It looks like it might be related to this issue:   I am thinking our problem might be that people are running large queries, redash doesn’t limit it in any way, the memory is maxing out and then it crashes. We h..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="2 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2021-10-21T16:44:47+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Memory maxing out then 504","mainEntity":{"@type":"Question","name":"Memory maxing out then 504","text":"Self hosted on AWS using the eu-west-1 AMI.\n\nVersion 8\n\nWe are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error.\n\nFrom the metrics we have, it looks like the memory is maxing out.\n\nIt looks li&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-10-21T16:44:47.063Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/memory-maxing-out-then-504/9308">Memory maxing out then 504</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Memory maxing out then 504'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/km-if'><span itemprop='name'>km-if</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T16:44:47Z' class='post-time'>
+                    October 21, 2021,  4:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T16:44:47Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Self hosted on AWS using the eu-west-1 AMI.<br>
+Version 8</p>
+<p>We are finding that redash repeatedly crashes throughout the day. The EC2 needs to be rebooted before it will work again. The gui freezes and then gets a 504 error.<br>
+From the metrics we have, it looks like the memory is maxing out.<br>
+It looks like it might be related to this issue:</p><aside class="onebox githubissue" data-onebox-src="https://github.com/getredash/redash/issues/78">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/issues/78" target="_blank" rel="noopener nofollow ugc">github.com/getredash/redash</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewbox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/issues/78" target="_blank" rel="noopener nofollow ugc">Better support for large query results</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2014-02-05" data-time="13:33:36" data-timezone="UTC">01:33PM - 05 Feb 14 UTC</span>
+      </div>
+
+
+      <div class="user">
+        <a href="https://github.com/arikfr" target="_blank" rel="noopener nofollow ugc">
+          <img alt="arikfr" src="https://avatars.githubusercontent.com/u/71468?v=4" class="onebox-avatar-inline" width="20" height="20">
+          arikfr
+        </a>
+      </div>
+    </div>
+
+    <div class="labels">
+        <span style="display:inline-block;margin-top:2px;background-color: #B8B8B8;padding: 2px;border-radius: 4px;color: #fff;margin-left: 3px;">
+          backlog
+        </span>
+    </div>
+  </div>
+</div>
+
+  <div class="github-row">
+    <p class="github-body-container">If a query has large result (~50K rows) it will make the UI to get stuck. We nee<span class="show-more-container"><a href="" rel="noopener" class="show-more">…</a></span><span class="excerpt hidden">d to detect large results sets and handle them differently (server side pagination?).</span></p>
+  </div>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>I am thinking our problem might be that people are running large queries, redash doesn’t limit it in any way, the memory is maxing out and then it crashes. We have some large tables (multiple 200+GB), but most of the queries made throughout the day are small. If we resize the instance it would have to be pretty massive just to handle the odd time someone runs a big query without a LIMIT clause.</p>
+<p>If it is related to the above git topic, is there any kind of workaround? Hard to believe that people have just lived with it repeatedly crashing for 5+ years in that case, so presumably there is something else going on in our situation.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-21T17:58:37Z' class='post-time'>
+                    October 21, 2021,  5:58pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-21T17:58:37Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>What you’re describing sounds familiar to an issue I’m working on with V10 performance (<a href="http://discuss.redash.io/t/ec2-deployment-instance-size-issue/9271/3">here</a>). The first thing I’d recommend is increasing your instance provision at least temporarily so you can debug without absurd delays. If you’re on a t2.small go up to t2.medium, for example.</p>
+<p>Next, I have a few clarifying questions for you:</p>
+<ol>
+<li>
+<p><strong>How large are your query results?</strong> Redash is built to <em>visualise</em> results. Not for making large data extracts. The git issue you referenced refers to improving performance if your individual query results are sizable. Until we can address this: you should expect degraded performance of the front-end if your query results exceed around 20mb in size. However, this <em>will not cause a 504 timeout</em>.</p>
+</li>
+<li>
+<p><strong>You mentioned the front-end “freezes”.</strong> Under what circumstances? When you execute a large query?</p>
+</li>
+<li>
+<p><strong>How much RAM are your containers using?</strong> You can find this by SSH into the EC2 instance and run <code>sudo docker stats</code>. You can also run the <code>top</code> command to see if your system is using <code>kswap0</code> frequently,.</p>
+</li>
+<li>
+<p><strong>How many types of data sources are you using?</strong> If you only need a few data sources, you can reduce Redash’s memory footprint by disabling the ones you don’t need.</p>
+</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/redash-crashes-when-i-want-to-do-vizualisation-on-a-dataset-of-21-804-rows/10818/4">Redash crashes when i want to do vizualisation on a dataset of 21,804 rows</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/km-if'><span itemprop='name'>km-if</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-22T11:21:22Z' class='post-time'>
+                    October 22, 2021, 11:21am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-22T11:21:22Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Jesse, thanks for your response.</p>
+<p>I ran some experiments and think I can clarify a bit better what’s going on.</p>
+<p>We have an instance with 128GB memory (r5.4xlarge).<br>
+This is pointed to two PostgreSQL data sources. These sources have several tables which are 200+GB in size.<br>
+Typical queries are fairly small as most people use the tool appropriately (not for making large data extracts). Outside of these crashing queries, the max memory I’ve seen is around 7GB.<br>
+sudo docker stats shows typical memory usage quite low (highest is redash_server_1 with 1.7GB, rest are between 10-400MB).</p>
+<p>The problem occurs when people aren’t using the tool properly. They uncheck the LIMIT 1000 tickbox, don’t set their own LIMIT clause, whatever. So they do something like “SELECT * FROM 200gb_table” without LIMIT checked. We can see that the query starts to run, the memory usage just goes up and up until it hits max, then redash crashes and the EC2 needs rebooting before anyone can use it again.<br>
+The behaviour when crashing is:</p>
+<ul>
+<li>the query hangs</li>
+<li>the query says it cannot connect</li>
+<li>shortly afterwards the page gets a 504 error if you refresh, until the instance is rebooted<br>
+Below screenshot shows the memory metrics during one of these crashes (we resized to 128GB after this).<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d.png" data-download-href="/uploads/short-url/62uBncEbDJF0CKoQP4zS3lTKEYB.png?dl=1" title="Screenshot 2021-10-21 at 18.28.09" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_690x252.png" alt="Screenshot 2021-10-21 at 18.28.09" data-base62-sha1="62uBncEbDJF0CKoQP4zS3lTKEYB" width="690" height="252" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_690x252.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_1035x378.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/2a5534433e8d89ce76d296abe5d87f2df22d996d_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Screenshot 2021-10-21 at 18.28.09</span><span class="informations">1082×396 12.8 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div>
+</li>
+</ul>
+<p>We could continue to resize the EC2 until it can handle every full table read, but as you say it’s not what redash is for. It would be very expensive and only ever needed for those times people run massive table extracts without thinking. The problem as I see it is that it’s too easy for users to bring the whole instance down and make it unusable for anyone else.</p>
+<p>What we’d like is to be able to handle these bad queries better. We tried a timeout but with a simple query on a large table it can be quite fast to crash. Ideally some way so that redash can run out of memory for a query, stay alive, and then just return a failure result on the query without taking the instance down for anyone else. Maybe we need to host it on two load balanced EC2s so that if a large query kills an instance the other one can continue serving queries without users being impacted?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/km-if'><span itemprop='name'>km-if</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-22T11:39:26Z' class='post-time'>
+                    October 22, 2021, 11:39am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-22T11:39:26Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Forgot to mention, we are on v10</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-22T15:39:42Z' class='post-time'>
+                    October 22, 2021,  3:39pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-22T15:39:42Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>This is an amazing write-up. Good job.</p>
+<p>Your memory usage looks dead-on to me (1.7GB on the main, 10mb-400mb for the other services).</p>
+<p>It’s normal for a <em>worker process</em> to crash if it pulls too much data. But it’s <em>not normal</em> for this to take down the entire worker <em>container</em> or the entire EC2 instance. Ideally, the worker will just fail gracefully, restart itself, and everything will stabilise.</p>
+<p>Can you share your docker-compose file? I wonder how many worker services you have configured.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/km-if'><span itemprop='name'>km-if</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-24T21:58:31Z' class='post-time'>
+                    October 24, 2021,  9:58pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-24T22:13:57Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks!</p>
+<p>docker compose:</p>
+<pre><code class="lang-auto">version: "2"
+x-redash-service: &amp;redash-service
+  image: redash/redash:10.0.0-beta.b49597
+  depends_on:
+    - postgres
+    - redis
+  env_file: /opt/redash/env
+  restart: always
+services:
+  server:
+    &lt;&lt;: *redash-service
+    command: server
+    ports:
+      - "6000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+  scheduler:
+    &lt;&lt;: *redash-service
+    command: scheduler
+  worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "periodic emails default"
+      WORKERS_COUNT: 1  
+  scheduled_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+  adhoc_worker:
+    &lt;&lt;: *redash-service
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
+</code></pre>
+<p>So I should just increase my worker services count to 2 for all WORKERS_COUNT? (Just tried this and tested without success)</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-25T15:40:44Z' class='post-time'>
+                    October 25, 2021,  3:40pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-25T15:40:44Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It shouldn’t make a difference, but is there any difference if you unify the formatting of your <code>QUEUES</code> specifications? Some of them are space-separated where others are comma-separated.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/km-if'><span itemprop='name'>km-if</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-26T11:13:20Z' class='post-time'>
+                    October 26, 2021, 11:13am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-26T11:13:20Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>No improvement unfortunately</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/km-if'><span itemprop='name'>km-if</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/memory-maxing-out-then-504/9308">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-10-26T11:42:58Z' class='post-time'>
+                    October 26, 2021, 11:42am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-10-26T11:42:58Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Looking at docker stats again, I only see one worker even though I increased the counts to 2. Is that right? Did I maybe do something wrong?</p>
+<pre><code>    redash_scheduler_1          0.05%               186.9MiB / 124.4GiB   0.15%               51.3kB / 64.9kB     0B / 147kB          2
+    redash_nginx_1              0.00%               3.555MiB / 124.4GiB   0.00%               345kB / 233kB       0B / 0B             2
+    redash_adhoc_worker_1       0.02%               559.9MiB / 124.4GiB   0.44%               5.35kB / 5.85kB     0B / 442kB          7
+    redash_server_1             0.02%               730.1MiB / 124.4GiB   0.57%               564kB / 496kB       8.19kB / 590kB      9
+    redash_worker_1             0.02%               561.4MiB / 124.4GiB   0.44%               8.32MB / 744kB      0B / 442kB          7
+    redash_scheduled_worker_1   0.02%               560.9MiB / 124.4GiB   0.44%               62.3kB / 66.3kB     0B / 442kB          7
+    redash_postgres_1           0.00%               14.85MiB / 124.4GiB   0.01%               501kB / 8.5MB       946kB / 676kB       10
+    redash_redis_1              0.05%               5.719MiB / 124.4GiB   0.00%               631kB / 370kB       0B / 0B             4</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

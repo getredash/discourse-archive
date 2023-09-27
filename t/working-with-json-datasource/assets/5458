@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Working with JSON Datasource - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hi, 
+Trying to query a json datasource but unable to split the array returned into rows as desired.  I tried to create a query similar to as follows … 
+url: “https://app.cloudability.com/api/1/reporting/cost/run” 
+params&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/working-with-json-datasource/5458" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Working with JSON Datasource&#39;" href="https://discuss.redash.io/t/working-with-json-datasource/5458.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/working-with-json-datasource/5458" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/working-with-json-datasource/5458" />
+<meta property="og:title" content="Working with JSON Datasource" />
+<meta name="twitter:title" content="Working with JSON Datasource" />
+<meta property="og:description" content="Hi,  Trying to query a json datasource but unable to split the array returned into rows as desired.  I tried to create a query similar to as follows …  url: “https://app.cloudability.com/api/1/reporting/cost/run”  params:  auth_token: ****************************  dimensions: vendor_account_name,vendor_account_identifier  start_date: 0 of last month  end_date: end of last month  metrics: cost  sort_by: cost  order: desc  fields: [results]  #path: [vendor_account_identifier,  vendor_account_name,..." />
+<meta name="twitter:description" content="Hi,  Trying to query a json datasource but unable to split the array returned into rows as desired.  I tried to create a query similar to as follows …  url: “https://app.cloudability.com/api/1/reporting/cost/run”  params:  auth_token: ****************************  dimensions: vendor_account_name,vendor_account_identifier  start_date: 0 of last month  end_date: end of last month  metrics: cost  sort_by: cost  order: desc  fields: [results]  #path: [vendor_account_identifier,  vendor_account_name,..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2020-01-28T20:44:22+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Working with JSON Datasource","mainEntity":{"@type":"Question","name":"Working with JSON Datasource","text":"Hi,\n\nTrying to query a json datasource but unable to split the array returned into rows as desired.  I tried to create a query similar to as follows …\n\nurl: “<a href=\"https://app.cloudability.com/api/1/reporting/cost/run\" rel=\"nofollow noopener\">https://app.cloudability.com/api/1/reporting/cost/run<\/a>”\n\nparams:\n\nauth_token: ****************************\n\ndimensions: vendor_account_name,ven&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2020-01-28T20:44:22.255Z","author":{"@type":"Person","name":"Brent McFarlin"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/working-with-json-datasource/5458">Working with JSON Datasource</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Working with JSON Datasource'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bmcfarli'><span itemprop='name'>bmcfarli</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-01-28T20:44:22Z' class='post-time'>
+                    January 28, 2020,  8:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-28T20:44:22Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hi,</p>
+<p>Trying to query a json datasource but unable to split the array returned into rows as desired.  I tried to create a query similar to as follows …</p>
+<p>url: “<a href="https://app.cloudability.com/api/1/reporting/cost/run" rel="nofollow noopener">https://app.cloudability.com/api/1/reporting/cost/run</a>”<br>
+params:<br>
+auth_token: ****************************<br>
+dimensions: vendor_account_name,vendor_account_identifier<br>
+start_date: 0 of last month<br>
+end_date: end of last month<br>
+metrics: cost<br>
+sort_by: cost<br>
+order: desc<br>
+fields: [results]<br>
+<span class="hashtag">#path:</span> [vendor_account_identifier,  vendor_account_name, cost]</p>
+<p>But the result seems to be a string array that when using the “path” parameter creates an error  … Error running query:  <strong>‘list’ object has no attribute 'split’</strong></p>
+<p>Without the “path” parameter, I am able to get a <strong>single</strong> row back that has an array within it similar to the following …</p>
+<h2>results</h2>
+<p>[{“vendor_account_identifier”:“9999-9999-9999”,“vendor_account_name”:“acct1”,“cost”:"$51.00"},<br>
+{“vendor_account_identifier”:“9999-9999-9998”,“vendor_account_name”:“acct2”,“cost”:"$50.00"},<br>
+{“vendor_account_identifier”:“9999-9999-9997”,“vendor_account_name”:“acct3”,“cost”:"$52.00"}]</p>
+<p>Any ideas on how to create individual rows for the elements within the array … the desired result is a table with 3 columns (vendor_account_identifier, vendor_account_name, cost) and 3 rows</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-01-29T03:54:53Z' class='post-time'>
+                    January 29, 2020,  3:54am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-29T03:54:53Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>This should work. The issue is you swapped the values of your <code>path</code> and <code>fields</code> keys. <code>path</code> must be a string. <code>fields</code> can be a list.</p>
+<p>From this line in the source code:</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/713fd2d0fb3d85759a819b9205b935fb771c6b2c/redash/query_runner/json_ds.py#L77">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/713fd2d0fb3d85759a819b9205b935fb771c6b2c/redash/query_runner/json_ds.py#L77" target="_blank" rel="noopener">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/713fd2d0fb3d85759a819b9205b935fb771c6b2c/redash/query_runner/json_ds.py#L77" target="_blank" rel="noopener">getredash/redash/blob/713fd2d0fb3d85759a819b9205b935fb771c6b2c/redash/query_runner/json_ds.py#L77</a></h4>
+
+
+
+    <pre class="onebox"><code class="lang-py">
+      <ol class="start lines" start="67" style="counter-reset: li-counter 66 ;">
+          <li>    if _get_column_by_name(columns, column_name) is None:</li>
+          <li>        columns.append(</li>
+          <li>            {"name": column_name, "friendly_name": column_name, "type": column_type}</li>
+          <li>        )</li>
+          <li>
+          <li>
+          <li>def _apply_path_search(response, path):</li>
+          <li>    if path is None:</li>
+          <li>        return response</li>
+          <li>
+          <li class="selected">    path_parts = path.split(".")</li>
+          <li>    path_parts.reverse()</li>
+          <li>    while len(path_parts) &gt; 0:</li>
+          <li>        current_path = path_parts.pop()</li>
+          <li>        if current_path in response:</li>
+          <li>            response = response[current_path]</li>
+          <li>        else:</li>
+          <li>            raise Exception("Couldn't find path {} in response.".format(path))</li>
+          <li>
+          <li>    return response</li>
+          <li>
+      </ol>
+    </code></pre>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>The query runner tries to split the <code>path</code> key on periods (<code>.</code>).</p>
+<p>Change your query as follows and it will work:</p>
+<pre data-code-wrap="yaml"><code class="lang-nohighlight">url: “https://app.cloudability.com/api/1/reporting/cost/run”
+params:
+auth_token: ****************************
+dimensions: vendor_account_name,vendor_account_identifier
+start_date: 0 of last month
+end_date: end of last month
+metrics: cost
+sort_by: cost
+order: desc
+fields: [vendor_account_identifier, vendor_account_name, cost]
+path: results 
+</code></pre>
+<p>I double checked this by pasting your sample data into a Github Gist and aiming the JSON data source at it. Only difference is I called my inner object array <code>data</code> instead of <code>results</code>.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4.png" data-download-href="/uploads/short-url/AmxKae8Qe9AKMxVXdP3HRTtGA4c.png?dl=1" title="json-ex"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4_2_638x500.png" alt="json-ex" data-base62-sha1="AmxKae8Qe9AKMxVXdP3HRTtGA4c" width="638" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4_2_638x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4_2_957x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4_2_1276x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fedaa7ca61f61381699482a1bd7afa2c29fcb9f4_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">json-ex</span><span class="informations">1784×1398 128 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/bmcfarli'><span itemprop='name'>bmcfarli</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-01-29T13:09:44Z' class='post-time'>
+                    January 29, 2020,  1:09pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-29T13:09:44Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thank you.  I did try swapping these before I raised the question but the issue was that I had the brackets around the path.  Removing them did the trick.  Appreciate your help on this.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-01-29T14:15:47Z' class='post-time'>
+                    January 29, 2020,  2:15pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-29T14:15:47Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="bmcfarli" data-post="3" data-topic="5458">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/bmcfarli/40/1781_2.png" class="avatar"> bmcfarli:</div>
+<blockquote>
+<p>I did try swapping these before I raised the question but the issue was that I had the brackets around the path.</p>
+</blockquote>
+</aside>
+<p>Precisely.</p>
+<aside class="quote group-Team" data-username="jesse" data-post="2" data-topic="5458">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/j/c77e96/40.png" class="avatar"> jesse:</div>
+<blockquote>
+<p><code>path</code> must be a string. <code>fields</code> can be a list.</p>
+</blockquote>
+</aside>
+<p>Wrapping the value in brackets makes it a list in YAML syntax <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=9" title=":wink:" class="emoji" alt=":wink:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kar80'><span itemprop='name'>kar80</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-27T15:01:27Z' class='post-time'>
+                    April 27, 2022,  3:01pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-27T15:01:27Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi,<br>
+I am getting error <strong>" Error running query: <strong>Couldn’t find path labels in response.</strong> "</strong> .<br>
+I am trying to access object label in an array in a json using path parameter. Below is the syntax am using.</p>
+<p><strong>Doesn’t work :-</strong> I am getting. Couldn’t find path labels in response<br>
+url: <a href="https://api.github.com/repos/getredash/redash/issues" rel="noopener nofollow ugc">https://api.github.com/repos/getredash/redash/issues</a><br>
+path: labels</p>
+<p><strong>Works :-</strong><br>
+url: <a href="https://api.github.com/repos/getredash/redash/issues/3495" rel="noopener nofollow ugc">https://api.github.com/repos/getredash/redash/issues/3495</a><br>
+path: assignees</p>
+<p>Can you help me understand between assignees data and labels data for which the path works only for assignees but not for labels. I am facing same issue with my real data inhouse.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-27T15:50:10Z' class='post-time'>
+                    April 27, 2022,  3:50pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-27T15:50:10Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi there and welcome to the forum. Can you share some sample data that reproduces this issue?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kar80'><span itemprop='name'>kar80</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-27T16:11:04Z' class='post-time'>
+                    April 27, 2022,  4:11pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-27T16:11:04Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Jesse,<br>
+The urls am using are github repo urls which you have access.<br>
+But below is the sample data am seeing where one works and one doesn’t work.</p>
+<p><strong>labels data that doesn’t work :-</strong><br>
+[<br>
+{<br>
+“id”:1728224861,<br>
+“node_id”:“MDU6TGFiZWwxNzI4MjI0ODYx”,<br>
+“url”:“httpsurl://api.github.com/repos/getredash/redash/labels/Skip%20CI”,<br>
+“name”:“Skip CI”,<br>
+“color”:“c2c5cc”,<br>
+“default”:false,<br>
+“description”:""<br>
+}<br>
+]</p>
+<p><strong>assignees data that works :-</strong><br>
+[<br>
+{<br>
+“login”:“<strong>redacted</strong>”,<br>
+“id”:<strong>redacted</strong>,<br>
+“node_id”:“MDQ6VXNlcjI4OTQ4OA==”,<br>
+“avatar_url”:“httpsurl://avatars.githubusercontent.com/u/289488?v=4”,<br>
+“gravatar_id”:"",<br>
+“url”:“httpsurl://api.github.com/users/rauchy”,<br>
+“html_url”:“httpsurl://github.com/rauchy”,<br>
+“followers_url”:“httpsurl://api.github.com/users/rauchy/followers”,<br>
+“following_url”:“httpsurl://api.github.com/users/rauchy/following{/other_user}”,<br>
+“gists_url”:“httpsurl://api.github.com/users/rauchy/gists{/gist_id}”,<br>
+“starred_url”:“httpsurl://api.github.com/users/rauchy/starred{/owner}{/repo}”,<br>
+“subscriptions_url”:“httpsurl://api.github.com/users/rauchy/subscriptions”,<br>
+“organizations_url”:“httpsurl://api.github.com/users/rauchy/orgs”,<br>
+“repos_url”:“httpsurl://api.github.com/users/rauchy/repos”,<br>
+“events_url”:“httpsurl://api.github.com/users/rauchy/events{/privacy}”,<br>
+“received_events_url”:“httpsurl://api.github.com/users/rauchy/received_events”,<br>
+“type”:“User”,<br>
+“site_admin”:false<br>
+}<br>
+]</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kar80'><span itemprop='name'>kar80</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-27T16:55:40Z' class='post-time'>
+                    April 27, 2022,  4:55pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-27T16:55:40Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Jesse,</p>
+<p>The urls am using are github repo public urls which you have access too to get you the sample data.<br>
+I tried to get you the sample data but the redash’s website spam filter bot has blocked my response since my response has so many links from the sample data that I was trying to get you.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-27T19:46:55Z' class='post-time'>
+                    April 27, 2022,  7:46pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-27T19:46:55Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Gotcha, I understand and I have reproduced the behaviour you described.</p>
+<p>The behaviour of <code>path</code> is admittedly nuanced, but it’s currently working as specified. However, if your target API requires a different behaviour, it is pretty straightforward to duplicate the JSON query runner and modify it to meet your needs.</p>
+<p>What’s happening is that <code>path</code> assumes the API returns a json <strong>object</strong> (with keys and values). If the API response is an <em>array of objects</em>, then <code>path</code> won’t work.</p>
+<p>Assuming the API response is a json object, <code>path</code> should specify the location of an <em>array of objects</em> within the response that will be projected into a table. For example:</p>
+<pre><code class="lang-json">{
+  "title": "this is a title",
+  "users": [
+    {
+      "name": "Sara",
+      "title": "CEO"
+    },
+    {
+      "name": "Yoval",
+      "title": "CFO"
+    },
+    {
+      "name": "Soleil",
+      "title": "CTO"
+    }
+  ]
+}
+</code></pre>
+<p>If you received this network response <strong>with no <code>path</code> set</strong>, your table would look like this:</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>title</th>
+<th>users</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>this is a title</td>
+<td><code>[{"name":"Sara","title":"CEO"},{"name":"Yoval","title":"CFO"},{"name":"Soleil","title":"CTO"}]</code></td>
+</tr>
+</tbody>
+</table>
+</div><p>Now if you <strong>set <code>path</code> to <code>users</code></strong>, your table would look like this:</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>title</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sarah</td>
+<td>CEO</td>
+</tr>
+<tr>
+<td>Yoval</td>
+<td>CFO</td>
+</tr>
+<tr>
+<td>Soleil</td>
+<td>CTO</td>
+</tr>
+</tbody>
+</table>
+</div><p>But if the API response looks like this instead (notice the square brackets)</p>
+<pre><code class="lang-json">[
+{
+  "title": "this is a title",
+  "users": [
+    {
+      "name": "Sara",
+      "title": "CEO"
+    },
+    {
+      "name": "Yoval",
+      "title": "CFO"
+    },
+    {
+      "name": "Soleil",
+      "title": "CTO"
+    }
+  ]
+}
+]
+</code></pre>
+<p>Setting <code>path</code> to <code>users</code> will fail because the top-level of the response does not contain a key <code>users</code>. This is what you are seeing with your calls to Github’s API.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kar80'><span itemprop='name'>kar80</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-27T20:21:32Z' class='post-time'>
+                    April 27, 2022,  8:21pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-27T20:21:32Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Jesse,<br>
+Firstly, thank you for your time and effort trying to help us all out here.</p>
+<p>Both the calls were returning same json data with [  ] square brackets. But still the path works for one of them. Looks like there is something else causing the behavior of the path. Will work on alternative.<br>
+Thank you once again.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8832bc80973077c8f63e4c1281c70314b52acc11.gif">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-28T00:17:26Z' class='post-time'>
+                    April 28, 2022, 12:17am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-28T00:17:26Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>For anyone else looking to recreate this, I made a couple of gists that you can use instead of the github API to demonstrate the behavior. And a couple videos demonstrating what happens when we pass a <code>path</code> setting like in the example above:</p>
+<h1>
+<a name="when-api-returns-array-1" class="anchor" href="#when-api-returns-array-1"></a>When API returns array</h1>
+<p><a href="https://gist.githubusercontent.com/susodapop/f34ce7e7379825b292b22dbd6104212d/raw/eda8ec4915afe3039bb355ff8e9c7b0e88194937/list.json">Here is an “api response” that returns an array</a>. When I query it in Redash v10, the <code>path</code> settings fails because the top-level of the response does not include a <code>users</code> key.<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8832bc80973077c8f63e4c1281c70314b52acc11.gif" alt="CleanShot 2022-04-27 at 19.14.49" data-base62-sha1="jqRDyMOSut76AltnFKwQA1CJOa5" width="690" height="484" class="animated"></p>
+<h1>
+<a name="when-api-returns-an-object-2" class="anchor" href="#when-api-returns-an-object-2"></a>When API returns an object</h1>
+<p><a href="https://gist.githubusercontent.com/susodapop/16782415dfd125188502f4e637258b1a/raw/e257062c9378b0440aa75922d681f04ab312344e/object.json">Here is an “api response” that returns an object</a>. Notice the initial table view is identical to the above. But now passing a <code>path</code> setting works because the top-level response includes a ‘users’ key.</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/9331275f79c99192f10e2d1961570c662a869743.gif" alt="CleanShot 2022-04-27 at 19.16.24" data-base62-sha1="l07uYNF8NK6k9Ho1ybOpDwj457J" width="690" height="484" class="animated"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/working-with-json-datasource/5458">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-04-28T00:18:08Z' class='post-time'>
+                    April 28, 2022, 12:18am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-04-28T00:18:08Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="kar80" data-post="10" data-topic="5458">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/k/90db22/40.png" class="avatar"> kar80:</div>
+<blockquote>
+<p>Looks like there is something else causing the behavior of the path. Will work on alternative.</p>
+</blockquote>
+</aside>
+<p>I’m happy to help if you have any questions along the way. Good luck!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

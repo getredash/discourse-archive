@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Where is redash/preview yml file</title>
+    <link>https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647</link>
+    <description>I m try to deploy redash/preview images but seems like old yml dose not work,[worker]service cant connect to redis :dizzy_face:,here is the log,can anyone give me a yml file :zipper_mouth_face:
+
+Traceback (most recent call last):
+  File &quot;/app/manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 722, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 697, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/decorators.py&quot;, line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 426, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/app/redash/cli/rq.py&quot;, line 30, in scheduler
+    schedule_periodic_jobs(jobs)
+  File &quot;/app/redash/tasks/schedule.py&quot;, line 100, in schedule_periodic_jobs
+    set([job.id for job in rq_scheduler.get_jobs()])
+  File &quot;/app/redash/tasks/schedule.py&quot;, line 100, in &lt;listcomp&gt;
+    set([job.id for job in rq_scheduler.get_jobs()])
+  File &quot;/usr/local/lib/python3.7/site-packages/rq_scheduler/scheduler.py&quot;, line 316, in get_jobs
+    start=offset, num=length)
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/client.py&quot;, line 2564, in zrangebyscore
+    return self.execute_command(*pieces, **options)
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/client.py&quot;, line 836, in execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/connection.py&quot;, line 1073, in get_connection
+    connection.connect()
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/connection.py&quot;, line 544, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error -2 connecting to redis:6379. Name or service not known.
+Starting RQ scheduler...
+Traceback (most recent call last):
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/connection.py&quot;, line 539, in connect
+    sock = self._connect()
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/connection.py&quot;, line 566, in _connect
+    socket.SOCK_STREAM):
+  File &quot;/usr/local/lib/python3.7/socket.py&quot;, line 752, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -2] Name or service not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &quot;/app/manage.py&quot;, line 9, in &lt;module&gt;
+    manager()
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 722, in __call__
+    return self.main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 697, in main
+    rv = self.invoke(ctx)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 1066, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 895, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/decorators.py&quot;, line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/flask/cli.py&quot;, line 426, in decorator
+    return __ctx.invoke(f, *args, **kwargs)
+  File &quot;/usr/local/lib/python3.7/site-packages/click/core.py&quot;, line 535, in invoke
+    return callback(*args, **kwargs)
+  File &quot;/app/redash/cli/rq.py&quot;, line 30, in scheduler
+    schedule_periodic_jobs(jobs)
+  File &quot;/app/redash/tasks/schedule.py&quot;, line 100, in schedule_periodic_jobs
+    set([job.id for job in rq_scheduler.get_jobs()])
+  File &quot;/app/redash/tasks/schedule.py&quot;, line 100, in &lt;listcomp&gt;
+    set([job.id for job in rq_scheduler.get_jobs()])
+  File &quot;/usr/local/lib/python3.7/site-packages/rq_scheduler/scheduler.py&quot;, line 316, in get_jobs
+    start=offset, num=length)
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/client.py&quot;, line 2564, in zrangebyscore
+    return self.execute_command(*pieces, **options)
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/client.py&quot;, line 836, in execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/connection.py&quot;, line 1073, in get_connection
+    connection.connect()
+  File &quot;/usr/local/lib/python3.7/site-packages/redis/connection.py&quot;, line 544, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error -2 connecting to redis:6379. Name or service not known.
+Starting RQ scheduler...
+[2020-07-06 01:54:02,366][PID:1][INFO][redash.tasks.schedule] Scheduling 372a63e24ac68e3028079685c6c1e8e1a38b9420 (refresh_queries) with interval 30.
+[2020-07-06 01:54:02,367][PID:1][INFO][redash.tasks.schedule] Scheduling 75540cdf868e7873f5eec072177423b13b98dece (empty_schedules) with interval 3600.
+[2020-07-06 01:54:02,368][PID:1][INFO][redash.tasks.schedule] Scheduling 52bcd40c254552539398db3cdb15055d4a9a536a (refresh_schemas) with interval 1800.
+[2020-07-06 01:54:02,369][PID:1][INFO][redash.tasks.schedule] Scheduling c33b2b69cac2aa765fa2d2eb42301a0fc1ae774c (sync_user_details) with interval 60.
+[2020-07-06 01:54:02,370][PID:1][INFO][redash.tasks.schedule] Scheduling d22541b0ed0835f429e15959feab5899a72cacea (purge_failed_jobs) with interval 86400.
+[2020-07-06 01:54:02,371][PID:1][INFO][redash.tasks.schedule] Scheduling 797f4f959c6c96c738efd445b17db75742db80a9 (send_aggregated_errors) with interval 3600.
+[2020-07-06 01:54:02,372][PID:1][INFO][redash.tasks.schedule] Scheduling 526f2c7f55dfe92457914cd7df02cfffe4dec877 (version_check) with interval 86400.
+[2020-07-06 01:54:02,373][PID:1][INFO][redash.tasks.schedule] Scheduling e27209059575fcc17c527c47d0957cb21756e551 (cleanup_query_results) with interval 300.
+[2020-07-06 01:54:02,374][PID:1][INFO][rq_scheduler.scheduler] Registering birth</description>
+    
+    <lastBuildDate>Mon, 07 Mar 2022 11:34:53 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Where is redash/preview yml file</title>
+        <dc:creator><![CDATA[darwin]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey <a class="mention" href="https://discuss.redash.io/u/neether">@Neether</a>, is you problem resolved, i am also facing similar issue, can you please provide your yml and env file ?</p>
+          <p><a href="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647/3</link>
+        <pubDate>Mon, 07 Mar 2022 11:34:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6647-3</guid>
+        <source url="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647.rss">Where is redash/preview yml file</source>
+      </item>
+      <item>
+        <title>Where is redash/preview yml file</title>
+        <dc:creator><![CDATA[Neether]]></dc:creator>
+        <description><![CDATA[
+            <p>now the worker can connect to redis ,but just not working <img src="https://emoji.discourse-cdn.com/twitter/pensive.png?v=9" title=":pensive:" class="emoji" alt=":pensive:"></p>
+<p>Starting RQ scheduler…<br>
+[2020-07-06 03:42:13,173][PID:1][INFO][rq_scheduler.scheduler] Registering birth</p>
+          <p><a href="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647/2</link>
+        <pubDate>Mon, 06 Jul 2020 03:45:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6647-2</guid>
+        <source url="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647.rss">Where is redash/preview yml file</source>
+      </item>
+      <item>
+        <title>Where is redash/preview yml file</title>
+        <dc:creator><![CDATA[Neether]]></dc:creator>
+        <description><![CDATA[
+            <p>I m try to deploy redash/preview images but seems like old yml dose not work,[worker]service cant connect to redis <img src="https://emoji.discourse-cdn.com/twitter/dizzy_face.png?v=9" title=":dizzy_face:" class="emoji" alt=":dizzy_face:">,here is the log,can anyone give me a yml file <img src="https://emoji.discourse-cdn.com/twitter/zipper_mouth_face.png?v=9" title=":zipper_mouth_face:" class="emoji" alt=":zipper_mouth_face:"></p>
+<p>Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 722, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 586, in main<br>
+return super(FlaskGroup, self).main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 697, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 895, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/decorators.py”, line 17, in new_func<br>
+return f(get_current_context(), *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 426, in decorator<br>
+return __ctx.invoke(f, *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/app/redash/cli/rq.py”, line 30, in scheduler<br>
+schedule_periodic_jobs(jobs)<br>
+File “/app/redash/tasks/schedule.py”, line 100, in schedule_periodic_jobs<br>
+set([job.id for job in rq_scheduler.get_jobs()])<br>
+File “/app/redash/tasks/schedule.py”, line 100, in <br>
+set([job.id for job in rq_scheduler.get_jobs()])<br>
+File “/usr/local/lib/python3.7/site-packages/rq_scheduler/scheduler.py”, line 316, in get_jobs<br>
+start=offset, num=length)<br>
+File “/usr/local/lib/python3.7/site-packages/redis/client.py”, line 2564, in zrangebyscore<br>
+return self.execute_command(*pieces, **options)<br>
+File “/usr/local/lib/python3.7/site-packages/redis/client.py”, line 836, in execute_command<br>
+conn = self.connection or pool.get_connection(command_name, **options)<br>
+File “/usr/local/lib/python3.7/site-packages/redis/connection.py”, line 1073, in get_connection<br>
+connection.connect()<br>
+File “/usr/local/lib/python3.7/site-packages/redis/connection.py”, line 544, in connect<br>
+raise ConnectionError(self._error_message(e))<br>
+redis.exceptions.ConnectionError: Error -2 connecting to redis:6379. Name or service not known.<br>
+Starting RQ scheduler…<br>
+Traceback (most recent call last):<br>
+File “/usr/local/lib/python3.7/site-packages/redis/connection.py”, line 539, in connect<br>
+sock = self._connect()<br>
+File “/usr/local/lib/python3.7/site-packages/redis/connection.py”, line 566, in _connect<br>
+socket.SOCK_STREAM):<br>
+File “/usr/local/lib/python3.7/socket.py”, line 752, in getaddrinfo<br>
+for res in _socket.getaddrinfo(host, port, family, type, proto, flags):<br>
+socket.gaierror: [Errno -2] Name or service not known</p>
+<p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):<br>
+File “/app/manage.py”, line 9, in <br>
+manager()<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 722, in <strong>call</strong><br>
+return self.main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 586, in main<br>
+return super(FlaskGroup, self).main(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 697, in main<br>
+rv = self.invoke(ctx)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 1066, in invoke<br>
+return _process_result(sub_ctx.command.invoke(sub_ctx))<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 895, in invoke<br>
+return ctx.invoke(self.callback, **ctx.params)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/decorators.py”, line 17, in new_func<br>
+return f(get_current_context(), *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/flask/cli.py”, line 426, in decorator<br>
+return __ctx.invoke(f, *args, **kwargs)<br>
+File “/usr/local/lib/python3.7/site-packages/click/core.py”, line 535, in invoke<br>
+return callback(*args, **kwargs)<br>
+File “/app/redash/cli/rq.py”, line 30, in scheduler<br>
+schedule_periodic_jobs(jobs)<br>
+File “/app/redash/tasks/schedule.py”, line 100, in schedule_periodic_jobs<br>
+set([job.id for job in rq_scheduler.get_jobs()])<br>
+File “/app/redash/tasks/schedule.py”, line 100, in <br>
+set([job.id for job in rq_scheduler.get_jobs()])<br>
+File “/usr/local/lib/python3.7/site-packages/rq_scheduler/scheduler.py”, line 316, in get_jobs<br>
+start=offset, num=length)<br>
+File “/usr/local/lib/python3.7/site-packages/redis/client.py”, line 2564, in zrangebyscore<br>
+return self.execute_command(*pieces, **options)<br>
+File “/usr/local/lib/python3.7/site-packages/redis/client.py”, line 836, in execute_command<br>
+conn = self.connection or pool.get_connection(command_name, **options)<br>
+File “/usr/local/lib/python3.7/site-packages/redis/connection.py”, line 1073, in get_connection<br>
+connection.connect()<br>
+File “/usr/local/lib/python3.7/site-packages/redis/connection.py”, line 544, in connect<br>
+raise ConnectionError(self._error_message(e))<br>
+redis.exceptions.ConnectionError: Error -2 connecting to redis:6379. Name or service not known.<br>
+Starting RQ scheduler…<br>
+[2020-07-06 01:54:02,366][PID:1][INFO][redash.tasks.schedule] Scheduling 372a63e24ac68e3028079685c6c1e8e1a38b9420 (refresh_queries) with interval 30.<br>
+[2020-07-06 01:54:02,367][PID:1][INFO][redash.tasks.schedule] Scheduling 75540cdf868e7873f5eec072177423b13b98dece (empty_schedules) with interval 3600.<br>
+[2020-07-06 01:54:02,368][PID:1][INFO][redash.tasks.schedule] Scheduling 52bcd40c254552539398db3cdb15055d4a9a536a (refresh_schemas) with interval 1800.<br>
+[2020-07-06 01:54:02,369][PID:1][INFO][redash.tasks.schedule] Scheduling c33b2b69cac2aa765fa2d2eb42301a0fc1ae774c (sync_user_details) with interval 60.<br>
+[2020-07-06 01:54:02,370][PID:1][INFO][redash.tasks.schedule] Scheduling d22541b0ed0835f429e15959feab5899a72cacea (purge_failed_jobs) with interval 86400.<br>
+[2020-07-06 01:54:02,371][PID:1][INFO][redash.tasks.schedule] Scheduling 797f4f959c6c96c738efd445b17db75742db80a9 (send_aggregated_errors) with interval 3600.<br>
+[2020-07-06 01:54:02,372][PID:1][INFO][redash.tasks.schedule] Scheduling 526f2c7f55dfe92457914cd7df02cfffe4dec877 (version_check) with interval 86400.<br>
+[2020-07-06 01:54:02,373][PID:1][INFO][redash.tasks.schedule] Scheduling e27209059575fcc17c527c47d0957cb21756e551 (cleanup_query_results) with interval 300.<br>
+[2020-07-06 01:54:02,374][PID:1][INFO][rq_scheduler.scheduler] Registering birth</p>
+          <p><a href="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647/1</link>
+        <pubDate>Mon, 06 Jul 2020 03:18:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6647-1</guid>
+        <source url="https://discuss.redash.io/t/where-is-redash-preview-yml-file/6647.rss">Where is redash/preview yml file</source>
+      </item>
+  </channel>
+</rss>

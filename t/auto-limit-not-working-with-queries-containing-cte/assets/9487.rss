@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>AUTO LIMIT not working with queries containing CTE</title>
+    <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487</link>
+    <description>### Issue Summary
+We have seen queries not honoring the LIMIT 1000 
+![image|690x184, 75%](upload://4HjiwAMnyqeMCg6Wk2UMkfW26Wj.png)
+
+![image|250x150, 50%](upload://diJS19wmWoWV6trVxUFjsBBldBW.png)
+
+### Analysis 
+When redash attempts to apply the limit in the python backend it only add the LIMIT when the query_is_select_no_limit return true. For queries that Start with a CTE statement 
+example 
+```sql
+with redshift_tables as
+(select table_id, schema, name from de.tables) 
+select table_id, schema, name 
+from redshift_tables
+```
+The function below is returning `false` since `parsed_query.tokens[0].value.upper() != &quot;SELECT` is returning True
+```python
+.def query_is_select_no_limit(query):
+    parsed_query = sqlparse.parse(query)[0]
+    last_keyword_idx = find_last_keyword_idx(parsed_query)
+    # Either invalid query or query that is not select
+    if last_keyword_idx == -1 or parsed_query.tokens[0].value.upper() != &quot;SELECT&quot;:
+        return False
+
+    no_limit = parsed_query.tokens[last_keyword_idx].value.upper() != &quot;LIMIT&quot; \
+               and parsed_query.tokens[last_keyword_idx].value.upper() != &quot;OFFSET&quot;
+    return no_limit
+```
+
+For queries that don&#39;t start with a CTE (normal select) the LIMIT works
+
+### Workaround 
+I am not sure there is even if we create multiple statement the last statement is honored. Changing the function to `parsed_query.tokens[0].value.upper() not in (&quot;SELECT&quot;,&quot;WITH&quot;)` fixes the issue but I have not done any rigorous testing or even run the unit tests
+
+### Technical details:
+
+* Redash Version: 10
+* Browser/OS: Chrome
+* How did you install Redash: in AWS ECS (Docker image)</description>
+    
+    <lastBuildDate>Wed, 27 Apr 2022 17:20:20 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>AUTO LIMIT not working with queries containing CTE</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <p>The unit tests in this PR give me confidence as they are using the same tests I used when reporting this. Thank you</p>
+          <p><a href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/6</link>
+        <pubDate>Wed, 27 Apr 2022 17:20:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9487-6</guid>
+        <source url="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss">AUTO LIMIT not working with queries containing CTE</source>
+      </item>
+      <item>
+        <title>AUTO LIMIT not working with queries containing CTE</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hey there, can you check whether the fix in this PR soulves the issue for you? <a href="https://github.com/getredash/redash/pull/5617" class="inline-onebox">Fix not working auto limit by tnk-ysk · Pull Request #5617 · getredash/redash · GitHub</a></p>
+          <p><a href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/5</link>
+        <pubDate>Fri, 04 Mar 2022 21:39:49 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9487-5</guid>
+        <source url="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss">AUTO LIMIT not working with queries containing CTE</source>
+      </item>
+      <item>
+        <title>AUTO LIMIT not working with queries containing CTE</title>
+        <dc:creator><![CDATA[Meredith]]></dc:creator>
+        <description><![CDATA[
+            <p>I have also noticed that the LIMIT checkbox is not honored if my query begins with a comment. For example:<br>
+– select * from one_data_table<br>
+select * from another_data_table</p>
+<p>When I run this query, the LIMIT does not apply, but if I delete the first line that is commented, I get the top 1000 rows returned.</p>
+          <p><a href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/4</link>
+        <pubDate>Fri, 04 Mar 2022 15:14:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9487-4</guid>
+        <source url="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss">AUTO LIMIT not working with queries containing CTE</source>
+      </item>
+      <item>
+        <title>AUTO LIMIT not working with queries containing CTE</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <p>Good luck <a class="mention" href="https://discuss.redash.io/u/jesse">@jesse</a> I am sure it is going to be some crazy times</p>
+          <p><a href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/3</link>
+        <pubDate>Fri, 19 Nov 2021 15:59:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9487-3</guid>
+        <source url="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss">AUTO LIMIT not working with queries containing CTE</source>
+      </item>
+      <item>
+        <title>AUTO LIMIT not working with queries containing CTE</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Great post <img src="https://emoji.discourse-cdn.com/twitter/ok_hand.png?v=10" title=":ok_hand:" class="emoji" alt=":ok_hand:"></p>
+<p>I will follow-up on it in a couple weeks after we hit the EOL for hosted. Most of my time is spent running migrations right now <img src="https://emoji.discourse-cdn.com/twitter/hot_face.png?v=10" title=":hot_face:" class="emoji" alt=":hot_face:"></p>
+          <p><a href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/2</link>
+        <pubDate>Fri, 19 Nov 2021 14:28:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9487-2</guid>
+        <source url="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss">AUTO LIMIT not working with queries containing CTE</source>
+      </item>
+      <item>
+        <title>AUTO LIMIT not working with queries containing CTE</title>
+        <dc:creator><![CDATA[ramziyassine]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>We have seen queries not honoring the LIMIT 1000<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/20ee0ccc0437c9064e9f0a5ef5cbadea56df4ce7.png" data-download-href="/uploads/short-url/4HjiwAMnyqeMCg6Wk2UMkfW26Wj.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20ee0ccc0437c9064e9f0a5ef5cbadea56df4ce7_2_517x138.png" alt="image" data-base62-sha1="4HjiwAMnyqeMCg6Wk2UMkfW26Wj" width="517" height="138" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20ee0ccc0437c9064e9f0a5ef5cbadea56df4ce7_2_517x138.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20ee0ccc0437c9064e9f0a5ef5cbadea56df4ce7_2_775x207.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/20ee0ccc0437c9064e9f0a5ef5cbadea56df4ce7.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/20ee0ccc0437c9064e9f0a5ef5cbadea56df4ce7_2_10x10.png"></a></div><p></p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5d3a8fa25a32dc0e5a4daed5187cd92e3808f6ec.png" alt="image" data-base62-sha1="diJS19wmWoWV6trVxUFjsBBldBW" width="125" height="75"></p>
+<h3>
+<a name="analysis-2" class="anchor" href="https://discuss.redash.io#analysis-2"></a>Analysis</h3>
+<p>When redash attempts to apply the limit in the python backend it only add the LIMIT when the query_is_select_no_limit return true. For queries that Start with a CTE statement<br>
+example</p>
+<pre><code class="lang-sql">with redshift_tables as
+(select table_id, schema, name from de.tables) 
+select table_id, schema, name 
+from redshift_tables
+</code></pre>
+<p>The function below is returning <code>false</code> since <code>parsed_query.tokens[0].value.upper() != "SELECT</code> is returning True</p>
+<pre><code class="lang-python">.def query_is_select_no_limit(query):
+    parsed_query = sqlparse.parse(query)[0]
+    last_keyword_idx = find_last_keyword_idx(parsed_query)
+    # Either invalid query or query that is not select
+    if last_keyword_idx == -1 or parsed_query.tokens[0].value.upper() != "SELECT":
+        return False
+
+    no_limit = parsed_query.tokens[last_keyword_idx].value.upper() != "LIMIT" \
+               and parsed_query.tokens[last_keyword_idx].value.upper() != "OFFSET"
+    return no_limit
+</code></pre>
+<p>For queries that don’t start with a CTE (normal select) the LIMIT works</p>
+<h3>
+<a name="workaround-3" class="anchor" href="https://discuss.redash.io#workaround-3"></a>Workaround</h3>
+<p>I am not sure there is even if we create multiple statement the last statement is honored. Changing the function to <code>parsed_query.tokens[0].value.upper() not in ("SELECT","WITH")</code> fixes the issue but I have not done any rigorous testing or even run the unit tests</p>
+<h3>
+<a name="technical-details-4" class="anchor" href="https://discuss.redash.io#technical-details-4"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: 10</li>
+<li>Browser/OS: Chrome</li>
+<li>How did you install Redash: in AWS ECS (Docker image)</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487/1</link>
+        <pubDate>Thu, 18 Nov 2021 14:46:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9487-1</guid>
+        <source url="https://discuss.redash.io/t/auto-limit-not-working-with-queries-containing-cte/9487.rss">AUTO LIMIT not working with queries containing CTE</source>
+      </item>
+  </channel>
+</rss>

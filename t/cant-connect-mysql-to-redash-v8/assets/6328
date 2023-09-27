@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Can&#39;t connect MySQL to Redash v8 - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Issue Summary
+After upgrading Redash v7 to v8, I have an issue where I cannot connect MySQL to Redash with the following error. 
+
+Plugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plug&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Can&#39;t connect MySQL to Redash v8&#39;" href="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328" />
+<meta property="og:title" content="Can&#39;t connect MySQL to Redash v8" />
+<meta name="twitter:title" content="Can&#39;t connect MySQL to Redash v8" />
+<meta property="og:description" content="Issue Summary After upgrading Redash v7 to v8, I have an issue where I cannot connect MySQL to Redash with the following error.   Plugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/caching_sha2_password.so   It seems like this problem is caused by the MySQL user’s authentication type “caching_sha2_password”.  So I created a new user with the type “mysql_native_password” and try to connect again, which ended up with the following error.   Plugin sha256_pa..." />
+<meta name="twitter:description" content="Issue Summary After upgrading Redash v7 to v8, I have an issue where I cannot connect MySQL to Redash with the following error.   Plugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/caching_sha2_password.so   It seems like this problem is caused by the MySQL user’s authentication type “caching_sha2_password”.  So I created a new user with the type “mysql_native_password” and try to connect again, which ended up with the following error.   Plugin sha256_pa..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="2 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="2 ❤" />
+<meta property="article:published_time" content="2020-05-28T05:59:05+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Can't connect MySQL to Redash v8","mainEntity":{"@type":"Question","name":"Can't connect MySQL to Redash v8","text":"Issue Summary\n\nAfter upgrading Redash v7 to v8, I have an issue where I cannot connect MySQL to Redash with the following error.\n\nPlugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/caching_sha2_password.so\n\nIt seems like this problem is caused by the MySQL &hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2020-05-28T05:59:05.811Z","author":{"@type":"Person","name":"Masataka Miyahara"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/cant-connect-mysql-to-redash-v8/6328">Can&#39;t connect MySQL to Redash v8</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Can&#39;t connect MySQL to Redash v8'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/mmiyahara'><span itemprop='name'>mmiyahara</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-05-28T05:59:05Z' class='post-time'>
+                    May 28, 2020,  5:59am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-05-28T06:07:41Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <h3>Issue Summary</h3>
+<p>After upgrading Redash v7 to v8, I have an issue where I cannot connect MySQL to Redash with the following error.</p>
+<blockquote>
+<p>Plugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/caching_sha2_password.so</p>
+</blockquote>
+<p>It seems like this problem is caused by the MySQL user’s authentication type “caching_sha2_password”.<br>
+So I created a new user with the type “mysql_native_password” and try to connect again, which ended up with the following error.</p>
+<blockquote>
+<p>Plugin sha256_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/sha256_password.so:</p>
+</blockquote>
+<p>I installed Redash v7 with the procedure below.<br>
+</p><aside class="onebox whitelistedgeneric">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="32" height="32">
+      <a href="https://github.com/getredash/setup" target="_blank" rel="nofollow noopener">GitHub</a>
+  </header>
+  <article class="onebox-body">
+    <img src="https://avatars1.githubusercontent.com/u/10746780?s=400&amp;v=4" class="thumbnail onebox-avatar" width="310" height="310">
+
+<h3><a href="https://github.com/getredash/setup" target="_blank" rel="nofollow noopener">getredash/setup</a></h3>
+
+<p>Setup scripts for Redash Cloud Images. Contribute to getredash/setup development by creating an account on GitHub.</p>
+
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p>After I upgrade Redash to v8 with the following guide, the problems above started to appear.<br>
+<a href="https://redash.io/help/open-source/admin-guide/how-to-upgrade" rel="nofollow noopener">https://redash.io/help/open-source/admin-guide/how-to-upgrade</a>.</p>
+<p>I took a backup before upgrading, so I restored our Redash with the backup and got it to v7. I do not have any authentication issues with v7.</p>
+<p>How can I upgrade Redash to v8 and use it with MySQL without any problems?</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 8.0.0</li>
+<li>OS: CentOS Linux release 7.6.1810 (Core)</li>
+<li>How did you install Redash: With the procedure above</li>
+</ul>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/redashv8-cant-connect-to-mysql8/8943">Redashv8 cant connect to mysql8</a>
+                        <meta itemprop='position' content='3'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-05-28T17:06:36Z' class='post-time'>
+                    May 28, 2020,  5:06pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-05-28T17:06:36Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <h2>Theory</h2>
+<p>We merged this PR in V8. So my guess is this is an issue with <code>mysqlclient</code>.</p>
+<aside class="onebox githubpullrequest">
+  <header class="source">
+      <a href="https://github.com/getredash/redash/pull/4061" target="_blank">github.com/getredash/redash</a>
+  </header>
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Pull Request">
+    <svg width="60" height="60" class="github-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/pull/4061" target="_blank">Switch to mysqlclient from Python-MySQL</a>
+    </h4>
+
+    <div class="branches">
+      <code>getredash:master</code> ← <code>getredash:mysqlclient</code>
+    </div>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2019-08-12" data-time="07:36:57" data-timezone="UTC">07:36AM - 12 Aug 19 UTC</span>
+      </div>
+
+      <div class="user">
+        <a href="https://github.com/arikfr" target="_blank">
+          <img alt="arikfr" src="https://avatars2.githubusercontent.com/u/71468?v=4" class="onebox-avatar-inline" width="20" height="20">
+          arikfr
+        </a>
+      </div>
+
+      <div class="lines" title="1 commits changed 1 files with 2 additions and 2 deletions">
+        <a href="https://github.com/getredash/redash/pull/4061/files" target="_blank">
+          <span class="added">+2</span>
+          <span class="removed">-2</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p>I suggest you try upgrading your version of <code>mysqlclient</code>. V8 is pinned to <code>1.4.1</code>. But in  <code>1.4.6</code> they merged the following PR:</p>
+<aside class="onebox githubpullrequest">
+  <header class="source">
+      <a href="https://github.com/PyMySQL/mysqlclient-python/pull/389" target="_blank">github.com/PyMySQL/mysqlclient-python</a>
+  </header>
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Pull Request">
+    <svg width="60" height="60" class="github-icon" viewBox="0 0 12 16" aria-hidden="true"><path d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/PyMySQL/mysqlclient-python/pull/389" target="_blank">Add support to change the authentication plugin (MYSQL_DEFAULT_AUTH)</a>
+    </h4>
+
+    <div class="branches">
+      <code>PyMySQL:master</code> ← <code>macboy012:master</code>
+    </div>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2019-10-21" data-time="20:09:40" data-timezone="UTC">08:09PM - 21 Oct 19 UTC</span>
+      </div>
+
+      <div class="user">
+        <a href="https://github.com/macboy012" target="_blank">
+          <img alt="macboy012" src="https://avatars2.githubusercontent.com/u/1754181?v=4" class="onebox-avatar-inline" width="20" height="20">
+          macboy012
+        </a>
+      </div>
+
+      <div class="lines" title="1 commits changed 2 files with 14 additions and 3 deletions">
+        <a href="https://github.com/PyMySQL/mysqlclient-python/pull/389/files" target="_blank">
+          <span class="added">+14</span>
+          <span class="removed">-3</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p><strong>Relevant comment from that PR</strong></p>
+<blockquote>
+<p>I’m using Proxysql which only supports  <code>mysql_native_password</code> . When using  <code>libmysqclient21</code> the new default is  <code>caching_sha2_password</code>  so I’m unable to connect to Proxysql.<br>
+I understand there are some protocol capabilities for negotiating authentication method, but these seem to be unsupported by Proxysql. So, my solution is to set the correct auth plugin before connecting.</p>
+</blockquote>
+<p>I bet MariaDB doesn’t support the authentication negotiation features either.</p>
+<p>Once you install the new <code>mysqlclient</code> you can set a new environment variable in your dockerfile:</p>
+<pre><code class="lang-auto">MYSQL_DEFAULT_AUTH: caching_sha2_password
+</code></pre>
+<p>Just set it equal to whatever your version of MySQL requires.</p>
+<h2>Alternative Theory</h2>
+<p>I searched the <code>mysqlclient</code> issue history and found this which might be related:</p>
+<aside class="onebox githubissue">
+  <header class="source">
+      <a href="https://github.com/PyMySQL/mysqlclient-python/issues/142#issuecomment-423729255" target="_blank">github.com/PyMySQL/mysqlclient-python</a>
+  </header>
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/PyMySQL/mysqlclient-python/issues/142#issuecomment-423729255" target="_blank">Windows x64 installer looks for MySQL Connector C in wrong Program Files directory</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2017-01-10" data-time="20:46:55" data-timezone="UTC">08:46PM - 10 Jan 17 UTC</span>
+      </div>
+
+        <div class="date">
+          closed <span class="discourse-local-date" data-format="ll" data-date="2017-01-10" data-time="23:03:52" data-timezone="UTC">11:03PM - 10 Jan 17 UTC</span>
+        </div>
+
+      <div class="user">
+        <a href="https://github.com/dagilis" target="_blank">
+          <img alt="dagilis" src="https://avatars3.githubusercontent.com/u/6712266?v=4" class="onebox-avatar-inline" width="20" height="20">
+          dagilis
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="github-row">
+  <p class="github-content">Version: 1.3.9
+Python version: 3.5.2
+Command: pip install mysqlclient
+Error:
+`
+creating build\temp.win-amd64-3.5\Release
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\x86_amd64\cl.exe /c /nologo /Ox /W3 /GL /DNDEBUG /MD -Dversion_info=(1,3,9,'final',1)...</p>
+</div>
+
+<div class="labels">
+</div>
+
+  </article>
+  <div class="onebox-metadata">
+    
+    
+  </div>
+  <div style="clear: both"></div>
+</aside>
+
+<p>I know you’re not on Windows, but I’m looking specifically at this comment:</p>
+<blockquote>
+<p>Connector 6.1 can’t connect to MySQL 8.</p>
+<p>I’m waiting MariaDB Connector. It supports sha256_password without OpenSSL.</p>
+</blockquote>
+<p>It’s probably unrelated.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/mmiyahara'><span itemprop='name'>mmiyahara</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-05-29T05:00:30Z' class='post-time'>
+                    May 29, 2020,  5:00am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-05-29T05:00:30Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thank you for your quick and detailed reply.<br>
+I upgrade Redash from v7 to v8 again and it is working well with a MySQL user called <code>redash</code> whose authentication type is <code>mysql_native_password</code>.</p>
+<pre><code class="lang-auto">mysql&gt; select User, Plugin from user;
++------------------+-----------------------+
+| User             | Plugin                |
++------------------+-----------------------+
+| root             | caching_sha2_password |
+| redash           | mysql_native_password |
+...
++------------------+-----------------------+
+8 rows in set (0.00 sec)
+</code></pre>
+<p>I will use Redash with a <code>mysql_native_password</code> user, so my problem is solved now. Thank you so much for your help.</p>
+<p>FYI, let me just write down what I looked into about this issue.<br>
+When I clicked the “Test Connection” button with a <code>caching_sha2_password</code> user called <code>root</code>, Redash still shows up the following error.</p>
+<blockquote>
+<p>Connection Test Failed:<br>
+(2059, ‘Plugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/caching_sha2_password.so: cannot open shared object file: No such file or directory’)</p>
+</blockquote>
+<p>I upgraded <code>mysqlclient</code> in the Redash server.</p>
+<pre><code class="lang-nohighlight">$ docker exec -it --user root redash_server_1 bash
+root@xxx/app# pip list | grep mysql
+DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won't be maintained after that date. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+mysqlclient                1.4.4
+WARNING: You are using pip version 19.2.2, however version 20.1.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+
+root@xxx:/app# pip install mysqlclient --upgrade
+DEPRECATION: Python 2.7 will reach the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 won't be maintained after that date. A future version of pip will drop support for Python 2.7. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+Collecting mysqlclient
+  Downloading https://files.pythonhosted.org/packages/d0/97/7326248ac8d5049968bf4ec708a5d3d4806e412a42e74160d7f266a3e03a/mysqlclient-1.4.6.tar.gz (85kB)
+     |████████████████████████████████| 92kB 9.5MB/s
+Building wheels for collected packages: mysqlclient
+  Building wheel for mysqlclient (setup.py) ... done
+  Created wheel for mysqlclient: filename=mysqlclient-1.4.6-cp27-cp27mu-linux_x86_64.whl size=107400 sha256=921f8d3f2f2f17bcfcecb831a83981dad1728e108901a27b7bd44c664bb215a6
+  Stored in directory: /root/.cache/pip/wheels/37/3d/24/5327fa50817a65ed0ee4dc8809e5c39962b0dd5e078ebf4dc1
+Successfully built mysqlclient
+ERROR: memsql 3.0.0 has requirement mysqlclient==1.3.13, but you'll have mysqlclient 1.4.6 which is incompatible.
+Installing collected packages: mysqlclient
+  Found existing installation: mysqlclient 1.4.4
+    Uninstalling mysqlclient-1.4.4:
+      Successfully uninstalled mysqlclient-1.4.4
+Successfully installed mysqlclient-1.4.6
+WARNING: You are using pip version 19.2.2, however version 20.1.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+
+root@xxx:/app# exit
+exit
+
+$ docker-compose stop
+Stopping redash_nginx_1            ... done
+Stopping redash_scheduled_worker_1 ... done
+Stopping redash_adhoc_worker_1     ... done
+Stopping redash_server_1           ... done
+Stopping redash_scheduler_1        ... done
+Stopping redash_postgres_1         ... done
+Stopping redash_redis_1            ... done
+
+$ docker-compose up -d
+Starting redash_redis_1    ... done
+Starting redash_postgres_1 ... done
+Starting redash_scheduled_worker_1 ... done
+Starting redash_adhoc_worker_1     ... done
+Starting redash_scheduler_1        ... done
+Starting redash_server_1           ... done
+Starting redash_nginx_1            ... done
+</code></pre>
+<p>Then I clicked the “Test Connection” button with the <code>caching_sha2_password</code> user again. But it still says the same error.</p>
+<blockquote>
+<p>Connection Test Failed:<br>
+(2059, ‘Plugin caching_sha2_password could not be loaded: /usr/lib/x86_64-linux-gnu/mariadb19/plugin/caching_sha2_password.so: cannot open shared object file: No such file or directory’)</p>
+</blockquote>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="2" />
+              <span class='post-likes'>2 Likes</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/warwickchapman'><span itemprop='name'>warwickchapman</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/cant-connect-mysql-to-redash-v8/6328">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-09-29T13:28:33Z' class='post-time'>
+                    September 29, 2021,  1:28pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-09-29T18:21:21Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="mmiyahara" data-post="3" data-topic="6328">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/mmiyahara/40/2100_2.png" class="avatar"> mmiyahara:</div>
+<blockquote>
+<p><code>pip install mysqlclient --upgrade</code></p>
+</blockquote>
+</aside>
+<p>Confirm this is my experience as well.  Tried to upgrade in all containers with mysqlclient installed (4 IIRC) and no change.</p>
+<p>Only work around now is to recreate the password on the MySQL server using the old native method:</p>
+<p><code>ALTER USER user IDENTIFIED WITH mysql_native_password BY 'pw';</code></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

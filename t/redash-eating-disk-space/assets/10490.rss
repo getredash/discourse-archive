@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash Eating Disk Space</title>
+    <link>https://discuss.redash.io/t/redash-eating-disk-space/10490</link>
+    <description>Hi ,we are using redash version redash:9.0.0-beta.b42121 using docker-compose and redsah continue to fill the disk despite passing all the environment variables required for clearing the disk, can someone help.
+Below are the env varibales we are using 
+
+REDASH_QUERY_RESULTS_CLEANUP_ENABLED=true
+
+REDASH_QUERY_RESULTS_CLEANUP_COUNT=10000
+
+REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE=2</description>
+    
+    <lastBuildDate>Wed, 22 Jun 2022 18:06:36 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="anil" data-post="12" data-topic="10490">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/a/da6949/40.png" class="avatar"> anil:</div>
+<blockquote>
+<p>No, we are not fetching such a large data.</p>
+</blockquote>
+</aside>
+<p>You need to be specific here. The only thing that makes sense from what you’ve described is that you have either lots of queries that return a small amount of data, or a few queries returning large amounts of data.</p>
+<p>If you wrote that you only have five queries and they only return 5 rows of data each, then we could naturally assume there is a problem here. But you’ve written that your Redash usage is high. What does that mean? How many queries? How often do they run? Do many of your queries use parameters? How many results are on the query results table? How many queries are there in your Redash instance?</p>
+<p>So far you haven’t given enough detail to determine whether your query_results table is actually a problem. In other words: it doesn’t matter if <code>query_results</code> is a large table. In isolation that can be perfectly normal. What matters is whether the size of the table conflicts with the size you <strong>expect it to be</strong>. Until we know what to expect, we can’t say the size of the table is an issue. Make sense?</p>
+<p>I think before we consider whether there’s a default configuration error with Redash (pretty unlikely) we need to nail down exactly how much data do we <em>expect</em> to see on your <code>query results</code> table. This is not a hard question to answer.</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/13</link>
+        <pubDate>Wed, 22 Jun 2022 18:06:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-13</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[anil]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p><code>So I’ll ask again for the third time: are you actually pulling sizable amounts of data into Redash? Because if you are it’s not surprising that the query results table would be this large.</code></p>
+<p>No, we are not fetching such a large data.</p>
+<p>will running <code>vaccum full querry_results</code> help ? as i can autovaccum is set to on , but it does not release the disk space ?</p>
+<p>I checked the file the table <code>querry_results</code> is writing to on the server using below querry:</p>
+<p><code>select pg_relation_filepath('query_results');</code></p>
+<p>but i can see the file is only 1gb in size , whereas the table size is more than 600 gb !</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/12</link>
+        <pubDate>Tue, 21 Jun 2022 17:08:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-12</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p><code>retrieved_at</code> doesn’t really make a difference. See my edit above that includes the specification for the cleanup job: if the results are being referenced by an existing query they won’t be deleted no matter how old they are.</p>
+<p>So I’ll ask again for the third time: are you actually pulling sizable amounts of data into Redash? Because if you are it’s not surprising that the query results table would be this large.</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/11</link>
+        <pubDate>Mon, 23 May 2022 18:39:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-11</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[anil]]></dc:creator>
+        <description><![CDATA[
+            <p>i can still see the older data in it , by checking the <strong>retrieved_at</strong> column in the redash DB</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6ae0ba77ec2372c07422ae4f4edf07f1cee7cd06.jpeg" data-download-href="/uploads/short-url/ffu5APMO7DB5YljVkOH23xJvkKq.jpeg?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6ae0ba77ec2372c07422ae4f4edf07f1cee7cd06_2_252x500.jpeg" alt="image" data-base62-sha1="ffu5APMO7DB5YljVkOH23xJvkKq" width="252" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6ae0ba77ec2372c07422ae4f4edf07f1cee7cd06_2_252x500.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6ae0ba77ec2372c07422ae4f4edf07f1cee7cd06.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/6ae0ba77ec2372c07422ae4f4edf07f1cee7cd06.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/6ae0ba77ec2372c07422ae4f4edf07f1cee7cd06_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/10</link>
+        <pubDate>Mon, 23 May 2022 18:23:14 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-10</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Not really, since it cleans up <em>unused</em> query results. If you’re actually using all those query results then it’s not going to affect them.</p>
+<p>i.e. here’s the job description directly from the source code:</p>
+<pre><code class="lang-auto">def cleanup_query_results():
+    """
+    Job to cleanup unused query results -- such that no query links to them anymore, and older than
+    settings.QUERY_RESULTS_CLEANUP_MAX_AGE (a week by default, so it's less likely to be open in someone's browser and be used).
+
+    Each time the job deletes only settings.QUERY_RESULTS_CLEANUP_COUNT (100 by default) query results so it won't choke
+    the database in case of many such results.
+    """
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/9</link>
+        <pubDate>Mon, 23 May 2022 18:13:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-9</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[anil]]></dc:creator>
+        <description><![CDATA[
+            <p>yes , the  usage is pretty high but considering the value we set for the below variable, the size of data is pretty unusual!<br>
+REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE=2</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/8</link>
+        <pubDate>Mon, 23 May 2022 18:12:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-8</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yikes.</p>
+<p>What about the other questions? Are you actually pulling that much data on a regular basis?</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/7</link>
+        <pubDate>Mon, 23 May 2022 18:09:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-7</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[anil]]></dc:creator>
+        <description><![CDATA[
+            <p>yes its the query_results table thats keep growing, cant figure out why it keeps on growing if the clean up job is working fine !</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b396b0c1dc66f76f939fd808c0c0daffb7ee0e26.jpeg" data-download-href="/uploads/short-url/pCIjQbAVPVwcn1DFWTbvu9tbLFA.jpeg?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b396b0c1dc66f76f939fd808c0c0daffb7ee0e26_2_690x175.jpeg" alt="image" data-base62-sha1="pCIjQbAVPVwcn1DFWTbvu9tbLFA" width="690" height="175" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b396b0c1dc66f76f939fd808c0c0daffb7ee0e26_2_690x175.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b396b0c1dc66f76f939fd808c0c0daffb7ee0e26_2_1035x262.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b396b0c1dc66f76f939fd808c0c0daffb7ee0e26_2_1380x350.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b396b0c1dc66f76f939fd808c0c0daffb7ee0e26_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/6</link>
+        <pubDate>Mon, 23 May 2022 18:07:28 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-6</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>First, it looks like the cleanup job is working as expected. It’s removing unused results.</p>
+<p>Which begs the question: what is growing the disk usage and is that normal? How many queries are you running regularly? Is it the <code>query_results</code> table that grows? What I’m getting at is there are use cases of Redash where you would expect to see the disk space to grow: i.e. if you are running more and larger queries that return many thousands of rows.</p>
+<p>While I usually recommend upgrading, I don’t believe that doing so will “fix” this because it’s not clear if we have a problem or not. If you want to upgrade there are detailed instructions on github under our releases section here: <a href="https://github.com/getredash/redash/releases/tag/v10.1.0" class="inline-onebox">Release v10.1.0 · getredash/redash · GitHub</a></p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/5</link>
+        <pubDate>Thu, 19 May 2022 22:42:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-5</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[anil]]></dc:creator>
+        <description><![CDATA[
+            <p>So can you suggest what can be a possible solution for this , or should we upgrade it V10 , also if we need to upgrade , can you share the upgrade steps from beta to stable release.</p>
+<p>I am getting below in docker logs:</p>
+<pre><code class="lang-auto">worker_1            | [2022-05-18 17:09:27,503][PID:3257][INFO][rq.worker] Result is kept for 120 seconds
+worker_1            | [2022-05-18 17:09:37,474][PID:17][INFO][rq.worker] periodic: e27209059575fcc17c527c47d0957cb21756e551
+worker_1            | [2022-05-18 17:09:37,481][PID:3258][INFO][rq.job.redash.tasks.queries.maintenance] job.func_name=redash.tasks.queries.maintenance.cleanup_query_results job.id=e27209059575fcc17c527c47d0957cb21756e551 Running query results clean up (removing maximum of 10000 unused results, that are 2 days old or more)
+worker_1            | [2022-05-18 17:09:37,609][PID:3258][INFO][rq.job.redash.tasks.queries.maintenance] job.func_name=redash.tasks.queries.maintenance.cleanup_query_results job.id=e27209059575fcc17c527c47d0957cb21756e551 Deleted 32 unused query results.
+scheduled_worker_1  | [2022-05-18 17:17:30,284][PID:2201][INFO][root] Updated 1 queries with result (f7d299a3f28039e90eede2be622316e1).
+</code></pre>
+<p><code>worker_1            | [2022-05-18 17:29:38,751][PID:3696][INFO][rq.job.redash.tasks.queries.maintenance] job.func_name=redash.tasks.queries.maintenance.cleanup_query_results job.id=e27209059575fcc17c527c47d0957cb21756e551 Deleted 31 unused query results.</code></p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/4</link>
+        <pubDate>Wed, 18 May 2022 17:35:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-4</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>It’s also possible a form of this bug is at play: <a href="http://discuss.redash.io/t/redash-events-table-missing-from-version-9-beta/8929/13" class="inline-onebox">Redash events table missing from version 9 beta - #13 by dgho6348</a></p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/3</link>
+        <pubDate>Tue, 17 May 2022 17:49:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-3</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Welcome to the forum.</p>
+<p>There is an open question as to whether we have an issue in V9 + V10 with maintenance tasks not running on schedule. There is an in-depth discussion of this <a href="http://discuss.redash.io/t/maintenance-is-not-running/10115/12">here</a>. To see whether this affects you, can you examine your docker logs to see if the cleanup job is running at all?</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/2</link>
+        <pubDate>Tue, 17 May 2022 17:47:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-2</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+      <item>
+        <title>Redash Eating Disk Space</title>
+        <dc:creator><![CDATA[anil]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi ,we are using redash version redash:9.0.0-beta.b42121 using docker-compose and redsah continue to fill the disk despite passing all the environment variables required for clearing the disk, can someone help.<br>
+Below are the env varibales we are using</p>
+<p>REDASH_QUERY_RESULTS_CLEANUP_ENABLED=true</p>
+<p>REDASH_QUERY_RESULTS_CLEANUP_COUNT=10000</p>
+<p>REDASH_QUERY_RESULTS_CLEANUP_MAX_AGE=2</p>
+          <p><a href="https://discuss.redash.io/t/redash-eating-disk-space/10490/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-eating-disk-space/10490/1</link>
+        <pubDate>Tue, 17 May 2022 16:27:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10490-1</guid>
+        <source url="https://discuss.redash.io/t/redash-eating-disk-space/10490.rss">Redash Eating Disk Space</source>
+      </item>
+  </channel>
+</rss>

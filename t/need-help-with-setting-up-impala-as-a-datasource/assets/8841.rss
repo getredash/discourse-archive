@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Need help with setting up Impala as a datasource</title>
+    <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841</link>
+    <description>I have spent some time trying to setup Impala as a datasource. I couldn&#39;t figure out why it&#39;s not passing test connection.
+
+Host: hadoop01.domain.com
+Port: 21000
+Protocol: Hive Server 2
+Database: default
+Use LDAP: Unchecked
+Username: kulink (this is a database read only service account)
+Password: filled in
+Timeout: 3600
+
+Here is the error I am getting:
+Connection Test Failed:
+Metastore Error [Failed after retrying 3 times]
+
+Can you please tell me how to resolve this issue and make it work?
+
+Thanks!</description>
+    
+    <lastBuildDate>Tue, 24 Aug 2021 13:37:06 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes please open a PR for this.</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/9</link>
+        <pubDate>Tue, 24 Aug 2021 13:37:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-9</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[andor.toth]]></dc:creator>
+        <description><![CDATA[
+            <p>Here’s my patch for V10-beta. Should I send a PR instead?</p>
+<pre><code class="lang-auto">--- redash/query_runner/impala_ds.py.orig	2019-12-11 13:51:21.000000000 +0100
++++ redash/query_runner/impala_ds.py	2021-08-24 08:55:59.632420809 +0200
+@@ -46,16 +46,9 @@
+                 "port": {
+                     "type": "number"
+                 },
+-                "protocol": {
+-                    "type": "string",
+-                    "title": "Please specify beeswax or hiveserver2"
+-                },
+                 "database": {
+                     "type": "string"
+                 },
+-                "use_ldap": {
+-                    "type": "boolean"
+-                },
+                 "ldap_user": {
+                     "type": "string"
+                 },
+@@ -64,10 +57,22 @@
+                 },
+                 "timeout": {
+                     "type": "number"
+-                }
++                },
++                "auth_mechanism": {
++                    "type": "string",
++                    "title": "Please specify one of the following: NOSASL, PLAIN, GSSAPI, LDAP"
++                },
++                "impersonation": {
++                    "type": "boolean"
++                },
++                "impersonation_domains": {
++                    "type": "string",
++                    "title": "Use localpart of the email addresses of these comma separated domains. You have to specify at least one to enable impersonation."
++                },
+             },
+             "required": ["host"],
+-            "secret": ["ldap_password"]
++            "secret": ["ldap_password"],
++            "order": ['host', 'port', 'database', 'auth_mechanism', 'impersonation', 'impersonation_domains', 'ldap_user', 'ldap_password', 'timeout']
+         }
+ 
+     @classmethod
+@@ -94,9 +99,15 @@
+ 
+         connection = None
+         try:
+-            connection = connect(**self.configuration.to_dict())
++            configuration = self.configuration.to_dict()
++            connection = connect(**{k: v for k, v in configuration.items() if k not in ('impersonation', 'impersonation_domains')})
++            impersonation_domains = map(str.strip, configuration['impersonation_domains'].split(','))
++            if configuration['impersonation'] and any(user.email.endswith('@'+domain) for domain in impersonation_domains):
++                cursor_configuration = {'impala.doas.user': user.email.split('@')[0] }
++            else:
++                cursor_configuration = None
+ 
+-            cursor = connection.cursor()
++            cursor = connection.cursor(configuration=cursor_configuration)
+ 
+             cursor.execute(query)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/8</link>
+        <pubDate>Tue, 24 Aug 2021 06:56:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-8</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>If someone can add this to the Impala query runner we’d be happy to merge it.</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/7</link>
+        <pubDate>Wed, 04 Aug 2021 13:44:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-7</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[andor.toth]]></dc:creator>
+        <description><![CDATA[
+            <p>In this case, you have to specify auth_mechanism=GSSAPI in the database connection string, which is not possible out of the box as far as i can remember. Also SASL Python packages (pip) are required besides Impyla for it to work.</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/6</link>
+        <pubDate>Wed, 04 Aug 2021 04:49:17 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-6</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[doctor]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for responding… admin team confirmed that we use Kerberos and the user I have entered in the datasource setup form and using to connect to database has valid certificate.</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/5</link>
+        <pubDate>Sat, 31 Jul 2021 14:11:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-5</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[andor.toth]]></dc:creator>
+        <description><![CDATA[
+            <p>Maybe you have a secure cluster, that allows Kerberos (GSSAPI) authentication only. If so, do you have a valid Kerberos ticket for the user running Redash?</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/4</link>
+        <pubDate>Fri, 30 Jul 2021 18:24:47 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-4</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[doctor]]></dc:creator>
+        <description><![CDATA[
+            <p>I ditched test connection and saved datasource settings. Created a new query using the Impala datasource. Now I am getting this error.</p>
+<p>" Error running query: <strong>Bad status: 3 (b’Unsupported mechanism type PLAIN’)</strong>"</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/3</link>
+        <pubDate>Thu, 29 Jul 2021 20:33:36 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-3</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[doctor]]></dc:creator>
+        <description><![CDATA[
+            <p>anyone else experienced issues connecting? how did you resolve? thanks in advance.</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/2</link>
+        <pubDate>Thu, 29 Jul 2021 17:49:07 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-2</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+      <item>
+        <title>Need help with setting up Impala as a datasource</title>
+        <dc:creator><![CDATA[doctor]]></dc:creator>
+        <description><![CDATA[
+            <p>I have spent some time trying to setup Impala as a datasource. I couldn’t figure out why it’s not passing test connection.</p>
+<p>Host: <a href="http://hadoop01.domain.com" rel="noopener nofollow ugc">hadoop01.domain.com</a><br>
+Port: 21000<br>
+Protocol: Hive Server 2<br>
+Database: default<br>
+Use LDAP: Unchecked<br>
+Username: kulink (this is a database read only service account)<br>
+Password: filled in<br>
+Timeout: 3600</p>
+<p>Here is the error I am getting:<br>
+Connection Test Failed:<br>
+Metastore Error [Failed after retrying 3 times]</p>
+<p>Can you please tell me how to resolve this issue and make it work?</p>
+<p>Thanks!</p>
+          <p><a href="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841/1</link>
+        <pubDate>Thu, 29 Jul 2021 04:44:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8841-1</guid>
+        <source url="https://discuss.redash.io/t/need-help-with-setting-up-impala-as-a-datasource/8841.rss">Need help with setting up Impala as a datasource</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Trying to set up GMAIL email-server. Failing</title>
+    <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554</link>
+    <description>### Issue Summary
+
+We&#39;re trying to set up an email-server , using GMAIL.
+(redash@ridewithvia.com)
+
+We&#39;ve tried all possible combinations of  [tls, ssl, host, port ] , but not succeeding. 
+here are our attempts + responses :
+
+1. 
+**attempt**: (True, False, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 587)
+**Response**: `smtplib.SMTPAuthenticationError: (535, &#39;5.7.8 Username and Password not accepted. Learn more at\n5.7.8 ` `https://support.google.com/mail/?p=BadCredentials` ` h13sm3674963qtu.23 - gsmtp&#39;)`
+
+2.
+**attempt**: (True, False, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 465)
+**response**: smtplib.SMTPServerDisconnected: Connection unexpectedly closed
+
+3.
+**attempt**: (False, False, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 465)
+**response**: smtplib.SMTPServerDisconnected: Connection unexpectedly closed
+
+4. 
+**attempt**: (True, True, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 465)
+**response**: smtplib.SMTPException: STARTTLS extension not supported by server.
+
+5. 
+**attempt**: (False, True, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 465)
+**response**: `smtplib.SMTPAuthenticationError: (535, &#39;5.7.8 Username and Password not accepted. Learn more at\n5.7.8 ` `https://support.google.com/mail/?p=BadCredentials` ` x4sm3491709qkx.33 - gsmtp&#39;)`
+
+6. 
+**attempt**: (False, False, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 587)
+**response**: smtplib.SMTPException: SMTP AUTH extension not supported by server.
+
+7.
+**attempt**: (False, True, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 587)
+**response**: ssl.SSLError: [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:727)
+
+8.
+**attempt**: (True, True, ‘[smtp.gmail.com](http://smtp.gmail.com/)’, 587)
+**response**: ssl.SSLError: [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:727)
+
+
+@arikfr would love your kind help:) 
+
+
+### Technical details:
+
+* Redash Version: 8
+* Browser/OS: 
+* How did you install Redash: Image</description>
+    
+    <lastBuildDate>Thu, 23 Feb 2023 07:47:44 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[torajim]]></dc:creator>
+        <description><![CDATA[
+            <p>For those who still have this problem, check followings.</p>
+<p>(In V10, remove all " from values)</p>
+<ul>
+<li>REDASH_MAIL_USE_SSL=false</li>
+<li>REDASH_MAIL_USE_TLS=true</li>
+<li>REDASH_HOST=<a href="https://discuss.redash.io">http://~~~</a>
+</li>
+</ul>
+<p>(1) The google account in REDASH_MAIL_USERNAME should set to have 2-step verification.<br>
+(2) In addition, the account should have “App passwords” in order to log in from a certain application. (<a href="https://support.google.com/accounts/answer/185833?visit_id=638127344942973095-1307740369&amp;p=InvalidSecondFactor&amp;rd=1" class="inline-onebox" rel="noopener nofollow ugc">Sign in with App Passwords - Google Account Help</a>)</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/8</link>
+        <pubDate>Thu, 23 Feb 2023 07:47:44 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-8</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[nyinyi]]></dc:creator>
+        <description><![CDATA[
+            <p>I had same problem in Redash mail server setup with gmail. Going to [<a href="https://accounts.google.com/DisplayUnlockCaptcha" class="inline-onebox" rel="noopener nofollow ugc">Sign in - Google Accounts</a>] worked for me. It make my gmail account access enabled.</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/7</link>
+        <pubDate>Sun, 13 Feb 2022 10:13:57 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-7</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[thomasjpatterson]]></dc:creator>
+        <description><![CDATA[
+            <p>For anyone who comes back to this. I had this same issue. Removing REDASH_MAIL_USE_SSL entirely from the env file solved it for me. Having both the SSL and TLS I suppose throws it off entirely.</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/6</link>
+        <pubDate>Tue, 04 Jan 2022 13:14:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-6</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[jbaxter]]></dc:creator>
+        <description><![CDATA[
+            <p>I switched to SES and that’s working fine, seems to be a GMail issue.</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/5</link>
+        <pubDate>Mon, 06 Apr 2020 12:05:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-5</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Perhaps have a look at the Docker <a href="https://docs.docker.com/compose/environment-variables/">help pages</a>? Are you certain your environment var changes are being picked up by the containers?</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/4</link>
+        <pubDate>Fri, 03 Apr 2020 23:19:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-4</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[jbaxter]]></dc:creator>
+        <description><![CDATA[
+            <p>I am having the same issue with all combinations mentioned above, same exact results. To confirm, I am in fact editing the /opt/redash/env file and doing a full container compose as suggested from Redash documentation, but this is still not working.</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/3</link>
+        <pubDate>Thu, 02 Apr 2020 17:35:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-3</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[griffinator76]]></dc:creator>
+        <description><![CDATA[
+            <p>Can you confirm that you’re following the steps described here: <a href="https://redash.io/help/open-source/setup" rel="nofollow noopener">https://redash.io/help/open-source/setup</a> i.e. you’re editing the file /opt/redash/env and setting the appropriate environment variable values there?</p>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/2</link>
+        <pubDate>Tue, 18 Feb 2020 20:29:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-2</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+      <item>
+        <title>Trying to set up GMAIL email-server. Failing</title>
+        <dc:creator><![CDATA[victordek]]></dc:creator>
+        <description><![CDATA[
+            <h3>Issue Summary</h3>
+<p>We’re trying to set up an email-server , using GMAIL.<br>
+(<a href="mailto:redash@ridewithvia.com">redash@ridewithvia.com</a>)</p>
+<p>We’ve tried all possible combinations of  [tls, ssl, host, port ] , but not succeeding.<br>
+here are our attempts + responses :</p>
+<ol>
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (True, False, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 587)<br>
+<strong>Response</strong>: <code>smtplib.SMTPAuthenticationError: (535, '5.7.8 Username and Password not accepted. Learn more at\n5.7.8 </code> <code>https://support.google.com/mail/?p=BadCredentials</code> <code> h13sm3674963qtu.23 - gsmtp')</code></p>
+<ol start="2">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (True, False, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 465)<br>
+<strong>response</strong>: smtplib.SMTPServerDisconnected: Connection unexpectedly closed</p>
+<ol start="3">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (False, False, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 465)<br>
+<strong>response</strong>: smtplib.SMTPServerDisconnected: Connection unexpectedly closed</p>
+<ol start="4">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (True, True, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 465)<br>
+<strong>response</strong>: smtplib.SMTPException: STARTTLS extension not supported by server.</p>
+<ol start="5">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (False, True, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 465)<br>
+<strong>response</strong>: <code>smtplib.SMTPAuthenticationError: (535, '5.7.8 Username and Password not accepted. Learn more at\n5.7.8 </code> <code>https://support.google.com/mail/?p=BadCredentials</code> <code> x4sm3491709qkx.33 - gsmtp')</code></p>
+<ol start="6">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (False, False, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 587)<br>
+<strong>response</strong>: smtplib.SMTPException: SMTP AUTH extension not supported by server.</p>
+<ol start="7">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (False, True, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 587)<br>
+<strong>response</strong>: ssl.SSLError: [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:727)</p>
+<ol start="8">
+<li>
+</li>
+</ol>
+<p><strong>attempt</strong>: (True, True, ‘<a href="http://smtp.gmail.com/" rel="nofollow noopener">smtp.gmail.com</a>’, 587)<br>
+<strong>response</strong>: ssl.SSLError: [SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:727)</p>
+<p><a class="mention" href="https://discuss.redash.io/u/arikfr">@arikfr</a> would love your kind help:)</p>
+<h3>Technical details:</h3>
+<ul>
+<li>Redash Version: 8</li>
+<li>Browser/OS:</li>
+<li>How did you install Redash: Image</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554/1</link>
+        <pubDate>Wed, 12 Feb 2020 10:42:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5554-1</guid>
+        <source url="https://discuss.redash.io/t/trying-to-set-up-gmail-email-server-failing/5554.rss">Trying to set up GMAIL email-server. Failing</source>
+      </item>
+  </channel>
+</rss>

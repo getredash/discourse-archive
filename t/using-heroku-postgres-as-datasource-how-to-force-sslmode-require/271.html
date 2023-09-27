@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Using Heroku Postgres as datasource: how to force sslmode=require?</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/using-heroku-postgres-as-datasource-how-to-force-sslmode-require/271">Using Heroku Postgres as datasource: how to force sslmode=require?</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/support/6.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Support</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Using Heroku Postgres as datasource: how to force sslmode=require?" itemprop="headline"/>
+<meta content="Support" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/samuel.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/samuel_avatar.png" tabindex="-1" width="48"/><span itemprop="name">samuel</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-heroku-postgres-as-datasource-how-to-force-sslmode-require/271" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-11-11T15:32:23Z" itemprop="datePublished">
+                    November 11, 2016,  3:32pm
+                  </time>
+<meta content="2016-11-11T15:32:23Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Hello,</p>
+<p>I would like to use a <strong>Postgres database</strong> hosted on <strong>Heroku</strong> as a datasource, but as stated in the Heroku documentation:</p>
+<blockquote>
+<p>Heroku Postgres &amp; SSL<br/>
+Heroku Postgres databases created on the Common Runtime requires the use of SSL. Most clients will connect over SSL by default, but on occasion it is necessary to set the <strong>sslmode=require</strong> parameter on a Postgres connection.</p>
+</blockquote>
+<p>Unfortunately, the re:dash postgres datasource does not provide any way to set this parameter. So I get an error when trying to connect to this database - and the error states that “SSL is off”.</p>
+<p>How could I “force” this parameter sslmode to require?</p>
+<p>As there is probably more people interested in creating dashboard using Heroku Postgres datasource, it would be great to have this setting in the datasource creation page.</p>
+<p>Thank you for your help,</p>
+<p>Samuel</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-heroku-postgres-as-datasource-how-to-force-sslmode-require/271" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-11-11T16:24:00Z" itemprop="datePublished">
+                    November 11, 2016,  4:24pm
+                  </time>
+<meta content="2016-11-11T16:24:00Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>There are multiple users who use Redash &amp; Heroku’s Postgres database. Can you include the full error message and some details on your setup (how did you install Redash, what version, etc)?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/samuel.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/samuel_avatar.png" tabindex="-1" width="48"/><span itemprop="name">samuel</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-heroku-postgres-as-datasource-how-to-force-sslmode-require/271" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/7ca89b4df8a0e0d478eff673de21d6c8b05edffc.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-11-11T16:39:57Z" itemprop="datePublished">
+                    November 11, 2016,  4:39pm
+                  </time>
+<meta content="2019-07-31T06:19:47Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi,</p>
+<p>I installed re:dash on Heroku, following the steps <a href="https://redash.io/help-onpremise/setup/setting-up-redash-instance.html" rel="noopener nofollow ugc">described in the doc</a>. The installation went smoothly.</p>
+<p>Then I configured a new postgresql datasource:</p>
+<p>Type: PostgreSQL<br/>
+Database / port / user / password: the settings of the database which contains the data I’d like to analyze.</p>
+<p>When trying to connect, I get the exact same error message I get when using any postgresql client <strong>without</strong> sslmode=require:</p>
+<p><img alt="" data-base62-sha1="hMMrypqfKulv60MT9inxjvv3UAI" height="225" src="assets/7ca89b4df8a0e0d478eff673de21d6c8b05edffc.png" width="314"/></p>
+<p>I know this message seems related to a missing entry in pg_hba.conf, but it also states “SSL off”, which is the actual cause of the error. On other postgresql clients, I was able to solve this by forcing sslmode=require in the connection settings. And the Heroku documentation explains the same.</p>
+<p>Regards,</p>
+<p>Samuel.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/samuel.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/samuel_avatar.png" tabindex="-1" width="48"/><span itemprop="name">samuel</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-heroku-postgres-as-datasource-how-to-force-sslmode-require/271" itemprop="mainEntityOfPage"/>
+<link href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/bf6c7f91188d1b366900d6b40fced39e10ba46d6.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2016-11-11T22:11:43Z" itemprop="datePublished">
+                    November 11, 2016, 10:11pm
+                  </time>
+<meta content="2019-07-31T06:19:47Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi again,</p>
+<p>I modified re:dash source code to add sslmode option to postgres datasource, and it worked <img alt=":slight_smile:" class="emoji" height="20" loading="lazy" src="assets/slight_smile.png" title=":slight_smile:" width="20"/></p>
+<p><strong>Test connection: <img alt=":white_check_mark:" class="emoji" height="20" loading="lazy" src="assets/white_check_mark.png" title=":white_check_mark:" width="20"/> Success</strong></p>
+<p>The source code I modified:</p>
+<p>redash\query_runner\pg.py</p>
+<pre><code>@classmethod
+def configuration_schema(cls):
+    return {
+        "type": "object",
+        "properties": {
+......
+            "dbname": {
+                "type": "string",
+                "title": "Database Name"
+            },
+            "sslmode": {
+                "type": "string",
+                "title": "SSL Mode",
+                "default": "require"
+            }
+        },
+        "required": ["dbname"],
+        "secret": ["password"]
+    }
+</code></pre>
+<p>then the sslmode appears in the datasource creation page:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/rjpEvHqr3C2nYJc71TBj1dVEiFM.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/bf6c7f91188d1b366900d6b40fced39e10ba46d6.png" rel="noopener nofollow ugc" title=""><img alt="" data-base62-sha1="rjpEvHqr3C2nYJc71TBj1dVEiFM" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/bf6c7f91188d1b366900d6b40fced39e10ba46d6_2_10x10.png" height="500" src="assets/bf6c7f91188d1b366900d6b40fced39e10ba46d6.png" width="384"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename"></span><span class="informations">611×795 12 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>and I’m able to connect to the DB.</p>
+<p>Cheers,</p>
+<p>Samuel</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/tylerbrock.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/tylerbrock_avatar.png" tabindex="-1" width="48"/><span itemprop="name">tylerbrock</span></a>
+</span>
+<link href="https://discuss.redash.io/t/using-heroku-postgres-as-datasource-how-to-force-sslmode-require/271" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2017-07-12T16:18:36Z" itemprop="datePublished">
+                    July 12, 2017,  4:18pm
+                  </time>
+<meta content="2017-07-12T16:18:36Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>This is great. Why don’t we throw up a patch for this one?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

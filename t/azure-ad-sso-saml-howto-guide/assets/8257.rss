@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Azure AD SSO SAML HOWTO Guide</title>
+    <link>https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257</link>
+    <description>There are lots of posts here about how to get Azure AD SAML working with self-hosted Redash and not a lot of success. I want to give credit to these [two](http://discuss.redash.io/t/azure-ad-saml-reply-url/5823) [threads](http://discuss.redash.io/t/upgrade-to-9-saml-failure/7963) on helping us get it working. What follows below is a guide on how to enable Redash SSO with SAML to Azure AD without modifying the Redash source code.
+
+Here is an error we ran into for SEO since there wasn&#39;t much on Google for this code:
+
+    Request Id: 9f4bcae7-dcbf-4bb8-9989-7e6f6734ab00
+    Correlation Id: 7bbfade4-92fe-4536-a5fd-99faf2f4ebb0
+    Timestamp: 2021-03-30T20:34:04Z
+    Message: AADSTS7500511: XML attribute &#39;Format&#39; in the SAML message must be a URI.
+
+What this means is that the Format attribute of the &lt;NameId&gt; node in the SAML message was not a URI. But in reality, it needed to be the following URN in the `SAML NameID Format` config in Redash:
+
+    urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+
+So, here are the required settings on the Azure and Redash sides:
+
+![Screen Shot 2021-03-31 at 3.14.54 PM|567x500](upload://akMdUW0C3HGDNhEghKzAXsgAgq9.png) 
+
+If you do not configure the claims as directed below, you will run into this error in redash/authentication/saml_auth.py’:
+
+    authn_response.ava[“FirstName”][0]
+
+If you enable LOG_LEVEL=debug, you can look in the logs and see an output line for AVA={...} which will show all of the parameters in the AVA dictionary (this is performed by the underlying pysaml2 client which parses the authn request/response.  
+
+Here&#39;s how to configure the claims to get around this: 
+
+![Screen Shot 2021-03-31 at 3.14.42 PM|690x421](upload://7Q2Ia64YcJt00blLMYuVKvSWzU8.png) ![Screen Shot 2021-03-31 at 3.23.32 PM|690x166](upload://53G9NjQTAIJLRQt7UsC5eHB95wq.png) ![Screen Shot 2021-03-31 at 3.23.21 PM|690x153](upload://nPLaPpOWxjYFsxO5QUqSQS7AARn.png) 
+
+Note that a namespace is not required. If you provide it, it will fail. Leave that field blank!
+
+Lastly, here are the Redash settings which correspond to the Azure settings:
+
+![Screen Shot 2021-03-31 at 12.57.38 PM|454x500](upload://8mG3QhPduXreHq2bRnU3LyaJXvh.png) 
+
+Again, note the `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress` value that goes into NameID Format.
+
+That should be all it takes. This was performed on Version: 8.0.0+b32245 (a16f551e) running under Docker in AWS ECS.</description>
+    
+    <lastBuildDate>Fri, 10 Sep 2021 22:09:40 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Azure AD SSO SAML HOWTO Guide</title>
+        <dc:creator><![CDATA[jenswachtel]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks so much for this! It all works fine, except that I have the issue that the SAMLRequest= coming from my redash server (which internally does not have https, just http, but externally through application gateway it is https) seems to generate a http reply url and in Azure AD, I cannot save a http:// url as they only allow https://. How did you solve that problem?</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0541b8b541666afcb06900f865d738240853899e.png" data-download-href="/uploads/short-url/Kvc5LX25ICCAZzSRYqYb5F6sI6.png?dl=1" title="Screen Shot 2021-09-10 at 6.07.23 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0541b8b541666afcb06900f865d738240853899e_2_690x251.png" alt="Screen Shot 2021-09-10 at 6.07.23 PM" data-base62-sha1="Kvc5LX25ICCAZzSRYqYb5F6sI6" width="690" height="251" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0541b8b541666afcb06900f865d738240853899e_2_690x251.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0541b8b541666afcb06900f865d738240853899e.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0541b8b541666afcb06900f865d738240853899e.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0541b8b541666afcb06900f865d738240853899e_2_10x10.png"></a></div><p></p>
+<p>Thanks,<br>
+Jens</p>
+          <p><a href="https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257/2</link>
+        <pubDate>Fri, 10 Sep 2021 22:09:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8257-2</guid>
+        <source url="https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257.rss">Azure AD SSO SAML HOWTO Guide</source>
+      </item>
+      <item>
+        <title>Azure AD SSO SAML HOWTO Guide</title>
+        <dc:creator><![CDATA[ghidinelli]]></dc:creator>
+        <description><![CDATA[
+            <p>There are lots of posts here about how to get Azure AD SAML working with self-hosted Redash and not a lot of success. I want to give credit to these <a href="http://discuss.redash.io/t/azure-ad-saml-reply-url/5823">two</a> <a href="http://discuss.redash.io/t/upgrade-to-9-saml-failure/7963">threads</a> on helping us get it working. What follows below is a guide on how to enable Redash SSO with SAML to Azure AD without modifying the Redash source code.</p>
+<p>Here is an error we ran into for SEO since there wasn’t much on Google for this code:</p>
+<pre><code>Request Id: 9f4bcae7-dcbf-4bb8-9989-7e6f6734ab00
+Correlation Id: 7bbfade4-92fe-4536-a5fd-99faf2f4ebb0
+Timestamp: 2021-03-30T20:34:04Z
+Message: AADSTS7500511: XML attribute 'Format' in the SAML message must be a URI.
+</code></pre>
+<p>What this means is that the Format attribute of the  node in the SAML message was not a URI. But in reality, it needed to be the following URN in the <code>SAML NameID Format</code> config in Redash:</p>
+<pre><code>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+</code></pre>
+<p>So, here are the required settings on the Azure and Redash sides:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/486f039c30b3653575e543f0fa0b7c927c1f66b5.png" data-download-href="/uploads/short-url/akMdUW0C3HGDNhEghKzAXsgAgq9.png?dl=1" title="Screen Shot 2021-03-31 at 3.14.54 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/486f039c30b3653575e543f0fa0b7c927c1f66b5_2_567x500.png" alt="Screen Shot 2021-03-31 at 3.14.54 PM" data-base62-sha1="akMdUW0C3HGDNhEghKzAXsgAgq9" width="567" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/486f039c30b3653575e543f0fa0b7c927c1f66b5_2_567x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/486f039c30b3653575e543f0fa0b7c927c1f66b5.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/486f039c30b3653575e543f0fa0b7c927c1f66b5.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/486f039c30b3653575e543f0fa0b7c927c1f66b5_2_10x10.png"></a></div><p></p>
+<p>If you do not configure the claims as directed below, you will run into this error in redash/authentication/saml_auth.py’:</p>
+<pre><code>authn_response.ava[“FirstName”][0]
+</code></pre>
+<p>If you enable LOG_LEVEL=debug, you can look in the logs and see an output line for AVA={…} which will show all of the parameters in the AVA dictionary (this is performed by the underlying pysaml2 client which parses the authn request/response.</p>
+<p>Here’s how to configure the claims to get around this:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/36f1465a103561b1a9cda992952bd25ecc67dfd4.png" data-download-href="/uploads/short-url/7Q2Ia64YcJt00blLMYuVKvSWzU8.png?dl=1" title="Screen Shot 2021-03-31 at 3.14.42 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/36f1465a103561b1a9cda992952bd25ecc67dfd4.png" alt="Screen Shot 2021-03-31 at 3.14.42 PM" data-base62-sha1="7Q2Ia64YcJt00blLMYuVKvSWzU8" width="690" height="421" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/36f1465a103561b1a9cda992952bd25ecc67dfd4_2_10x10.png"></a></div> <div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/2/23755c9fd130c9333ab3d3fb17a7b1541cc7f596.png" data-download-href="/uploads/short-url/53G9NjQTAIJLRQt7UsC5eHB95wq.png?dl=1" title="Screen Shot 2021-03-31 at 3.23.32 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/23755c9fd130c9333ab3d3fb17a7b1541cc7f596_2_690x166.png" alt="Screen Shot 2021-03-31 at 3.23.32 PM" data-base62-sha1="53G9NjQTAIJLRQt7UsC5eHB95wq" width="690" height="166" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/23755c9fd130c9333ab3d3fb17a7b1541cc7f596_2_690x166.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/23755c9fd130c9333ab3d3fb17a7b1541cc7f596_2_1035x249.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/23755c9fd130c9333ab3d3fb17a7b1541cc7f596_2_1380x332.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/2/23755c9fd130c9333ab3d3fb17a7b1541cc7f596_2_10x10.png"></a></div> <div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a70bdf6800c38cf03a14f06905039007516a320d.png" data-download-href="/uploads/short-url/nPLaPpOWxjYFsxO5QUqSQS7AARn.png?dl=1" title="Screen Shot 2021-03-31 at 3.23.21 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a70bdf6800c38cf03a14f06905039007516a320d_2_690x153.png" alt="Screen Shot 2021-03-31 at 3.23.21 PM" data-base62-sha1="nPLaPpOWxjYFsxO5QUqSQS7AARn" width="690" height="153" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a70bdf6800c38cf03a14f06905039007516a320d_2_690x153.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a70bdf6800c38cf03a14f06905039007516a320d_2_1035x229.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a70bdf6800c38cf03a14f06905039007516a320d_2_1380x306.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a70bdf6800c38cf03a14f06905039007516a320d_2_10x10.png"></a></div><p></p>
+<p>Note that a namespace is not required. If you provide it, it will fail. Leave that field blank!</p>
+<p>Lastly, here are the Redash settings which correspond to the Azure settings:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3aa1aa9a6108b3d443bb96c7712347cf27f3e7b7.png" data-download-href="/uploads/short-url/8mG3QhPduXreHq2bRnU3LyaJXvh.png?dl=1" title="Screen Shot 2021-03-31 at 12.57.38 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3aa1aa9a6108b3d443bb96c7712347cf27f3e7b7_2_454x500.png" alt="Screen Shot 2021-03-31 at 12.57.38 PM" data-base62-sha1="8mG3QhPduXreHq2bRnU3LyaJXvh" width="454" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3aa1aa9a6108b3d443bb96c7712347cf27f3e7b7_2_454x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3aa1aa9a6108b3d443bb96c7712347cf27f3e7b7_2_681x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/3aa1aa9a6108b3d443bb96c7712347cf27f3e7b7.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/3/3aa1aa9a6108b3d443bb96c7712347cf27f3e7b7_2_10x10.png"></a></div><p></p>
+<p>Again, note the <code>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</code> value that goes into NameID Format.</p>
+<p>That should be all it takes. This was performed on Version: 8.0.0+b32245 (a16f551e) running under Docker in AWS ECS.</p>
+          <p><a href="https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257/1</link>
+        <pubDate>Wed, 31 Mar 2021 20:04:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8257-1</guid>
+        <source url="https://discuss.redash.io/t/azure-ad-sso-saml-howto-guide/8257.rss">Azure AD SSO SAML HOWTO Guide</source>
+      </item>
+  </channel>
+</rss>

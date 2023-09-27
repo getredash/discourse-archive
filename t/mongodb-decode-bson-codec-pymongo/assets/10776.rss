@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>MongoDB decode bson codec pymongo</title>
+    <link>https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776</link>
+    <description>### Issue Summary
+
+A summary of the issue and the browser/OS environment in which it occurs.
+
+### Technical details:
+
+* Redash Version: v10
+* Browser/OS: Google Chrome
+* How did you install Redash: Kubernetes with Helm Chart
+
+I cannot load schema on few databases on mongodb with unknown unicode decode bson
+im using pymongo &gt; 3.90
+maybe i need some unicode_decode_error_handler (CMIIW) or some custom query runner mongodb 
+can anyone having same issue?
+
+im can connect to the DB anyway but cannot load its schema
+![image|606x174, 50%](upload://oT5LIwR2gT0ADdiqqojDK1PuThJ.png)
+
+error log on scheduler worker : 
+&gt; Traceback (most recent call last):
+&gt;   File &quot;/app/redash/tasks/queries/maintenance.py&quot;, line 171, in refresh_schema
+&gt;     ds.get_schema(refresh=True)
+&gt;   File &quot;/app/redash/models/__init__.py&quot;, line 198, in get_schema
+&gt;     schema = query_runner.get_schema(get_stats=refresh)
+&gt;   File &quot;/app/redash/query_runner/mongodb.py&quot;, line 244, in get_schema
+&gt;     columns = self._get_collection_fields(db, collection_name)
+&gt;   File &quot;/app/redash/query_runner/mongodb.py&quot;, line 228, in _get_collection_fields
+&gt;     for d in db[collection_name].find().sort([(&quot;$natural&quot;, 1)]).limit(1):
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py&quot;, line 1156, in next
+&gt;     if len(self.__data) or self._refresh():
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py&quot;, line 1073, in _refresh
+&gt;     self.__send_message(q)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py&quot;, line 955, in __send_message
+&gt;     address=self.__address)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/mongo_client.py&quot;, line 1346, in _run_operation_with_response
+&gt;     exhaust=exhaust)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/mongo_client.py&quot;, line 1464, in _retryable_read
+&gt;     return func(session, server, sock_info, slave_ok)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/mongo_client.py&quot;, line 1340, in _cmd
+&gt;     unpack_res)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/server.py&quot;, line 131, in run_operation_with_response
+&gt;     user_fields=user_fields)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py&quot;, line 1030, in _unpack_response
+&gt;     legacy_response)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/pymongo/message.py&quot;, line 1591, in unpack_response
+&gt;     self.payload_document, codec_options, user_fields)
+&gt;   File &quot;/home/redash/.local/lib/python3.7/site-packages/bson/__init__.py&quot;, line 1098, in _decode_all_selective
+&gt;     return decode_all(data, codec_options)
+&gt; bson.errors.InvalidBSON: &#39;utf-8&#39; codec can&#39;t decode byte 0xd4 in position 1: invalid continuation byte
+
+
+Thanks</description>
+    
+    <lastBuildDate>Mon, 18 Jul 2022 14:27:02 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>MongoDB decode bson codec pymongo</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I googled your error and found the fix: <a href="https://stackoverflow.com/questions/36314776/pymongo-error-bson-errors-invalidbson-utf8-codec-cant-decode-byte-0xa1-in-p" class="inline-onebox">python - pymongo error: bson.errors.InvalidBSON: 'utf8' codec can't decode byte 0xa1 in position 25: invalid start byte - Stack Overflow</a></p>
+<p>This will need to be applied to the <code>mongo.py</code> query runner. If the change works on your end, please open a pull request and we’ll merge it so that others can benefit also.</p>
+          <p><a href="https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776/2</link>
+        <pubDate>Mon, 18 Jul 2022 14:27:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10776-2</guid>
+        <source url="https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776.rss">MongoDB decode bson codec pymongo</source>
+      </item>
+      <item>
+        <title>MongoDB decode bson codec pymongo</title>
+        <dc:creator><![CDATA[ndreaspp]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>A summary of the issue and the browser/OS environment in which it occurs.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v10</li>
+<li>Browser/OS: Google Chrome</li>
+<li>How did you install Redash: Kubernetes with Helm Chart</li>
+</ul>
+<p>I cannot load schema on few databases on mongodb with unknown unicode decode bson<br>
+im using pymongo &gt; 3.90<br>
+maybe i need some unicode_decode_error_handler (CMIIW) or some custom query runner mongodb<br>
+can anyone having same issue?</p>
+<p>im can connect to the DB anyway but cannot load its schema<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/ae6e796261485dcab0b7c41ee8eebd3fe0e67947.png" alt="image" data-base62-sha1="oT5LIwR2gT0ADdiqqojDK1PuThJ" width="303" height="87"></p>
+<p>error log on scheduler worker :</p>
+<blockquote>
+<p>Traceback (most recent call last):<br>
+File “/app/redash/tasks/queries/maintenance.py”, line 171, in refresh_schema<br>
+ds.get_schema(refresh=True)<br>
+File “/app/redash/models/<strong>init</strong>.py”, line 198, in get_schema<br>
+schema = query_runner.get_schema(get_stats=refresh)<br>
+File “/app/redash/query_runner/mongodb.py”, line 244, in get_schema<br>
+columns = self._get_collection_fields(db, collection_name)<br>
+File “/app/redash/query_runner/mongodb.py”, line 228, in _get_collection_fields<br>
+for d in db[collection_name].find().sort([(“$natural”, 1)]).limit(1):<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py”, line 1156, in next<br>
+if len(self.__data) or self._refresh():<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py”, line 1073, in _refresh<br>
+self.__send_message(q)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py”, line 955, in __send_message<br>
+address=self.__address)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/mongo_client.py”, line 1346, in _run_operation_with_response<br>
+exhaust=exhaust)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/mongo_client.py”, line 1464, in _retryable_read<br>
+return func(session, server, sock_info, slave_ok)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/mongo_client.py”, line 1340, in _cmd<br>
+unpack_res)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/server.py”, line 131, in run_operation_with_response<br>
+user_fields=user_fields)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/cursor.py”, line 1030, in _unpack_response<br>
+legacy_response)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/pymongo/message.py”, line 1591, in unpack_response<br>
+self.payload_document, codec_options, user_fields)<br>
+File “/home/redash/.local/lib/python3.7/site-packages/bson/<strong>init</strong>.py”, line 1098, in _decode_all_selective<br>
+return decode_all(data, codec_options)<br>
+bson.errors.InvalidBSON: ‘utf-8’ codec can’t decode byte 0xd4 in position 1: invalid continuation byte</p>
+</blockquote>
+<p>Thanks</p>
+          <p><a href="https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776/1</link>
+        <pubDate>Sun, 17 Jul 2022 08:26:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10776-1</guid>
+        <source url="https://discuss.redash.io/t/mongodb-decode-bson-codec-pymongo/10776.rss">MongoDB decode bson codec pymongo</source>
+      </item>
+  </channel>
+</rss>

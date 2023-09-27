@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Interesting error in Redash v10 after migration</title>
+    <link>https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425</link>
+    <description>Came across an interesting error with a migrated (to Redash v10) instance tonight.
+
+A customer was trying to delete one of the migrated users, with the user still in the &quot;Pending invitation&quot; state.
+
+However, the delete wasn&#39;t working.  On screen it was just showing &quot;Internal server error&quot; (at which point they reached out to me).
+
+Looking at the server logs when triggering the error gave what looks like a smoking gun type of thing:
+
+```
+postgres_1  | 2021-11-08 11:46:09.282 UTC [129297] ERROR:  null value in column &quot;user_id&quot; of relation &quot;favorites&quot; violates not-null constraint
+postgres_1  | 2021-11-08 11:46:09.282 UTC [129297] DETAIL:  Failing row contains (2021-11-08 11:46:09.258622+00, 2021-11-06 05:40:10.061985+00, 9, 1, Dashboard, 9, null).
+postgres_1  | 2021-11-08 11:46:09.282 UTC [129297] STATEMENT:  UPDATE favorites SET updated_at=now(), user_id=NULL WHERE favorites.id = 9
+postgres_1  | 2021-11-08 11:46:20.532 UTC [129456] ERROR:  null value in column &quot;user_id&quot; of relation &quot;changes&quot; violates not-null constraint
+postgres_1  | 2021-11-08 11:46:20.532 UTC [129456] DETAIL:  Failing row contains (queries, 1, 1, 1, null, {&quot;query&quot;: {&quot;previous&quot;: &quot;SELECT DATE_FORMAT(trans_date, \&quot;%Y-%m-%..., 2021-11-06 05:34:26.160611+00).
+postgres_1  | 2021-11-08 11:46:20.532 UTC [129456] STATEMENT:  UPDATE changes SET user_id=NULL WHERE changes.id = 1
+```
+
+From reading that, what _seems_ to be happening is that migrated users can have more information (eg favourites, etc) than normal pending users.
+
+So, the &quot;DELETE&quot; action for normal pending users doesn&#39;t quite work for them, as there looks to be a referential integrity CASCADE which then goes badly when it tries to set a NULL user_id for things.
+
+Normal pending users won&#39;t have ever logged in, so don&#39;t have any favourites (etc) to muck things up.
+
+The workaround in this instance was to just disable those users instead of deleting them.  The &quot;proper&quot; fix might be to have the backend understand the difference between new pending-invitation users and migrated pending-invitation ones, and display a &quot;DISABLE&quot; button instead of &quot;DELETE&quot; for the migration ones.  Not sure yet...
+
+Anyone have thoughts? :slight_smile:</description>
+    
+    <lastBuildDate>Tue, 09 Nov 2021 14:01:56 +0000</lastBuildDate>
+    <category>Development</category>
+    <atom:link href="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Interesting error in Redash v10 after migration</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks Jesse, that makes sense. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+          <p><a href="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425/3</link>
+        <pubDate>Tue, 09 Nov 2021 14:01:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9425-3</guid>
+        <source url="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425.rss">Interesting error in Redash v10 after migration</source>
+      </item>
+      <item>
+        <title>Interesting error in Redash v10 after migration</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>This is expected behaviour. In fact, if you check the origin instance you’ll see that these users can’t be deleted either: only disabled.</p>
+<p>Redash only allows deletion of pending users that have no objects assigned to them. If you invited a user and they never logged-in then you can delete them completely. But if they ever logged-in, or received objects through a migration, then the option name changes from “Delete User” to “Disable User”.</p>
+<p>Of course an admin can go directly to the database to delete a user using SQL, and take care of the cascading foreign keys dependency.</p>
+          <p><a href="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425/2</link>
+        <pubDate>Mon, 08 Nov 2021 15:30:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9425-2</guid>
+        <source url="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425.rss">Interesting error in Redash v10 after migration</source>
+      </item>
+      <item>
+        <title>Interesting error in Redash v10 after migration</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Came across an interesting error with a migrated (to Redash v10) instance tonight.</p>
+<p>A customer was trying to delete one of the migrated users, with the user still in the “Pending invitation” state.</p>
+<p>However, the delete wasn’t working.  On screen it was just showing “Internal server error” (at which point they reached out to me).</p>
+<p>Looking at the server logs when triggering the error gave what looks like a smoking gun type of thing:</p>
+<pre><code class="lang-auto">postgres_1  | 2021-11-08 11:46:09.282 UTC [129297] ERROR:  null value in column "user_id" of relation "favorites" violates not-null constraint
+postgres_1  | 2021-11-08 11:46:09.282 UTC [129297] DETAIL:  Failing row contains (2021-11-08 11:46:09.258622+00, 2021-11-06 05:40:10.061985+00, 9, 1, Dashboard, 9, null).
+postgres_1  | 2021-11-08 11:46:09.282 UTC [129297] STATEMENT:  UPDATE favorites SET updated_at=now(), user_id=NULL WHERE favorites.id = 9
+postgres_1  | 2021-11-08 11:46:20.532 UTC [129456] ERROR:  null value in column "user_id" of relation "changes" violates not-null constraint
+postgres_1  | 2021-11-08 11:46:20.532 UTC [129456] DETAIL:  Failing row contains (queries, 1, 1, 1, null, {"query": {"previous": "SELECT DATE_FORMAT(trans_date, \"%Y-%m-%..., 2021-11-06 05:34:26.160611+00).
+postgres_1  | 2021-11-08 11:46:20.532 UTC [129456] STATEMENT:  UPDATE changes SET user_id=NULL WHERE changes.id = 1
+</code></pre>
+<p>From reading that, what <em>seems</em> to be happening is that migrated users can have more information (eg favourites, etc) than normal pending users.</p>
+<p>So, the “DELETE” action for normal pending users doesn’t quite work for them, as there looks to be a referential integrity CASCADE which then goes badly when it tries to set a NULL user_id for things.</p>
+<p>Normal pending users won’t have ever logged in, so don’t have any favourites (etc) to muck things up.</p>
+<p>The workaround in this instance was to just disable those users instead of deleting them.  The “proper” fix might be to have the backend understand the difference between new pending-invitation users and migrated pending-invitation ones, and display a “DISABLE” button instead of “DELETE” for the migration ones.  Not sure yet…</p>
+<p>Anyone have thoughts? <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+          <p><a href="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425/1</link>
+        <pubDate>Mon, 08 Nov 2021 12:18:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9425-1</guid>
+        <source url="https://discuss.redash.io/t/interesting-error-in-redash-v10-after-migration/9425.rss">Interesting error in Redash v10 after migration</source>
+      </item>
+  </channel>
+</rss>

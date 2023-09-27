@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Migrating Redash SaaS to self-hosted on AWS - Self Hosted Redash Support - Redash Discourse</title>
+    <meta name="description" content="Hello, 
+I’m currently using Redash Hosted (SaaS), the version it shows is 7b026a19 
+Due to the service being taken down, I’d like to migrate to a self hosted solution. 
+I’ve tried spinning up an EC2 with the AMI that’s a&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Migrating Redash SaaS to self-hosted on AWS&#39;" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389" />
+<meta property="og:title" content="Migrating Redash SaaS to self-hosted on AWS" />
+<meta name="twitter:title" content="Migrating Redash SaaS to self-hosted on AWS" />
+<meta property="og:description" content="Hello,  I’m currently using Redash Hosted (SaaS), the version it shows is 7b026a19  Due to the service being taken down, I’d like to migrate to a self hosted solution.  I’ve tried spinning up an EC2 with the AMI that’s available, but it’s for version 8 of Redash, I’ve tried running the ‘redash-migration’ script and while some things copied successfully, some other failed.  What is the best course of action in this case?  Is it possible to get a DB dump of the Redash SaaS environment?" />
+<meta name="twitter:description" content="Hello,  I’m currently using Redash Hosted (SaaS), the version it shows is 7b026a19  Due to the service being taken down, I’d like to migrate to a self hosted solution.  I’ve tried spinning up an EC2 with the AMI that’s available, but it’s for version 8 of Redash, I’ve tried running the ‘redash-migration’ script and while some things copied successfully, some other failed.  What is the best course of action in this case?  Is it possible to get a DB dump of the Redash SaaS environment?" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Self Hosted Redash Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="3 ❤" />
+<meta property="article:published_time" content="2021-11-02T15:44:05+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Migrating Redash SaaS to self-hosted on AWS","mainEntity":{"@type":"Question","name":"Migrating Redash SaaS to self-hosted on AWS","text":"Hello,\n\nI’m currently using Redash Hosted (SaaS), the version it shows is 7b026a19\n\nDue to the service being taken down, I’d like to migrate to a self hosted solution.\n\nI’ve tried spinning up an EC2 with the AMI that’s available, but it’s for version 8 of Redash, I’ve tried running the ‘redash-migra&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2021-11-02T15:44:05.057Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/migrating-redash-saas-to-self-hosted-on-aws/9389">Migrating Redash SaaS to self-hosted on AWS</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-self-hosted/9" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Self Hosted Redash Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Migrating Redash SaaS to self-hosted on AWS'>
+        <meta itemprop='articleSection' content='Self Hosted Redash Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-02T15:44:05Z' class='post-time'>
+                    November 2, 2021,  3:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-02T15:44:05Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hello,</p>
+<p>I’m currently using Redash Hosted (SaaS), the version it shows is 7b026a19<br>
+Due to the service being taken down, I’d like to migrate to a self hosted solution.<br>
+I’ve tried spinning up an EC2 with the AMI that’s available, but it’s for version 8 of Redash, I’ve tried running the ‘redash-migration’ script and while some things copied successfully, some other failed.</p>
+<p>What is the best course of action in this case?<br>
+Is it possible to get a DB dump of the Redash SaaS environment?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-02T16:52:37Z' class='post-time'>
+                    November 2, 2021,  4:52pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-02T16:52:37Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi there, <a href="https://github.com/getredash/redash-toolbelt/tree/master/redash_toolbelt/docs/redash-migrate">redash-migrate</a> is only designed to migrate to OSS Redash V10. It might work for V8 but we haven’t tested that since V8 is not longer supported.</p>
+<p>Happy to help with the migration process if you have questions. You’ll want to recreate your EC2 instance and upgrade it to V10 first, though.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-02T17:09:17Z' class='post-time'>
+                    November 2, 2021,  5:09pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-02T17:09:17Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Would it be able to migrate the V7 SaaS to V10 (That I host)?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-02T17:24:07Z' class='post-time'>
+                    November 2, 2021,  5:24pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-02T17:24:07Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Yes. The instructions for redash-migrate state specifically it is built for that EXACT case <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=10" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-02T22:32:22Z' class='post-time'>
+                    November 2, 2021, 10:32pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-02T22:32:22Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Started with a new EC2 instance and upgraded Redash to v10.<br>
+When getting to the part of migrating the visualizations I get the following (this is not the first run, but same issue):</p>
+<pre><code class="lang-auto">Importing visualizations...
+Query 140614 - SKIP - All visualisations already imported
+...
+Query 207138 - SKIP - All visualisations already imported
+list index out of range
+Saving meta...
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T13:36:05Z' class='post-time'>
+                    November 3, 2021,  1:36pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T13:36:05Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks for reporting this. I’m pushing an update to redash-toolbelt shortly so that we can get a better traceback when this fails. <a href="https://github.com/getredash/redash-toolbelt/pull/108" class="inline-onebox">Show full traceback when an exception is raised by susodapop · Pull Request #108 · getredash/redash-toolbelt · GitHub</a></p>
+<p>We’ll release version <code>0.1.8</code> shortly and then you can re-run.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T15:56:48Z' class='post-time'>
+                    November 3, 2021,  3:56pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T15:56:48Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Tried it with version 0.1.8 of the script, still get the same error and output.<br>
+I found this issue for now:</p><aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675" target="_blank" rel="noopener nofollow ugc">getredash/redash-toolbelt/blob/ba775a1773ffad0e4283baeecd056cb9ebc5be55/redash_toolbelt/examples/migrate.py#L675</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-py">
+      <ol class="start lines" start="665" style="counter-reset: li-counter 664 ;">
+          <li>
+          </li>
+<li># Gather origin info</li>
+          <li>query = orig_client.get_query(query_id)</li>
+          <li>orig_user_id = query["user"]["id"]</li>
+          <li>
+          </li>
+<li># Sort both lists to retain visualization order on the query screen</li>
+          <li>orig_table_visualizations = sorted(</li>
+          <li>    [i for i in query["visualizations"] if i["type"] == "TABLE"],</li>
+          <li>    key=lambda x: x["id"],</li>
+          <li>)</li>
+          <li class="selected">orig_default_table = orig_table_visualizations[0]</li>
+          <li>
+          </li>
+<li># Build a user client so write operations preserve the original created by...</li>
+          <li>
+          </li>
+<li>try:</li>
+          <li>    dest_user_api_key = user_with_api_key(orig_user_id, dest_client)["api_key"]</li>
+          <li>    user_client = Redash(DESTINATION, dest_user_api_key)</li>
+          <li>except UserNotFoundException as e:</li>
+          <li>    print("Query {} - FAIL - Visualizations skipped: ".format(query_id, e))</li>
+          <li>    continue</li>
+          <li>
+      </li>
+</ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>This line fails for queries that the only visualization type they have is not of type “TABLE”.</p>
+<p>I’m not 100% if this sorting part is necessary or not, so I don’t know if it’s safe to try run without it. <a class="mention" href="/u/jesse">@jesse</a> any insights?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T16:33:20Z' class='post-time'>
+                    November 3, 2021,  4:33pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T16:33:20Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thanks for running the latest version! That’s massively helpful.</p>
+<p>Okay so the reason for the sorting is to figure out which table is the <em>default</em> table for the query. The default table is created automatically when the query is created. We just added this logic in 0.1.7. It’s important because customisations to the default table at the origin were not duplicated at the destination without it.</p>
+<p>Since you’re running the dev build, can you add a print statement to see what is the content of <code>query["visualizations"]</code> right about line 675?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T17:26:39Z' class='post-time'>
+                    November 3, 2021,  5:26pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T17:26:39Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Version 0.1.8 is now live on pypi so it can be installed with <code>pip install --upgrade redash-toolbelt</code></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T17:41:07Z' class='post-time'>
+                    November 3, 2021,  5:41pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T17:41:07Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/jesse">@jesse</a> This is the value of query[“visualizations”]:</p>
+<pre><code class="lang-auto">[
+  {
+    "id": 354489,
+    "type": "CHART",
+    "name": "",
+    "description": "",
+    "options": {
+      "showDataLabels": true,
+      "error_y": {
+        "visible": true,
+        "type": "data"
+      },
+      "numberFormat": "0,0[.]00000",
+      "minColumns": 1,
+      "defaultColumns": 3,
+      "series": {
+        "stacking": null,
+        "error_y": {
+          "visible": true,
+          "type": "data"
+        }
+      },
+      "globalSeriesType": "pie",
+      "yAxis": [
+        {
+          "type": "linear",
+          "title": {
+            "text": "some text"
+          }
+        },
+        {
+          "title": {
+            "text": ""
+          },
+          "type": "linear",
+          "opposite": true
+        }
+      ],
+      "minRows": 5,
+      "percentFormat": "0[.]00%",
+      "sortX": true,
+      "seriesOptions": {
+        "payments": {
+          "zIndex": 0,
+          "index": 0,
+          "type": "pie",
+          "yAxis": 0
+        }
+      },
+      "valuesOptions": {
+        "credit": {
+          "color": "#799CFF"
+        },
+        "ach": {
+          "color": "#604FE9"
+        },
+        "debit": {}
+      },
+      "xAxis": {
+        "labels": {
+          "enabled": true
+        },
+        "type": "-",
+        "title": {
+          "text": ""
+        }
+      },
+      "dateTimeFormat": "YYYY-MM-DD HH:mm",
+      "columnMapping": {
+        "paymentMethod": "x",
+        "payments": "y"
+      },
+      "textFormat": "",
+      "defaultRows": 8,
+      "customCode": "// Available variables are x, ys, element, and Plotly\n// Type console.log(x, ys); for more info about x and ys\n// To plot your graph call Plotly.plot(element, ...)\n// Plotly examples and docs: https://plot.ly/javascript/",
+      "legend": {
+        "enabled": true
+      }
+    },
+    "updated_at": "2019-05-26T19:56:21.105Z",
+    "created_at": "2019-05-26T19:51:41.801Z"
+  }
+]
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T17:44:10Z' class='post-time'>
+                    November 3, 2021,  5:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T17:44:10Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Well there’s the problem. This query doesn’t have a table visualization <img src="https://emoji.discourse-cdn.com/twitter/thinking.png?v=10" title=":thinking:" class="emoji" alt=":thinking:"></p>
+<p>Just to confirm: you haven’t manually deleted any visualizations at the database-level? If not, then I think we have a race-condition in our script or something like it. The script is expecting that there will always be at least one table visualisation. But in this case there isn’t one…</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T18:18:15Z' class='post-time'>
+                    November 3, 2021,  6:18pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T18:18:15Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Personally I haven’t deleted anything myself, but I don’t know if it might have been done before by someone else.<br>
+Is there any workaround for this?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-03T18:27:52Z' class='post-time'>
+                    November 3, 2021,  6:27pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-03T18:27:52Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I need to poke through the code to see if I can reproduce this. I would recommend wiping your destination instance and trying again though…</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_14' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Saikou'><span itemprop='name'>Saikou</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-04T12:24:42Z' class='post-time'>
+                    November 4, 2021, 12:24pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-04T12:24:42Z'>
+              <span itemprop='position'>14</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I’ve ended up just adding a table to that query on the origin server and running it again, it worked.</p>
+<p>Another problem I’ve encountered was that some queries had parameters that referred to other queries but these queries were archived in the origin server and thus not copied over to the destination server.<br>
+This caused an internal server error as the ID that was send was ‘None’ (because it couldn’t find the relevant query in the meta file).<br>
+We just removed these queries and continued, but this might be worth to add validation in code for this.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_15' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/migrating-redash-saas-to-self-hosted-on-aws/9389">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-11-04T12:49:59Z' class='post-time'>
+                    November 4, 2021, 12:49pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-11-04T12:49:59Z'>
+              <span itemprop='position'>15</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Unfortunately there’s no much we can do about the archived query issue. Archived queries are never sent through the API <code>redash-migrate</code> uses.</p>
+<aside class="quote no-group" data-username="Saikou" data-post="14" data-topic="9389">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/s/5f9b8f/40.png" class="avatar"> Saikou:</div>
+<blockquote>
+<p>I’ve ended up just adding a table to that query on the origin server and running it again, it worked.</p>
+</blockquote>
+</aside>
+<p>I’m glad this worked. I expected it would. But I wonder if there’s a bug in our code that somehow didn’t transfer the table. If so, then other users will encounter this same issue and may not be as technically capable as you to fix it.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Show column data type in schema browser</title>
+    <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001</link>
+    <description>It would be really useful if the schema browser displayed the data type of columns. 
+
+For example if there&#39;s a column called start_time, it&#39;s not clear if this is actually a datetime, time or string. This matters if the user wants to know how to structure a WHERE clause or add a parameter to the query.
+
+Similarly with numeric data types, for example it can be very important to know if data is being stored as a numeric or floating point data type as floating point arithmetic can lead to inaccuracies and it&#39;s not always possible to discover this just by looking at the data.
+
+You might also want to consider an extensible way to show custom properties e.g. indicate which is the distribution column in systems like Teradata and Redshift.</description>
+    
+    <lastBuildDate>Thu, 09 Dec 2021 20:21:00 +0000</lastBuildDate>
+    <category>Feature Requests</category>
+    <atom:link href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i pulled out the v10.1.0 branch and made the changes. <code>make compose_build</code> and <code>docker-compose up</code> were both fine</p>
+<p>but i got stuck on <code>yarn --frozen-lockfile</code>:</p>
+<pre><code class="lang-auto">src/visualizations/table/Renderer.tsx:125:9 - error TS2578: Unused '@ts-expect-error' directive.
+</code></pre>
+<p>and when i added a postgres database and tried to click on one of the schemas, i got<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c7c6f2002d37a0e4230e550b2597bd2762eaf647.png" data-download-href="/uploads/short-url/svjfObAgesP4wDXxCw5QTuMZtUH.png?dl=1" title="2021-12-09_15-19_1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c7c6f2002d37a0e4230e550b2597bd2762eaf647.png" alt="2021-12-09_15-19_1" data-base62-sha1="svjfObAgesP4wDXxCw5QTuMZtUH" width="690" height="212" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c7c6f2002d37a0e4230e550b2597bd2762eaf647_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/27">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/27</link>
+        <pubDate>Thu, 09 Dec 2021 20:21:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-27</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Looking a the mozilla fork, this is exactly what they did:</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/mozilla/redash/blob/master/redash/query_runner/pg.py">
+  <header class="source">
+
+      <a href="https://github.com/mozilla/redash/blob/master/redash/query_runner/pg.py" target="_blank" rel="noopener">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/mozilla/redash/blob/master/redash/query_runner/pg.py" target="_blank" rel="noopener">mozilla/redash/blob/master/redash/query_runner/pg.py</a></h4>
+
+
+    <pre><code class="lang-py">import os
+import logging
+import select
+from contextlib import contextmanager
+from base64 import b64decode
+from tempfile import NamedTemporaryFile
+from uuid import uuid4
+
+import psycopg2
+from psycopg2.extras import Range
+
+from redash.query_runner import *
+from redash.utils import JSONEncoder, json_dumps, json_loads
+
+logger = logging.getLogger(__name__)
+
+try:
+    import boto3
+
+    IAM_ENABLED = True
+</code></pre>
+
+
+  This file has been truncated. <a href="https://github.com/mozilla/redash/blob/master/redash/query_runner/pg.py" target="_blank" rel="noopener">show original</a>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/26">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/26</link>
+        <pubDate>Wed, 08 Dec 2021 20:30:34 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-26</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I’ll have a look at the thread you linked. Maybe I can help unblock you?</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/25">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/25</link>
+        <pubDate>Wed, 08 Dec 2021 20:09:48 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-25</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>sounds good <img src="https://emoji.discourse-cdn.com/twitter/+1.png?v=10" title=":+1:" class="emoji" alt=":+1:"><br>
+i’ll start testing as soon as i fix my build issue</p><aside class="quote" data-post="7" data-topic="9628">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/zachliu/40/872_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/does-redash-support-postgres-sql-12/9628/7">Does Redash support Postgres SQL 12?</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/6"><span class="badge-category-bg" style="background-color: #BF1E2E;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and using Redash.">Support</span></a>
+  </div>
+  <blockquote>
+    after further investigation, i have 99.5% ruled out PostgreSQL 12 being the issue: 
+
+under PostgreSQL 12, there are no errors spinning up containers using previously built (~Aug 2021) images
+this error ONLY occurs with newly built images
+
+so my guess is some dependencies got updated between August and now <img width="20" height="20" src="https://emoji.discourse-cdn.com/twitter/sob.png?v=10" title="sob" alt="sob" class="emoji">
+  </blockquote>
+</aside>
+
+<p>if i can’t fix it (highly likely because Mozilla fork has been out-of-maintenance), then i have to switch back to the official upstream and double down on this data type thingy <img src="https://emoji.discourse-cdn.com/twitter/muscle.png?v=10" title=":muscle:" class="emoji" alt=":muscle:"></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/24">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/24</link>
+        <pubDate>Wed, 08 Dec 2021 20:08:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-24</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>So hey, actually looking into this I think this would be fairly easy to add for Redshift based on their own doc: <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SVV_COLUMNS.html" class="inline-onebox">SVV_COLUMNS - Amazon Redshift</a></p>
+<p>You just need to add <code>data_type</code> to the SELECT list for Redshift…can you test this? Would be a quick win for your use case.</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/23">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/23</link>
+        <pubDate>Wed, 08 Dec 2021 18:25:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-23</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>gotcha, i just checked the one i’m interested in (<code>query_runner/pg.py</code>) and found out the latest Redshift’s <a href="https://github.com/getredash/redash/blob/df472eb1d444e4e8389d2bf1d7251a5f1db6d3ae/redash/query_runner/pg.py#L373" rel="noopener nofollow ugc">_get_tables</a> method doesn’t acquire data type information.</p>
+<p>on another node, i guess the mozilla people probably moved on with other tools, such as <code>looker</code> <img src="https://emoji.discourse-cdn.com/twitter/shushing_face.png?v=10" title=":shushing_face:" class="emoji" alt=":shushing_face:"></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/21">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/21</link>
+        <pubDate>Wed, 08 Dec 2021 17:18:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-21</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Nobody has implemented this feature globally. The databricks query runner supports it. We are happy to review a PR adding it for other query runners, though <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=12" title=":wink:" class="emoji" alt=":wink:" loading="lazy" width="20" height="20"></p>
+<p>[edit] Just realised the postgres query runner supports it too <img src="https://emoji.discourse-cdn.com/twitter/100.png?v=12" title=":100:" class="emoji" alt=":100:" loading="lazy" width="20" height="20"></p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/c2104d8398bb8bd8c7741db64d4109a892c137c6.png" data-download-href="/uploads/short-url/rGLyAiZ9zEzl2EUaONCsoPOErZk.png?dl=1" title="CleanShot 2021-12-08 at 12.22.23@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2104d8398bb8bd8c7741db64d4109a892c137c6_2_160x500.png" alt="CleanShot 2021-12-08 at 12.22.23@2x" data-base62-sha1="rGLyAiZ9zEzl2EUaONCsoPOErZk" width="160" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2104d8398bb8bd8c7741db64d4109a892c137c6_2_160x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2104d8398bb8bd8c7741db64d4109a892c137c6_2_240x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2104d8398bb8bd8c7741db64d4109a892c137c6_2_320x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/c2104d8398bb8bd8c7741db64d4109a892c137c6_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/20">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/20</link>
+        <pubDate>Wed, 08 Dec 2021 15:56:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-20</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>apologize for bringing this up again</p>
+<p>i couldn’t find it in the changelog but wanna double check if this feature has been implemented in the latest redash V10.1.0 <img src="https://emoji.discourse-cdn.com/twitter/sweat_smile.png?v=10" title=":sweat_smile:" class="emoji" alt=":sweat_smile:"></p>
+<p>it seems mozilla has stopped maintaining their fork <a href="https://github.com/mozilla/redash" rel="noopener nofollow ugc">mozilla/redash</a> since last year…</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/19">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/19</link>
+        <pubDate>Tue, 07 Dec 2021 22:35:40 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-19</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>yeah, i got too excited when i saw the words “column”, “show”, “tooltip” and didn’t pay attention to “description” <img src="https://emoji.discourse-cdn.com/twitter/joy.png?v=9" title=":joy:" class="emoji" alt=":joy:"></p>
+<p>still can’t believe no one else cares about this feature. people must have used string type for all their fields <code>¯\_(ツ)_/¯</code></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/18">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/18</link>
+        <pubDate>Fri, 10 Jul 2020 21:45:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-18</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="zachliu" data-post="16" data-topic="3001">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/zachliu/40/872_2.png" class="avatar"> zachliu:</div>
+<blockquote>
+<p>Is this the thing I’ve been longing for? Data types in the tooltip?</p>
+</blockquote>
+</aside>
+<p>No. That feature is for table visualizations. Not tables in the schema.</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/17</link>
+        <pubDate>Thu, 09 Jul 2020 14:47:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-17</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>Oh my, I just saw this in the CHANGELOG of v9.0.0-beta<br>
+<code>Feature: It's now possible to provide a description to each Table column, appearing in UI as a tooltip.</code><br>
+Is this the thing I’ve been longing for? Data types in the tooltip?</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/16</link>
+        <pubDate>Mon, 06 Jul 2020 17:39:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-16</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i see. i’ll switch base for now.<br>
+my guess is that the actual users of redash may not go to a forum to up vote a feature request <img src="https://emoji.discourse-cdn.com/twitter/grinning.png?v=9" title=":grinning:" class="emoji" alt=":grinning:"><br>
+in fact, i’m not a user either. redash is the endpoint of our data warehouse/datalake</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/15</link>
+        <pubDate>Wed, 20 May 2020 00:18:58 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-15</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="zachliu" data-post="13" data-topic="3001">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/zachliu/40/872_2.png" class="avatar"> zachliu:</div>
+<blockquote>
+<p>the next big merge?</p>
+</blockquote>
+</aside>
+<p>It’s doesn’t quite work like that. Mozilla’s fork of Redash is <strong>heavily</strong> customized to their needs. It’s not designed or marketed for general use. Sometimes they contribute new features upstream, though. For example the react migration began on their team.</p>
+<p>I checked and it sounds like schema data types <strong>will</strong> be implemented by <code>getredash/redash</code> (exact date TBD). But we probably won’t use Mozilla’s drawer UI.</p>
+<p>Thanks for bringing this to our attention. Til now this feature wasn’t on our radar due to minimal interest on the forum (one vote in eighteen months).</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/14</link>
+        <pubDate>Tue, 19 May 2020 21:19:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-14</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>aha, no wonder i saw almost the same group of contributors in both places<br>
+do you happen to know the timeline of the next big merge? i’m in dire need of this column data type thing.<br>
+trying to decide if i should wait or just switch base to mozilla</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/13</link>
+        <pubDate>Tue, 19 May 2020 14:39:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-13</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="ceyhunkerti" data-post="11" data-topic="3001">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/ceyhunkerti/40/2055_2.png" class="avatar"> ceyhunkerti:</div>
+<blockquote>
+<p>And the relation between <code>mozilla</code> and <code>getredash</code> i guess (the redash team may answer better) the mozilla one is just a fork to contribute.</p>
+</blockquote>
+</aside>
+<p>Bingo. Mozilla runs a very successful fork of Redash. They are regular commiters to <code>getredash/redash</code> and have merge privileges on the same.</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/12</link>
+        <pubDate>Tue, 19 May 2020 14:25:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-12</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[ceyhunkerti]]></dc:creator>
+        <description><![CDATA[
+            <p>Unfortunately i couldn’t find a <strong>clean</strong> and <strong>short</strong> solution, see the img below, columns are string type<br>
+instead they should be object and when you make them them object you have to implement this feature for all query runners, there are <strong>two</strong> ways to implement;  partially for query runners(which i can only do, cause i don’t have access to all data sources redash supports, to test ) or do it for all data sources.</p>
+<p>(supposing handled in backend)<br>
+The partial solution is dirty because, you have to check the <code>schema_dict</code> if it contains string(for unimplented data sources) or object(the ones we implement) and mutate it to convert all string columns<br>
+to something like <code>{name: "col_name", type: None} </code> which is not cool and confusing for new comers.</p>
+<p>The true solution, also regarding your latter post about <code>mozilla/redash</code>, is implemented in this<br>
+<a href="https://github.com/getredash/redash/commit/98a139692e5ab8e37b3d963ed425ccc17350871d#" rel="noopener nofollow ugc">commit</a></p>
+<p>See <code>redash/models/__init__.py</code> they introduce new structures like <code>ColumnMetadata</code> which is the right way to do it.<br>
+Their commit also contains many other changes, i suppose it may take some time to review and merge.</p>
+<p>And the relation between <code>mozilla</code> and <code>getredash</code> i guess (the redash team may answer better) the mozilla one is just a fork to contribute.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e7e86a61e3ea9edfd1e401904bf0064183dd7b7c.png" data-download-href="/uploads/short-url/x5yf6O2VAxqTpZTNMh7v0wJj6ji.png?dl=1" title="col_type-debug" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7e86a61e3ea9edfd1e401904bf0064183dd7b7c_2_690x365.png" alt="col_type-debug" data-base62-sha1="x5yf6O2VAxqTpZTNMh7v0wJj6ji" width="690" height="365" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7e86a61e3ea9edfd1e401904bf0064183dd7b7c_2_690x365.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e7e86a61e3ea9edfd1e401904bf0064183dd7b7c.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e7e86a61e3ea9edfd1e401904bf0064183dd7b7c.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e7e86a61e3ea9edfd1e401904bf0064183dd7b7c_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/11</link>
+        <pubDate>Tue, 19 May 2020 11:37:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-11</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>what’s the relationship between <a href="https://github.com/mozilla" rel="nofollow noopener">mozilla</a>/ <strong><a href="https://github.com/mozilla/redash" rel="nofollow noopener">redash</a></strong> and <a href="https://github.com/getredash" rel="nofollow noopener">getredash</a>/ <strong><a href="https://github.com/getredash/redash" rel="nofollow noopener">redash</a></strong>? a similar feature (schema viewer drawer?) has already been implemented in <a href="https://github.com/mozilla" rel="nofollow noopener">mozilla</a>/ <strong><a href="https://github.com/mozilla/redash" rel="nofollow noopener">redash</a></strong>. It seems to work. Is it a buggy beta?</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/10</link>
+        <pubDate>Tue, 19 May 2020 03:19:29 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-10</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>This looks great, have you created a PR?</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/9</link>
+        <pubDate>Mon, 18 May 2020 20:53:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-9</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Redash is built as a read-only tool. Coincidentally you <em>can</em> run INSERT, UPDATE, and DELETE statements but we don’t recommend it.</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/8</link>
+        <pubDate>Fri, 15 May 2020 13:07:45 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-8</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[ceyhunkerti]]></dc:creator>
+        <description><![CDATA[
+            <p>yes it falls back to current behavior,<br>
+btw. i was trying to test it with <code>sqlite</code> but i noticed one thing, maybe a bit off topic but,</p>
+<ol>
+<li>create and insert statements results in an error, although op. completes with success</li>
+</ol>
+<pre><code class="lang-sql">CREATE TABLE coffees (
+  id INTEGER PRIMARY KEY,
+  coffee_name TEXT NOT NULL,
+  price REAL NOT NULL
+);
+
+insert into coffees values(null, 'Turkish', 8.99);
+</code></pre>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/0/0900c68147712d7018a140d36aaa6609df3b59ce.png" data-download-href="/uploads/short-url/1hDXqDxEXOtVSd7o7SohVWYuXzo.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0900c68147712d7018a140d36aaa6609df3b59ce_2_690x49.png" alt="image" data-base62-sha1="1hDXqDxEXOtVSd7o7SohVWYuXzo" width="690" height="49" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0900c68147712d7018a140d36aaa6609df3b59ce_2_690x49.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0900c68147712d7018a140d36aaa6609df3b59ce_2_1035x73.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0900c68147712d7018a140d36aaa6609df3b59ce_2_1380x98.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/0/0900c68147712d7018a140d36aaa6609df3b59ce_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/7</link>
+        <pubDate>Fri, 15 May 2020 09:54:50 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-7</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Your logic is right. But it would be much easier to simply fall back to the current behavior if the query runner doesn’t supply type information, no?</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/6</link>
+        <pubDate>Fri, 15 May 2020 03:09:27 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-6</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[ceyhunkerti]]></dc:creator>
+        <description><![CDATA[
+            <p>implemented it for postgres,<br>
+shows the type on hover</p>
+<p><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/3/33317f97819553820a06070071c5a2792a7808d2.png" alt="datatype" data-base62-sha1="7iSoQOQvltzfT7lfjFVFVruRT9M" width="446" height="272"></p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/5</link>
+        <pubDate>Thu, 14 May 2020 23:27:33 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-5</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[ceyhunkerti]]></dc:creator>
+        <description><![CDATA[
+            <p>The service providing columns/schema seems to respond with columns as string array. if we are to implement the requested feature then this should be object containing a <code>name</code> and <code>type</code> attributes.<br>
+So far it is easy, but looking at the source i see metadata for each technology is provided with own<br>
+query runner under <code>redash/query_runner/</code> if i am not wrong we have to implement this for each runner<br>
+and that requires the knowledge of acquiring column metadata for each technology.</p>
+<p>am i correct ?</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/4</link>
+        <pubDate>Thu, 14 May 2020 21:26:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-4</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can show support by voting for features you want to see.</p>
+<p>We would also gladly review a pull request for this.</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/3</link>
+        <pubDate>Wed, 13 May 2020 22:04:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-3</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+      <item>
+        <title>Show column data type in schema browser</title>
+        <dc:creator><![CDATA[zachliu]]></dc:creator>
+        <description><![CDATA[
+            <p>i strongly support this!</p>
+          <p><a href="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001/2</link>
+        <pubDate>Wed, 13 May 2020 21:28:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-3001-2</guid>
+        <source url="https://discuss.redash.io/t/show-column-data-type-in-schema-browser/3001.rss">Show column data type in schema browser</source>
+      </item>
+  </channel>
+</rss>

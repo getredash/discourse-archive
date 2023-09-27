@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙 - Development - Redash Discourse</title>
+    <meta name="description" content="Hi Redash Community! 
+We (RecoLabs, a stealth startup) are building a golang SDK for Redash, and we’re planning to open-source it. We’d love to coordinate with the community before just publishing it, so here goes &amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙&#39;" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774" />
+<meta property="og:title" content="We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙" />
+<meta name="twitter:title" content="We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙" />
+<meta property="og:description" content="Hi Redash Community!  We (RecoLabs, a stealth startup) are building a golang SDK for Redash, and we’re planning to open-source it. We’d love to coordinate with the community before just publishing it, so here goes 🚀   What is it? From the documentation of the go package:  // redashclient is a go wrapper to Redash&#39;s REST API. // redashclient provides a go API to set up and manage a remote redash client programmatically.  And from the README:   This is a simple SDK for the programmatic mana..." />
+<meta name="twitter:description" content="Hi Redash Community!  We (RecoLabs, a stealth startup) are building a golang SDK for Redash, and we’re planning to open-source it. We’d love to coordinate with the community before just publishing it, so here goes 🚀   What is it? From the documentation of the go package:  // redashclient is a go wrapper to Redash&#39;s REST API. // redashclient provides a go API to set up and manage a remote redash client programmatically.  And from the README:   This is a simple SDK for the programmatic mana..." />
+<meta property="og:article:section" content="Development" />
+<meta property="og:article:section:color" content="8C6238" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="2 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="7 ❤" />
+<meta property="article:published_time" content="2021-12-30T10:06:50+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/development/7" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #8C6238'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Development</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='We&#39;re building a golang SDK for Redash and we&#39;re planning to open source it 💙'>
+        <meta itemprop='articleSection' content='Development'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ShayNehmad-RecoLabs'><span itemprop='name'>ShayNehmad-RecoLabs</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-30T10:06:50Z' class='post-time'>
+                    December 30, 2021, 10:06am
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-30T10:06:50Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hi Redash Community!</p>
+<p>We (RecoLabs, a stealth startup) are building a golang SDK for Redash, and we’re planning to open-source it. We’d love to coordinate with the community before just publishing it, so here goes <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji" alt=":rocket:" loading="lazy" width="20" height="20"></p>
+<h2>
+<a name="what-is-it-1" class="anchor" href="#what-is-it-1"></a>What is it?</h2>
+<p>From the documentation of the go package:</p>
+<pre data-code-wrap="golang"><code class="lang-nohighlight">// redashclient is a go wrapper to Redash's REST API.
+// redashclient provides a go API to set up and manage a remote redash client programmatically.
+</code></pre>
+<p>And from the README:</p>
+<blockquote>
+<p>This is a simple SDK for the programmatic management of Redash. We created this client based on the python code of version 10.1.0 of Redash.</p>
+</blockquote>
+<h3>
+<a name="whats-included-2" class="anchor" href="#whats-included-2"></a>What’s included?</h3>
+<ol>
+<li>Easy to use Go client that covers some parts of the API.</li>
+<li>
+<strong>Swagger definition of the Redash API</strong> - we would love to coordinate with the community here and contribute this to the main project in the future.</li>
+<li>Documentation and examples.</li>
+<li>
+<a href="https://earthly.dev/" rel="noopener nofollow ugc">Earthly</a>-based build pipeline (lint and test).</li>
+<li>Many linters with <a href="https://golangci-lint.run/" rel="noopener nofollow ugc">golangci-lint</a> and good test coverage.</li>
+</ol>
+<h2>
+<a name="which-parts-of-the-api-are-covered-3" class="anchor" href="#which-parts-of-the-api-are-covered-3"></a>Which parts of the API are covered?</h2>
+<ul>
+<li>Data Sources</li>
+<li>Queries</li>
+<li>Visualizations</li>
+<li>Users</li>
+</ul>
+<blockquote>
+<p>Some of these resources might only be partially covered.</p>
+</blockquote>
+<h2>
+<a name="why-do-this-4" class="anchor" href="#why-do-this-4"></a>Why do this?</h2>
+<p>We needed a way to programmatically control our self-hosted Redash instance from our backend services - we developed a custom dashboard screen in our product and Redash solved many issues for us, so we decided to use it as both the backend and the visualization engine (with embedded visualizations).</p>
+<h2>
+<a name="examples-5" class="anchor" href="#examples-5"></a>Examples</h2>
+<h3>
+<a name="subsection-of-the-swagger-file-6" class="anchor" href="#subsection-of-the-swagger-file-6"></a>Subsection of the Swagger file</h3>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png" data-download-href="/uploads/short-url/q51PHf8N23RFYgxose9C1X98USy.png?dl=1" title="2021-12-30_10-44" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_295x500.png" alt="2021-12-30_10-44" data-base62-sha1="q51PHf8N23RFYgxose9C1X98USy" width="295" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_295x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_442x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b6ca121127df7b3a3915a2c80ac8ba9224524546_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">2021-12-30_10-44</span><span class="informations">545×922 62.2 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<h3>
+<a name="client-usage-7" class="anchor" href="#client-usage-7"></a>Client usage</h3>
+<h4>
+<a name="list-all-queries-8" class="anchor" href="#list-all-queries-8"></a>List all queries</h4>
+<pre data-code-wrap="golang"><code class="lang-nohighlight">import (
+    redashclient "github.com/[REDACTED]/redashClient"
+    "github.com/[REDACTED]/gen/client"
+)
+
+redashClient := redashclient.NewClient(
+	 "{API_KEY}",
+	 &amp;client.TransportConfig{
+		 Host: "{HOST_ADDRESS}",
+	 })
+
+// Calls in the client are of the form:
+//  client.&lt;Queries/Visualizations/Users/DataSources&gt;.&lt;Method&gt;(...)
+// For example:
+// List the current queries in Redash
+allQueries, err := redashClient.Queries.List()
+</code></pre>
+<h4>
+<a name="get-a-visualizations-embed-url-9" class="anchor" href="#get-a-visualizations-embed-url-9"></a>Get a visualization’s embed URL</h4>
+<pre data-code-wrap="golang"><code class="lang-nohighlight">queryID := 1
+visualizationID := 1
+queryAPIKey := "{API_KEY}"
+visualizationUrl, err := redashClient.Visualizations.GetURL(visualizationID, queryID, queryAPIKey)
+`
+</code></pre>
+<h2>
+<a name="whats-next-10" class="anchor" href="#whats-next-10"></a>What’s next?</h2>
+<p>Once we collect a bit more feedback about the package internally and from y’all here in the community, we plan to release it under BSD 2-Clause “Simplified” License. Hopefully, we’ll be able to make this happen very soon.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="3" />
+              <span class='post-likes'>3 Likes</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/our-open-source-redash-golang-sdk-is-out-lets-discuss-what-we-can-learn/9895">Our open-source Redash golang SDK is out! 🚀 Let&#39;s discuss what we can learn</a>
+                        <meta itemprop='position' content='4'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-30T16:58:24Z' class='post-time'>
+                    December 30, 2021,  4:58pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-30T16:58:24Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>That’ll be pretty welcome.  I started down this track a while back, but ran out of time.</p>
+<p>One of the weird things I found with the Redash API, was that <em>sometimes</em> the JSON that’s returned changes field types depending on part of the returned data.</p>
+<p>That made my initial Go efforts (with Go being a strongly typed language) more of a hassle that it needed to be.  Wasn’t impossible to work around, just an unfortunate inconvenience.</p>
+<p>Hopefully that strangeness doesn’t get exposed through your Go SDK. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-30T17:04:04Z' class='post-time'>
+                    December 30, 2021,  5:04pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-30T17:04:04Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>On that note this is the initial Redash end points list I threw together when looking over the API code.</p>
+<p>May or may not be useful, depending on how far you’ve progressed already. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=10" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>(tried attaching this as a file, but Discourse only seems to allow for pictures. <img src="https://emoji.discourse-cdn.com/twitter/man_facepalming.png?v=10" title=":man_facepalming:" class="emoji" alt=":man_facepalming:"></p>
+<pre><code class="lang-auto">const (
+	EndpointAdminQueriesOutdated = "/api/admin/queries/outdated"
+	EndpointAdminQueriesRqStatus = "/api/admin/queries/rq_status"
+	EndpointAlerts               = "/api/alerts"
+	EndpointConfig               = "/api/config"
+	EndpointDashboards           = "/api/dashboards"
+	EndpointDashboardsFavorites  = "/api/dashboards/favorites"
+	EndpointDashboardsTags       = "/api/dashboards/tags"
+	EndpointDashboardsMy         = "/api/dashboards/my"
+	EndpointDataSources          = "/api/data_sources"
+	EndpointDataSourcesTypes     = "/api/data_sources/types"
+	EndpointDestinations         = "/api/destinations"
+	EndpointDestinationsTypes    = "/api/destinations/types"
+	EndpointEvents               = "/api/events"
+	EndpointForgot               = "/api/forgot"
+	EndpointGroups               = "/api/groups"
+	EndpointOrgStatus            = "/api/organization/status"
+	EndpointPing                 = "/api/ping"
+	EndpointQueryResults         = "/api/query_results"
+	EndpointQueries              = "/api/queries"
+	EndpointQueriesArchive       = "/api/queries/archive"
+	EndpointQueriesFavorites     = "/api/queries/favorites"
+	EndpointQueriesFormat        = "/api/queries/format"
+	EndpointQueriesMy            = "/api/queries/my"
+	EndpointQueriesRecent        = "/api/queries/recent"
+	EndpointQueriesSearch        = "/api/queries/search"
+	EndpointQueriesTags          = "/api/queries/tags"
+	EndpointQuerySnippets        = "/api/query_snippets"
+	EndpointSession              = "/api/session"
+	EndpointSettingsOrg          = "/api/settings/organization"
+	EndpointUsers                = "/api/users"
+	EndpointVisualizations       = "/api/visualizations"
+	EndpointWidgets              = "/api/widgets"
+)
+
+// Not sure how to represent these in Go.  Probably need special handling for each one
+const (
+	// Alert
+	EndpointAlertId      = "/api/alerts/&lt;alert_id&gt;"
+	EndpointAlertIdMute  = "/api/alerts/&lt;alert_id&gt;/mute"
+	EndpointAlertIdSubs  = "/api/alerts/&lt;alert_id&gt;/subscriptions"
+	EndpointAlertIdSubId = "/api/alerts/&lt;alert_id&gt;/subscriptions/&lt;subscriber_id&gt;"
+
+	// Dashboard
+	EndpointDashboardId       = "/api/dashboards/&lt;dashboard_id&gt;"
+	EndpointDashboardFavorite = "/api/dashboards/&lt;object_id&gt;/favorite"
+	EndpointDashboardIdShare  = "/api/dashboards/&lt;dashboard_id&gt;/share"
+	EndpointDashboardPubToken = "/api/dashboards/public/&lt;token&gt;"
+
+	// Databricks
+	EndpointDatabricksDbId        = "/api/databricks/databases/&lt;data_source_id&gt;"
+	EndpointDatabricksDbTables    = "/api/databricks/databases/&lt;data_source_id&gt;/&lt;database_name&gt;/tables"
+	EndpointDatabricksDbTableCols = "/api/databricks/databases/&lt;data_source_id&gt;/&lt;database_name&gt;/columns/&lt;table_name&gt;"
+
+	// Data source
+	EndpointDataSourceId       = "/api/data_sources/&lt;data_source_id&gt;"
+	EndpointDataSourceIdSchema = "/api/data_sources/&lt;data_source_id&gt;/schema"
+	EndpointDataSourceIdPause  = "/api/data_sources/&lt;data_source_id&gt;/pause"
+	EndpointDataSourceIdTest   = "/api/data_sources/&lt;data_source_id&gt;/test"
+
+	// Destination
+	EndpointDestinationId = "/api/destinations/&lt;destination_id&gt;"
+
+	// Group
+	EndpointGroupId             = "/api/groups/&lt;group_id&gt;"
+	EndpointGroupIdMembers      = "/api/groups/&lt;group_id&gt;/members"
+	EndpointGroupIdMemberId     = "/api/groups/&lt;group_id&gt;/members/&lt;user_id&gt;"
+	EndpointGroupIdDataSources  = "/api/groups/&lt;group_id&gt;/data_sources"
+	EndpointGroupIdDataSourceId = "/api/groups/&lt;group_id&gt;/data_sources/&lt;data_source_id&gt;"
+
+	// Job
+	EndpointJobId = "/api/jobs/&lt;job_id&gt;"
+
+	// Query
+	EndpointQueryId                       = "/api/queries/&lt;query_id&gt;"
+	EndpointQueryIdAcl                    = "/api/&lt;object_type&gt;/&lt;object_id&gt;/acl"
+	EndpointQueryIdAclAccessType          = "/api/&lt;object_type&gt;/&lt;object_id&gt;/acl/&lt;access_type&gt;"
+	EndpointQueryIdDropdown               = "/api/queries/&lt;query_id&gt;/dropdown"
+	EndpointQueryIdDropdownId             = "/api/queries/&lt;query_id&gt;/dropdowns/&lt;dropdown_query_id&gt;"
+	EndpointQueryIdFavorite               = "/api/queries/&lt;query_id&gt;/favorite"
+	EndpointQueryIdFork                   = "/api/queries/&lt;query_id&gt;/fork"
+	EndpointQueryIdJobId                  = "/api/queries/&lt;query_id&gt;/jobs/&lt;job_id&gt;"
+	EndpointQueryIdRefresh                = "/api/queries/&lt;query_id&gt;/refresh"
+	EndpointQueryIdRegenApiKey            = "/api/queries/&lt;query_id&gt;/regenerate_api_key"
+	EndpointQueryIdResults                = "/api/queries/&lt;query_id&gt;/results"
+	EndpointQueryIdResultsFileType        = "/api/queries/&lt;query_id&gt;/results.&lt;filetype&gt;"
+	EndpointQueryIdResultsQueryIdFileType = "/api/queries/&lt;query_id&gt;/results/&lt;query_result_id&gt;.&lt;filetype&gt;"
+
+	// Query Result
+	EndpointQueryResultQueryId         = "/api/query_results/&lt;query_result_id&gt;"
+	EndpointQueryResultQueryIdFileType = "/api/query_results/&lt;query_result_id&gt;.&lt;filetype&gt;"
+
+	// Query Snippet
+	EndpointQuerySnippetId = "/api/query_snippets/&lt;snippet_id&gt;"
+
+	// User
+	EndpointUserId            = "/api/users/&lt;user_id&gt;"
+	EndpointUserIdDisable     = "/api/users/&lt;user_id&gt;/disable"
+	EndpointUserIdInvite      = "/api/users/&lt;user_id&gt;/invite"
+	EndpointUserIdResetPw     = "/api/users/&lt;user_id&gt;/reset_password"
+	EndpointUserIdRegenApiKey = "/api/users/&lt;user_id&gt;/regenerate_api_key"
+
+	// Widget
+	EndpointWidgetId = "/api/widgets/&lt;int:widget_id&gt;"
+)
+</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-15T06:09:00Z' class='post-time'>
+                    January 15, 2022,  6:09am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-15T06:09:00Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/shaynehmad-recolabs">@ShayNehmad-RecoLabs</a> Anything publicly available to try yet? <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=11" title=":smile:" class="emoji" alt=":smile:"></p>
+<p>Asking because I’m writing some internal-use Redash utilities now (in Go), so figured that if your library has something able to be tried out then I might as well give it a go.</p>
+<p>If not, I’ll just use the initial bits I was working on a while ago as the foundation piece.  That’ll work too. <img src="https://emoji.discourse-cdn.com/twitter/slight_smile.png?v=11" title=":slight_smile:" class="emoji" alt=":slight_smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ShayNehmad-RecoLabs'><span itemprop='name'>ShayNehmad-RecoLabs</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-18T08:00:13Z' class='post-time'>
+                    January 18, 2022,  8:00am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-18T08:00:13Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="justinclift" data-post="4" data-topic="9774" data-full="true">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/justinclift/40/811_2.png" class="avatar"> justinclift:</div>
+<blockquote>
+<p><a class="mention" href="/u/shaynehmad-recolabs">@ShayNehmad-RecoLabs</a> Anything publicly available to try yet? <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:"></p>
+</blockquote>
+</aside>
+<p>We’re actually aiming to publicly release today! So stay tuned <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji" alt=":rocket:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ShayNehmad-RecoLabs'><span itemprop='name'>ShayNehmad-RecoLabs</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-18T09:32:38Z' class='post-time'>
+                    January 18, 2022,  9:32am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-18T09:32:38Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji only-emoji" alt=":rocket:"> <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji only-emoji" alt=":rocket:"> <img src="https://emoji.discourse-cdn.com/twitter/rocket.png?v=12" title=":rocket:" class="emoji only-emoji" alt=":rocket:"></p>
+<aside class="onebox allowlistedgeneric" data-onebox-src="https://github.com/RecoLabs/redash-go-sdk">
+  <header class="source">
+      <img src="https://github.githubassets.com/favicons/favicon.svg" class="site-icon" width="32" height="32">
+
+      <a href="https://github.com/RecoLabs/redash-go-sdk" target="_blank" rel="noopener nofollow ugc">GitHub</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/345;"><img src="https://opengraph.githubassets.com/a8321c94f48c9e814a4259170ebc6a391a4fcd3afefb3a16c3c6831f8152f0de/RecoLabs/redash-go-sdk" class="thumbnail" width="690" height="345"></div>
+
+<h3><a href="https://github.com/RecoLabs/redash-go-sdk" target="_blank" rel="noopener nofollow ugc">GitHub - RecoLabs/redash-go-sdk: An SDK for the programmatic management of...</a></h3>
+
+  <p>An SDK for the programmatic management of Redash, in Go. - GitHub - RecoLabs/redash-go-sdk: An SDK for the programmatic management of Redash, in Go.</p>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/justinclift'><span itemprop='name'>justinclift</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-01-18T18:24:16Z' class='post-time'>
+                    January 18, 2022,  6:24pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-01-18T18:24:16Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Excellent.  I’ll have a go with that over the next few days. <img src="https://emoji.discourse-cdn.com/twitter/smile.png?v=12" title=":smile:" class="emoji" alt=":smile:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/darwin'><span itemprop='name'>darwin</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/were-building-a-golang-sdk-for-redash-and-were-planning-to-open-source-it/9774">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-03-03T09:54:50Z' class='post-time'>
+                    March 3, 2022,  9:54am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-03-03T09:54:50Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p><a class="mention" href="/u/shaynehmad-recolabs">@ShayNehmad-RecoLabs</a> is there any functionality in your sdk to extract the list of dashboards , similar to redash api <code>/api/dashboards</code> ?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

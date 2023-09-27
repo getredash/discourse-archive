@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+    <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600</link>
+    <description>O get stuck in the following loop, click 1, get to 2, click 2, get to 1. 
+
+Any insights or help appreciated 
+
+what changed. 
+1. the ec2 server changed ip address, I refreshed the route 53 to point to the right one, 
+2. started getting a 400 error.  for sso 
+3. fixed this by adding another  &quot; **Authorized redirect URIs** For use with requests from a web server&quot; - i had 
+  - http://dashboards..../oauth/google_callback
+i added 
+  - http**s**://dashboards..../oauth/google_callback **(didn&#39;t need that before)**
+
+4. now sso just goes between the two screens. : 
+
+Screen #1 ![Screen Shot 2020-06-30 at 2.49.06 PM|690x314](upload://iCNT17elevMHaH4XcVPD3Z2Inww.png) 
+
+Screen #2![Screen Shot 2020-06-30 at 2.49.50 PM|690x307](upload://z5ZbsynDTfzfsF1ItLw9cedw99C.png)</description>
+    
+    <lastBuildDate>Thu, 16 Feb 2023 06:35:18 +0000</lastBuildDate>
+    <category>Uncategorized</category>
+    <atom:link href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[dhivya]]></dc:creator>
+        <description><![CDATA[
+            <p>SSO stuck in login loop issue has been rectified and it was due to particular user account in redash was disabled in state. Post enabling, it is working fine.</p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/8</link>
+        <pubDate>Thu, 16 Feb 2023 06:35:18 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-8</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[dhivya]]></dc:creator>
+        <description><![CDATA[
+            <p>One of the user also facing same issue, he stuck in SSO login page and it keeps looping</p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/7</link>
+        <pubDate>Thu, 16 Feb 2023 05:37:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-7</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[vish]]></dc:creator>
+        <description><![CDATA[
+            <pre><code>upstream redash {
+    server redash:5000;
+}
+
+server {
+    listen      80;
+    listen [::]:80;
+    server_name &lt;URL&gt;;
+
+    location ^~ /ping {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+        proxy_pass       http://redash;
+    }
+
+    location / {
+        rewrite ^ https://$host$request_uri? permanent;
+    }
+
+    location ^~ /.well-known {
+        allow all;
+        root  /data/letsencrypt/;
+    }
+}
+
+server {
+ listen      443           ssl http2;
+ listen [::]:443           ssl http2;
+ server_name               &lt;URL&gt;;
+
+ add_header                Strict-Transport-Security "max-age=31536000" always;
+
+ ssl_session_cache         shared:SSL:20m;
+ ssl_session_timeout       10m;
+
+ ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
+ ssl_prefer_server_ciphers on;
+ ssl_ciphers               "ECDH&lt;redacted&gt;MD5;";
+
+ ssl_stapling              on;
+ ssl_stapling_verify       on;
+ resolver                  8.8.8.8 8.8.4.4;
+
+ ssl_certificate           /etc/letsencrypt/live/&lt;URL&gt;/fullchain.pem;
+ ssl_certificate_key       /etc/letsencrypt/live/&lt;URL&gt;/privkey.pem;
+ ssl_trusted_certificate   /etc/letsencrypt/live/&lt;URL&gt;/chain.pem;
+
+ access_log                /dev/stdout;
+ error_log                 /dev/stderr info;
+
+ # other configs
+
+ location / {
+     proxy_set_header Host $http_host;
+     proxy_set_header X-Real-IP $remote_addr;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_set_header X-Forwarded-Proto $scheme;
+
+     proxy_pass       http://redash;
+ }</code></pre>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/6</link>
+        <pubDate>Thu, 23 Jul 2020 14:43:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-6</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[Shitij]]></dc:creator>
+        <description><![CDATA[
+            <p>Redash by itself will a gunicorn process. Nginx is like a layer in between your redash processes and the user. Can you share your configuration of nginx file? and your nginx logs too</p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/5</link>
+        <pubDate>Mon, 06 Jul 2020 19:13:00 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-5</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[vish]]></dc:creator>
+        <description><![CDATA[
+            <p><a class="mention" href="https://discuss.redash.io/u/zhongshaoming1">@zhongshaoming1</a> i had set it up, and it was already working,<br>
+then a few days after i set up the https, it broke. maybe related.</p>
+<p><a class="mention" href="https://discuss.redash.io/u/shitij">@Shitij</a>, following the instructions for HTTPS starts nginx.<br>
+however for some reason gunicorn is also on</p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/4</link>
+        <pubDate>Mon, 06 Jul 2020 18:53:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-4</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[Shitij]]></dc:creator>
+        <description><![CDATA[
+            <p>Are you using nginx? A common problem is redirection between http to https and back to http if the settings are not configured properly</p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/3</link>
+        <pubDate>Mon, 06 Jul 2020 06:01:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-3</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[zhongshaoming1]]></dc:creator>
+        <description><![CDATA[
+            <p><a href="https://redash.io/help/open-source/admin-guide/google-developer-account-setup" class="onebox" target="_blank" rel="nofollow noopener">https://redash.io/help/open-source/admin-guide/google-developer-account-setup</a></p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/2</link>
+        <pubDate>Fri, 03 Jul 2020 05:08:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-2</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+      <item>
+        <title>SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</title>
+        <dc:creator><![CDATA[vish]]></dc:creator>
+        <description><![CDATA[
+            <p>O get stuck in the following loop, click 1, get to 2, click 2, get to 1.</p>
+<p>Any insights or help appreciated</p>
+<p>what changed.</p>
+<ol>
+<li>the ec2 server changed ip address, I refreshed the route 53 to point to the right one,</li>
+<li>started getting a 400 error.  for sso</li>
+<li>fixed this by adding another  " <strong>Authorized redirect URIs</strong> For use with requests from a web server" - i had</li>
+</ol>
+<ul>
+<li>
+<a href="http://dashboards" rel="noopener nofollow ugc">http://dashboards</a>…/oauth/google_callback<br>
+i added</li>
+<li>http<strong>s</strong>://dashboards…/oauth/google_callback <strong>(didn’t need that before)</strong>
+</li>
+</ul>
+<ol start="4">
+<li>now sso just goes between the two screens. :</li>
+</ol>
+<p>Screen <span class="hashtag">#1</span> </p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/828a123b9b30692aaaf78e352314f27b250db69c.png" data-download-href="/uploads/short-url/iCNT17elevMHaH4XcVPD3Z2Inww.png?dl=1" title="Screen Shot 2020-06-30 at 2.49.06 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/828a123b9b30692aaaf78e352314f27b250db69c_2_690x314.png" alt="Screen Shot 2020-06-30 at 2.49.06 PM" data-base62-sha1="iCNT17elevMHaH4XcVPD3Z2Inww" width="690" height="314" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/828a123b9b30692aaaf78e352314f27b250db69c_2_690x314.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/828a123b9b30692aaaf78e352314f27b250db69c.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/828a123b9b30692aaaf78e352314f27b250db69c.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/828a123b9b30692aaaf78e352314f27b250db69c_2_10x10.png"></a></div><p></p>
+<p>Screen <span class="hashtag">#2</span></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f5f95692fccb14c49e59f2bdceac97b518c9cc08.png" data-download-href="/uploads/short-url/z5ZbsynDTfzfsF1ItLw9cedw99C.png?dl=1" title="Screen Shot 2020-06-30 at 2.49.50 PM" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f5f95692fccb14c49e59f2bdceac97b518c9cc08_2_690x307.png" alt="Screen Shot 2020-06-30 at 2.49.50 PM" data-base62-sha1="z5ZbsynDTfzfsF1ItLw9cedw99C" width="690" height="307" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f5f95692fccb14c49e59f2bdceac97b518c9cc08_2_690x307.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f5f95692fccb14c49e59f2bdceac97b518c9cc08_2_1035x460.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/f5f95692fccb14c49e59f2bdceac97b518c9cc08.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/f5f95692fccb14c49e59f2bdceac97b518c9cc08_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600/1</link>
+        <pubDate>Tue, 30 Jun 2020 18:53:23 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-6600-1</guid>
+        <source url="https://discuss.redash.io/t/sso-google-oauth-stuck-in-a-login-loop-choose-an-account-login-to-redash/6600.rss">SSO (google oauth) Stuck in a login loop, &quot;Choose an account&quot;. &lt;--&gt; &quot;Login to Redash&quot;</source>
+      </item>
+  </channel>
+</rss>

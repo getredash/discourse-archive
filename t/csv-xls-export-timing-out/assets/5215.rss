@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>CSV / XLS export timing out?</title>
+    <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215</link>
+    <description>The export to csv/xls works fine unless I am exporting a very large file which produces a 502 error. I am assuming that it is just timing out. Is there an env variable that I need to change? I can&#39;t find anything on this forum about this issue. 
+
+Thanks.</description>
+    
+    <lastBuildDate>Sat, 02 Oct 2021 16:00:08 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[myonlylonely]]></dc:creator>
+        <description><![CDATA[
+            <p>Changing the environment variables in docker-compose.yml file can only change the limit up to 60 seconds. It is also limited by nginx. So if you want to export a file that take more than 60 seconds to generate, you also need to rebuild the nginx image (change the <code>proxy_read_timeout</code> parameter)</p>
+<pre><code class="lang-auto">upstream redash {
+  server redash:5000;
+}
+
+server {
+  listen   80 default;
+
+  gzip on;
+  gzip_types *;
+  gzip_proxied any;
+
+  location / {
+    proxy_read_timeout 300;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+    proxy_pass       http://redash;
+  }
+}
+</code></pre>
+<aside class="onebox githubissue" data-onebox-src="https://github.com/getredash/redash/issues/5613">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/issues/5613" target="_blank" rel="noopener nofollow ugc">github.com/getredash/redash</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="github-row">
+  <div class="github-icon-container" title="Issue">
+	  <svg width="60" height="60" class="github-icon" viewBox="0 0 14 16" aria-hidden="true"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+  </div>
+
+  <div class="github-info-container">
+    <h4>
+      <a href="https://github.com/getredash/redash/issues/5613" target="_blank" rel="noopener nofollow ugc">Export a large CSV file failed after exactly 30 seconds</a>
+    </h4>
+
+    <div class="github-info">
+      <div class="date">
+        opened <span class="discourse-local-date" data-format="ll" data-date="2021-10-02" data-time="14:36:59" data-timezone="UTC">02:36PM - 02 Oct 21 UTC</span>
+      </div>
+
+        <div class="date">
+          closed <span class="discourse-local-date" data-format="ll" data-date="2021-10-02" data-time="15:08:53" data-timezone="UTC">03:08PM - 02 Oct 21 UTC</span>
+        </div>
+
+      <div class="user">
+        <a href="https://github.com/myonlylonely" target="_blank" rel="noopener nofollow ugc">
+          <img alt="myonlylonely" src="https://avatars.githubusercontent.com/u/8188177?v=4" class="onebox-avatar-inline" width="20" height="20">
+          myonlylonely
+        </a>
+      </div>
+    </div>
+
+    <div class="labels">
+    </div>
+  </div>
+</div>
+
+  <div class="github-row">
+    <p class="github-body-container">### Issue Summary
+
+I have created a query that returned about 320M rows. The q<span class="show-more-container"><a href="https://discuss.redash.io" rel="noopener" class="show-more">…</a></span><span class="excerpt hidden">uery successfully executed, and showed the correct result on the page. But when I want to export the result to a csv file. Each time I tried, it failed after exactly 30 seconds, and showed 502 Bad GateWay in the Chrome Dev Tools. Any way to improve exporting large csv file or get around?
+
+### Steps to Reproduce
+
+1. Create a query that returns many rows, and execute it.
+
+![image](https://user-images.githubusercontent.com/8188177/135721108-55204f67-a9fe-4cad-997c-a0396acd38a9.png)
+
+2. Export the file to csv Format.
+
+![image](https://user-images.githubusercontent.com/8188177/135721065-fdc4abef-8884-4ff2-99bf-44e1769cd14a.png)
+
+
+3. Here are the logs in the nginx and server image.
+
+```bash
+2021/10/02 13:39:50 [error] 31#31: *1 upstream prematurely closed connection while reading response header from upstream, client: XXX.XXX.XXX.XXX, server: , request: "GET /api/queries/XXX/results/XXXX961.csv HTTP/1.1", upstream: "http://XXX.XXX.XXX.XXX:5000/api/queries/XXX/results/XXXX961.csv", host: "XXX.XXX.XXX.XXX"
+XXX.XXX.XXX.XXX - - [02/Oct/2021:13:39:50 +0000] "GET /api/queries/XXX/results/XXXX961.csv HTTP/1.1" 502 559 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36" "-"
+```
+
+```bash 
+[2021-10-02 13:39:50,388][PID:243][INFO][metrics] method=GET path=/api/queries/XXX/results/XXXX961.csv endpoint=query_result status=500 content_type=? content_length=-1 duration=30300.16 query_count=10 query_duration=1415.56
+[2021-10-02 13:39:50 +0000] [243] [INFO] Worker exiting (pid: 243)
+```
+
+### Technical details:
+
+* Redash Version: V10 (b50363)
+* Browser/OS: Chrome 94
+* How did you install Redash: Docker</span></p>
+  </div>
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/7</link>
+        <pubDate>Sat, 02 Oct 2021 16:00:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-7</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[Rob]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you so much <a class="mention" href="https://discuss.redash.io/u/ariarijp">@ariarijp</a>!</p>
+<p>This solved our 502 issue regarding large xlsx files!</p>
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/6</link>
+        <pubDate>Thu, 12 Mar 2020 13:04:37 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-6</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[dribble]]></dc:creator>
+        <description><![CDATA[
+            <p>Very nice!</p>
+<p>ありがとうございました</p>
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/5</link>
+        <pubDate>Thu, 19 Dec 2019 18:56:51 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-5</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[ariarijp]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi, <a class="mention" href="https://discuss.redash.io/u/dribble">@dribble</a></p>
+<p>Did you check Gunicorn’s configurations?<br>
+I guess it’s one of the reason why you stuck by 502 error.</p>
+<p>Here is the my blog entry.<br>
+(But it’s written in Japanese but I guess you can understand with Google Translate <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=9" title=":wink:" class="emoji" alt=":wink:"></p>
+<p><a href="http://ariarijp.hatenablog.com/entry/2019/06/07/234851" class="onebox" target="_blank" rel="nofollow noopener">http://ariarijp.hatenablog.com/entry/2019/06/07/234851</a></p>
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/4</link>
+        <pubDate>Thu, 19 Dec 2019 14:48:26 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-4</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[dribble]]></dc:creator>
+        <description><![CDATA[
+            <p>My guess is that we have the same issue just that your csv file that is successfully downloading is small enough to download.</p>
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/3</link>
+        <pubDate>Thu, 19 Dec 2019 06:04:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-3</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[rafialvin]]></dc:creator>
+        <description><![CDATA[
+            <p>It also happens to me when I tried to export very large file to XLS. But it always works fine if I export to CSV. I am using hosted Redash.</p>
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/2</link>
+        <pubDate>Thu, 19 Dec 2019 04:24:56 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-2</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+      <item>
+        <title>CSV / XLS export timing out?</title>
+        <dc:creator><![CDATA[dribble]]></dc:creator>
+        <description><![CDATA[
+            <p>The export to csv/xls works fine unless I am exporting a very large file which produces a 502 error. I am assuming that it is just timing out. Is there an env variable that I need to change? I can’t find anything on this forum about this issue.</p>
+<p>Thanks.</p>
+          <p><a href="https://discuss.redash.io/t/csv-xls-export-timing-out/5215/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/csv-xls-export-timing-out/5215/1</link>
+        <pubDate>Wed, 18 Dec 2019 19:18:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-5215-1</guid>
+        <source url="https://discuss.redash.io/t/csv-xls-export-timing-out/5215.rss">CSV / XLS export timing out?</source>
+      </item>
+  </channel>
+</rss>

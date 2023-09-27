@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Google Sheets IMPORTDATA not refreshing with new Query Results - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hey Guys, 
+I love the feature that allows redash query results to be displayed in Google Sheets via the IMPORTDATA function, however I can’t seem to get the data to update when the query re-runs. Any ideas or advice on t&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Google Sheets IMPORTDATA not refreshing with new Query Results&#39;" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056" />
+<meta property="og:title" content="Google Sheets IMPORTDATA not refreshing with new Query Results" />
+<meta name="twitter:title" content="Google Sheets IMPORTDATA not refreshing with new Query Results" />
+<meta property="og:description" content="Hey Guys,  I love the feature that allows redash query results to be displayed in Google Sheets via the IMPORTDATA function, however I can’t seem to get the data to update when the query re-runs. Any ideas or advice on the refreshing of data when using the API to import into Google Sheets?" />
+<meta name="twitter:description" content="Hey Guys,  I love the feature that allows redash query results to be displayed in Google Sheets via the IMPORTDATA function, however I can’t seem to get the data to update when the query re-runs. Any ideas or advice on the refreshing of data when using the API to import into Google Sheets?" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="4 ❤" />
+<meta property="article:published_time" content="2019-01-21T17:47:58+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Google Sheets IMPORTDATA not refreshing with new Query Results","mainEntity":{"@type":"Question","name":"Google Sheets IMPORTDATA not refreshing with new Query Results","text":"Hey Guys,\n\nI love the feature that allows redash query results to be displayed in Google Sheets via the IMPORTDATA function, however I can’t seem to get the data to update when the query re-runs. Any ideas or advice on the refreshing of data when using the API to import into Google Sheets?","upvoteCount":0,"answerCount":0,"dateCreated":"2019-01-21T17:47:58.659Z","author":{"@type":"Person","name":"Gabe Fennema"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">Google Sheets IMPORTDATA not refreshing with new Query Results</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Google Sheets IMPORTDATA not refreshing with new Query Results'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/Gabe'><span itemprop='name'>Gabe</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-01-21T17:47:58Z' class='post-time'>
+                    January 21, 2019,  5:47pm
+                  </time>
+                  <meta itemprop='dateModified' content='2019-01-21T17:47:58Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hey Guys,</p>
+<p>I love the feature that allows redash query results to be displayed in Google Sheets via the IMPORTDATA function, however I can’t seem to get the data to update when the query re-runs. Any ideas or advice on the refreshing of data when using the API to import into Google Sheets?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/arikfr'><span itemprop='name'>arikfr</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-01-22T11:51:07Z' class='post-time'>
+                    January 22, 2019, 11:51am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-01-22T11:51:07Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>There are several reasons data might not update:</p>
+<ol>
+<li>Google Sheets has its own caching mechanism and it updates the data based on its own schedule. I’m not sure if the interval is documented, you can check their documentation.</li>
+<li>You should make sure to use the results API call: <code>/api/queries/&lt;query id&gt;/results.csv</code> vs. an API call that mentions the query result ID.</li>
+<li>If this is a query with parameters, it might be another reason why this doesn’t get updates. Queries with parameters are not supported (at the moment) with this feature.</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/add-ability-to-export-data-to-google-spreadsheets/4394/2">Add ability to export data to Google Spreadsheets</a>
+                        <meta itemprop='position' content='1'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/elimash'><span itemprop='name'>elimash</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-10-28T08:50:39Z' class='post-time'>
+                    October 28, 2019,  8:50am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-10-28T08:50:39Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It happens quite often, I simply do: Ctrl+X  and then Ctrl+V  (cut. and then paste back). It goes through “loading…” and refresh.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/rafialvin'><span itemprop='name'>rafialvin</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-11-27T13:05:42Z' class='post-time'>
+                    November 27, 2019,  1:05pm
+                  </time>
+                  <meta itemprop='dateModified' content='2019-11-27T13:05:42Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I am using google apps script to get the data from redash and write it to sheets. It also has scheduler to set your refresh interval. I can share the script if you are interested <img src="https://emoji.discourse-cdn.com/twitter/wink.png?v=9" title=":wink:" class="emoji" alt=":wink:"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="3" />
+              <span class='post-likes'>3 Likes</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/kartavya-ramnani'><span itemprop='name'>kartavya-ramnani</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-03-05T18:27:50Z' class='post-time'>
+                    March 5, 2020,  6:27pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-03-05T18:27:50Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hey,<br>
+Can you share the script ?<br>
+I am facing the same issue.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/rafialvin'><span itemprop='name'>rafialvin</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-03-06T08:12:16Z' class='post-time'>
+                    March 6, 2020,  8:12am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-03-06T08:12:16Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Kartavya,</p>
+<p>Sure! Feel free to use my script. It’s a bit messy, but it works! Hope it helps.<br>
+Note: I turned off the refresh part in this query, I use schedule refresh on Redash instead. This script will get the latest query result.</p>
+<p>You need to use scheduler on google apps script to schedule run this script as well.</p>
+<pre><code>function getRedashData() {
+
+   // data
+   var start = new Date();
+   var redash_query_id = "QUERY_ID" // redash query id
+   var redash_format = "csv" // redash format
+   var redash_api_key = "USER_API_KEY_OR_QUERY_API_KEY" // your user api key
+   var sheet = "SHEET_NAME" // your sheet name
+
+  // refresh data (turn on for get newest result if your query less than 30 minutes)
+//   var status = RedashRefreshData(redash_query_id, redash_api_key);
+
+   // get the target sheet to write the data
+   var url_get_data = "https://app.redash.io/dekoruma/api/queries/" + redash_query_id + "/results." + redash_format + "?api_key=" + redash_api_key
+   var jsonString = RedashGetData(url_get_data);
+   var dataObjectAll = Utilities.parseCsv(jsonString)
+   var targetSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet);
+   var results = [];
+   var dataRows = dataObjectAll.map(function(row) {
+     return Object.keys(dataObjectAll[0]).map(function(col) {
+       return String(row[col]);
+     });
+   });
+   results = results.concat(dataRows);
+   var range = targetSheet.getRange(1, 1, dataObjectAll.length + 0, Object.keys(dataObjectAll[0]).length);
+   targetSheet.clearContents();
+   range.setValues(results);
+
+   // redash get data
+   function RedashGetData(url_get_data) {
+       var options = {
+             "method" : "get"
+             }
+       return UrlFetchApp.fetch(url_get_data, options).getContentText()
+    }
+
+   // redash refresh data
+   function RedashRefreshData(redash_query_id, redash_api_key) {
+       var headers = {
+         "Authorization": "Key " + redash_api_key
+       }
+       var post_options = {
+             "method" : "post",
+             "headers": headers
+       }
+       var get_options = {
+             "method" : "get",
+             "headers": headers
+       }
+       var url_refresh = "https://app.redash.io/dekoruma/api/queries/" + redash_query_id + "/refresh"
+       var status = UrlFetchApp.fetch(url_refresh, post_options).getContentText()
+       var status_parsed = JSON.parse(status)
+       var job = status_parsed.job
+       var url_job_status = "https://app.redash.io/dekoruma/api/jobs/" + job['id']
+       var job_status = job['status']
+       var runningTime = 0;
+       while (job_status !== 3 &amp;&amp; runningTime &lt; 300000) {
+         var response = UrlFetchApp.fetch(url_job_status, get_options).getContentText()
+         var now = new Date();
+         var runningTime = now.getTime() - start.getTime();
+         var status_parsed = JSON.parse(response)
+         var job = status_parsed.job
+         var job_status = job['status']
+         Utilities.sleep(500)
+       }
+       return job
+    }
+}</code></pre>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/devendra-cse'><span itemprop='name'>devendra-cse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-05-09T10:21:34Z' class='post-time'>
+                    May 9, 2020, 10:21am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-05-09T10:21:34Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Rafialvin,</p>
+<p>Thanks for taking out sometime &amp; sharing the script here.<br>
+I tried using it and customised it as per my use case, but somehow it doesn’t work.<br>
+Can you please place more comments in the above script to make us understand better. Thanks</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/hiteshahuja292'><span itemprop='name'>hiteshahuja292</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-07-08T06:36:38Z' class='post-time'>
+                    July 8, 2020,  6:36am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-07-08T06:36:38Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi, I get the following error while importing the data. Can anyone pls help look into it?</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc.png" data-download-href="/uploads/short-url/pfq3E33DZWC94SKURNw5ZUpuXes.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc_2_690x287.png" alt="image" data-base62-sha1="pfq3E33DZWC94SKURNw5ZUpuXes" width="690" height="287" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc_2_690x287.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc_2_1035x430.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b0f49620310845b1feb9b9aadae3077acd8423cc_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1220×509 34.6 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="2" />
+              </div>
+
+          </div>
+          <div id='post_9' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/k4s1m'><span itemprop='name'>k4s1m</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-07-09T13:25:06Z' class='post-time'>
+                    July 9, 2020,  1:25pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-07-09T13:25:06Z'>
+              <span itemprop='position'>9</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It looks like an authentication error. Are you sure the permissions are set properly?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_10' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/mohamedEltanbedawy'><span itemprop='name'>mohamedEltanbedawy</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-12T14:30:54Z' class='post-time'>
+                    August 12, 2021,  2:30pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-12T14:30:54Z'>
+              <span itemprop='position'>10</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>can you please send me the script</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_11' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-08-12T14:31:12Z' class='post-time'>
+                    August 12, 2021,  2:31pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-08-12T14:31:12Z'>
+              <span itemprop='position'>11</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>This user posted the script in the thread above.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_12' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/FAMT'><span itemprop='name'>FAMT</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-05-04T23:28:32Z' class='post-time'>
+                    May 4, 2022, 11:28pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-05-04T23:28:32Z'>
+              <span itemprop='position'>12</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi,<br>
+Did you get the solution? I’ve the same problem<br>
+<a class="mention" href="/u/hiteshahuja292">@hiteshahuja292</a></p>
+<p>Best,<br>
+FAMT</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_13' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/tunglt'><span itemprop='name'>tunglt</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/google-sheets-importdata-not-refreshing-with-new-query-results/3056">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-11-10T07:07:54Z' class='post-time'>
+                    November 10, 2022,  7:07am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-11-10T07:07:54Z'>
+              <span itemprop='position'>13</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi Rafialvin<br>
+How can I turn on the refresh part in this script? Thank you!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Adding additional ec2 for redash - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hello. I have come here after reading this. 
+
+I have been using a single ec2 instance for redash (redash1) and I am trying to create an additional one (redash2). 
+I changed the /opt/redash/env file for redash2 exactly eq&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Adding additional ec2 for redash&#39;" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651" />
+<meta property="og:title" content="Adding additional ec2 for redash" />
+<meta name="twitter:title" content="Adding additional ec2 for redash" />
+<meta property="og:description" content="Hello. I have come here after reading this.   I have been using a single ec2 instance for redash (redash1) and I am trying to create an additional one (redash2).  I changed the /opt/redash/env file for redash2 exactly equal to redash1 after reading the above discussion.  However, the dashboard, queries and the data source that are saved in redash1 wouldn’t appear in redash2. (They don’t seem to sync)  Please help me out Thanks!" />
+<meta name="twitter:description" content="Hello. I have come here after reading this.   I have been using a single ec2 instance for redash (redash1) and I am trying to create an additional one (redash2).  I changed the /opt/redash/env file for redash2 exactly equal to redash1 after reading the above discussion.  However, the dashboard, queries and the data source that are saved in redash1 wouldn’t appear in redash2. (They don’t seem to sync)  Please help me out Thanks!" />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="article:published_time" content="2022-06-20T09:47:51+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Adding additional ec2 for redash","mainEntity":{"@type":"Question","name":"Adding additional ec2 for redash","text":"Hello. I have come here after reading this.\n\n[image]\n\n<a href=\"http://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667\">Redash on multiple ec2 servers<\/a> <a class=\"badge-wrapper  bullet\" href=\"/c/support/support-usage/10\">Usage Support<\/a>\n\nWe launched 2 ec2-server with redash image and tried to RDS as backend.\n\nRedash1 &amp; Redash2 server launched using below yaml file through docker.\n\nWe set RDS postgres as a backe&hellip;","upvoteCount":0,"answerCount":0,"dateCreated":"2022-06-20T09:47:51.200Z","author":{"@type":"Person","name":"이재열"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/adding-additional-ec2-for-redash/10651">Adding additional ec2 for redash</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Adding additional ec2 for redash'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/santoryu96'><span itemprop='name'>santoryu96</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-20T09:47:51Z' class='post-time'>
+                    June 20, 2022,  9:47am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-20T09:47:51Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hello. I have come here after reading this.</p><aside class="quote quote-modified" data-post="1" data-topic="9667">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/s/58956e/40.png" class="avatar">
+    <a href="http://discuss.redash.io/t/redash-on-multiple-ec2-servers/9667">Redash on multiple ec2 servers</a> <a class="badge-wrapper  bullet" href="/c/support/support-usage/10"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Need help with using Redash? Not sure if something is possible or how to do it right? Here’s the place to ask.">Usage Support</span></a>
+  </div>
+  <blockquote>
+    We launched 2 ec2-server with redash image and tried to RDS as backend. 
+Redash1 &amp; Redash2 server launched using below yaml file through docker. 
+We set RDS postgres as a backend(Refer env below). And we successfully launched both servers but in redash2 we are unable to see data sources. Screen shot attached. 
+env file 
+PYTHONUNBUFFERED=0
+REDASH_LOG_LEVEL=INFO
+REDASH_REDIS_URL=redis://redis:6379/0
+REDASH_COOKIE_SECRET=SECRET
+REDASH_SECRET_KEY=SECRET
+REDASH_MAIL_SERVER=smtp-relay.gmail.com
+REDASH…
+  </blockquote>
+</aside>
+<p>
+I have been using a single ec2 instance for redash (redash1) and I am trying to create an additional one (redash2).<br>
+I changed the /opt/redash/env file for redash2 exactly equal to redash1 after reading the above discussion.<br>
+However, the dashboard, queries and the data source that are saved in redash1 wouldn’t appear in redash2. (They don’t seem to sync)<br>
+Please help me out Thanks!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-21T16:18:43Z' class='post-time'>
+                    June 21, 2022,  4:18pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-21T16:18:43Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Redash stores state in its metadata database (postgres). Does your <code>redash2</code> connect to the postgres service in the <code>redash1</code> ec2 network?</p>
+<p>If it doesn’t, that would explain your issue.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/santoryu96'><span itemprop='name'>santoryu96</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-22T01:06:04Z' class='post-time'>
+                    June 22, 2022,  1:06am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-22T01:06:04Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hello Thanks for your response.<br>
+I don’t have much experience in programming, especially in docker. I need some help…<br>
+What do I need to configure for redash2 postgres service to connect to redash1 postgres service?<br>
+Does making the env file same and restarting the docker not do the job?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-22T18:00:45Z' class='post-time'>
+                    June 22, 2022,  6:00pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-22T18:00:45Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="santoryu96" data-post="1" data-topic="10651">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/santoryu96/40/4126_2.png" class="avatar"> santoryu96:</div>
+<blockquote>
+<p>I have been using a single ec2 instance for redash (redash1) and I am trying to create an additional one (redash2).</p>
+</blockquote>
+</aside>
+<p>Slow down a moment. Why are you doing this? That’s not a normal situation. I wonder if a better solution is available, given that you are unfamiliar with this setup.</p>
+<p>I don’t think you really need two complete instances of Redash pointed at the same metadata database. In fact doing this can produce strange bugs around database locking.</p>
+<hr>
+<p>To actually answer your question:</p>
+<aside class="quote no-group" data-username="santoryu96" data-post="3" data-topic="10651">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/santoryu96/40/4126_2.png" class="avatar"> santoryu96:</div>
+<blockquote>
+<p>I don’t have much experience in programming, especially in docker.</p>
+</blockquote>
+</aside>
+<p>I understand. It would be helpful for you to understand a little about docker-compose going into this. Particularly around how networking behaves. I’ll give you a tiny summary here, but you can always check out their docs for something deeper.</p>
+<p>In a typical network, each computer receives an IP address from a DHCP server. Sometimes these addresses change. Other times they are fixed or static. For common resources like a database or an email server, the DHCP server can be configured to always give the same IP address to that machine. So a database could always be found at <code>172.20.16.20</code> for example.</p>
+<p>When you create a service in <code>docker-compose</code>, each service will receive its own IP address. And it’s a lot of hassle to configure a DHCP server to always grant each one the same IP address every time it starts. So what if the services need to speak to one another?</p>
+<p>For this, Docker allows you to configure networks using the name of a <code>service</code>. Whenever one service speaks to another, the configuration doesn’t need to include an IP address. It can use the name of the <code>service</code> instead.</p>
+<p>Looking at Redash’s default configuration, you can see that it uses service names instead of IP addresses. For example, the <code>REDASH_REDIS_URL</code> is defaulted to <code>redis://redis:6379/0</code>. That’s because the name of the service is <code>redis</code>. So even if the service restarts and gets a new IP address every time, the config file doesn’t require an update.</p>
+<aside class="quote no-group" data-username="santoryu96" data-post="3" data-topic="10651">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/santoryu96/40/4126_2.png" class="avatar"> santoryu96:</div>
+<blockquote>
+<p>Does making the env file same and restarting the docker not do the job?</p>
+</blockquote>
+</aside>
+<p>It does not, unless you update both of your <code>docker-compose</code> files to use externally accessible URLs. Because right now you have two completely unique instances of Redash. And both of them are talking to <em>their own copy of postgres and redis</em>. If you want them to use the same <code>postgres</code>, you need to configure your Amazon settings so that postgres always has the same IP address. And then you need to configure both instances to use the same one.</p>
+<p>As I wrote above, this is not a good idea. Proceed at your own risk.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/santoryu96'><span itemprop='name'>santoryu96</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-23T03:01:23Z' class='post-time'>
+                    June 23, 2022,  3:01am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-23T03:01:23Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Thank you very much Jesse! I wasn’t expecting such a detailed response. Your explanation mounted on the elementary knowledge I had about Docker network and now I get the overall picture.</p>
+<p>The initial problem I encountered was this. My m5.2xlarge redash ec2 instance server went down time to time. Docker log showed Worker Timeout and failing to reboot. CPU usage boosted up to 12% at the time. (It maintained 6% normally)</p>
+<p>What might be a possible reason to this and how can I fix this issue?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-23T03:43:12Z' class='post-time'>
+                    June 23, 2022,  3:43am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-23T03:43:12Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Glad to help!</p>
+<p>I have some questions:</p>
+<aside class="quote no-group" data-username="santoryu96" data-post="5" data-topic="10651">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/santoryu96/40/4126_2.png" class="avatar"> santoryu96:</div>
+<blockquote>
+<p>My m5.2xlarge redash ec2 instance server went down</p>
+</blockquote>
+</aside>
+<p>What does this mean? Could you access it from a browser? Could you not run queries? Was the interface buggy?</p>
+<aside class="quote no-group" data-username="santoryu96" data-post="5" data-topic="10651">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/santoryu96/40/4126_2.png" class="avatar"> santoryu96:</div>
+<blockquote>
+<p>Docker log showed Worker Timeout and failing to reboot.</p>
+</blockquote>
+</aside>
+<p>I’m interested to see these log messages. If only a worker timed out that wouldn’t take down the whole server (normally).</p>
+<aside class="quote no-group" data-username="santoryu96" data-post="5" data-topic="10651">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/santoryu96/40/4126_2.png" class="avatar"> santoryu96:</div>
+<blockquote>
+<p>CPU usage boosted up to 12% at the time. (It maintained 6% normally)</p>
+</blockquote>
+</aside>
+<p>You can run <code>docker stats</code> to see which running services are consuming CPU. I have a feeling the problem here was the <code>nginx</code> service, rather than the <code>worker</code>.</p>
+<p>[edit] I wonder if you are experiencing the same issue being discussed / debugged here: <a href="http://discuss.redash.io/t/fault-finding-guide/10609" class="inline-onebox">Fault finding guide</a></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+                <div class='crawler-linkback-list' itemscope itemtype='http://schema.org/ItemList'>
+                      <div itemprop='itemListElement' itemscope itemtype='http://schema.org/ListItem'>
+                        <a itemprop='url' href="http://discuss.redash.io/t/fault-finding-guide/10609/7">Fault finding guide</a>
+                        <meta itemprop='position' content='2'>
+                      </div>
+                </div>
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/santoryu96'><span itemprop='name'>santoryu96</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/adding-additional-ec2-for-redash/10651">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa.jpeg">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-23T06:13:58Z' class='post-time'>
+                    June 23, 2022,  6:13am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-23T06:13:58Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>The server became unhealthy and crashed, resulting in 500 internal error when I tried to access from the browser.</p>
+<p>This is the log message at the time the server crashed.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa.jpeg" data-download-href="/uploads/short-url/9fu9OV5rFGPpu9k7vBSaTXAQ2wO.jpeg?dl=1" title="Untitled" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa_2_690x391.jpeg" alt="Untitled" data-base62-sha1="9fu9OV5rFGPpu9k7vBSaTXAQ2wO" width="690" height="391" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa_2_690x391.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa_2_1035x586.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa_2_1380x782.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/4/40d3b7661f9ef2f2dcf3b6a9133f708bd1385ffa_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">Untitled</span><span class="informations">4066×2308 1020 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/f/fb26a610bb4007c5cb805bcf27d8c67c9026e0a9.jpeg" data-download-href="/uploads/short-url/zPMEgM1QReGwltqn97hPFjZy2z7.jpeg?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fb26a610bb4007c5cb805bcf27d8c67c9026e0a9_2_690x206.jpeg" alt="image" data-base62-sha1="zPMEgM1QReGwltqn97hPFjZy2z7" width="690" height="206" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fb26a610bb4007c5cb805bcf27d8c67c9026e0a9_2_690x206.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fb26a610bb4007c5cb805bcf27d8c67c9026e0a9_2_1035x309.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fb26a610bb4007c5cb805bcf27d8c67c9026e0a9_2_1380x412.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/f/fb26a610bb4007c5cb805bcf27d8c67c9026e0a9_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1735×519 138 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

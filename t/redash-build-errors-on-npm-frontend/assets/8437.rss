@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash build errors on npm / frontend</title>
+    <link>https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437</link>
+    <description>### Issue Summary
+
+A summary of the issue and the browser/OS environment in which it occurs.
+
+1. Followed the manual https://redash.io/help/open-source/dev-guide/docker 
+2. Want to build assets with `npm run build`
+
+Ran into two fixable dependency issues:
+
+    npm i --save-dev @types/jest
+    npm i --save-dev babel-plugin-module-resolver
+
+Via:
+
+http://discuss.redash.io/t/multiple-errors-when-trying-to-self-host-according-to-guides/7854/4
+
+3. Build error with Typescript related issues (see build log in details)
+
+### Technical details:
+
+* Redash Version: from Git
+* Browser/OS: /
+* How did you install Redash: onpremise, for a pre-eval 
+
+I use node version 12. Tried out other versions as well. The install guide should list compatible versions.
+
+[details=&quot;-&gt; Open the build error log&quot;]
+
+
+```plaintext
+&gt; @redash/viz@1.0.0 type-gen /home/marius/redash/viz-lib
+&gt; tsc --emitDeclarationOnly
+
+src/components/ColorPicker/Input.tsx:3:23 - error TS7016: Could not find a declaration file for module &#39;tinycolor2&#39;. &#39;/home/marius/redash/node_modules/tinycolor2/tinycolor.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/tinycolor2` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;tinycolor2&#39;;`
+
+3 import tinycolor from &quot;tinycolor2&quot;;
+                        ~~~~~~~~~~~~
+
+src/components/ColorPicker/utils.ts:2:23 - error TS7016: Could not find a declaration file for module &#39;tinycolor2&#39;. &#39;/home/marius/redash/node_modules/tinycolor2/tinycolor.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/tinycolor2` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;tinycolor2&#39;;`
+
+2 import tinycolor from &quot;tinycolor2&quot;;
+                        ~~~~~~~~~~~~
+
+src/components/ErrorBoundary.tsx:3:19 - error TS7016: Could not find a declaration file for module &#39;debug&#39;. &#39;/home/marius/redash/node_modules/debug/src/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/debug` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;debug&#39;;`
+
+3 import debug from &quot;debug&quot;;
+                    ~~~~~~~
+
+src/components/HtmlContent.tsx:9:7 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+...
+src/visualizations/box-plot/d3box.ts:195:21 - error TS7006: Parameter &#39;i&#39; implicitly has an &#39;any&#39; type.
+
+195         .attr(&quot;cy&quot;, i =&gt; x1(d[i]))
+                        ~
+
+src/visualizations/box-plot/d3box.ts:201:21 - error TS7006: Parameter &#39;i&#39; implicitly has an &#39;any&#39; type.
+
+201         .attr(&quot;cy&quot;, i =&gt; x1(d[i]))
+                        ~
+
+src/visualizations/box-plot/d3box.ts:224:22 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+224         .attr(&quot;dx&quot;, (d, i) =&gt; (i &amp; 1 ? 6 : -6))
+                         ~
+
+src/visualizations/box-plot/d3box.ts:224:25 - error TS7006: Parameter &#39;i&#39; implicitly has an &#39;any&#39; type.
+
+224         .attr(&quot;dx&quot;, (d, i) =&gt; (i &amp; 1 ? 6 : -6))
+                            ~
+
+src/visualizations/box-plot/d3box.ts:225:21 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+225         .attr(&quot;x&quot;, (d, i) =&gt; (i &amp; 1 ? width : 0))
+                        ~
+
+src/visualizations/box-plot/d3box.ts:225:24 - error TS7006: Parameter &#39;i&#39; implicitly has an &#39;any&#39; type.
+
+225         .attr(&quot;x&quot;, (d, i) =&gt; (i &amp; 1 ? width : 0))
+                           ~
+
+src/visualizations/box-plot/d3box.ts:227:31 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+227         .attr(&quot;text-anchor&quot;, (d, i) =&gt; (i &amp; 1 ? &quot;start&quot; : &quot;end&quot;))
+                                  ~
+
+src/visualizations/box-plot/d3box.ts:227:34 - error TS7006: Parameter &#39;i&#39; implicitly has an &#39;any&#39; type.
+
+227         .attr(&quot;text-anchor&quot;, (d, i) =&gt; (i &amp; 1 ? &quot;start&quot; : &quot;end&quot;))
+                                     ~
+
+src/visualizations/box-plot/d3box.ts:276:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+276     // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;flush&#39; does not exist on type &#39;(callback... Remove this comment to see the full error message
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/box-plot/d3box.ts:306:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+
+
+src/visualizations/chart/Renderer/initChart.ts:33:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+33     // @ts-expect-error ts-migrate(7023) FIXME: &#39;process&#39; implicitly has return type &#39;any&#39; because... Remove this comment to see the full error message
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/chart/Renderer/initChart.ts:129:7 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+129       // @ts-expect-error ts-migrate(2345) FIXME: Argument of type &#39;{ dragmode: string | boolean; }&#39;... Remove this comment to see the full error message
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/chart/plotly/index.ts:1:20 - error TS7016: Could not find a declaration file for module &#39;plotly.js/lib/core&#39;. &#39;/home/marius/redash/node_modules/plotly.js/lib/core.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/plotly.js` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;plotly.js/lib/core&#39;;`
+
+1 import Plotly from &quot;plotly.js/lib/core&quot;;
+                     ~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/chart/plotly/index.ts:20:1 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+20 // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;register&#39; does not exist on type &#39;typeof... Remove this comment to see the full error message
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/chart/plotly/index.ts:22:1 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+22 // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;setPlotConfig&#39; does not exist on type &#39;t... Remove this comment to see the full error message
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/chart/plotly/preparePieData.ts:2:16 - error TS7016: Could not find a declaration file for module &#39;d3&#39;. &#39;/home/marius/redash/node_modules/d3/d3.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3&#39;;`
+
+2 import d3 from &quot;d3&quot;;
+                 ~~~~
+
+src/visualizations/chart/plotly/preparePieData.ts:99:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+99   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;scale&#39; does not exist on type &#39;typeof im... Remove this comment to see the full error message
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/choropleth/Editor/utils.ts:2:15 - error TS7016: Could not find a declaration file for module &#39;leaflet&#39;. &#39;/home/marius/redash/node_modules/leaflet/dist/leaflet-src.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/leaflet` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;leaflet&#39;;`
+
+2 import L from &quot;leaflet&quot;;
+                ~~~~~~~~~
+
+src/visualizations/choropleth/Editor/utils.ts:21:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+21     // @ts-expect-error ts-migrate(2345) FIXME: Argument of type &#39;object&#39; is not assignable to par... Remove this comment to see the full error message
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/choropleth/Editor/utils.ts:26:9 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+26         // @ts-expect-error ts-migrate(2551) FIXME: Property &#39;_southWest&#39; does not exist on type &#39;LatL... Remove this comment to see the full error message
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/choropleth/Editor/utils.ts:28:9 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+28         // @ts-expect-error ts-migrate(2551) FIXME: Property &#39;_northEast&#39; does not exist on type &#39;LatL... Remove this comment to see the full error message
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/choropleth/Renderer/initChoropleth.tsx:4:15 - error TS7016: Could not find a declaration file for module &#39;leaflet&#39;. &#39;/home/marius/redash/node_modules/leaflet/dist/leaflet-src.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/leaflet` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;leaflet&#39;;`
+
+...
+
+2 import chroma from &quot;chroma-js&quot;;
+                     ~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:3:15 - error TS7016: Could not find a declaration file for module &#39;leaflet&#39;. &#39;/home/marius/redash/node_modules/leaflet/dist/leaflet-src.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/leaflet` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;leaflet&#39;;`
+
+3 import L from &quot;leaflet&quot;;
+                ~~~~~~~~~
+
+src/visualizations/map/initMap.ts:30:1 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+30 // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;_getIconUrl&#39; does not exist on type &#39;Def... Remove this comment to see the full error message
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:50:1 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+50 // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;MarkerClusterIcon&#39; does not exist on typ... Remove this comment to see the full error message
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:82:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+82   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;BeautifyIcon&#39; does not exist on type &#39;ty... Remove this comment to see the full error message
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:101:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+101   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;markerClusterGroup&#39; does not exist on ty... Remove this comment to see the full error message
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:104:7 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+104       // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;markerClusterIcon&#39; does not exist on typ... Remove this comment to see the full error message
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:165:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+165     // @ts-expect-error ts-migrate(2345) FIXME: Argument of type &#39;{ center: [number, number]; zoom... Remove this comment to see the full error message
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/map/initMap.ts:193:29 - error TS7006: Parameter &#39;layer&#39; implicitly has an &#39;any&#39; type.
+
+193     _markerLayers.eachLayer(layer =&gt; {
+                                ~~~~~
+
+src/visualizations/map/prepareData.ts:1:16 - error TS7016: Could not find a declaration file for module &#39;d3&#39;. &#39;/home/marius/redash/node_modules/d3/d3.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3&#39;;`
+
+1 import d3 from &quot;d3&quot;;
+                 ~~~~
+
+src/visualizations/map/prepareData.ts:5:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+5   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;scale&#39; does not exist on type &#39;typeof im... Remove this comment to see the full error message
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/d3sankey.ts:3:16 - error TS7016: Could not find a declaration file for module &#39;d3&#39;. &#39;/home/marius/redash/node_modules/d3/d3.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3&#39;;`
+
+3 import d3 from &quot;d3&quot;;
+                 ~~~~
+
+src/visualizations/sankey/d3sankey.ts:119:21 - error TS7006: Parameter &#39;n&#39; implicitly has an &#39;any&#39; type.
+
+119       d3.max(nodes, n =&gt; n.x),
+                        ~
+
+src/visualizations/sankey/d3sankey.ts:127:7 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+127       // @ts-expect-error
+          ~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/d3sankey.ts:141:11 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+141           // @ts-expect-error ts-migrate(2532) FIXME: Object is possibly &#39;undefined&#39;.
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/d3sankey.ts:147:9 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+147         // @ts-expect-error ts-migrate(2532) FIXME: Object is possibly &#39;undefined&#39;.
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/initSankey.ts:19:16 - error TS7016: Could not find a declaration file for module &#39;d3&#39;. &#39;/home/marius/redash/node_modules/d3/d3.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3&#39;;`
+
+19 import d3 from &quot;d3&quot;;
+                  ~~~~
+
+src/visualizations/sankey/initSankey.ts:102:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+102   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;scale&#39; does not exist on type &#39;typeof im... Remove this comment to see the full error message
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/initSankey.ts:113:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+113     // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;nest&#39; does not exist on type &#39;typeof imp... Remove this comment to see the full error message
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/initSankey.ts:181:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+181   // @ts-expect-error
+      ~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sankey/initSankey.ts:235:15 - error TS7006: Parameter &#39;l&#39; implicitly has an &#39;any&#39; type.
+
+235       .filter(l =&gt; l.target.name !== &quot;Exit&quot;)
+                  ~
+
+src/visualizations/sankey/initSankey.ts:238:30 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+238       .style(&quot;stroke-width&quot;, d =&gt; Math.max(1, d.dy))
+                                 ~
+
+src/visualizations/sankey/initSankey.ts:239:14 - error TS7006: Parameter &#39;a&#39; implicitly has an &#39;any&#39; type.
+
+239       .sort((a, b) =&gt; b.dy - a.dy);
+                 ~
+
+src/visualizations/sankey/initSankey.ts:239:17 - error TS7006: Parameter &#39;b&#39; implicitly has an &#39;any&#39; type.
+
+239       .sort((a, b) =&gt; b.dy - a.dy);
+                    ~
+
+src/visualizations/sankey/initSankey.ts:242:31 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+242     link.append(&quot;title&quot;).text(d =&gt; `${d.source.name} → ${d.target.name}\n${format(d.value)}`);
+                                  ~
+
+src/visualizations/sankey/initSankey.ts:250:15 - error TS7006: Parameter &#39;n&#39; implicitly has an &#39;any&#39; type.
+
+250       .filter(n =&gt; n.name !== &quot;Exit&quot;)
+                  ~
+
+src/visualizations/sankey/initSankey.ts:258:17 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+258         .filter(d =&gt; {
+                    ~
+
+src/visualizations/sankey/initSankey.ts:266:17 - error TS7006: Parameter &#39;l&#39; implicitly has an &#39;any&#39; type.
+
+266         .filter(l =&gt; !(includes(currentNode.sourceLinks, l) || includes(currentNode.targetLinks, l)))
+                    ~
+
+src/visualizations/sankey/initSankey.ts:285:7 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+285       // @ts-expect-error
+          ~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sunburst/initSunburst.ts:5:21 - error TS7016: Could not find a declaration file for module &#39;d3&#39;. &#39;/home/marius/redash/node_modules/d3/d3.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3&#39;;`
+
+5 import * as d3 from &quot;d3&quot;;
+                      ~~~~
+
+src/visualizations/sunburst/initSunburst.ts:9:1 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+9 // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;scale&#39; does not exist on type &#39;typeof im... Remove this comment to see the full error message
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sunburst/initSunburst.ts:177:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+177     // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;layout&#39; does not exist on type &#39;typeof i... Remove this comment to see the full error message
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sunburst/initSunburst.ts:185:7 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+185       // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;arc&#39; does not exist on type &#39;(url: strin... Remove this comment to see the full error message
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sunburst/initSunburst.ts:270:28 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+270       g.attr(&quot;transform&quot;, (d, i) =&gt; `translate(${i * (b.w + b.s)}, 0)`);
+                               ~
+
+src/visualizations/sunburst/initSunburst.ts:270:31 - error TS7006: Parameter &#39;i&#39; implicitly has an &#39;any&#39; type.
+
+270       g.attr(&quot;transform&quot;, (d, i) =&gt; `translate(${i * (b.w + b.s)}, 0)`);
+                                  ~
+
+src/visualizations/sunburst/initSunburst.ts:305:17 - error TS7006: Parameter &#39;node&#39; implicitly has an &#39;any&#39; type.
+
+305         .filter(node =&gt; ancestors.indexOf(node) &gt;= 0)
+                    ~~~~
+
+src/visualizations/sunburst/initSunburst.ts:329:9 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+329         // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 2.
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/sunburst/initSunburst.ts:374:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+374     // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly &#39;null&#39;.
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/table/Editor/ColumnsSettings.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/Editor/GridSettings.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/columns/boolean.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/columns/datetime.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/columns/image.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/columns/link.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/columns/number.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/table/columns/text.test.tsx:2:20 - error TS7016: Could not find a declaration file for module &#39;enzyme&#39;. &#39;/home/marius/redash/node_modules/enzyme/build/index.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/enzyme` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;enzyme&#39;;`
+
+2 import enzyme from &quot;enzyme&quot;;
+                     ~~~~~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:1:16 - error TS7016: Could not find a declaration file for module &#39;d3&#39;. &#39;/home/marius/redash/node_modules/d3/d3.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3&#39;;`
+
+1 import d3 from &quot;d3&quot;;
+                 ~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:2:19 - error TS7016: Could not find a declaration file for module &#39;d3-cloud&#39;. &#39;/home/marius/redash/node_modules/d3-cloud/build/d3.layout.cloud.js&#39; implicitly has an &#39;any&#39; type.
+  Try `npm i --save-dev @types/d3-cloud` if it exists or add a new declaration (.d.ts) file containing `declare module &#39;d3-cloud&#39;;`
+
+2 import cloud from &quot;d3-cloud&quot;;
+                    ~~~~~~~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:71:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+71   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;scale&#39; does not exist on type &#39;typeof im... Remove this comment to see the full error message
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:76:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+76   // @ts-expect-error ts-migrate(2339) FIXME: Property &#39;scale&#39; does not exist on type &#39;typeof im... Remove this comment to see the full error message
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:107:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+107     // @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:116:17 - error TS7006: Parameter &#39;d&#39; implicitly has an &#39;any&#39; type.
+
+116       .fontSize(d =&gt; d.size)
+                    ~
+
+src/visualizations/word-cloud/Renderer.tsx:152:3 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+152   // @ts-expect-error ts-migrate(2345) FIXME: Argument of type &#39;() =&gt; () =&gt; layout.Cloud&lt;cloud.W... Remove this comment to see the full error message
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/visualizations/word-cloud/Renderer.tsx:159:5 - error TS2578: Unused &#39;@ts-expect-error&#39; directive.
+
+159     // @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Found 131 errors.
+
+npm ERR! code ELIFECYCLE
+npm ERR! errno 2
+npm ERR! @redash/viz@1.0.0 type-gen: `tsc --emitDeclarationOnly`
+npm ERR! Exit status 2
+npm ERR!
+npm ERR! Failed at the @redash/viz@1.0.0 type-gen script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/marius/.npm/_logs/2021-05-13T14_23_49_435Z-debug.log
+npm ERR! code ELIFECYCLE
+npm ERR! errno 2
+npm ERR! @redash/viz@1.0.0 build:babel: `npm run type-gen &amp;&amp; npm run build:babel:base`
+npm ERR! Exit status 2
+npm ERR!
+npm ERR! Failed at the @redash/viz@1.0.0 build:babel script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/marius/.npm/_logs/2021-05-13T14_23_49_449Z-debug.log
+npm ERR! code ELIFECYCLE
+npm ERR! errno 2
+npm ERR! redash-client@9.0.0-beta build:viz: `(cd viz-lib &amp;&amp; npm run build:babel)`
+npm ERR! Exit status 2
+npm ERR!
+npm ERR! Failed at the redash-client@9.0.0-beta build:viz script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/marius/.npm/_logs/2021-05-13T14_23_49_467Z-debug.log
+npm ERR! code ELIFECYCLE
+npm ERR! errno 2
+npm ERR! redash-client@9.0.0-beta build: `npm run clean &amp;&amp; npm run build:viz &amp;&amp; NODE_ENV=production webpack`
+npm ERR! Exit status 2
+npm ERR!
+npm ERR! Failed at the redash-client@9.0.0-beta build script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+```
+
+[/details]</description>
+    
+    <lastBuildDate>Thu, 28 Oct 2021 03:47:55 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash build errors on npm / frontend</title>
+        <dc:creator><![CDATA[dezhi]]></dc:creator>
+        <description><![CDATA[
+            <p>iI’v got the same issue, any solution?</p>
+          <p><a href="https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437/2</link>
+        <pubDate>Thu, 28 Oct 2021 03:47:55 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8437-2</guid>
+        <source url="https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437.rss">Redash build errors on npm / frontend</source>
+      </item>
+      <item>
+        <title>Redash build errors on npm / frontend</title>
+        <dc:creator><![CDATA[norandom]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>A summary of the issue and the browser/OS environment in which it occurs.</p>
+<ol>
+<li>Followed the manual <a href="https://redash.io/help/open-source/dev-guide/docker" rel="noopener nofollow ugc">https://redash.io/help/open-source/dev-guide/docker</a>
+</li>
+<li>Want to build assets with <code>npm run build</code>
+</li>
+</ol>
+<p>Ran into two fixable dependency issues:</p>
+<pre><code>npm i --save-dev @types/jest
+npm i --save-dev babel-plugin-module-resolver
+</code></pre>
+<p>Via:</p>
+<aside class="quote quote-modified" data-post="4" data-topic="7854">
+  <div class="title">
+    <div class="quote-controls"></div>
+    <img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/komangsidhiartha/40/2698_2.png" class="avatar">
+    <a href="http://discuss.redash.io/t/multiple-errors-when-trying-to-self-host-according-to-guides/7854/4">Multiple errors when trying to self host according to guides</a> <a class="badge-wrapper  bullet" href="https://discuss.redash.io/c/support/support-self-hosted/9"><span class="badge-category-parent-bg" style="background-color: #BF1E2E;"></span><span class="badge-category-bg" style="background-color: #AB9364;"></span><span style="" data-drop-close="true" class="badge-category clear-badge" title="Support on installing, configuring and troubleshooting issues with self hosted Redash.">Self Hosted Redash Support</span></a>
+  </div>
+  <blockquote>
+    Hi <a class="mention" href="https://discuss.redash.io/u/huzaifahj">@huzaifahj</a> 
+I can get rid of this error by installing 
+npm i --save-dev @types/jest 
+there are many other errors comes up, telling me to install many @types/* though 
+do you have any idea <a class="mention" href="https://discuss.redash.io/u/k4s1m">@k4s1m</a> ? 
+Ubuntu 20.04 
+Node: 14.15.4 
+npm: 6.14.10 
+
+Update 1 
+got another error after installing all the @types/* 
+Error: Cannot find module 'babel-plugin-module-resolver' from '/opt/redash/viz-lib' 
+
+Update 2 
+simply install npm i --save-dev babel-plugin-module-resolver to make it work, 
+I didn’t know if …
+  </blockquote>
+</aside>
+
+<ol start="3">
+<li>Build error with Typescript related issues (see build log in details)</li>
+</ol>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: from Git</li>
+<li>Browser/OS: /</li>
+<li>How did you install Redash: onpremise, for a pre-eval</li>
+</ul>
+<p>I use node version 12. Tried out other versions as well. The install guide should list compatible versions.</p>
+
+-&gt; Open the build error log <a href="https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437/1">(click for more details)</a>
+          <p><a href="https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437/1</link>
+        <pubDate>Thu, 13 May 2021 14:34:11 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-8437-1</guid>
+        <source url="https://discuss.redash.io/t/redash-build-errors-on-npm-frontend/8437.rss">Redash build errors on npm / frontend</source>
+      </item>
+  </channel>
+</rss>

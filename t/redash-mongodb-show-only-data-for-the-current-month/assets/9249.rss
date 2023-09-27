@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash &amp; MongoDB, Show only data for the current month</title>
+    <link>https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249</link>
+    <description>Hi!
+
+I have a mongodb database connected with redash and am trying to write a query filtering documents by timestamp and showing only documents with the timestamp in the current month (first october until today).
+I&#39;ve tried to use the $humanTime extension:
+```
+    &quot;collection&quot;: &quot;orders&quot;,
+    &quot;query&quot;: {
+        &quot;myTimestamp&quot;: {
+            &quot;$gte&quot;: {
+                &quot;$humanTime&quot;: &quot;last month&quot;
+            }
+        }
+    }
+```
+but unfortunately &quot;last month&quot; evaluates to the first of the previous month and thereby includes the last *and* the current month. &quot;this month&quot; doesn&#39;t get the requested results either because &quot;this month&quot; evaluates to today not the  &quot;first of the month&quot;.
+
+I&#39;ve also tried a mongodb aggregation but unfortunately failed to inject the current month/year into the query:
+```
+{
+    &quot;collection&quot;: &quot;orders&quot;,
+    &quot;aggregate&quot;: [
+        {
+            &quot;$addFields&quot;: {
+                &quot;month&quot;: {
+                    &quot;$month&quot;: &quot;$myTimestamp&quot;
+                },
+                &quot;year&quot;: {
+                    &quot;$year&quot;: &quot;$myTimestamp&quot;
+                }
+            }
+        },
+        {
+            &quot;$match&quot;: {
+                &quot;$and&quot;: [
+                    {
+                        &quot;month&quot;: 10
+                    },
+                    {
+                        &quot;year&quot;: 2021
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+The aggregation works, but I need to replace the fixed values 10 and 2021 with expressions evaluating to current month/year.
+
+Thank you in advance for any hints or suggestions!</description>
+    
+    <lastBuildDate>Fri, 15 Oct 2021 12:44:05 +0000</lastBuildDate>
+    <category>Usage Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash &amp; MongoDB, Show only data for the current month</title>
+        <dc:creator><![CDATA[lxwrz]]></dc:creator>
+        <description><![CDATA[
+            <p>I managed to solve it by grouping the data by year-month pairs and selecting the first one:</p>
+<pre><code class="lang-auto">{
+    "collection": "orders",
+    "aggregate": [
+        {
+            "$unwind": "$myTimestamp"
+        },
+        {
+            "$group": {
+                "_id": {
+                    "Month": {
+                        "$dateToString": {
+                            "format": "%Y-%m",
+                            "date": "$myTimestamp"
+                        }
+                    }
+                },
+                "count": {
+                    "$sum": 1
+                }
+            }
+        },
+        {
+            "$sort": [
+                {
+                    "name": "_id.Month",
+                    "direction": -1
+                }
+            ]
+        },
+        {
+            "$limit": 1
+        }
+    ]
+}
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249/2</link>
+        <pubDate>Fri, 15 Oct 2021 12:44:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9249-2</guid>
+        <source url="https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249.rss">Redash &amp; MongoDB, Show only data for the current month</source>
+      </item>
+      <item>
+        <title>Redash &amp; MongoDB, Show only data for the current month</title>
+        <dc:creator><![CDATA[lxwrz]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi!</p>
+<p>I have a mongodb database connected with redash and am trying to write a query filtering documents by timestamp and showing only documents with the timestamp in the current month (first october until today).<br>
+I’ve tried to use the $humanTime extension:</p>
+<pre><code class="lang-auto">    "collection": "orders",
+    "query": {
+        "myTimestamp": {
+            "$gte": {
+                "$humanTime": "last month"
+            }
+        }
+    }
+</code></pre>
+<p>but unfortunately “last month” evaluates to the first of the previous month and thereby includes the last <em>and</em> the current month. “this month” doesn’t get the requested results either because “this month” evaluates to today not the  “first of the month”.</p>
+<p>I’ve also tried a mongodb aggregation but unfortunately failed to inject the current month/year into the query:</p>
+<pre><code class="lang-auto">{
+    "collection": "orders",
+    "aggregate": [
+        {
+            "$addFields": {
+                "month": {
+                    "$month": "$myTimestamp"
+                },
+                "year": {
+                    "$year": "$myTimestamp"
+                }
+            }
+        },
+        {
+            "$match": {
+                "$and": [
+                    {
+                        "month": 10
+                    },
+                    {
+                        "year": 2021
+                    }
+                ]
+            }
+        }
+    ]
+}
+</code></pre>
+<p>The aggregation works, but I need to replace the fixed values 10 and 2021 with expressions evaluating to current month/year.</p>
+<p>Thank you in advance for any hints or suggestions!</p>
+          <p><a href="https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249/1</link>
+        <pubDate>Wed, 13 Oct 2021 14:50:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9249-1</guid>
+        <source url="https://discuss.redash.io/t/redash-mongodb-show-only-data-for-the-current-month/9249.rss">Redash &amp; MongoDB, Show only data for the current month</source>
+      </item>
+  </channel>
+</rss>

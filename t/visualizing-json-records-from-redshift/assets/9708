@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Visualizing JSON records from Redshift - Usage Support - Redash Discourse</title>
+    <meta name="description" content="Hi everyone, happy holidays! 
+I’m using Amazon Redshift as a datasource and one of the columns in the table returns the record as a JSON string. The JSON returned from the query has a format similar to: 
+{&amp;quot;array_1&amp;quot;:[0,12&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/visualizing-json-records-from-redshift/9708" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Visualizing JSON records from Redshift&#39;" href="https://discuss.redash.io/t/visualizing-json-records-from-redshift/9708.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/e1838a8a0c506503a22e0c60e2334374b2895c87.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/visualizing-json-records-from-redshift/9708" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/visualizing-json-records-from-redshift/9708" />
+<meta property="og:title" content="Visualizing JSON records from Redshift" />
+<meta name="twitter:title" content="Visualizing JSON records from Redshift" />
+<meta property="og:description" content="Hi everyone, happy holidays!  I’m using Amazon Redshift as a datasource and one of the columns in the table returns the record as a JSON string. The JSON returned from the query has a format similar to:  {&quot;array_1&quot;:[0,128,256,512,1024],&quot;array_2&quot;:[0,1,2,3],&quot;version&quot;:&quot;v1&quot;}  I would like to be able to visualize array_1 on the x-axis and array_2 on the y-axis as a barchart, but is unable to do so through regular query statements since my column is not a SUPER type. Using json_extract_path_text, (doc..." />
+<meta name="twitter:description" content="Hi everyone, happy holidays!  I’m using Amazon Redshift as a datasource and one of the columns in the table returns the record as a JSON string. The JSON returned from the query has a format similar to:  {&quot;array_1&quot;:[0,128,256,512,1024],&quot;array_2&quot;:[0,1,2,3],&quot;version&quot;:&quot;v1&quot;}  I would like to be able to visualize array_1 on the x-axis and array_2 on the y-axis as a barchart, but is unable to do so through regular query statements since my column is not a SUPER type. Using json_extract_path_text, (doc..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta property="og:article:tag" content="visualizations" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="1 ❤" />
+<meta property="article:published_time" content="2021-12-13T19:20:34+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Visualizing JSON records from Redshift","mainEntity":{"@type":"Question","name":"Visualizing JSON records from Redshift","text":"Hi everyone, happy holidays!\n\nI’m using Amazon Redshift as a datasource and one of the columns in the table returns the record as a JSON string. The JSON returned from the query has a format similar to:\n\n{&quot;array_1&quot;:[0,128,256,512,1024],&quot;array_2&quot;:[0,1,2,3],&quot;version&quot;:&quot;v1&quot;}\n\nI would like to be able to &hellip;","upvoteCount":1,"answerCount":0,"dateCreated":"2021-12-13T19:20:34.440Z","author":{"@type":"Person","name":""}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/visualizing-json-records-from-redshift/9708">Visualizing JSON records from Redshift</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+      <div class="topic-category">
+        <div class='discourse-tags list-tags'>
+            <a href='https://discuss.redash.io/tag/visualizations' class='discourse-tag' rel="tag">visualizations</a>
+        </div>
+      </div>
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Visualizing JSON records from Redshift'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content='visualizations'>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/margie'><span itemprop='name'>margie</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/visualizing-json-records-from-redshift/9708">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-13T19:20:34Z' class='post-time'>
+                    December 13, 2021,  7:20pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-13T19:20:34Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>Hi everyone, happy holidays!</p>
+<p>I’m using Amazon Redshift as a datasource and one of the columns in the table returns the record as a JSON string. The JSON returned from the query has a format similar to:</p>
+<pre><code class="lang-auto">{"array_1":[0,128,256,512,1024],"array_2":[0,1,2,3],"version":"v1"}
+</code></pre>
+<p>I would like to be able to visualize <code>array_1</code> on the x-axis and <code>array_2</code> on the y-axis as a barchart, but is unable to do so through regular query statements since my column is not a <a href="https://docs.aws.amazon.com/redshift/latest/dg/query-super.html" rel="noopener nofollow ugc">SUPER</a> type. Using <code>json_extract_path_text</code>, (<a href="https://docs.aws.amazon.com/redshift/latest/dg/JSON_EXTRACT_PATH_TEXT.html" rel="noopener nofollow ugc">docs</a>), I’m able to get the response <code>[0,128,256,512,1024]</code> under <code>array_1</code> but since it’s just an array vs. multiple rows under the same column, the visualization does not work.</p>
+<p>Ideally we don’t want to rely on another data source like QRDS for this and would rather update the existing code for the query runner and visualizations to be able to parse JSON. I’ve gone through <a href="http://discuss.redash.io/t/creating-a-new-query-runner-data-source-in-redash/347">creating a new query runner in Redash</a> and <a href="http://discuss.redash.io/t/how-to-create-new-visualization-types-in-redash/86">how to create new visualization types in Redash</a>, but docs seems to be a bit outdated since the migration to React.</p>
+<p>Just to double check I’m on the right track, at a high level I would need to figure out how to:</p>
+<ol>
+<li>Update the query runner for Redshift to be able to parse JSON data (will try to reference the JSON query runner for this).</li>
+<li>Once the JSON array data is parsed into rows under a column, extend the existing chart visualizations to display the parsed <code>array_1</code> and <code>array_2</code>
+</li>
+</ol>
+<p>Would anyone know if there is a better approach or have any references? Any tips or guidance will be greatly appreciated, thank you!</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="1" />
+              <span class='post-likes'>1 Like</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/visualizing-json-records-from-redshift/9708">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2021-12-13T21:15:44Z' class='post-time'>
+                    December 13, 2021,  9:15pm
+                  </time>
+                  <meta itemprop='dateModified' content='2021-12-13T21:15:44Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Welcome to the forum and thanks for an excellent post. While we on the core team don’t use Redshift, I’m happy to help design / test a revision to the query runner that would support this kind of visualisation.</p>
+<h3>
+<a name="approach-1" class="anchor" href="#approach-1"></a>Approach</h3>
+<p>I would not update the <em>visualisation</em> to work with a new column type. Partly because we don’t have updated docs covering how to do this (I’m working on that), but also because the visualisations are all designed to take a similar data format input. For example: a pivot table accepts the same kind of input as the stock table visualisation, but displays it differently. Visualisations do not and should not care which data source provided the data.</p>
+<p>Instead, we can update the data source to recognise this JSON data and return it to the front-end in the standard format (an array of row objects).</p>
+<p>The easiest way I can imagine to do this is like so:</p>
+<ol>
+<li>Query author uses <code>json_extract_path_text</code> to pull <code>array_1</code> into a column and <code>array_2</code> into a second column.</li>
+</ol>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>“array_1”</th>
+<th>“array_2”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[0,128,256,512,1024]</td>
+<td>[0,1,2,3]</td>
+</tr>
+</tbody>
+</table>
+</div><ol start="2">
+<li>The query_runner <em>somehow</em> monitors for this and pivots the data. One way it could sense this type of pivot is needed would be if the query result has exactly one row and each row contains JSON formatted data. Regardless, it would pivot the data like this:</li>
+</ol>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>“value_1”</th>
+<th>“value_2”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>128</td>
+<td>2</td>
+</tr>
+<tr>
+<td>256</td>
+<td>3</td>
+</tr>
+<tr>
+<td>512</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+</div><ol start="3">
+<li>The visualisation can be configured to use the <code>value_1</code> column for x and the <code>value_2</code> column for Y e.g.</li>
+</ol>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

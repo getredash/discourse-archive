@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Logged username in queries</title>
+    <link>https://discuss.redash.io/t/logged-username-in-queries/10592</link>
+    <description>Hi all,
+
+  It seems a old question and I would like to know if it is still not possible to use/know the username of the logged user inside a query. One old [post](http://discuss.redash.io/t/username-as-query-parameter/6524) suggested it could be possible to do it so in scheduled executions, but gave no details.
+
+Most references are a bit old posts saying it was not possible then. Some others pointed to a feature request (pending?).  Perhaps in Redash v10 it is now possible (or there is some bizarre workaround to get it)
+
+Thanks in advance
+
+Carlos</description>
+    
+    <lastBuildDate>Thu, 09 Jun 2022 21:46:09 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/logged-username-in-queries/10592.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Logged username in queries</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>That’s an intriguing solution to this problem!</p>
+<p>In broader terms, Redash doesn’t support credential passthrough. So every Redash user that uses one data source will share the same database credentials. However we’d like to implement credential passthrough as an extension to our existing query runner infrastructure. This way it can be implemented piecemeal by different query runners.</p>
+          <p><a href="https://discuss.redash.io/t/logged-username-in-queries/10592/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/logged-username-in-queries/10592/3</link>
+        <pubDate>Thu, 09 Jun 2022 21:46:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10592-3</guid>
+        <source url="https://discuss.redash.io/t/logged-username-in-queries/10592.rss">Logged username in queries</source>
+      </item>
+      <item>
+        <title>Logged username in queries</title>
+        <dc:creator><![CDATA[Losalo]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi again,</p>
+<p>Replying to myself…, I found a (not perfect) workaround that could serve to others.</p>
+<p>Although it is not possible to get the username of the one who is logged in query editor, we can retrieve (at least in Oracle and probably in others as well) the username defined in the datasource.</p>
+<p>Simply as (select user from dual) we can get it.  So, we can use the username of the datasource as something we can use in queries to filter data.</p>
+<p>For example, creating a database user as “dept_x” for datasource and using  as it were a role, we could use something like this:</p>
+<p>Select data<br>
+From<br>
+all_depts_info_table<br>
+Where<br>
+condition1<br>
+and<br>
+column_dept = (select User from dual)</p>
+<p>This way only data from dept_x will be shown.  All users from dept_x could be associated to that datasource limiting the rows they could see.</p>
+<p>Obviously, we are going to have as many datasources a roles, but, and this is important, the same query will serve for them all.</p>
+<p>Hope this helps</p>
+<p>Carlos</p>
+          <p><a href="https://discuss.redash.io/t/logged-username-in-queries/10592/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/logged-username-in-queries/10592/2</link>
+        <pubDate>Thu, 09 Jun 2022 17:09:30 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10592-2</guid>
+        <source url="https://discuss.redash.io/t/logged-username-in-queries/10592.rss">Logged username in queries</source>
+      </item>
+      <item>
+        <title>Logged username in queries</title>
+        <dc:creator><![CDATA[Losalo]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi all,</p>
+<p>It seems a old question and I would like to know if it is still not possible to use/know the username of the logged user inside a query. One old <a href="http://discuss.redash.io/t/username-as-query-parameter/6524">post</a> suggested it could be possible to do it so in scheduled executions, but gave no details.</p>
+<p>Most references are a bit old posts saying it was not possible then. Some others pointed to a feature request (pending?).  Perhaps in Redash v10 it is now possible (or there is some bizarre workaround to get it)</p>
+<p>Thanks in advance</p>
+<p>Carlos</p>
+          <p><a href="https://discuss.redash.io/t/logged-username-in-queries/10592/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/logged-username-in-queries/10592/1</link>
+        <pubDate>Wed, 08 Jun 2022 15:16:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10592-1</guid>
+        <source url="https://discuss.redash.io/t/logged-username-in-queries/10592.rss">Logged username in queries</source>
+      </item>
+  </channel>
+</rss>

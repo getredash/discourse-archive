@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Redash V10 decoupled redis</title>
+    <link>https://discuss.redash.io/t/redash-v10-decoupled-redis/10613</link>
+    <description>### Issue Summary
+
+Hello,
+
+I upgraded redash from V7 (legacy supervisor setup) to V10 (docker based setup). We are running redash on a larger scale where we have setup 100s of workers under queries and scheduled queries queues. We are using decoupled redis server and postgres meta data store.
+Everything was smooth with V7. We ran V7 almost 3 years without major issues.
+
+With V10 we are facing below issues
+1. Queries are getting stuck in queue
+2. Redash admin page sometimes doesn&#39;t load
+3. There are sometimes 1000s of jobs under default queue
+
+My first guess is that new setup is not using correct redis server. below is part of docker file
+
+&gt;   redis:
+    image: redis:5.0-alpine
+    restart: always
+  postgres:
+    image: postgres:9.6-alpine
+    env_file: /opt/redash/env
+    volumes:
+      - /opt/redash/postgres-data:/var/lib/postgresql/data
+    restart: always
+  nginx:
+    image: redash/nginx:latest
+
+My env file contains redis cluster variable. How can I know if docker file is using that cluster?
+
+Do I need postgres and redis section in my docker compose?
+What other things I should check?
+
+thanks
+### Technical details:
+
+* Redash Version: V10 (latest)
+* Browser/OS:
+* How did you install Redash:</description>
+    
+    <lastBuildDate>Tue, 14 Jun 2022 17:22:35 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/redash-v10-decoupled-redis/10613.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Redash V10 decoupled redis</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi there, awesome to hear that Redash is being used at such a scale!</p>
+<p>I agree with your analysis: it looks like there is a mismatch between where jobs are being queued and where they’re being retrieved. I’m guessing your queues are growing endlessly until the job TTL expires.</p>
+<aside class="quote no-group" data-username="mali" data-post="1" data-topic="10613">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/5e9695/40.png" class="avatar"> mali:</div>
+<blockquote>
+<p>My env file contains redis cluster variable. How can I know if docker file is using that cluster?</p>
+</blockquote>
+</aside>
+<p>The specific environment variable to use is <code>REDASH_REDIS_URL</code>. You can check the value for any given docker service by running <code>docker-compose exec bash</code> and then <code>echo $REDASH_REDIS_URL</code>.</p>
+<aside class="quote no-group" data-username="mali" data-post="1" data-topic="10613">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://avatars.discourse-cdn.com/v4/letter/m/5e9695/40.png" class="avatar"> mali:</div>
+<blockquote>
+<p>Do I need postgres and redis section in my docker compose?</p>
+</blockquote>
+</aside>
+<p>Nope.</p>
+          <p><a href="https://discuss.redash.io/t/redash-v10-decoupled-redis/10613/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-decoupled-redis/10613/2</link>
+        <pubDate>Tue, 14 Jun 2022 17:22:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10613-2</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-decoupled-redis/10613.rss">Redash V10 decoupled redis</source>
+      </item>
+      <item>
+        <title>Redash V10 decoupled redis</title>
+        <dc:creator><![CDATA[mali]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hello,</p>
+<p>I upgraded redash from V7 (legacy supervisor setup) to V10 (docker based setup). We are running redash on a larger scale where we have setup 100s of workers under queries and scheduled queries queues. We are using decoupled redis server and postgres meta data store.<br>
+Everything was smooth with V7. We ran V7 almost 3 years without major issues.</p>
+<p>With V10 we are facing below issues</p>
+<ol>
+<li>Queries are getting stuck in queue</li>
+<li>Redash admin page sometimes doesn’t load</li>
+<li>There are sometimes 1000s of jobs under default queue</li>
+</ol>
+<p>My first guess is that new setup is not using correct redis server. below is part of docker file</p>
+<blockquote>
+<p>redis:<br>
+image: redis:5.0-alpine<br>
+restart: always<br>
+postgres:<br>
+image: postgres:9.6-alpine<br>
+env_file: /opt/redash/env<br>
+volumes:<br>
+- /opt/redash/postgres-data:/var/lib/postgresql/data<br>
+restart: always<br>
+nginx:<br>
+image: redash/nginx:latest</p>
+</blockquote>
+<p>My env file contains redis cluster variable. How can I know if docker file is using that cluster?</p>
+<p>Do I need postgres and redis section in my docker compose?<br>
+What other things I should check?</p>
+<p>thanks</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: V10 (latest)</li>
+<li>Browser/OS:</li>
+<li>How did you install Redash:</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/redash-v10-decoupled-redis/10613/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/redash-v10-decoupled-redis/10613/1</link>
+        <pubDate>Sun, 12 Jun 2022 17:42:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-10613-1</guid>
+        <source url="https://discuss.redash.io/t/redash-v10-decoupled-redis/10613.rss">Redash V10 decoupled redis</source>
+      </item>
+  </channel>
+</rss>

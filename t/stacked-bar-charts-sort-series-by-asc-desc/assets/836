@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Stacked bar charts: sort series by asc/desc - Usage Support - Redash Discourse</title>
+    <meta name="description" content="When I create a stacked bar chart (and, honestly, that is just about the only chart type I create), I want the ability to sort the series values automatically. 
+Today, I can navigate into the Series tab and manually reor&amp;hellip;">
+    <meta name="generator" content="Discourse 3.2.0.beta2-dev - https://github.com/discourse/discourse version 83621ccbe797223b48b624b00ef04f24672e1f03">
+<link rel="icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/01e20869afc0877e3e5aee0f94419b9e9bffa961_2_32x32.ico">
+<link rel="apple-touch-icon" type="image/png" href="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/e1838a8a0c506503a22e0c60e2334374b2895c87_2_180x180.png">
+<meta name="theme-color" media="all" content="#ffffff">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<link rel="canonical" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836" />
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://discuss.redash.io/opensearch.xml" title="Redash Discourse Search">
+
+    <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" class="light-scheme"/>
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop"  />
+
+
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="checklist"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-adplugin"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-akismet"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-cakeday"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-chat-integration"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-details"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-footnote"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-lazy-videos"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-local-dates"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-narrative-bot_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-narrative-bot"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-presence_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-presence"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-solved_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-solved"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/discourse-spoiler-alert_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="discourse-spoiler-alert"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/hosted-site_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="hosted-site"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll"  />
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/poll_desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="poll_desktop"  />
+
+  <link href="https://sjc6.discourse-cdn.com/standard17/stylesheets/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css?__ws=discuss.redash.io" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="2" data-theme-name="default"/>
+
+    
+    <meta id="data-ga-universal-analytics" data-tracking-code="UA-47088186-6" data-json="{&quot;cookieDomain&quot;:&quot;auto&quot;}" data-auto-link-domains="">
+
+  <link rel="preload" href="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js" as="script">
+<script defer src="https://global.discourse-cdn.com/standard17/assets/google-universal-analytics-v3-08add7ec997ab472fcd9f821d32ff7caf4b8b9a5de2ec18ca723a040be07a098.gz.js"></script>
+
+
+        <link rel="alternate nofollow" type="application/rss+xml" title="RSS feed of &#39;Stacked bar charts: sort series by asc/desc&#39;" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836.rss" />
+    <meta property="og:site_name" content="Redash Discourse" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/2635c8aac01a7325656976b968c6e30f87ae1501_2_1023x661.png" />
+<meta property="og:image" content="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/2635c8aac01a7325656976b968c6e30f87ae1501_2_1023x661.png" />
+<meta property="og:url" content="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836" />
+<meta name="twitter:url" content="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836" />
+<meta property="og:title" content="Stacked bar charts: sort series by asc/desc" />
+<meta name="twitter:title" content="Stacked bar charts: sort series by asc/desc" />
+<meta property="og:description" content="When I create a stacked bar chart (and, honestly, that is just about the only chart type I create), I want the ability to sort the series values automatically.  Today, I can navigate into the Series tab and manually reorder. But this becomes very annoying when there are a lot of values or when the series is constantly moving.  For example, here:     it would be great to be able to automatically sort the bars by the values of series in ascending or descending order. It could pick the first or las..." />
+<meta name="twitter:description" content="When I create a stacked bar chart (and, honestly, that is just about the only chart type I create), I want the ability to sort the series values automatically.  Today, I can navigate into the Series tab and manually reorder. But this becomes very annoying when there are a lot of values or when the series is constantly moving.  For example, here:     it would be great to be able to automatically sort the bars by the values of series in ascending or descending order. It could pick the first or las..." />
+<meta property="og:article:section" content="Support" />
+<meta property="og:article:section:color" content="BF1E2E" />
+<meta property="og:article:section" content="Usage Support" />
+<meta property="og:article:section:color" content="AB9364" />
+<meta name="twitter:label1" value="Reading time" />
+<meta name="twitter:data1" value="1 mins 🕑" />
+<meta name="twitter:label2" value="Likes" />
+<meta name="twitter:data2" value="2 ❤" />
+<meta property="article:published_time" content="2017-06-27T19:44:04+00:00" />
+<meta property="og:ignore_canonical" content="true" />
+
+
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"QAPage","name":"Stacked bar charts: sort series by asc/desc","mainEntity":{"@type":"Question","name":"Stacked bar charts: sort series by asc/desc","text":"When I create a stacked bar chart (and, honestly, that is just about the only chart type I create), I want the ability to sort the series values automatically.\n\nToday, I can navigate into the Series tab and manually reorder. But this becomes very annoying when there are a lot of values or when the s&hellip;","upvoteCount":2,"answerCount":0,"dateCreated":"2017-06-27T19:44:04.867Z","author":{"@type":"Person","name":"Jason"}}}</script>
+  </head>
+  <body class="crawler ">
+    
+    <header>
+  <a href="/">
+    Redash Discourse
+  </a>
+</header>
+
+    <div id="main-outlet" class="wrap" role="main">
+        <div id="topic-title">
+    <h1>
+      <a href="/t/stacked-bar-charts-sort-series-by-asc-desc/836">Stacked bar charts: sort series by asc/desc</a>
+    </h1>
+
+      <div class="topic-category" itemscope itemtype="http://schema.org/BreadcrumbList">
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/6" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #BF1E2E'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </span>
+          <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="https://discuss.redash.io/c/support/support-usage/10" class="badge-wrapper bullet" itemprop="item">
+              <span class='badge-category-bg' style='background-color: #AB9364'></span>
+              <span class='badge-category clear-badge'>
+                <span class='category-name' itemprop='name'>Usage Support</span>
+              </span>
+            </a>
+            <meta itemprop="position" content="2" />
+          </span>
+      </div>
+
+  </div>
+
+  
+
+    <div itemscope itemtype='http://schema.org/DiscussionForumPosting'>
+      <meta itemprop='headline' content='Stacked bar charts: sort series by asc/desc'>
+        <meta itemprop='articleSection' content='Usage Support'>
+      <meta itemprop='keywords' content=''>
+      <div itemprop='publisher' itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop='name' content='Redash Discourse'>
+          <div itemprop='logo' itemscope itemtype="http://schema.org/ImageObject">
+            <meta itemprop='url' content='https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png'>
+          </div>
+      </div>
+
+          <div id='post_1'  class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/JasonShah'><span itemprop='name'>JasonShah</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/2635c8aac01a7325656976b968c6e30f87ae1501.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2017-06-27T19:44:04Z' class='post-time'>
+                    June 27, 2017,  7:44pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-21T01:54:01Z'>
+              <span itemprop='position'>1</span>
+              </span>
+            </div>
+            <div class='post' itemprop='articleBody'>
+              <p>When I create a stacked bar chart (and, honestly, that is just about the only chart type I create), I want the ability to sort the series values automatically.<br>
+Today, I can navigate into the Series tab and manually reorder. But this becomes very annoying when there are a lot of values or when the series is constantly moving.</p>
+<p>For example, here:<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/2635c8aac01a7325656976b968c6e30f87ae1501.png" data-download-href="/uploads/short-url/5s1ngtZrzf7gA5WjD9LueerIGpX.png?dl=1" title="" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/2635c8aac01a7325656976b968c6e30f87ae1501_2_689x445.png" alt="" data-base62-sha1="5s1ngtZrzf7gA5WjD9LueerIGpX" width="689" height="445" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/2635c8aac01a7325656976b968c6e30f87ae1501_2_689x445.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/2635c8aac01a7325656976b968c6e30f87ae1501_2_1033x667.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/2635c8aac01a7325656976b968c6e30f87ae1501.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/2635c8aac01a7325656976b968c6e30f87ae1501_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename"></span><span class="informations">1195×772 43.1 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div><br>
+it would be great to be able to automatically sort the bars by the values of series in ascending or descending order. It could pick the first or last column as the bar from which to sort, and the remaining columns would follow that sort order. So in this case if I picked “Sort by rightmost column descending”, I would see the largest series at the bottom (681, green), followed by the next largest (682, purple), and so on.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="2" />
+              <span class='post-likes'>2 Likes</span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_2' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/zzzzzzzzzzzzz'><span itemprop='name'>zzzzzzzzzzzzz</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2019-01-28T08:26:58Z' class='post-time'>
+                    January 28, 2019,  8:26am
+                  </time>
+                  <meta itemprop='dateModified' content='2019-01-28T08:26:58Z'>
+              <span itemprop='position'>2</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It’s 2019, still couldn’t find this nice feature</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_3' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/mfuller'><span itemprop='name'>mfuller</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-01-20T22:29:22Z' class='post-time'>
+                    January 20, 2020, 10:29pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-20T22:29:22Z'>
+              <span itemprop='position'>3</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>It’s 2020 now and still no solution?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_4' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-01-21T01:52:03Z' class='post-time'>
+                    January 21, 2020,  1:52am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-01-21T01:52:03Z'>
+              <span itemprop='position'>4</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I just added a reference to this in <a href="https://redash.io/help/user-guide/visualizations/chart-visualizations#Stacking">our Chart Visualization documentation</a>.</p>
+<blockquote>
+<p>You can use the <strong>Series</strong> tab of the Visualization Editor to control the order in which traces are stacked. <em>You can also control it by adding an <code>ORDER BY</code> statement to your query.</em> The stack follows the order in which your group names first appear in your query result.</p>
+</blockquote>
+<p>In the following examples, notice that the same measures remain the same color but they stack in different orders.</p>
+<h1>
+<a name="ascending-1" class="anchor" href="#ascending-1"></a>Ascending</h1>
+<p>Groups are sorted alphabetically ascending<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6.png" data-download-href="/uploads/short-url/l13LzXlE64uvGlsabDAfBqhYSpg.png?dl=1" title="asc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6_2_690x256.png" alt="asc" data-base62-sha1="l13LzXlE64uvGlsabDAfBqhYSpg" width="690" height="256" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6_2_690x256.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6_2_1035x384.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/9/934c599df1ebacca5327b6a2d9bf82c6e9f194a6_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">asc</span><span class="informations">1074×400 16.7 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<h1>
+<a name="descending-2" class="anchor" href="#descending-2"></a>Descending</h1>
+<p>Groups are sorted alphabetically descending<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/85b323fca4bfcee1a590033fdf6541299ace1705.png" data-download-href="/uploads/short-url/j4LjftPqaH3t0ceHuUK49EjdgUJ.png?dl=1" title="desc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/85b323fca4bfcee1a590033fdf6541299ace1705_2_690x256.png" alt="desc" data-base62-sha1="j4LjftPqaH3t0ceHuUK49EjdgUJ" width="690" height="256" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/85b323fca4bfcee1a590033fdf6541299ace1705_2_690x256.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/85b323fca4bfcee1a590033fdf6541299ace1705_2_1035x384.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/85b323fca4bfcee1a590033fdf6541299ace1705.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/85b323fca4bfcee1a590033fdf6541299ace1705_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">desc</span><span class="informations">1074×400 17.1 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<h1>
+<a name="arbitrary-order-using-cte-3" class="anchor" href="#arbitrary-order-using-cte-3"></a>Arbitrary Order using CTE</h1>
+<p>Groups are sorted arbitrarily<br>
+<div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/564733f2b72ffb2991e4f9cafc3a32942cff8e76.png" data-download-href="/uploads/short-url/cjfC4hdRwyD7FxukJgtaRDSbjQG.png?dl=1" title="arbitrary"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/564733f2b72ffb2991e4f9cafc3a32942cff8e76_2_690x256.png" alt="arbitrary" data-base62-sha1="cjfC4hdRwyD7FxukJgtaRDSbjQG" width="690" height="256" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/564733f2b72ffb2991e4f9cafc3a32942cff8e76_2_690x256.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/564733f2b72ffb2991e4f9cafc3a32942cff8e76_2_1035x384.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/564733f2b72ffb2991e4f9cafc3a32942cff8e76.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/564733f2b72ffb2991e4f9cafc3a32942cff8e76_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">arbitrary</span><span class="informations">1074×400 17 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>This has been true since 2017. The question just didn’t receive much attention on the forum. If you have other questions don’t hesitate to bump them <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=12" title=":smiley:" class="emoji" alt=":smiley:" loading="lazy" width="20" height="20"></p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_5' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/rohan'><span itemprop='name'>rohan</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-05-21T00:59:31Z' class='post-time'>
+                    May 21, 2020, 12:59am
+                  </time>
+                  <meta itemprop='dateModified' content='2020-05-21T00:59:31Z'>
+              <span itemprop='position'>5</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>I think what is being asked here is to sort the bars based on the value not based on the group.</p>
+<p>The idea being that when you look at the stacked bar chart (or area chart) your larger values appear at the top and your smaller values appear at the bottom (or reverse of this).</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_6' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/jesse'><span itemprop='name'>jesse</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2020-05-21T16:26:26Z' class='post-time'>
+                    May 21, 2020,  4:26pm
+                  </time>
+                  <meta itemprop='dateModified' content='2020-05-21T16:26:26Z'>
+              <span itemprop='position'>6</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <aside class="quote no-group" data-username="rohan" data-post="5" data-topic="836">
+<div class="title">
+<div class="quote-controls"></div>
+<img loading="lazy" alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/rohan/40/9_2.png" class="avatar"> rohan:</div>
+<blockquote>
+<p>I think what is being asked here is to sort the bars based on the value not based on the group.</p>
+</blockquote>
+</aside>
+<p>I’m not so sure. Look at this:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae.png" data-download-href="/uploads/short-url/cF2kdRXIVyNsLfmIJ5FHi6KhnrM.png?dl=1" title="stacked-bar"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae_2_571x500.png" alt="stacked-bar" data-base62-sha1="cF2kdRXIVyNsLfmIJ5FHi6KhnrM" width="571" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae_2_571x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae_2_856x750.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae_2_1142x1000.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/5/58bda4ac09bde37fb7cb2f42785eed2403e38eae_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">stacked-bar</span><span class="informations">1600×1400 61.9 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>For <strong>scenario X</strong>, red is always smaller than green which is always smaller than blue. For <strong>scenario Y</strong>, each color takes a turn being largest.</p>
+<p><strong>Projection A</strong> and <strong>Projection B</strong> both automatically stack colors from largest to smallest like you described. <strong>Projection C</strong> uses the same data as <strong>B</strong> but the stack order is manual/frozen: green, blue, red.</p>
+<p>Automatic sorting makes sense in <strong>scenario X</strong>. But it’s unnecessary because the same outcome is possible with an <code>ORDER BY</code> statement.</p>
+<p>In <strong>scenario Y</strong>, automatic sorting is harder to read than manual. Plotly doesn’t support it. Neither does Redash. Anecdotally, I don’t know a tool that <em>does</em> support it which is why I had to draw these illustrations by hand.</p>
+<p>I read OP’s question as how to arrange the stack order without using the <strong>Series</strong> tab. The alternative is not desirable as far as I can tell.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="1" />
+              </div>
+
+          </div>
+          <div id='post_7' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/JasonShah'><span itemprop='name'>JasonShah</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-06-27T16:12:32Z' class='post-time'>
+                    June 27, 2022,  4:12pm
+                  </time>
+                  <meta itemprop='dateModified' content='2022-06-27T16:12:32Z'>
+              <span itemprop='position'>7</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Projection C is exactly what I would want.<br>
+In the consulting firm I used to work in, we worked with stacked bar charts extensively, and this question was “settled” with the answer being Projection C.<br>
+Most users are focused on the last column (most recent, if time is on the Y column), so, that should be the one to drive the sort order, and all columns to the left of it should follow behind.</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+          <div id='post_8' itemprop='comment' itemscope itemtype='http://schema.org/Comment' class='topic-body crawler-post'>
+            <div class='crawler-post-meta'>
+              <span class="creator" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <a itemprop="url" href='https://discuss.redash.io/u/ilyaasp'><span itemprop='name'>ilyaasp</span></a>
+                
+              </span>
+
+              <link itemprop="mainEntityOfPage" href="https://discuss.redash.io/t/stacked-bar-charts-sort-series-by-asc-desc/836">
+
+                <link itemprop="image" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24.png">
+
+              <span class="crawler-post-infos">
+                  <time itemprop='datePublished' datetime='2022-07-07T10:18:36Z' class='post-time'>
+                    July 7, 2022, 10:18am
+                  </time>
+                  <meta itemprop='dateModified' content='2022-07-07T10:18:36Z'>
+              <span itemprop='position'>8</span>
+              </span>
+            </div>
+            <div class='post' itemprop='text'>
+              <p>Hi <a class="mention" href="/u/jesse">@jesse</a> , I am not sure whether this’ been asked before or not. But I’m stuck on how to make a clustered stacked bar chart on Redash. The chart that I mean looks like in the below image (also in the image is the format of data on how to make clustered stacked bar chart on google sheets and ms. excel)</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24.png" data-download-href="/uploads/short-url/ezXmBVc8u02GY41EziFd5JooE6M.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24_2_690x199.png" alt="image" data-base62-sha1="ezXmBVc8u02GY41EziFd5JooE6M" width="690" height="199" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24_2_690x199.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24_2_1035x298.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/6/662efbe6472c0d4b53fd770723bc20ff01c07d24_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1163×336 22 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>And then, I just saw this thread here that you show how to make a chart like this</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4137ef9e22b33a80abc5c16da69fd99d44b9f50.png" data-download-href="/uploads/short-url/pH1IjbEy9Ol6tsqVH6rLGzze1ZC.png?dl=1" title="image1" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4137ef9e22b33a80abc5c16da69fd99d44b9f50_2_644x500.png" alt="image1" data-base62-sha1="pH1IjbEy9Ol6tsqVH6rLGzze1ZC" width="644" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4137ef9e22b33a80abc5c16da69fd99d44b9f50_2_644x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4137ef9e22b33a80abc5c16da69fd99d44b9f50.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b4137ef9e22b33a80abc5c16da69fd99d44b9f50.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b4137ef9e22b33a80abc5c16da69fd99d44b9f50_2_10x10.png"><div class="meta">
+<svg class="fa d-icon d-icon-far-image svg-icon" aria-hidden="true"><use href="#far-image"></use></svg><span class="filename">image1</span><span class="informations">782×607 42 KB</span><svg class="fa d-icon d-icon-discourse-expand svg-icon" aria-hidden="true"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>Which pretty much look like the clustered stacked bar chart that I am trying to make.</p>
+<p>Can you please show me how is the format of the data on how you make that?</p>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+              <meta itemprop="interactionType" content="http://schema.org/LikeAction"/>
+              <meta itemprop="userInteractionCount" content="0" />
+              <span class='post-likes'></span>
+            </div>
+
+            <div itemprop="interactionStatistic" itemscope itemtype="http://schema.org/InteractionCounter">
+                <meta itemprop="interactionType" content="http://schema.org/CommentAction"/>
+                <meta itemprop="userInteractionCount" content="0" />
+              </div>
+
+          </div>
+    </div>
+
+
+
+
+
+
+    </div>
+    <footer class="container wrap">
+  <nav class='crawler-nav'>
+    <ul>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/' itemprop="url">Home </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/categories' itemprop="url">Categories </a>
+        </span>
+      </li>
+      <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+        <span itemprop='name'>
+          <a href='/guidelines' itemprop="url">FAQ/Guidelines </a>
+        </span>
+      </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/terms.html' itemprop="url">Terms of Service </a>
+          </span>
+        </li>
+        <li itemscope itemtype='http://schema.org/SiteNavigationElement'>
+          <span itemprop='name'>
+            <a href='http://redash.io/privacy.html' itemprop="url">Privacy Policy </a>
+          </span>
+        </li>
+    </ul>
+  </nav>
+  <p class='powered-by-link'>Powered by <a href="https://www.discourse.org">Discourse</a>, best viewed with JavaScript enabled</p>
+</footer>
+
+    
+    
+  </body>
+  
+</html>

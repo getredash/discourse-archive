@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Query Stuck In Queue in docker redash v8</title>
+    <link>https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915</link>
+    <description>Hi, 
+
+I have built a Docker environment on AWS EC2 and am using redash v8.
+In this Redash v8, schedule celery is stuck and a lot of data is stuck in the queue.
+Is there a way to delete all the schedule queries in the queue?
+
+I would like to thank you for your cooperation.</description>
+    
+    <lastBuildDate>Wed, 02 Feb 2022 02:09:39 +0000</lastBuildDate>
+    <category>Support</category>
+    <atom:link href="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Query Stuck In Queue in docker redash v8</title>
+        <dc:creator><![CDATA[loco-diwamoto]]></dc:creator>
+        <description><![CDATA[
+            <p>I understand very well.<br>
+Thank you so much for your help.</p>
+          <p><a href="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/5</link>
+        <pubDate>Wed, 02 Feb 2022 02:09:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9915-5</guid>
+        <source url="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915.rss">Query Stuck In Queue in docker redash v8</source>
+      </item>
+      <item>
+        <title>Query Stuck In Queue in docker redash v8</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Exactly right. The data in redis is ephemeral. If you blow the scheduled executions away they will be enqueued again within 30 seconds.</p>
+          <p><a href="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/4</link>
+        <pubDate>Wed, 02 Feb 2022 01:12:53 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9915-4</guid>
+        <source url="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915.rss">Query Stuck In Queue in docker redash v8</source>
+      </item>
+      <item>
+        <title>Query Stuck In Queue in docker redash v8</title>
+        <dc:creator><![CDATA[loco-diwamoto]]></dc:creator>
+        <description><![CDATA[
+            <p>Thanks for replying.<br>
+I see that I can just delete the Redis key.<br>
+I’m afraid that by deleting the Redis key, the scheduled executions will disappear, but looking at the docker configuration, am I correct in assuming that if the “scheduler” container is alive, the schedule will remain intact?<br>
+(My company has over 100 schedules, and it would be a pain to reconfigure them all)</p>
+          <p><a href="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/3</link>
+        <pubDate>Wed, 02 Feb 2022 01:05:43 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9915-3</guid>
+        <source url="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915.rss">Query Stuck In Queue in docker redash v8</source>
+      </item>
+      <item>
+        <title>Query Stuck In Queue in docker redash v8</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>You can clear out everything in the redis queue by connecting to your redis instance and running <code>FLUSHALL</code>.</p>
+<p>In a docker setup:</p>
+<pre><code class="lang-bash">$ docker-compose exec redis redis-cli
+$ KEYS *
+...&lt;you will see all the keys in your instance
+$ FLUSHALL
+$ KEYS *
+(empty list or set)
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/2</link>
+        <pubDate>Tue, 01 Feb 2022 15:38:35 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9915-2</guid>
+        <source url="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915.rss">Query Stuck In Queue in docker redash v8</source>
+      </item>
+      <item>
+        <title>Query Stuck In Queue in docker redash v8</title>
+        <dc:creator><![CDATA[loco-diwamoto]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi,</p>
+<p>I have built a Docker environment on AWS EC2 and am using redash v8.<br>
+In this Redash v8, schedule celery is stuck and a lot of data is stuck in the queue.<br>
+Is there a way to delete all the schedule queries in the queue?</p>
+<p>I would like to thank you for your cooperation.</p>
+          <p><a href="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915/1</link>
+        <pubDate>Thu, 27 Jan 2022 03:38:46 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9915-1</guid>
+        <source url="https://discuss.redash.io/t/query-stuck-in-queue-in-docker-redash-v8/9915.rss">Query Stuck In Queue in docker redash v8</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>No authentication for CSV in Version 10</title>
+    <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384</link>
+    <description>### Issue Summary
+
+I am migrating hosted redash from app.redash.io to self hosted version. While migrating to latest version of redash, it has the CSV option as a data source but it does not have Authentication parameters.
+
+Self Hosted Version
+![image|516x352](upload://cLZiijxSBLFOkJoRnAwK7tdzrKB.png)
+
+Current Hosted Version
+![image|487x500](upload://p9tQgbuL2wPzmyfA6lo4lXJ7H0H.png)
+
+There is also a difference in Data Source for CSV.
+Self Hosted version has CSV source but hosted version has CSV from URL.
+
+How to make csv url work that has authentication?
+
+
+### Technical details:
+
+* Redash Version: Version: 10.0.0 (9c928bd1)
+* Browser/OS: CentOs with Docker Image of Redash 10
+* How did you install Redash:
+Manual Installation</description>
+    
+    <lastBuildDate>Wed, 10 Nov 2021 20:05:05 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>I will update our documentation to include this as a debugging step.</p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/9</link>
+        <pubDate>Wed, 10 Nov 2021 20:05:05 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-9</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[er-sarjan]]></dc:creator>
+        <description><![CDATA[
+            <p>The problem was related to missing user-agent.</p>
+<p>For CSV data source, use following query syntax:</p>
+<pre><code class="lang-auto">url: "CSV_ENDPOINT"
+user-agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/8</link>
+        <pubDate>Wed, 10 Nov 2021 07:40:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-8</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Yes same license. I updated the gist to reflect that.</p>
+<p>We’re not going to have two CSV query runners on <code>master</code>. But anyone is free to add this if they want.</p>
+<p>The new one just needs to support basic auth <img src="https://emoji.discourse-cdn.com/twitter/smiley.png?v=10" title=":smiley:" class="emoji" alt=":smiley:"></p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/7</link>
+        <pubDate>Tue, 09 Nov 2021 18:03:16 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-7</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[justinclift]]></dc:creator>
+        <description><![CDATA[
+            <p>Just to be super clear (!), the source code for the old CSV query runner is released under the same license as the main Redash code base yeah?</p>
+<p>So, in theory it could be added back to the Redash source code (with appropriate naming)?</p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/6</link>
+        <pubDate>Tue, 09 Nov 2021 13:55:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-6</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[er-sarjan]]></dc:creator>
+        <description><![CDATA[
+            <p>This is little off topic but related to CSV as I’m trying to make csv queries work with some work-around.</p>
+<p>I setup a proxy API that works without requiring authentication but now, the Redash CSV query is not working for an API endpoint. It works fine on when I hit it from browser or Postman.</p>
+<p>The query_results API is returning Forbidden response.</p>
+<h4>
+<a name="part-of-response-1" class="anchor" href="https://discuss.redash.io#part-of-response-1"></a>Part of response</h4>
+<p>{<br>
+“data”: {<br>
+“columns”: [<br>
+{<br>
+“name”: “{“message”:“Forbidden”}”,<br>
+“friendly_name”: “{“message”:“Forbidden”}”,<br>
+“type”: “string”<br>
+}<br>
+],<br>
+“rows”: [  ]<br>
+}<br>
+}</p>
+<p>Is there any restriction for hitting the API host? CSV from github raw file is working fine.</p>
+<aside class="onebox githubblob" data-onebox-src="https://github.com/getredash/redash/blob/master/redash/query_runner/csv.py#L56">
+  <header class="source">
+
+      <a href="https://github.com/getredash/redash/blob/master/redash/query_runner/csv.py#L56" target="_blank" rel="noopener nofollow ugc">github.com</a>
+  </header>
+
+  <article class="onebox-body">
+    <h4><a href="https://github.com/getredash/redash/blob/master/redash/query_runner/csv.py#L56" target="_blank" rel="noopener nofollow ugc">getredash/redash/blob/master/redash/query_runner/csv.py#L56</a></h4>
+
+
+
+  <pre class="onebox">    <code class="lang-py">
+      <ol class="start lines" start="46" style="counter-reset: li-counter 45 ;">
+          <li>path = ""</li>
+          <li>ua = ""</li>
+          <li>args = {}</li>
+          <li>try:</li>
+          <li>    args = yaml.safe_load(query)</li>
+          <li>    path = args['url']</li>
+          <li>    args.pop('url', None)</li>
+          <li>    ua = args['user-agent']</li>
+          <li>    args.pop('user-agent', None)</li>
+          <li>
+          </li>
+<li class="selected">    if is_private_address(path) and settings.ENFORCE_PRIVATE_ADDRESS_BLOCK:</li>
+          <li>        raise Exception("Can't query private addresses.")</li>
+          <li>except:</li>
+          <li>    pass</li>
+          <li>
+          </li>
+<li>try:</li>
+          <li>    response = requests.get(url=path, headers={"User-agent": ua})</li>
+          <li>    workbook = pd.read_csv(io.BytesIO(response.content),sep=",", **args)</li>
+          <li>
+          </li>
+<li>    df = workbook.copy()</li>
+          <li>    data = {'columns': [], 'rows': []}</li>
+      </ol>
+    </code>
+  </pre>
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>I saw this but the error message is different in response so I’m not sure what is causing the problem.</p>
+<p>My API endpoint is not getting hit by Redash.</p>
+<p>Any thoughts?</p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/5</link>
+        <pubDate>Tue, 09 Nov 2021 12:16:59 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-5</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[er-sarjan]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi jesse,</p>
+<p>Thanks for the prompt reply.</p>
+<p>I made the changes that you suggested in docker image directly. After changes, I restarted the docker container and I can see the CSV from Url data source in list.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e20e605d3572fbf7851760b26f6dddd9e1e69100.png" data-download-href="/uploads/short-url/wfMHZWPk5SI0JszZjpw7KRcB4ZO.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e20e605d3572fbf7851760b26f6dddd9e1e69100_2_416x500.png" alt="image" data-base62-sha1="wfMHZWPk5SI0JszZjpw7KRcB4ZO" width="416" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e20e605d3572fbf7851760b26f6dddd9e1e69100_2_416x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e20e605d3572fbf7851760b26f6dddd9e1e69100.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/e/e20e605d3572fbf7851760b26f6dddd9e1e69100.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/e/e20e605d3572fbf7851760b26f6dddd9e1e69100_2_10x10.png"></a></div><p></p>
+<p>After setting up a new data source with Authentication parameter, it does not work for testing a connection or making a query.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/7/73cb2348e5db82d82284ba746d611a9276c1556c.png" data-download-href="/uploads/short-url/gwm83kdpi0x8Ihh6Q0JeoUF1L4M.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/73cb2348e5db82d82284ba746d611a9276c1556c_2_690x351.png" alt="image" data-base62-sha1="gwm83kdpi0x8Ihh6Q0JeoUF1L4M" width="690" height="351" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/73cb2348e5db82d82284ba746d611a9276c1556c_2_690x351.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/73cb2348e5db82d82284ba746d611a9276c1556c_2_1035x526.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/73cb2348e5db82d82284ba746d611a9276c1556c_2_1380x702.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/7/73cb2348e5db82d82284ba746d611a9276c1556c_2_10x10.png"></a></div><p></p>
+<p>When I run a query in query console, it fails without any success or error.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/8/8da0bbb066d4a230877ce1b8cb46bb1f3945d548.png" data-download-href="/uploads/short-url/kcTGW7ZaG6tsUaJf0htfW2yt3WU.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8da0bbb066d4a230877ce1b8cb46bb1f3945d548_2_690x353.png" alt="image" data-base62-sha1="kcTGW7ZaG6tsUaJf0htfW2yt3WU" width="690" height="353" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8da0bbb066d4a230877ce1b8cb46bb1f3945d548_2_690x353.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8da0bbb066d4a230877ce1b8cb46bb1f3945d548_2_1035x529.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8da0bbb066d4a230877ce1b8cb46bb1f3945d548_2_1380x706.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/8/8da0bbb066d4a230877ce1b8cb46bb1f3945d548_2_10x10.png"></a></div><p></p>
+<p>Am I missing something? Is there any other changes needs to add to make it work?</p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/4</link>
+        <pubDate>Tue, 09 Nov 2021 08:22:06 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-4</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Sorry this slipped past my radar. Thanks for bumping the topic.</p>
+<p>It’s not possible with the csv query runner in Redash V10. We should add this.</p>
+<p>Meanwhile, we did open source the old CSV query runner <a href="https://gist.github.com/susodapop/d367ff6c02f19ef4b9964e1042ca1d92">here</a>. You can add it to your instance by duplicating the file in the <code>redash/query_runner</code> directory and adding it to the <code>default_query_runners</code> setting in <code>redash/settings/__init__.py</code>. If you need help with this please send me a message.</p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/3</link>
+        <pubDate>Mon, 08 Nov 2021 15:39:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-3</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[er-sarjan]]></dc:creator>
+        <description><![CDATA[
+            <p>Any update on this? Any workaround?</p>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/2</link>
+        <pubDate>Mon, 08 Nov 2021 07:18:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-2</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+      <item>
+        <title>No authentication for CSV in Version 10</title>
+        <dc:creator><![CDATA[er-sarjan]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>I am migrating hosted redash from <a href="http://app.redash.io" rel="noopener nofollow ugc">app.redash.io</a> to self hosted version. While migrating to latest version of redash, it has the CSV option as a data source but it does not have Authentication parameters.</p>
+<p>Self Hosted Version<br>
+<img src="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/5/5986cbe8e3e73e4ab1c5ff850cb36ab136d3688d.png" alt="image" data-base62-sha1="cLZiijxSBLFOkJoRnAwK7tdzrKB" width="516" height="352"></p>
+<p>Current Hosted Version<br>
+</p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b048b910c9477abd1001ce6ad35d2bc9cd74534f.png" data-download-href="/uploads/short-url/p9tQgbuL2wPzmyfA6lo4lXJ7H0H.png?dl=1" title="image" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b048b910c9477abd1001ce6ad35d2bc9cd74534f_2_487x500.png" alt="image" data-base62-sha1="p9tQgbuL2wPzmyfA6lo4lXJ7H0H" width="487" height="500" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b048b910c9477abd1001ce6ad35d2bc9cd74534f_2_487x500.png, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b048b910c9477abd1001ce6ad35d2bc9cd74534f.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/b/b048b910c9477abd1001ce6ad35d2bc9cd74534f.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/b/b048b910c9477abd1001ce6ad35d2bc9cd74534f_2_10x10.png"></a></div><p></p>
+<p>There is also a difference in Data Source for CSV.<br>
+Self Hosted version has CSV source but hosted version has CSV from URL.</p>
+<p>How to make csv url work that has authentication?</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: Version: 10.0.0 (9c928bd1)</li>
+<li>Browser/OS: CentOs with Docker Image of Redash 10</li>
+<li>How did you install Redash:<br>
+Manual Installation</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384/1</link>
+        <pubDate>Mon, 01 Nov 2021 11:32:21 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9384-1</guid>
+        <source url="https://discuss.redash.io/t/no-authentication-for-csv-in-version-10/9384.rss">No authentication for CSV in Version 10</source>
+      </item>
+  </channel>
+</rss>

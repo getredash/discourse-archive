@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Refresh Schedule does not work correctly</title>
+    <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937</link>
+    <description>### Issue Summary
+
+Hello,
+
+I construct Redash environment on AWS.
+I am using ECS to run redash server, worker and scheduler.
+The followings are the summary of the task definition for scheduler container.
+
+- image: &#39;redash/redash:10.1.0.b50633&#39;
+- command: &#39;scheduler&#39;
+- environment variables
+    - PYTHONUNBUFFERED: &#39;0&#39;,
+    - REDASH_REDIS_URL: redisUrl,
+    - REDASH_DATABASE_URL: dbUrl,
+    - REDASH_COOKIE_SECRET: secret,
+    - REDASH_LOG_LEVEL: &#39;INFO&#39;,
+    - REDASH_DATE_FORMAT: &#39;YYYY/MM/DD&#39;,
+    - QUEUES: &#39;celery&#39;,
+    - WORKERS_COUNT: &#39;2&#39;
+
+However, the scheduled query have not been executed.
+I got the following logs for scheduler task, but I can not find the error log.
+
+```
+2022-01-29T15:28:24.449+09:00	Starting RQ scheduler...
+2022-01-29T15:28:27.686+09:00	[2022-01-29 06:28:27,686][PID:1][INFO][rq_scheduler.scheduler] Registering birth
+```
+
+Could you please tell me how to set up to work refresh schedule?
+
+Thank you in advance.
+
+### Technical details:
+
+* Redash Version: v10 (image tag: 10.1.0.b50633)
+* Browser/OS: Chorme / Mac OS
+* How did you install Redash: Deploy server, worker and scheduler to ECS service using redash docker image.</description>
+    
+    <lastBuildDate>Thu, 03 Feb 2022 13:56:12 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <p>Finally refresh schedule work correctly!<br>
+Thank you very very much for your support!!</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/17">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/17</link>
+        <pubDate>Thu, 03 Feb 2022 13:56:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-17</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>No. You can look at our docker-compose for a sample configuration. The scheduler command already knows which queues to use so it does not require configuration.</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/16">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/16</link>
+        <pubDate>Thu, 03 Feb 2022 13:46:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-16</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>Yes, of course it is. It wouldn’t be the <em>default</em> otherwise</p>
+</blockquote>
+<p>Sure, I will construct scheduler container.<br>
+Is QUEUES: celery environment variable necessary in scheduler container?</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/15">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/15</link>
+        <pubDate>Thu, 03 Feb 2022 13:45:15 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-15</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Well there’s your problem. If you don’t run a scheduler than your scheduled queries won’t execute.</p>
+<aside class="quote no-group" data-username="saito-ya" data-post="13" data-topic="9937">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/saito-ya/40/3758_2.png" class="avatar"> saito-ya:</div>
+<blockquote>
+<p>Is container which execute <code>scheduler</code> command necessary?</p>
+</blockquote>
+</aside>
+<p>Yes, of course it is. It wouldn’t be the <em>default</em> otherwise <img src="https://emoji.discourse-cdn.com/twitter/joy.png?v=12" title=":joy:" class="emoji" alt=":joy:"></p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/14">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/14</link>
+        <pubDate>Thu, 03 Feb 2022 13:43:08 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-14</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <p>I’m so sorry but let me update the information.<br>
+I don’t have scheduler service any more.</p>
+<p>I have server service and worker servce.<br>
+These settings are bellow.</p>
+<p>Server Service</p>
+<ul>
+<li>image: “redash/redash:10.1.0.b50633”</li>
+<li>command: “server”</li>
+<li>environment variables<br>
+- PYTHONUNBUFFERED: ‘0’<br>
+- REDASH_HOST: ‘<a href="https://xxxxx.com" rel="noopener nofollow ugc">https://xxxxx.com</a>’<br>
+- REDASH_REDIS_URL: redisUrl<br>
+- REDASH_DATABASE_URL: dbUrl<br>
+- REDASH_COOKIE_SECRET: ‘redash-cookie-secret’<br>
+- REDASH_LOG_LEVEL: ‘DEBUG’<br>
+- REDASH_DATE_FORMAT: ‘YYYY/MM/DD’</li>
+</ul>
+<p>Worker Service</p>
+<ul>
+<li>image: “redash/redash:10.1.0.b50633”</li>
+<li>command: “worker”</li>
+<li>environment variables<br>
+- PYTHONUNBUFFERED: ‘0’<br>
+- REDASH_HOST: ‘<a href="https://xxxxx.com" rel="noopener nofollow ugc">https://xxxxx.com</a>’<br>
+- REDASH_REDIS_URL: redisUrl<br>
+- REDASH_DATABASE_URL: dbUrl<br>
+- REDASH_COOKIE_SECRET: ‘redash-cookie-secret’<br>
+- REDASH_LOG_LEVEL: ‘DEBUG’<br>
+- REDASH_DATE_FORMAT: ‘YYYY/MM/DD’<br>
+- QUEUES: ‘default,queries,scheduled_queries,schemas,emails,periodic’</li>
+</ul>
+<p>So I don’t have <code>celery</code> in QUEUES right now.<br>
+Is container which execute <code>scheduler</code> command necessary?</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/13">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/13</link>
+        <pubDate>Thu, 03 Feb 2022 13:41:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-13</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <aside class="quote no-group" data-username="saito-ya" data-post="1" data-topic="9937">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" width="20" height="20" src="https://sjc6.discourse-cdn.com/standard17/user_avatar/discuss.redash.io/saito-ya/40/3758_2.png" class="avatar"> saito-ya:</div>
+<blockquote>
+<p>QUEUES: ‘celery’,</p>
+</blockquote>
+</aside>
+<p>what happens if you remove this line from your environment on the scheduler?</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/12">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/12</link>
+        <pubDate>Thu, 03 Feb 2022 13:33:12 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-12</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <blockquote>
+<p>What queues does this worker monitor?</p>
+</blockquote>
+<p>I set <code>QUEUES: 'default,queries,scheduled_queries,schemas,emails,periodic'</code> environment variable to worker service container.<br>
+So I think the worker is monitoring default, queries, scheduled_queries, schemas, emails and periodic.</p>
+<blockquote>
+<p>Now you need to check if there are any exceptions raised when your schedule runs.</p>
+</blockquote>
+<p>Actually I can’t see any exceptions in the log.</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/11">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/11</link>
+        <pubDate>Thu, 03 Feb 2022 13:28:39 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-11</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>What queues does this worker monitor?</p>
+<p>Edit: actually I can see what cues are being monitored here. I think your worker is fine. Now you need to check if there are any exceptions raised when your schedule runs.</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/10">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/10</link>
+        <pubDate>Thu, 03 Feb 2022 13:22:01 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-10</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for your quick reply!</p>
+<blockquote>
+<p>just write a sinple query. Give it a one minute refresh schedule. Restart your Redash services. And see if it executed periodically.</p>
+</blockquote>
+<p>I tried that.<br>
+However the last executed time of the query is not been changed.<br>
+Refresh Schedule doesn’t work yet.</p>
+<p>I will atach log file of worker service.<br>
+Could you please check this and give some advice?</p>
+<pre><code class="lang-auto">timestamp,message
+1643894006552,Starting RQ worker...
+1643894006758,"2022-02-03 13:13:26,758 INFO RPC interface 'supervisor' initialized"
+1643894006758,"2022-02-03 13:13:26,758 CRIT Server 'unix_http_server' running without any HTTP authentication checking"
+1643894006759,"2022-02-03 13:13:26,759 INFO supervisord started with pid 1"
+1643894007761,"2022-02-03 13:13:27,761 INFO spawned: 'worker_healthcheck' with pid 10"
+1643894007768,"2022-02-03 13:13:27,763 INFO spawned: 'worker-0' with pid 11"
+1643894008735,"[2022-02-03 13:13:28,735][PID:10][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner."
+1643894008735,"[2022-02-03 13:13:28,735][PID:11][DEBUG][redash.query_runner] Registering Amazon Athena (athena) query runner."
+1643894008869,"[2022-02-03 13:13:28,869][PID:10][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner."
+1643894008869,"[2022-02-03 13:13:28,869][PID:11][DEBUG][redash.query_runner] Registering BigQuery (bigquery) query runner."
+1643894008869,"2022-02-03 13:13:28,869 INFO success: worker_healthcheck entered RUNNING state, process has stayed up for &gt; than 1 seconds (startsecs)"
+1643894008893,"[2022-02-03 13:13:28,892][PID:10][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner."
+1643894008893,"[2022-02-03 13:13:28,893][PID:11][DEBUG][redash.query_runner] Registering Google Sheets (google_spreadsheets) query runner."
+1643894008894,"[2022-02-03 13:13:28,894][PID:10][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner."
+1643894008895,"[2022-02-03 13:13:28,895][PID:11][DEBUG][redash.query_runner] Registering Graphite (graphite) query runner."
+1643894008945,"[2022-02-03 13:13:28,945][PID:10][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner."
+1643894008948,"[2022-02-03 13:13:28,948][PID:11][DEBUG][redash.query_runner] Registering MongoDB (mongodb) query runner."
+1643894008948,"[2022-02-03 13:13:28,948][PID:10][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner."
+1643894008949,"[2022-02-03 13:13:28,948][PID:11][DEBUG][redash.query_runner] Registering Couchbase (couchbase) query runner."
+1643894008958,"[2022-02-03 13:13:28,958][PID:10][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner."
+1643894008958,"[2022-02-03 13:13:28,958][PID:11][DEBUG][redash.query_runner] Registering MySQL (mysql) query runner."
+1643894008958,"[2022-02-03 13:13:28,958][PID:11][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner."
+1643894008958,"[2022-02-03 13:13:28,958][PID:10][DEBUG][redash.query_runner] Registering MySQL (Amazon RDS) (rds_mysql) query runner."
+1643894008979,"[2022-02-03 13:13:28,979][PID:11][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner."
+1643894008979,"[2022-02-03 13:13:28,979][PID:11][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner."
+1643894008979,"[2022-02-03 13:13:28,979][PID:11][DEBUG][redash.query_runner] Registering Redshift (with IAM User/Role) (redshift_iam) query runner."
+1643894008979,"[2022-02-03 13:13:28,979][PID:11][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner."
+1643894008979,"[2022-02-03 13:13:28,979][PID:10][DEBUG][redash.query_runner] Registering PostgreSQL (pg) query runner."
+1643894008980,"[2022-02-03 13:13:28,980][PID:10][DEBUG][redash.query_runner] Registering Redshift (redshift) query runner."
+1643894008980,"[2022-02-03 13:13:28,980][PID:10][DEBUG][redash.query_runner] Registering Redshift (with IAM User/Role) (redshift_iam) query runner."
+1643894008980,"[2022-02-03 13:13:28,980][PID:11][DEBUG][redash.query_runner] Registering Url (url) query runner."
+1643894008980,"[2022-02-03 13:13:28,980][PID:10][DEBUG][redash.query_runner] Registering CockroachDB (cockroach) query runner."
+1643894008981,"[2022-02-03 13:13:28,981][PID:10][DEBUG][redash.query_runner] Registering Url (url) query runner."
+1643894009443,"[2022-02-03 13:13:29,443][PID:10][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner."
+1643894009448,"[2022-02-03 13:13:29,448][PID:11][DEBUG][redash.query_runner] Registering InfluxDB (influxdb) query runner."
+1643894009449,"[2022-02-03 13:13:29,449][PID:10][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner."
+1643894009449,"[2022-02-03 13:13:29,449][PID:10][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner."
+1643894009451,"[2022-02-03 13:13:29,451][PID:10][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner."
+1643894009453,"[2022-02-03 13:13:29,453][PID:11][DEBUG][redash.query_runner] Registering Kibana (kibana) query runner."
+1643894009453,"[2022-02-03 13:13:29,453][PID:11][DEBUG][redash.query_runner] Registering Elasticsearch (elasticsearch) query runner."
+1643894009454,"[2022-02-03 13:13:29,454][PID:11][DEBUG][redash.query_runner] Registering Amazon Elasticsearch Service (aws_es) query runner."
+1643894009458,"[2022-02-03 13:13:29,458][PID:10][DEBUG][redash.query_runner] Registering Trino (trino) query runner."
+1643894009458,"[2022-02-03 13:13:29,458][PID:11][DEBUG][redash.query_runner] Registering Trino (trino) query runner."
+1643894009468,"[2022-02-03 13:13:29,467][PID:11][DEBUG][redash.query_runner] Registering Presto (presto) query runner."
+1643894009468,"[2022-02-03 13:13:29,468][PID:10][DEBUG][redash.query_runner] Registering Presto (presto) query runner."
+1643894009471,"[2022-02-03 13:13:29,471][PID:11][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner."
+1643894009472,"[2022-02-03 13:13:29,472][PID:10][DEBUG][redash.query_runner] Registering Databricks (databricks) query runner."
+1643894009485,"[2022-02-03 13:13:29,485][PID:11][DEBUG][redash.query_runner] Registering Hive (hive) query runner."
+1643894009485,"[2022-02-03 13:13:29,485][PID:11][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner."
+1643894009486,"[2022-02-03 13:13:29,486][PID:10][DEBUG][redash.query_runner] Registering Hive (hive) query runner."
+1643894009487,"[2022-02-03 13:13:29,486][PID:10][DEBUG][redash.query_runner] Registering Hive (HTTP) (hive_http) query runner."
+1643894010449,"[2022-02-03 13:13:30,448][PID:10][DEBUG][redash.query_runner] Registering Impala (impala) query runner."
+1643894010453,"[2022-02-03 13:13:30,453][PID:11][DEBUG][redash.query_runner] Registering Impala (impala) query runner."
+1643894010480,"[2022-02-03 13:13:30,480][PID:10][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner."
+1643894010482,"[2022-02-03 13:13:30,482][PID:10][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner."
+1643894010484,"[2022-02-03 13:13:30,484][PID:11][DEBUG][redash.query_runner] Registering Vertica (vertica) query runner."
+1643894010484,"[2022-02-03 13:13:30,484][PID:11][DEBUG][redash.query_runner] Registering ClickHouse (clickhouse) query runner."
+1643894010509,"[2022-02-03 13:13:30,509][PID:10][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner."
+1643894010509,"[2022-02-03 13:13:30,509][PID:10][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner."
+1643894010510,"[2022-02-03 13:13:30,510][PID:11][DEBUG][redash.query_runner] Registering Yandex Metrica (yandex_metrika) query runner."
+1643894010511,"[2022-02-03 13:13:30,511][PID:11][DEBUG][redash.query_runner] Registering Yandex AppMetrica (yandex_appmetrika) query runner."
+1643894010511,"[2022-02-03 13:13:30,511][PID:10][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner."
+1643894010511,"[2022-02-03 13:13:30,511][PID:11][DEBUG][redash.query_runner] Registering Rockset (rockset) query runner."
+1643894010522,"[2022-02-03 13:13:30,522][PID:10][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner."
+1643894010523,"[2022-02-03 13:13:30,523][PID:11][DEBUG][redash.query_runner] Registering TreasureData (treasuredata) query runner."
+1643894010526,"[2022-02-03 13:13:30,526][PID:10][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner."
+1643894010526,"[2022-02-03 13:13:30,526][PID:11][DEBUG][redash.query_runner] Registering Sqlite (sqlite) query runner."
+1643894010594,"[2022-02-03 13:13:30,594][PID:11][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner."
+1643894010594,"[2022-02-03 13:13:30,594][PID:10][DEBUG][redash.query_runner] Registering DynamoDB (with DQL) (dynamodb_sql) query runner."
+1643894010599,"[2022-02-03 13:13:30,599][PID:10][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner."
+1643894010599,"[2022-02-03 13:13:30,599][PID:11][DEBUG][redash.query_runner] Registering Microsoft SQL Server (mssql) query runner."
+1643894010600,"[2022-02-03 13:13:30,600][PID:10][DEBUG][redash.query_runner] Registering Microsoft SQL Server (ODBC) (mssql_odbc) query runner."
+1643894010601,"[2022-02-03 13:13:30,601][PID:11][DEBUG][redash.query_runner] Registering Microsoft SQL Server (ODBC) (mssql_odbc) query runner."
+1643894010603,"[2022-02-03 13:13:30,603][PID:10][DEBUG][redash.query_runner] Registering MemSQL (memsql) query runner."
+1643894010604,"[2022-02-03 13:13:30,604][PID:11][DEBUG][redash.query_runner] Registering MemSQL (memsql) query runner."
+1643894010607,"[2022-02-03 13:13:30,607][PID:10][DEBUG][thrift.transport.sslcompat] ipaddress module is available"
+1643894010607,"[2022-02-03 13:13:30,607][PID:10][DEBUG][thrift.transport.sslcompat] ssl.match_hostname is available"
+1643894010608,"[2022-02-03 13:13:30,608][PID:11][DEBUG][thrift.transport.sslcompat] ipaddress module is available"
+1643894010608,"[2022-02-03 13:13:30,608][PID:11][DEBUG][thrift.transport.sslcompat] ssl.match_hostname is available"
+1643894010638,"[2022-02-03 13:13:30,638][PID:10][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner."
+1643894010640,"[2022-02-03 13:13:30,640][PID:10][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner."
+1643894010641,"[2022-02-03 13:13:30,640][PID:11][DEBUG][redash.query_runner] Registering Mapd (mapd) query runner."
+1643894010641,"[2022-02-03 13:13:30,641][PID:11][DEBUG][redash.query_runner] Registering JIRA (JQL) (jirajql) query runner."
+1643894010643,"[2022-02-03 13:13:30,643][PID:10][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner."
+1643894010644,"[2022-02-03 13:13:30,644][PID:11][DEBUG][redash.query_runner] Registering Google Analytics (google_analytics) query runner."
+1643894010660,"[2022-02-03 13:13:30,660][PID:10][DEBUG][root] Checking 'python-requests' version..."
+1643894010661,"[2022-02-03 13:13:30,660][PID:11][DEBUG][root] Checking 'python-requests' version..."
+1643894010661,"[2022-02-03 13:13:30,660][PID:11][DEBUG][root] Module 'python-requests' version is 2.21.0. The version is compatible."
+1643894010661,"[2022-02-03 13:13:30,661][PID:11][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner."
+1643894010662,"[2022-02-03 13:13:30,661][PID:10][DEBUG][root] Module 'python-requests' version is 2.21.0. The version is compatible."
+1643894010662,"[2022-02-03 13:13:30,662][PID:10][DEBUG][redash.query_runner] Registering Axibase Time Series Database (axibasetsd) query runner."
+1643894010690,"[2022-02-03 13:13:30,690][PID:11][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner."
+1643894010692,"[2022-02-03 13:13:30,691][PID:10][DEBUG][redash.query_runner] Registering Salesforce (salesforce) query runner."
+1643894010745,"[2022-02-03 13:13:30,745][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class 'configparser.ConfigParser'&gt;"
+1643894010745,"[2022-02-03 13:13:30,745][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;class '_io.StringIO'&gt;"
+1643894010745,"[2022-02-03 13:13:30,745][PID:11][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;class '_io.BytesIO'&gt;"
+1643894010746,"[2022-02-03 13:13:30,746][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'SafeConfigParser': &lt;class 'configparser.ConfigParser'&gt;"
+1643894010746,"[2022-02-03 13:13:30,746][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'NativeStringIO': &lt;class '_io.StringIO'&gt;"
+1643894010746,"[2022-02-03 13:13:30,746][PID:10][DEBUG][passlib.utils.compat] loaded lazy attr 'BytesIO': &lt;class '_io.BytesIO'&gt;"
+1643894011512,"[2022-02-03 13:13:31,511][PID:10][DEBUG][redash.query_runner] Registering Query Results (results) query runner."
+1643894011514,"[2022-02-03 13:13:31,514][PID:10][DEBUG][redash.query_runner] Registering Prometheus (prometheus) query runner."
+1643894011524,"[2022-02-03 13:13:31,524][PID:11][DEBUG][redash.query_runner] Registering Query Results (results) query runner."
+1643894011525,"[2022-02-03 13:13:31,524][PID:11][DEBUG][redash.query_runner] Registering Prometheus (prometheus) query runner."
+1643894011548,"[2022-02-03 13:13:31,547][PID:10][DEBUG][redash.query_runner] Registering Qubole (qubole) query runner."
+1643894011556,"[2022-02-03 13:13:31,556][PID:11][DEBUG][redash.query_runner] Registering Qubole (qubole) query runner."
+1643894011557,"[2022-02-03 13:13:31,557][PID:10][DEBUG][redash.query_runner] Registering DB2 (db2) query runner."
+1643894011560,"[2022-02-03 13:13:31,560][PID:10][DEBUG][redash.query_runner] Registering Druid (druid) query runner."
+1643894011562,"[2022-02-03 13:13:31,562][PID:10][DEBUG][redash.query_runner] Registering Kylin (kylin) query runner."
+1643894011563,"[2022-02-03 13:13:31,562][PID:11][DEBUG][redash.query_runner] Registering DB2 (db2) query runner."
+1643894011564,"[2022-02-03 13:13:31,563][PID:10][DEBUG][redash.query_runner] Registering Apache Drill (drill) query runner."
+1643894011564,"[2022-02-03 13:13:31,564][PID:11][DEBUG][redash.query_runner] Registering Druid (druid) query runner."
+1643894011565,"[2022-02-03 13:13:31,565][PID:11][DEBUG][redash.query_runner] Registering Kylin (kylin) query runner."
+1643894011565,"[2022-02-03 13:13:31,565][PID:11][DEBUG][redash.query_runner] Registering Apache Drill (drill) query runner."
+1643894011568,"[2022-02-03 13:13:31,568][PID:10][DEBUG][redash.query_runner] Registering Uptycs (uptycs) query runner."
+1643894011569,"[2022-02-03 13:13:31,569][PID:11][DEBUG][redash.query_runner] Registering Uptycs (uptycs) query runner."
+1643894011698,"[2022-02-03 13:13:31,697][PID:10][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp"
+1643894011700,"[2022-02-03 13:13:31,700][PID:10][DEBUG][snowflake.connector.auth] cache directory: /home/redash/.cache/snowflake"
+1643894011702,"[2022-02-03 13:13:31,702][PID:11][DEBUG][snowflake.connector.ssl_wrap_socket] Injecting ssl_wrap_socket_with_ocsp"
+1643894011704,"[2022-02-03 13:13:31,704][PID:11][DEBUG][snowflake.connector.auth] cache directory: /home/redash/.cache/snowflake"
+1643894011919,"[2022-02-03 13:13:31,919][PID:10][DEBUG][redash.query_runner] Registering Snowflake (snowflake) query runner."
+1643894011919,"[2022-02-03 13:13:31,919][PID:11][DEBUG][redash.query_runner] Registering Snowflake (snowflake) query runner."
+1643894011942,"[2022-02-03 13:13:31,941][PID:11][DEBUG][redash.query_runner] Registering Phoenix (phoenix) query runner."
+1643894011942,"[2022-02-03 13:13:31,942][PID:10][DEBUG][redash.query_runner] Registering Phoenix (phoenix) query runner."
+1643894011944,"[2022-02-03 13:13:31,944][PID:11][DEBUG][redash.query_runner] Registering JSON (json) query runner."
+1643894011945,"[2022-02-03 13:13:31,945][PID:10][DEBUG][redash.query_runner] Registering JSON (json) query runner."
+1643894012000,"[2022-02-03 13:13:32,000][PID:11][DEBUG][redash.query_runner] Registering Cassandra (Cassandra) query runner."
+1643894012000,"[2022-02-03 13:13:32,000][PID:11][DEBUG][redash.query_runner] Registering ScyllaDB (scylla) query runner."
+1643894012001,"[2022-02-03 13:13:32,000][PID:10][DEBUG][redash.query_runner] Registering Cassandra (Cassandra) query runner."
+1643894012001,"[2022-02-03 13:13:32,001][PID:10][DEBUG][redash.query_runner] Registering ScyllaDB (scylla) query runner."
+1643894012027,"[2022-02-03 13:13:32,027][PID:10][DEBUG][redash.query_runner] Registering Dgraph (dgraph) query runner."
+1643894012027,"[2022-02-03 13:13:32,027][PID:11][DEBUG][redash.query_runner] Registering Dgraph (dgraph) query runner."
+1643894012039,"[2022-02-03 13:13:32,038][PID:11][DEBUG][redash.query_runner] Registering Azure Data Explorer (Kusto) (azure_kusto) query runner."
+1643894012040,"[2022-02-03 13:13:32,039][PID:10][DEBUG][redash.query_runner] Registering Azure Data Explorer (Kusto) (azure_kusto) query runner."
+1643894012050,"[2022-02-03 13:13:32,050][PID:11][DEBUG][redash.query_runner] Registering Exasol (exasol) query runner."
+1643894012051,"[2022-02-03 13:13:32,051][PID:10][DEBUG][redash.query_runner] Registering Exasol (exasol) query runner."
+1643894012052,"[2022-02-03 13:13:32,052][PID:11][DEBUG][redash.query_runner] Registering Amazon CloudWatch (cloudwatch) query runner."
+1643894012053,"[2022-02-03 13:13:32,053][PID:11][DEBUG][redash.query_runner] Registering Amazon CloudWatch Logs Insights (cloudwatch_insights) query runner."
+1643894012054,"[2022-02-03 13:13:32,054][PID:10][DEBUG][redash.query_runner] Registering Amazon CloudWatch (cloudwatch) query runner."
+1643894012055,"[2022-02-03 13:13:32,054][PID:10][DEBUG][redash.query_runner] Registering Amazon CloudWatch Logs Insights (cloudwatch_insights) query runner."
+1643894012212,"[2022-02-03 13:13:32,212][PID:11][DEBUG][redash.query_runner] Registering eccenca Corporate Memory (with SPARQL) (corporate_memory) query runner."
+1643894012213,"[2022-02-03 13:13:32,212][PID:10][DEBUG][redash.query_runner] Registering eccenca Corporate Memory (with SPARQL) (corporate_memory) query runner."
+1643894012216,"[2022-02-03 13:13:32,216][PID:10][DEBUG][redash.query_runner] Registering SPARQL Endpoint (sparql_endpoint) query runner."
+1643894012216,"[2022-02-03 13:13:32,216][PID:11][DEBUG][redash.query_runner] Registering SPARQL Endpoint (sparql_endpoint) query runner."
+1643894012403,"[2022-02-03 13:13:32,403][PID:10][DEBUG][redash.query_runner] Registering Excel (excel) query runner."
+1643894012403,"[2022-02-03 13:13:32,403][PID:11][DEBUG][redash.query_runner] Registering Excel (excel) query runner."
+1643894012405,"[2022-02-03 13:13:32,405][PID:10][DEBUG][redash.query_runner] Registering CSV (csv) query runner."
+1643894012405,"[2022-02-03 13:13:32,405][PID:11][DEBUG][redash.query_runner] Registering CSV (csv) query runner."
+1643894012409,"[2022-02-03 13:13:32,409][PID:10][DEBUG][redash.query_runner] Registering Firebolt (firebolt) query runner."
+1643894012409,"[2022-02-03 13:13:32,409][PID:11][DEBUG][redash.query_runner] Registering Firebolt (firebolt) query runner."
+1643894012410,"[2022-02-03 13:13:32,410][PID:10][DEBUG][redash.destinations] Registering Email (email) destinations."
+1643894012411,"[2022-02-03 13:13:32,410][PID:11][DEBUG][redash.destinations] Registering Email (email) destinations."
+1643894012411,"[2022-02-03 13:13:32,411][PID:10][DEBUG][redash.destinations] Registering Slack (slack) destinations."
+1643894012412,"[2022-02-03 13:13:32,412][PID:11][DEBUG][redash.destinations] Registering Slack (slack) destinations."
+1643894012440,"[2022-02-03 13:13:32,440][PID:10][DEBUG][redash.destinations] Registering Webhook (webhook) destinations."
+1643894012441,"[2022-02-03 13:13:32,440][PID:11][DEBUG][redash.destinations] Registering Webhook (webhook) destinations."
+1643894012442,"[2022-02-03 13:13:32,441][PID:10][DEBUG][redash.destinations] Registering HipChat (hipchat) destinations."
+1643894012442,"[2022-02-03 13:13:32,442][PID:11][DEBUG][redash.destinations] Registering HipChat (hipchat) destinations."
+1643894012443,"[2022-02-03 13:13:32,442][PID:10][DEBUG][redash.destinations] Registering Mattermost (mattermost) destinations."
+1643894012443,"[2022-02-03 13:13:32,443][PID:11][DEBUG][redash.destinations] Registering Mattermost (mattermost) destinations."
+1643894012444,"[2022-02-03 13:13:32,444][PID:10][DEBUG][redash.destinations] Registering ChatWork (chatwork) destinations."
+1643894012444,"[2022-02-03 13:13:32,444][PID:11][DEBUG][redash.destinations] Registering ChatWork (chatwork) destinations."
+1643894012451,"[2022-02-03 13:13:32,451][PID:10][DEBUG][redash.destinations] Registering PagerDuty (pagerduty) destinations."
+1643894012451,"[2022-02-03 13:13:32,451][PID:11][DEBUG][redash.destinations] Registering PagerDuty (pagerduty) destinations."
+1643894012452,"[2022-02-03 13:13:32,452][PID:10][DEBUG][redash.destinations] Registering Google Hangouts Chat (hangouts_chat) destinations."
+1643894012452,"[2022-02-03 13:13:32,452][PID:11][DEBUG][redash.destinations] Registering Google Hangouts Chat (hangouts_chat) destinations."
+1643894013281,"2022/02/03 13:13:33 [worker_healthcheck] Starting the health check for worker process Checks config: [(&lt;class 'redash.cli.rq.WorkerHealthcheck'&gt;, {})]"
+1643894013281,2022/02/03 13:13:33 [worker_healthcheck] Installing signal handlers.
+1643894013281,READY
+1643894013360,"[2022-02-03 13:13:33,360][PID:11][INFO][rq.worker] Worker rq:worker:74693ce00ae247b6910f7cade78e605d: started, version 1.5.0"
+1643894013362,"[2022-02-03 13:13:33,362][PID:11][INFO][rq.worker] *** Listening on default, queries, scheduled_queries, schemas, emails, periodic..."
+1643894021966,"[2022-02-03 13:13:41,966][PID:11][INFO][rq.worker] default: cd545ffb-90ce-4694-bcbf-875d20730077"
+1643894022047,"[2022-02-03 13:13:42,046][PID:22][DEBUG][metrics] table=events query=insert duration=5.76"
+1643894022059,"[2022-02-03 13:13:42,058][PID:22][INFO][rq.worker] default: Job OK (cd545ffb-90ce-4694-bcbf-875d20730077)"
+1643894022059,"[2022-02-03 13:13:42,058][PID:22][INFO][rq.worker] Result is kept for 500 seconds"
+1643894041081,2022/02/03 13:14:01 [worker_healthcheck] Received TICK_60 event from supervisor
+1643894041083,2022/02/03 13:14:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+1643894041083,RESULT 2
+1643894041083,OKREADY
+1643894096157,"[2022-02-03 13:14:56,156][PID:11][INFO][rq.worker] default: b46727f1-fa0f-4b70-8587-3edf73fc29d0"
+1643894096237,"[2022-02-03 13:14:56,237][PID:23][DEBUG][metrics] table=events query=insert duration=5.80"
+1643894096249,"[2022-02-03 13:14:56,249][PID:23][INFO][rq.worker] default: Job OK (b46727f1-fa0f-4b70-8587-3edf73fc29d0)"
+1643894096250,"[2022-02-03 13:14:56,249][PID:23][INFO][rq.worker] Result is kept for 500 seconds"
+1643894101254,2022/02/03 13:15:01 [worker_healthcheck] Received TICK_60 event from supervisor
+1643894101255,RESULT 2
+1643894101255,OKREADY
+1643894101255,2022/02/03 13:15:01 [worker_healthcheck] No processes in state RUNNING found for process worker
+</code></pre>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/9">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/9</link>
+        <pubDate>Thu, 03 Feb 2022 13:20:04 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-9</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Sure, just write a sinple query. Give it a one minute refresh schedule. Restart your Redash services. And see if it executed periodically.</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/8">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/8</link>
+        <pubDate>Thu, 03 Feb 2022 13:02:41 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-8</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <p>Thank you for your reply!</p>
+<blockquote>
+<p>How many instances of redis are you using in your setup?</p>
+</blockquote>
+<p>one instance (node).</p>
+<blockquote>
+<p>Have you confirmed that absolutely no queries are executing on a refresh schedule?</p>
+</blockquote>
+<p>Sorry, I don’t know exact way to confirm that no queries are executed on a refresh schedule.<br>
+However, I can see <code>rq.job.redash.tasks.queries.execution</code> logs and its <code>queue</code> value is <code>queries</code> not <code>scheduled_queries</code>.</p>
+<p>If there is correct way to confirm whether queries are executed on a refresh schedule, could you please tell me that?</p>
+<p>Thank you in advance!</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/7">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/7</link>
+        <pubDate>Thu, 03 Feb 2022 12:58:09 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-7</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>How many instances of redis are you using in your setup? Have you confirmed that absolutely no queries are executing on a refresh schedule?</p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/6">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/6</link>
+        <pubDate>Wed, 02 Feb 2022 18:10:02 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-6</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <p>FYI</p>
+<p>I added <code>default</code> and <code>periodic</code> to Queues as well as <code>scheduled_queries</code>.<br>
+However scheduled queries are not executed.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/1/1981f55c79fa88877b67de921d5dec10194c48b4.png" data-download-href="/uploads/short-url/3DEn1Ov8dbwJUxMaQZop5ke7yhC.png?dl=1" title="スクリーンショット 2022-02-02 23.50.06" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1981f55c79fa88877b67de921d5dec10194c48b4_2_690x374.png" alt="スクリーンショット 2022-02-02 23.50.06" data-base62-sha1="3DEn1Ov8dbwJUxMaQZop5ke7yhC" width="690" height="374" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1981f55c79fa88877b67de921d5dec10194c48b4_2_690x374.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1981f55c79fa88877b67de921d5dec10194c48b4_2_1035x561.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1981f55c79fa88877b67de921d5dec10194c48b4_2_1380x748.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/1/1981f55c79fa88877b67de921d5dec10194c48b4_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/5">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/5</link>
+        <pubDate>Wed, 02 Feb 2022 14:50:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-5</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <p>Hi jesse!</p>
+<p>Thank you for your reply!</p>
+<p>I checked Workers and could find <code>scheduled_queries</code> as one of queues.<br>
+Could you please tell me other place to check?</p>
+<p>Thank you inadvance.</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/c/cbd2c54fbf3512a0ad992fe2cd25b7157d895b75.jpeg" data-download-href="/uploads/short-url/t56v2RREwHMQbJrH4JAgCnBbL8N.jpeg?dl=1" title="スクリーンショット 2022-02-02 23.03.44" rel="noopener nofollow ugc"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cbd2c54fbf3512a0ad992fe2cd25b7157d895b75_2_690x374.jpeg" alt="スクリーンショット 2022-02-02 23.03.44" data-base62-sha1="t56v2RREwHMQbJrH4JAgCnBbL8N" width="690" height="374" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cbd2c54fbf3512a0ad992fe2cd25b7157d895b75_2_690x374.jpeg, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cbd2c54fbf3512a0ad992fe2cd25b7157d895b75_2_1035x561.jpeg 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cbd2c54fbf3512a0ad992fe2cd25b7157d895b75_2_1380x748.jpeg 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/c/cbd2c54fbf3512a0ad992fe2cd25b7157d895b75_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/3</link>
+        <pubDate>Wed, 02 Feb 2022 14:04:13 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-3</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Do you have any workers monitoring the <code>scheduled_queries</code> queue?</p>
+<p>You can check this as an admin by visiting the System Status page, under the <strong>Workers</strong> tab:</p>
+<p></p><div class="lightbox-wrapper"><a class="lightbox" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/2X/a/a7c7f8a3351a1c3b4c9ebd2a8f9e8d13d0258ce0.png" data-download-href="/uploads/short-url/nWgaMKhtyOl1JF2BkwuhPCoJyEg.png?dl=1" title="CleanShot 2022-02-01 at 09.27.41@2x"><img src="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a7c7f8a3351a1c3b4c9ebd2a8f9e8d13d0258ce0_2_690x487.png" alt="CleanShot 2022-02-01 at 09.27.41@2x" data-base62-sha1="nWgaMKhtyOl1JF2BkwuhPCoJyEg" width="690" height="487" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a7c7f8a3351a1c3b4c9ebd2a8f9e8d13d0258ce0_2_690x487.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a7c7f8a3351a1c3b4c9ebd2a8f9e8d13d0258ce0_2_1035x730.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a7c7f8a3351a1c3b4c9ebd2a8f9e8d13d0258ce0_2_1380x974.png 2x" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/2X/a/a7c7f8a3351a1c3b4c9ebd2a8f9e8d13d0258ce0_2_10x10.png"></a></div><p></p>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/2</link>
+        <pubDate>Tue, 01 Feb 2022 15:28:42 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-2</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+      <item>
+        <title>Refresh Schedule does not work correctly</title>
+        <dc:creator><![CDATA[saito-ya]]></dc:creator>
+        <description><![CDATA[
+            <h3>
+<a name="issue-summary-1" class="anchor" href="https://discuss.redash.io#issue-summary-1"></a>Issue Summary</h3>
+<p>Hello,</p>
+<p>I construct Redash environment on AWS.<br>
+I am using ECS to run redash server, worker and scheduler.<br>
+The followings are the summary of the task definition for scheduler container.</p>
+<ul>
+<li>image: ‘redash/redash:10.1.0.b50633’</li>
+<li>command: ‘scheduler’</li>
+<li>environment variables
+<ul>
+<li>PYTHONUNBUFFERED: ‘0’,</li>
+<li>REDASH_REDIS_URL: redisUrl,</li>
+<li>REDASH_DATABASE_URL: dbUrl,</li>
+<li>REDASH_COOKIE_SECRET: secret,</li>
+<li>REDASH_LOG_LEVEL: ‘INFO’,</li>
+<li>REDASH_DATE_FORMAT: ‘YYYY/MM/DD’,</li>
+<li>QUEUES: ‘celery’,</li>
+<li>WORKERS_COUNT: ‘2’</li>
+</ul>
+</li>
+</ul>
+<p>However, the scheduled query have not been executed.<br>
+I got the following logs for scheduler task, but I can not find the error log.</p>
+<pre><code class="lang-auto">2022-01-29T15:28:24.449+09:00	Starting RQ scheduler...
+2022-01-29T15:28:27.686+09:00	[2022-01-29 06:28:27,686][PID:1][INFO][rq_scheduler.scheduler] Registering birth
+</code></pre>
+<p>Could you please tell me how to set up to work refresh schedule?</p>
+<p>Thank you in advance.</p>
+<h3>
+<a name="technical-details-2" class="anchor" href="https://discuss.redash.io#technical-details-2"></a>Technical details:</h3>
+<ul>
+<li>Redash Version: v10 (image tag: 10.1.0.b50633)</li>
+<li>Browser/OS: Chorme / Mac OS</li>
+<li>How did you install Redash: Deploy server, worker and scheduler to ECS service using redash docker image.</li>
+</ul>
+          <p><a href="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937/1</link>
+        <pubDate>Sat, 29 Jan 2022 06:43:20 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9937-1</guid>
+        <source url="https://discuss.redash.io/t/refresh-schedule-does-not-work-correctly/9937.rss">Refresh Schedule does not work correctly</source>
+      </item>
+  </channel>
+</rss>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+<link href="../../css/checklist_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/desktop_theme_2_be4cb2b86ec06123c5e974acd20fd933d14b129d.css" rel="stylesheet"/>
+<link href="../../css/discourse-adplugin_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-akismet_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-cakeday_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-chat-integration_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-details_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-footnote_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-lazy-videos_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/discourse-local-dates_d86c892d7cd5311243d31a8f11787f4b0342874d.css" rel="stylesheet"/>
+<link href="../../css/color_definitions_base__2_8fd59ae1f286f43b3ff17996df07ea951685249d.css" rel="stylesheet"/>
+<link href="../../css/style.css" rel="stylesheet"/>
+<title>Thoughts on adding support for queries with parameters in query results data source</title></head>
+<body>
+<div class="navbar">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<div class="navbar-buttons">
+<button class="btn btn-signup">Sign Up</button>
+<button class="btn btn-login"><i class="fas fa-user"></i> Login</button>
+<button class="btn btn-search"><i class="fas fa-search"></i></button>
+<div class="navbar-toggle">
+<div class="dots"></div>
+<div class="dots"></div>
+<div class="dots"></div>
+</div>
+</div>
+</div>
+<div class="sidebar">
+<div class="sidebar-content">
+<div class="logo"><a href="../../page_0.html"><img alt="" src="../../images/logo_redash.png" srcset=""/></a></div>
+<ul class="sidebar-grid">
+<!-- <li><a href="#"><i class="fas fa-list-ul"></i> Topics</a></li> -->
+<li><a href="../../page_0.html"><i class="fas fa-layer-group"></i> Topics</a></li>
+<li><a href="../../users.html"><i class="fas fa-users"></i> Users</a></li>
+<li><a href="../../about.html"><i class="fas fa-info-circle"></i> About</a></li>
+<li><a href="../../faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+<li><a href="../../groups.html"><i class="fas fa-users"></i> Groups</a></li>
+<li><a href="../../badges.html"><i class="fas fa-certificate"></i> Badges</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#categories"><span>▼</span>Categories</a></h3>
+<hr/>
+<ul class="sidebar-grid categories">
+<li>
+<a class="badge-wrapper bullet" href="../../c/support/6.html">
+<span class="badge-category-bg" style="background-color: #BF1E2E"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Support</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/feature-requests/5.html">
+<span class="badge-category-bg" style="background-color: #3AB54A"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Feature Requests</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/uncategorized/1.html">
+<span class="badge-category-bg" style="background-color: #AB9364"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Uncategorized</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/development/7.html">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name">Development</span>
+</span>
+</a>
+</li>
+<li>
+<a class="badge-wrapper bullet" href="../../c/tips-tricks-query-examples/11.html">
+<span class="badge-category-bg" style="background-color: #652D90"></span>
+<span class="badge-category clear-badge" style="white-space: normal;">
+<span class="category-name">Tips, Tricks &amp; Query Examples</span>
+</span>
+</a>
+</li>
+<li><a href="../../categories.html"><i class="fas fa-list-ul"></i> All categories</a></li>
+</ul>
+<h3 style="font-size: 13px;"><a href="#tags"><span>▼</span>Tags</a></h3>
+<hr/>
+<ul class="sidebar-grid tags">
+<li><a href="../../tag/query_results.html"><i class="fas fa-tag"></i> query_results</a></li>
+<li><a href="../../tag/feature-request.html"><i class="fas fa-tag"></i> feature-request</a></li>
+<li><a href="../../tag/parameters.html"><i class="fas fa-tag"></i> parameters</a></li>
+<li><a href="../../tag/visualizations.html"><i class="fas fa-tag"></i> visualizations</a></li>
+<li><a href="../../tag/alerts.html"><i class="fas fa-tag"></i> alerts</a></li>
+<li><a href="../../tags.html"><i class="fas fa-list-ul"></i> All tags</a></li>
+</ul>
+</div>
+<div class="sidebar-footer">
+            © 2023 <a href="https://discuss.redash.io/" target="_blank">discuss.redash.io</a>
+</div>
+</div>
+<div class="overlay"></div>
+<div class="content">
+<div class="global-notice">
+<div class="row">
+<div class="alert alert-info alert-read-only" id="global-notice-alert-read-only">
+<span class="text">This site is in read only mode. Please continue to browse, but replying, likes,
+                        and other actions are disabled for now.</span>
+</div>
+</div>
+</div>
+<div class="imported_page" id="imported_page">
+<div class="wrap" id="main-outlet" role="main">
+<div id="topic-title">
+<h1>
+<a href="/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709">Thoughts on adding support for queries with parameters in query results data source</a>
+</h1>
+<div class="topic-category" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a class="badge-wrapper bullet" href="../../c/development/7.html" itemprop="item">
+<span class="badge-category-bg" style="background-color: #8C6238"></span>
+<span class="badge-category clear-badge">
+<span class="category-name" itemprop="name">Development</span>
+</span>
+</a>
+<meta content="1" itemprop="position"/>
+</span>
+</div>
+</div>
+<div itemscope="" itemtype="http://schema.org/DiscussionForumPosting">
+<meta content="Thoughts on adding support for queries with parameters in query results data source" itemprop="headline"/>
+<meta content="Development" itemprop="articleSection"/>
+<meta content="" itemprop="keywords"/>
+<div itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+<meta content="Redash Discourse" itemprop="name"/>
+<div itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject">
+<meta content="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c07bc573841e1e4a0013ea3b6fe088a1534228a3.png" itemprop="url"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_1">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/arikfr.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/arikfr_avatar.png" tabindex="-1" width="48"/><span itemprop="name">arikfr</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-22T12:00:48Z" itemprop="datePublished">
+                    March 22, 2018, 12:00pm
+                  </time>
+<meta content="2018-03-22T12:00:48Z" itemprop="dateModified"/>
+<span itemprop="position">1</span>
+</span>
+</div>
+<div class="post" itemprop="articleBody">
+<p>Following <a class="mention" href="/u/ariarijp">@ariarijp</a> pull request on changing the way we find query IDs in <em>Query Results</em> queries to later support queries with parameters, I wanted to start a discussion on how this might work and to share some thoughts I had:</p>
+<p>There are two use cases for querying from queries with parameters:</p>
+<p>1.</p>
+<p>The simple use case: you just want to use a query with parameters and you “know” what the values are:</p>
+<ul>
+<li>We can detect that the query you’re querying from needs parameters and show the needed parameter input fields and pass those values along when loading this query (will require adding the logic of detecting query IDs in client side code).</li>
+<li>Allow for some syntax of passing parameters like <a class="mention" href="/u/ariarijp">@ariarijp</a> suggested (although I feel that using JSON is not very user friendly, although very pragmatic).</li>
+</ul>
+<p>2.</p>
+<p>There is another more advanced use case: you want to pass returning values from one query into another. Here’s an example:</p>
+<p>Datasource A has users list, datasource B has user events. You want to return list of active users in the past day along with their details. So you need to filter the users list in A based on ids from B.</p>
+<p>So the query A on data source A might be:</p>
+<pre><code class="lang-sql">SELECT name FROM users WHERE id IN ({{user_ids}});
+</code></pre>
+<p>The query B on B might be:</p>
+<pre><code class="lang-auto">SELECT distinct user_id FROM events WHERE created_at &gt; '...';
+</code></pre>
+<p>And you want the results from query B to be merged into the the query A.</p>
+<p>Maybe this doesn’t have to be implemented as part of query results feature, though? Maybe it can be some syntax like parameters:</p>
+<pre><code class="lang-sql">SELECT name FROM users WHERE id IN ({% query_results 456 %});
+</code></pre>
+<p><code>query_results</code> is a function to load query results and we can have others to insert snippets and maybe other things?</p>
+<hr/>
+<p>I hope the explanation makes sense. Of course we can implement use case 1 without implementing use case 2.</p>
+<p>Any feedback or thoughts will be welcomed <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="3" itemprop="userInteractionCount"/>
+<span class="post-likes">3 Likes</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/parameters-on-querying-existing-query-results/1877/2" itemprop="url">Parameters on Querying Existing Query Results</a>
+<meta content="1" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/reql-query-language/1736/2" itemprop="url">ReQL query language</a>
+<meta content="2" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/query-query-result-cache-with-parameters/2545" itemprop="url">Query Query-Result-Cache with parameters</a>
+<meta content="3" itemprop="position"/>
+</div>
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/related-parameters-are-not-working/5993/4" itemprop="url">Related parameters are not working</a>
+<meta content="4" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_2" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-03-22T14:03:26Z" itemprop="datePublished">
+                    March 22, 2018,  2:03pm
+                  </time>
+<meta content="2018-03-22T14:03:26Z" itemprop="dateModified"/>
+<span itemprop="position">2</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi, Arik</p>
+<p>Thank you for sharing your thoughts.<br/>
+I can make sense about these use cases.</p>
+<p>For now, I would like to talk about your “use case 1”.</p>
+<p>First, here is PoC of my thoughts.</p>
+<aside class="onebox whitelistedgeneric">
+<header class="source">
+<img class="site-icon" height="32" src="assets/favicon.svg" width="32"/>
+<a href="https://github.com/getredash/redash/compare/master...ariarijp:poc-query-results-with-params" rel="nofollow noopener" target="_blank">GitHub</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail onebox-avatar" height="310" src="assets/10746780" width="310"/>
+<h3><a href="https://github.com/getredash/redash/compare/master...ariarijp:poc-query-results-with-params" rel="nofollow noopener" target="_blank">getredash/redash</a></h3>
+<p>Make Your Company Data Driven. Connect to any data source, easily visualize, dashboard and share your data. - getredash/redash</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>For example,</p>
+<p>Query 1</p>
+<pre><code class="lang-auto">SELECT * FROM film WHERE rating = '{{ rating }}'
+</code></pre>
+<p>Query 2</p>
+<pre><code class="lang-auto">SELECT * FROM query_1('{"rating": "PG-13"}')
+</code></pre>
+<p>I prefer to use JSON as parameter.<br/>
+The reason why JSON is very common format for developers and easy to understand.</p>
+<p>I agree JSON is not friendly for some users.<br/>
+However, I think SQL is very pragmatic and not friendly for non-technical users such as marketer, biz-dev and so on.</p>
+<p>I think Query Results is advanced feature on Redash.<br/>
+I guess this feature wanted by techinical guys, they don’t require any code completion.<br/>
+(Of course, I want to use this feature with code completion <img alt=":grinning:" class="emoji" src="assets/grinning.png" title=":grinning:"/>)</p>
+<p>Please feel free to ask me about it and any feedback is welcome.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_3" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-07-31T03:03:43Z" itemprop="datePublished">
+                    July 31, 2018,  3:03am
+                  </time>
+<meta content="2018-07-31T03:03:43Z" itemprop="dateModified"/>
+<span itemprop="position">3</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi there, and thank you for such a great tool!<br/>
+I think that I’m trying to do what is described here, in the simple use case (1). I have the “Active Users” query from GA with global parameters, like this one:</p>
+<pre><code class="lang-auto">{
+  "ids": "ga:xxxxxxxxx",
+  "start_date": "{{Start Date}}",
+  "end_date": "{{End Date}}",
+  "metrics": "ga:users"
+}
+</code></pre>
+<p>And I also have the “Total Users” number from our PostgreSQL database. Then I want to have the dashboard widget that displays Total / Active users numbers somehow like that:</p>
+<pre><code class="lang-auto">select total.users || ' / ' || active.ga_users as 'Total / Active'
+from query_9 as active
+join query_7 as total on active.ga_dimension1 = total.role
+order by Role;
+</code></pre>
+<p>This was working ok when parameters were hardcoded but it fails now. Is it correct that for now, it’s not possible to get the results like this with global parameters? If so, what a workaround could be?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_4" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-08-01T05:38:25Z" itemprop="datePublished">
+                    August 1, 2018,  5:38am
+                  </time>
+<meta content="2018-08-01T05:38:25Z" itemprop="dateModified"/>
+<span itemprop="position">4</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi <a class="mention" href="/u/ariarijp">@ariarijp</a>, I tried your pull request with the current master (5.0.0-beta) but with no success, unfortunately – my existing queries became broken, e.g. <code>select * from query_7 as users where users.role = 'staff'</code> complains about missing <code>users.role</code> column. It works ok in master, however.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_5" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-08-15T06:10:43Z" itemprop="datePublished">
+                    August 15, 2018,  6:10am
+                  </time>
+<meta content="2018-08-15T06:10:43Z" itemprop="dateModified"/>
+<span itemprop="position">5</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/arikfr">@arikfr</a>, I tried <a class="mention" href="/u/ariarijp">@ariarijp</a> solution with the current master but got <code>Error running query: 'query_9' is not a function</code>. Was something changed since March that could break the patch? I did <code>git log -- redash/query_runner</code> but can’t see anything suspicious. What else could I do to troubleshoot the issue?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_6" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-17T06:53:16Z" itemprop="datePublished">
+                    September 17, 2018,  6:53am
+                  </time>
+<meta content="2018-09-17T06:53:16Z" itemprop="dateModified"/>
+<span itemprop="position">6</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi <a class="mention" href="/u/leshik">@leshik</a> ,</p>
+<p>Thank you for your feedback!<br/>
+I will check my patch on 5.0.0 branch.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_7" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-17T08:03:56Z" itemprop="datePublished">
+                    September 17, 2018,  8:03am
+                  </time>
+<meta content="2018-09-17T08:03:56Z" itemprop="dateModified"/>
+<span itemprop="position">7</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/leshik">@leshik</a> I’ve checked that PoC on master branch commit <code>47068a6d911716cc2802542cdc5613e14602d561</code>.</p>
+<p>It’s looks like works for me.</p>
+<p>Here is my queries,</p>
+<p>Query 1 (It uses Redash metadata as a data source)</p>
+<pre><code class="lang-auto">SELECT *
+FROM EVENTS
+WHERE action = '{{ action }}'
+  AND object_type = '{{ object_type }}';
+</code></pre>
+<p>Query 2</p>
+<pre><code class="lang-sql">SELECT *
+FROM query_1('{"action":"view", "object_type":"query"}');
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="2" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_8" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-17T08:44:33Z" itemprop="datePublished">
+                    September 17, 2018,  8:44am
+                  </time>
+<meta content="2018-09-17T08:44:33Z" itemprop="dateModified"/>
+<span itemprop="position">8</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/ariarijp">@ariarijp</a> do you have a patch against the current master? maybe I messed things up when trying to apply your patch.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_9" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-17T11:28:53Z" itemprop="datePublished">
+                    September 17, 2018, 11:28am
+                  </time>
+<meta content="2018-09-17T11:28:53Z" itemprop="dateModified"/>
+<span itemprop="position">9</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/leshik">@leshik</a> Sure, here you are.</p>
+<pre><code class="lang-diff">diff --git a/redash/query_runner/query_results.py b/redash/query_runner/query_results.py
+index fc0e09e4..db8fcf08 100644
+--- a/redash/query_runner/query_results.py
++++ b/redash/query_runner/query_results.py
+@@ -1,9 +1,12 @@
++import hashlib
+ import json
+ import logging
+ import numbers
+ import re
+ import sqlite3
+ 
++import pystache
++import sqlparse
+ from dateutil import parser
+ 
+ from redash import models
+@@ -42,9 +45,23 @@ def _guess_type(value):
+     return TYPE_STRING
+ 
+ 
+-def extract_query_ids(query):
+-    queries = re.findall(r'(?:join|from)\s+query_(\d+)', query, re.IGNORECASE)
+-    return [int(q) for q in queries]
++def extract_child_queries(query):
++    pattern = re.compile(r"^query_(\d+)(?:\('(\{.+\})'\))?", re.IGNORECASE)
++    queries = []
++
++    for token in sqlparse.parse(query)[0].tokens:
++        m = pattern.match(token.value)
++        if not m:
++            continue
++
++        queries.append({
++            'query_id': int(m.group(1)),
++            'params': {} if m.group(2) is None else json.loads(m.group(2)),
++            'table': 'tmp_' + hashlib.md5(token.value).hexdigest(),
++            'token': token.tokens[0].value if isinstance(token.tokens[0], sqlparse.sql.Function) else token.value,
++        })
++
++    return queries
+ 
+ 
+ def _load_query(user, query_id):
+@@ -54,26 +71,34 @@ def _load_query(user, query_id):
+         raise PermissionError("Query id {} not found.".format(query.id))
+ 
+     if not has_access(query.data_source.groups, user, not_view_only):
+-        raise PermissionError(u"You are not allowed to execute queries on {} data source (used for query id {}).".format(
+-            query.data_source.name, query.id))
++        raise PermissionError(
++            u"You are not allowed to execute queries on {} data source (used for query id {}).".format(
++                query.data_source.name, query.id))
+ 
+     return query
+ 
+ 
+-def create_tables_from_query_ids(user, connection, query_ids):
+-    for query_id in set(query_ids):
+-        query = _load_query(user, query_id)
++def create_tables_from_child_queries(user, connection, query, child_queries):
++    for child_query in child_queries:
++        _query = _load_query(user, child_query['query_id'])
+ 
+-        results, error = query.data_source.query_runner.run_query(
+-            query.query_text, user)
++        params = child_query['params']
++        if not params:
++            params = _get_default_params(_query)
++
++        query_with_params = pystache.render(_query.query_text, params)
++        results, error = _query.data_source.query_runner.run_query(query_with_params, user)
+ 
+         if error:
+             raise Exception(
+-                "Failed loading results for query id {}.".format(query.id))
++                "Failed loading results for query id {}.".format(_query.id))
+ 
+         results = json.loads(results)
+-        table_name = 'query_{query_id}'.format(query_id=query_id)
++        table_name = child_query['table']
+         create_table(connection, table_name, results)
++        query = query.replace(child_query['token'], table_name)
++
++    return query
+ 
+ 
+ def fix_column_name(name):
+@@ -101,6 +126,16 @@ def create_table(connection, table_name, query_results):
+         connection.execute(insert_template, values)
+ 
+ 
++def _get_default_params(query):
++    params = {}
++
++    if 'parameters' in query.options:
++        for p in query.options['parameters']:
++            params[p['name']] = p['value']
++
++    return params
++
++
+ class Results(BaseQueryRunner):
+     noop_query = 'SELECT 1'
+ 
+@@ -118,13 +153,13 @@ class Results(BaseQueryRunner):
+ 
+     @classmethod
+     def name(cls):
+-        return "Query Results (Beta)"
++        return "Query Results Ex(Beta)"
+ 
+     def run_query(self, query, user):
+         connection = sqlite3.connect(':memory:')
+ 
+-        query_ids = extract_query_ids(query)
+-        create_tables_from_query_ids(user, connection, query_ids)
++        child_queries = extract_child_queries(query)
++        query = create_tables_from_child_queries(user, connection, query, child_queries)
+ 
+         cursor = connection.cursor()
+ 
+</code></pre>
+<p>Good luck!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_10" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<link href="assets/c435763a527dfdcab53e4d2b320cad7fd490a872.png" itemprop="image"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T03:16:08Z" itemprop="datePublished">
+                    September 18, 2018,  3:16am
+                  </time>
+<meta content="2018-09-18T03:16:08Z" itemprop="dateModified"/>
+<span itemprop="position">10</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/ariarijp">@ariarijp</a> Sorry, but I can’t make it work even using your queries. I’m able to execute the first query with parameters:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/rZK7MYIYS4LKF7GdCc1kzSmoa2K.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c435763a527dfdcab53e4d2b320cad7fd490a872.png" rel="noopener nofollow ugc" title="56"><img alt="56" data-base62-sha1="rZK7MYIYS4LKF7GdCc1kzSmoa2K" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c435763a527dfdcab53e4d2b320cad7fd490a872_2_10x10.png" height="384" src="assets/c435763a527dfdcab53e4d2b320cad7fd490a872_2_690x384.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c435763a527dfdcab53e4d2b320cad7fd490a872_2_690x384.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/c435763a527dfdcab53e4d2b320cad7fd490a872_2_1035x576.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/c435763a527dfdcab53e4d2b320cad7fd490a872.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">56</span><span class="informations">1038×579 36.4 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>But the second one fails:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/9Ac9ZvclSTNydzlWLe1WcMFuMdA.png?dl=1" href="https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/432b05349fc08a872c4641461430e5c3fe4d68aa.png" rel="noopener nofollow ugc" title="33"><img alt="33" data-base62-sha1="9Ac9ZvclSTNydzlWLe1WcMFuMdA" data-small-upload="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/432b05349fc08a872c4641461430e5c3fe4d68aa_2_10x10.png" height="256" src="assets/432b05349fc08a872c4641461430e5c3fe4d68aa_2_690x256.png" srcset="https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/432b05349fc08a872c4641461430e5c3fe4d68aa_2_690x256.png, https://global.discourse-cdn.com/standard17/uploads/redash1/optimized/1X/432b05349fc08a872c4641461430e5c3fe4d68aa_2_1035x384.png 1.5x, https://global.discourse-cdn.com/standard17/uploads/redash1/original/1X/432b05349fc08a872c4641461430e5c3fe4d68aa.png 2x" width="690"/><div class="meta">
+<svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use href="#far-image"></use></svg><span class="filename">33</span><span class="informations">1039×386 21.6 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use href="#discourse-expand"></use></svg>
+</div></a></div></p>
+<p>What might be the reason?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_11" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T03:20:28Z" itemprop="datePublished">
+                    September 18, 2018,  3:20am
+                  </time>
+<meta content="2018-09-18T03:20:28Z" itemprop="dateModified"/>
+<span itemprop="position">11</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>More logs:</p>
+<pre><code class="lang-auto">[2018-09-18 03:13:14,069][PID:73][INFO][Worker-21] task_name=redash.tasks.execute_query taks_id=a6c55223-e6d2-4d4c-ab64-8dd6c8176cb0 task=execute_query query_hash=a5010a00aaf69c88c09e36b60d1212c9 data_length=None error=[function query_19(unknown) does not exist
+LINE 2: FROM query_19('{"action":"view", "object_type":"query"}');
+             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+]
+[2018-09-18 03:13:14,074][PID:1][ERROR][MainProcess] Task redash.tasks.execute_query[a6c55223-e6d2-4d4c-ab64-8dd6c8176cb0] raised unexpected: QueryExecutionError('function query_19(unknown) does not exist\nLINE 2: FROM query_19(\'{"action":"view", "object_type":"query"}\');\n             ^\nHINT:  No function matches the given name and argument types. You might need to add explicit type casts.\n',)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/app/redash/worker.py", line 71, in __call__
+    return TaskBase.__call__(self, *args, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/app/redash/tasks/queries.py", line 528, in execute_query
+    scheduled_query).run()
+  File "/app/redash/tasks/queries.py", line 470, in run
+    raise result
+QueryExecutionError: function query_19(unknown) does not exist
+LINE 2: FROM query_19('{"action":"view", "object_type":"query"}');
+             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+</code></pre>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_12" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T05:08:52Z" itemprop="datePublished">
+                    September 18, 2018,  5:08am
+                  </time>
+<meta content="2018-09-18T05:08:52Z" itemprop="dateModified"/>
+<span itemprop="position">12</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/leshik">@leshik</a> Hmm, which data source type are you using?</p>
+<pre><code class="lang-auto">HINT:  No function matches the given name and argument types.
+</code></pre>
+<p>It looks like an error from PostgreSQL.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_13" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T06:04:04Z" itemprop="datePublished">
+                    September 18, 2018,  6:04am
+                  </time>
+<meta content="2018-09-18T06:18:32Z" itemprop="dateModified"/>
+<span itemprop="position">13</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/ariarijp">@ariarijp</a> As you suggested, I’m using re:dash DB as data source. So I just added its postgres DB to my data sources.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_14" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T07:36:37Z" itemprop="datePublished">
+                    September 18, 2018,  7:36am
+                  </time>
+<meta content="2018-09-18T07:36:37Z" itemprop="dateModified"/>
+<span itemprop="position">14</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/leshik">@leshik</a> I see, Can you run your second query on Query Results Data Source?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_15" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T08:09:21Z" itemprop="datePublished">
+                    September 18, 2018,  8:09am
+                  </time>
+<meta content="2018-09-18T08:09:21Z" itemprop="dateModified"/>
+<span itemprop="position">15</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/ariarijp">@ariarijp</a> omg, I’m so sorry for wasting your time, I just forgot to change the data source in the query editor. It works now with your provided example as well as with my case with GA. I will experiment more and will let you know if I hit some edge case. Thank you!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+<span class="post-likes">1 Like</span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_16" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T08:23:10Z" itemprop="datePublished">
+                    September 18, 2018,  8:23am
+                  </time>
+<meta content="2018-09-18T08:23:10Z" itemprop="dateModified"/>
+<span itemprop="position">16</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/leshik">@leshik</a> Great! Happy Redash-ing! :redash:</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_17" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/leshik.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/leshik_avatar.png" tabindex="-1" width="48"/><span itemprop="name">leshik</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T09:26:16Z" itemprop="datePublished">
+                    September 18, 2018,  9:26am
+                  </time>
+<meta content="2018-09-18T09:26:16Z" itemprop="dateModified"/>
+<span itemprop="position">17</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/ariarijp">@ariarijp</a> I figured out what was breaking my queries. After the PoC patch, it’s not possible to use queries like this one anymore:</p>
+<pre><code class="lang-auto">select total.school
+from query_7 as total;
+</code></pre>
+<p>This works on current master, but stops after applying the patch. Before the patch, this query succeds, but after it fails with <code>Error running query: no such column: total.school</code>.</p>
+<p>My queries rely on joins that depend on tables aliases so they stopped working.</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_18" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/ariarijp.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/ariarijp_avatar.png" tabindex="-1" width="48"/><span itemprop="name">ariarijp</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-09-18T11:08:13Z" itemprop="datePublished">
+                    September 18, 2018, 11:08am
+                  </time>
+<meta content="2018-09-18T11:08:13Z" itemprop="dateModified"/>
+<span itemprop="position">18</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p><a class="mention" href="/u/leshik">@leshik</a> Thank you for your feedback!</p>
+<p>I understand what is annoying you.</p>
+<p>For now, It is one of the limitations of this PoC.</p>
+<p>Of course, I always welcome any patch for solving it <img alt=":slight_smile:" class="emoji" src="assets/slight_smile.png" title=":slight_smile:"/></p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_19" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/Tim.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/Tim_avatar.png" tabindex="-1" width="48"/><span itemprop="name">Tim</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-10-09T13:38:29Z" itemprop="datePublished">
+                    October 9, 2018,  1:38pm
+                  </time>
+<meta content="2018-10-09T13:38:29Z" itemprop="dateModified"/>
+<span itemprop="position">19</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Is it possible to do things like that?<br/>
+<code>FROM query_254('{"mindate":'{{ mindate }}', "maxdate":'{{ maxdate }}'}');</code><br/>
+This doesn’t work because of the brackets. Am I doing this wrong or are parameters into parameters not  supported?</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+</div>
+<div class="crawler-linkback-list" itemscope="" itemtype="http://schema.org/ItemList">
+<div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+<a href="http://discuss.redash.io/t/passing-query-paramters-into-a-interal-query-from-parent-query/8036" itemprop="url">Passing query paramters into a interal query from parent query</a>
+<meta content="1" itemprop="position"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" id="post_20" itemprop="comment" itemscope="" itemtype="http://schema.org/Comment">
+<div class="crawler-post-meta">
+<span class="creator" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<a href="../../u/detail/LeoRochael.html" itemprop="url"><img alt="" class="avatar" height="48" loading="lazy" src="../../u/avatars/LeoRochael_avatar.png" tabindex="-1" width="48"/><span itemprop="name">LeoRochael</span></a>
+</span>
+<link href="assets/1709" itemprop="mainEntityOfPage"/>
+<span class="crawler-post-infos">
+<time class="post-time" datetime="2018-10-26T13:58:01Z" itemprop="datePublished">
+                    October 26, 2018,  1:58pm
+                  </time>
+<meta content="2018-10-26T13:58:01Z" itemprop="dateModified"/>
+<span itemprop="position">20</span>
+</span>
+</div>
+<div class="post" itemprop="text">
+<p>Hi Arikfr,</p>
+<p>First let me start by saying that redash is awesome, thank you for open-sourcing it and most of all thank you for engaging so actively with the community that sprung around it!</p>
+<p>As for adding support for queries with parameters, I believe that the best way to implement it would be to  lean on sqlite’s native support for user-defined table-returning functions.</p>
+<p>These can be implemented in Python with the help of either the <a href="https://github.com/coleifer/sqlite-vtfunc" rel="nofollow noopener">sqlite-vtfunc</a> module or Peewee’s <a href="http://docs.peewee-orm.com/en/latest/peewee/api.html#SqliteDatabase.table_function" rel="nofollow noopener"><code>TableFunction</code> class</a>.</p>
+<p>(For the purposes of the rest of this discussion, I’m going call the queries from other data sources as “source queries” and the query that runs on sqlite based on the “source queries” as “sink query”).</p>
+<p>Implementing query results as table functions brings ancillary benefits:</p>
+<ul>
+<li>
+<p>No need to invent new syntax. Passing parameters  declared on the sink query to a source query is simply a matter of doing “<code>select * from query_175({{parameter}})</code>” whereas passing a correlated value from the sink query into the source query can be achieved with something like:</p>
+<p><code>select record.title, ( select count(*) from query_175(record.id)), from record</code></p>
+</li>
+<li>
+<p>The source queries wouldn’t need to be executed completely before running the sink query. On the contrary, the sink query actually runs first, and the source queries only need to produce as much data as the sink query consumes, allowing the queries to run in parallel</p>
+<ul>
+<li>This solves a pet peeve of mine, where the source queries are completely executed before the sink query fails with a syntax error when there is something a simple as a missing comma on the sink query.</li>
+</ul>
+</li>
+</ul>
+<p>Since these functions need to be pre-declared before running the query in sqlite, this would require parsing the query, as is currently done, to locate which existing queries should be declared as table functions.</p>
+<p>Alternatively, the data source could require configuration of which source queries should be available to sink queries (and perhaps even their names!), which would also help to serve as a sort of access control. This would allow removing all code that currently parses sink queries to locate the source queries.</p>
+<p>Using json in the argument passing, as suggested by <a class="mention" href="/u/ariarijp">@ariarijp</a>, is also a possibility which could help with mapping arguments passed in the sink query with parameters declared in the source queries, which otherwise would need some sort of convention about the order of parameters.</p>
+<p>These are my thoughts on the matter.</p>
+<p>Again, thank you for engaging with the community on this matter!</p>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/LikeAction" itemprop="interactionType"/>
+<meta content="0" itemprop="userInteractionCount"/>
+<span class="post-likes"></span>
+</div>
+<div itemprop="interactionStatistic" itemscope="" itemtype="http://schema.org/InteractionCounter">
+<meta content="http://schema.org/CommentAction" itemprop="interactionType"/>
+<meta content="1" itemprop="userInteractionCount"/>
+</div>
+</div>
+</div>
+<div class="topic-body crawler-post" itemscope="" itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+<span itemprop="name"><b><a href="/t/thoughts-on-adding-support-for-queries-with-parameters-in-query-results-data-source/1709?page=2" itemprop="url" rel="next">next page →</a></b></span>
+</div>
+</div>
+</div>
+</div>
+<div class="overlay" id="modalOverlay" style="display: none;">
+<div class="modal-content">
+<p>Login or sign up disabled while the site is in read only mode</p>
+<hr/>
+<button class="btn btn-login">OK</button>
+</div>
+</div>
+<script src="../../js/script.js"></script>
+</body>
+</html>

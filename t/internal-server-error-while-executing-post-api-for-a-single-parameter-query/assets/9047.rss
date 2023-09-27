@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Internal Server Error, while executing POST API for a single parameter query</title>
+    <link>https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047</link>
+    <description>*setup on Bitnami Redash 8.0.0 - Virtual Machine*
+
+Here is a very simple query with parameter.
+              **select * from redash_inbound  where cust=&#39;{{ clientid }}&#39;**
+This query is working fine and it displays the list of clients and accordingly the output.
+
+Next step is to try the API (json) and while executing it in GET, it give the standard result.
+      **&quot;message&quot;: &quot;No cached result found for this query.**
+      **You have requested this URI [/api/queries/56/results.json] **
+      **but did you mean /api/queries/&lt;query_id&gt;/results **
+      **or /api/query_results **
+      **or /api/queries/&lt;query_id&gt;/refresh ?&quot;**
+
+So far so good.
+We went through the portal help page (https://redash.io/help/user-guide/integrations-and-api/api) and we understand that now we need to try the same in POST method.
+
+In POST method, we added below text in json body
+{
+    &quot;parameters&quot;: {
+        &quot;clientid&quot;: &quot;CLIENT0001&quot;
+    },
+    &quot;max_age&quot;:0
+}
+
+When we test this API (using POST method), it throws an error
+{    &quot;message&quot;: &quot;Internal Server Error&quot;    }
+
+**We have tried:**
+.. adding &quot;SQLALCHEMY_ENABLE_POOL_PRE_PING: true&quot; to &quot;.env&quot; file in /opt/bitnami/apps/redash/htdocs
+.. tried different simple queries with other parameters
+.. checked this thread &quot;http://discuss.redash.io/t/unable-to-get-query-results-with-parameters-via-api/6572/2&quot;
+.. checked &quot;public URL&quot; of embedded query (its working fine like the query)
+
+But it looks like that the First Request itself is not getting through redash server.
+When we checked the log, it says that &quot;*post() got an unexpected keyword argument &#39;filetype&#39;*&quot;
+
+Need help !!
+
+
+Here is the log extract.
+
+
+TypeError: post() got an unexpected keyword argument &#39;filetype&#39;
+[2021-09-07 14:50:15,749][PID:6165][INFO][metrics] method=POST path=/api/queries/56/results.json endpoint=query_result status=500 content_type=application/json content_length=36 duration=0.91 quer$[2021-09-07 14:51:33,434] ERROR in app: Exception on /api/queries/56/results.json [POST]
+Traceback (most recent call last):
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask/app.py&quot;, line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask/app.py&quot;, line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 477, in wrapper
+    resp = resource(*args, **kwargs)
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask_login/utils.py&quot;, line 228, in decorated_view
+    return func(*args, **kwargs)
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask/views.py&quot;, line 84, in view
+    return self.dispatch_request(*args, **kwargs)
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/redash/handlers/base.py&quot;, line 31, in dispatch_request
+    return super(BaseResource, self).dispatch_request(*args, **kwargs)
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask_restful/__init__.py&quot;, line 587, in dispatch_request
+    resp = meth(*args, **kwargs)
+
+  File &quot;/opt/bitnami/apps/redash/htdocs/redash/permissions.py&quot;, line 67, in decorated
+    return fn(*args, **kwargs)
+
+TypeError: post() got an unexpected keyword argument &#39;filetype&#39;
+[2021-09-07 14:51:33,434][PID:6165][INFO][metrics] method=POST path=/api/queries/56/results.json endpoint=query_result status=500 content_type=application/json content_length=36 duration=0.82 quer$[
+
+
+
+-------- 
+Rituraj Pankaj</description>
+    
+    <lastBuildDate>Wed, 08 Sep 2021 18:49:10 +0000</lastBuildDate>
+    <category>Self Hosted Redash Support</category>
+    <atom:link href="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047.rss" rel="self" type="application/rss+xml" />
+      <item>
+        <title>Internal Server Error, while executing POST API for a single parameter query</title>
+        <dc:creator><![CDATA[riturajpankaj]]></dc:creator>
+        <description><![CDATA[
+            <p>Solved it…<br>
+It was rather an oversight.</p>
+<p>Earlier I was processing the link as under: -<br>
+<strong><a href="http://10.0.0.10/api/queries/6/results.json?api_key=7buyugotohellyousuckerhdauiydljahsla" rel="noopener nofollow ugc">http://10.0.0.10/api/queries/6/results.json?api_key=7buyugotohellyousuckerhdauiydljahsla</a></strong></p>
+<p>all I had to do was to remove <strong>.json</strong> and it is working now.</p>
+<p>now I have two working instances <img src="https://emoji.discourse-cdn.com/twitter/rofl.png?v=10" title=":rofl:" class="emoji" alt=":rofl:"><br>
+one with Bitnami… other on Debian…</p>
+<p>Thanks for all the reverts you have maintained with others… it really helps !!</p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/4">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/4</link>
+        <pubDate>Wed, 08 Sep 2021 18:49:10 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9047-4</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047.rss">Internal Server Error, while executing POST API for a single parameter query</source>
+      </item>
+      <item>
+        <title>Internal Server Error, while executing POST API for a single parameter query</title>
+        <dc:creator><![CDATA[riturajpankaj]]></dc:creator>
+        <description><![CDATA[
+            <p>Ohss…</p>
+<p>I will create a fresh instance on docker “referring this link”</p><aside class="onebox allowlistedgeneric" data-onebox-src="https://redash.io/help/open-source/dev-guide/docker/">
+  <header class="source">
+      <img src="https://redash.io/assets/images/favicon.ico" class="site-icon" width="16" height="16">
+
+      <a href="https://redash.io/help/open-source/dev-guide/docker/" target="_blank" rel="noopener nofollow ugc">redash.io</a>
+  </header>
+
+  <article class="onebox-body">
+    <div class="aspect-image" style="--aspect-ratio:690/362;"><img src="https://redash.io/assets/images/social-facebook-1200x630.png" class="thumbnail" width="690" height="362"></div>
+
+<h3><a href="https://redash.io/help/open-source/dev-guide/docker/" target="_blank" rel="noopener nofollow ugc">Docker Based Developer Installation Guide</a></h3>
+
+
+
+  </article>
+
+  <div class="onebox-metadata">
+    
+    
+  </div>
+
+  <div style="clear: both"></div>
+</aside>
+
+<p>Will let you know if things go perfectly.</p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/3">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/3</link>
+        <pubDate>Wed, 08 Sep 2021 14:08:38 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9047-3</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047.rss">Internal Server Error, while executing POST API for a single parameter query</source>
+      </item>
+      <item>
+        <title>Internal Server Error, while executing POST API for a single parameter query</title>
+        <dc:creator><![CDATA[jesse]]></dc:creator>
+        <description><![CDATA[
+            <p>Please don’t use Bitnami images. They were a community effort and are not apparently being maintained. We can’t support them.</p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/2">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/2</link>
+        <pubDate>Tue, 07 Sep 2021 17:40:24 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9047-2</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047.rss">Internal Server Error, while executing POST API for a single parameter query</source>
+      </item>
+      <item>
+        <title>Internal Server Error, while executing POST API for a single parameter query</title>
+        <dc:creator><![CDATA[riturajpankaj]]></dc:creator>
+        <description><![CDATA[
+            <p><em>setup on Bitnami Redash 8.0.0 - Virtual Machine</em></p>
+<p>Here is a very simple query with parameter.<br>
+<strong>select * from redash_inbound  where cust=’{{ clientid }}'</strong><br>
+This query is working fine and it displays the list of clients and accordingly the output.</p>
+<p>Next step is to try the API (json) and while executing it in GET, it give the standard result.<br>
+<strong>"message": "No cached result found for this query.</strong><br>
+**You have requested this URI [/api/queries/56/results.json] **<br>
+**but did you mean /api/queries/&lt;query_id&gt;/results **<br>
+**or /api/query_results **<br>
+<strong>or /api/queries/&lt;query_id&gt;/refresh ?"</strong></p>
+<p>So far so good.<br>
+We went through the portal help page (<a href="https://redash.io/help/user-guide/integrations-and-api/api" rel="noopener nofollow ugc">https://redash.io/help/user-guide/integrations-and-api/api</a>) and we understand that now we need to try the same in POST method.</p>
+<p>In POST method, we added below text in json body<br>
+{<br>
+“parameters”: {<br>
+“clientid”: “CLIENT0001”<br>
+},<br>
+“max_age”:0<br>
+}</p>
+<p>When we test this API (using POST method), it throws an error<br>
+{    “message”: “Internal Server Error”    }</p>
+<p><strong>We have tried:</strong><br>
+… adding “SQLALCHEMY_ENABLE_POOL_PRE_PING: true” to “.env” file in /opt/bitnami/apps/redash/htdocs<br>
+… tried different simple queries with other parameters<br>
+… checked this thread “<a href="http://discuss.redash.io/t/unable-to-get-query-results-with-parameters-via-api/6572/2" class="inline-onebox">Unable to get query results with parameters via API - #2 by k4s1m</a>”<br>
+… checked “public URL” of embedded query (its working fine like the query)</p>
+<p>But it looks like that the First Request itself is not getting through redash server.<br>
+When we checked the log, it says that “<em>post() got an unexpected keyword argument ‘filetype’</em>”</p>
+<p>Need help !!</p>
+<p>Here is the log extract.</p>
+<p>TypeError: post() got an unexpected keyword argument ‘filetype’<br>
+[2021-09-07 14:50:15,749][PID:6165][INFO][metrics] method=POST path=/api/queries/56/results.json endpoint=query_result status=500 content_type=application/json content_length=36 duration=0.91 quer$[2021-09-07 14:51:33,434] ERROR in app: Exception on /api/queries/56/results.json [POST]<br>
+Traceback (most recent call last):</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask/app.py”, line 1612, in full_dispatch_request<br>
+rv = self.dispatch_request()</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask/app.py”, line 1598, in dispatch_request<br>
+return self.view_functions<a href="https://discuss.redash.io">rule.endpoint</a></p>
+<p>File “/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask_restful/<strong>init</strong>.py”, line 477, in wrapper<br>
+resp = resource(*args, **kwargs)</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask_login/utils.py”, line 228, in decorated_view<br>
+return func(*args, **kwargs)</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask/views.py”, line 84, in view<br>
+return self.dispatch_request(*args, **kwargs)</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/redash/handlers/base.py”, line 31, in dispatch_request<br>
+return super(BaseResource, self).dispatch_request(*args, **kwargs)</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/venv/lib/python2.7/site-packages/flask_restful/<strong>init</strong>.py”, line 587, in dispatch_request<br>
+resp = meth(*args, **kwargs)</p>
+<p>File “/opt/bitnami/apps/redash/htdocs/redash/permissions.py”, line 67, in decorated<br>
+return fn(*args, **kwargs)</p>
+<p>TypeError: post() got an unexpected keyword argument ‘filetype’<br>
+[2021-09-07 14:51:33,434][PID:6165][INFO][metrics] method=POST path=/api/queries/56/results.json endpoint=query_result status=500 content_type=application/json content_length=36 duration=0.82 quer$[</p>
+<hr>
+<p>Rituraj Pankaj</p>
+          <p><a href="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/1">Read full topic</a></p>
+        ]]></description>
+        <link>https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047/1</link>
+        <pubDate>Tue, 07 Sep 2021 15:09:25 +0000</pubDate>
+        <guid isPermaLink="false">discuss.redash.io-post-9047-1</guid>
+        <source url="https://discuss.redash.io/t/internal-server-error-while-executing-post-api-for-a-single-parameter-query/9047.rss">Internal Server Error, while executing POST API for a single parameter query</source>
+      </item>
+  </channel>
+</rss>
